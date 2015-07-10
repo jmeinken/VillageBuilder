@@ -1,0 +1,64 @@
+{% load staticfiles %}
+
+<style>
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+</style>
+
+<div class="modal" id="upload-pic-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        <h4 class="modal-title">Upload Picture</h4>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="col-sm-5 vcenter">
+                  <div id="dragDrop" class="drag-drop text" data-jcu-active="drag-drop-active">
+                     Drag and Drop Here
+                  </div>
+              </div><!--
+              --><div class="col-sm-1 vcenter">
+                  <strong>-OR-</strong>
+              </div><!--
+              --><div class="col-sm-6 vcenter">
+                  <input class="btn btn-success" id="file" type="file" name="file"/>
+              </div>
+          </div>
+          <hr>
+          <div class="row">
+              <div class="col-sm-6">
+              Select area to use:
+                  <div class="frame"><img id="image" src="{% static "img/generic-user.png" %}"></div>
+              </div>
+              <div class="col-sm-6">
+                  <h4>Preview</h4>
+                  <canvas class="img-thumbnail" id="medium" width="150" height="150">
+              </div>
+          </div>
+          <hr>
+          <div class="row">
+              <div class="col-sm-3 vcenter">
+                  <input class="btn btn-lg btn-success" id="upload" type="button" value="Upload"/>
+              </div><!--  
+              --><div class="col-sm-9 vcenter">
+                  <div id="progressBar" class="big-green">
+                        <div></div>
+                  </div>
+              </div>
+          </div>
+      
+      
+      
+         
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

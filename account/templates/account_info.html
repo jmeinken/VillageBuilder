@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <div class="container-fluid">
+        {% include "blocks/create-account-header.html" %}
+	    </div>
+		<div class="row">
+			<div class="col-md-6">
+				<form action="{{ callback }}" method="post">
+				    {% csrf_token %}
+				    {% for field in form %}	
+				        <div class="form-group">
+					        {{ field.errors }}
+				            {{ field|label_with_classes:"control-label" }} 
+				            {{ field|attr:"class:form-control" }}
+			            </div>
+				    {% endfor %}
+				    <input type="submit" value="Submit" />
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

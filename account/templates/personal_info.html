@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}<!-- https://pypi.python.org/pypi/django-widget-tweaks -->
+{% load staticfiles %}
+
+{% block content %}
+
+<style>
+.drag-drop {
+            width: 300px;
+            height: 88px;
+            border: 2px dotted #0B85A1;
+            text-align: center;
+            line-height: 88px;
+            background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.02)
+        }
+
+        .drag-drop-active {
+            border: 2px solid #0B85A1;
+            background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.08)
+        }
+</style>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		var api  // Jcrop api
+	    var $progressBar = $('#progressBar')
+	    //options
+	    var options = {
+	        fileInputs: ['#file'],
+	        canvases: {
+	            medium: {
+	                'object': '#medium'
+	            }
+			},
+	        dragDrops: ['#dragDrop'],
+	        afterPick: function () {
+	            this.setSelect([0, 0, 400, 300])  // initial selection
+	        },
+	        beforePick: function (img) {
+	            if (img) {//valid file
+	                if (img.width < 300 || img.height < 300) {
+	                    alert('The image width and height must be over or equal to 300!')
+	                    return true  // ignore this img
+	                }
+	            }
+	            else {// invalid file
+	                alert('Invalid file!')
+	            }
+	        },
+	        aspectRatio: 1 / 1,
+	        minSize: [150, 150],
+	        boxWidth: 400,
+	        boxHeight: 400
+	    }
+	    $('#image').Jcrop(options, function () {
+	        api = this;
+	        this.setSelect([50, 38, 300, 225]);
+	        //api.drawInCanvas($('#medium')[0])
+	    })
+	    
+   
+	    $('#upload').click(function() {
+	        if (!api) {
+	            return
+	        }
+	        if (!api.isSelected()) {
+	            alert('No selection!')
+	            return
+	        }
+	        $progressBar.find('div').width(0)
+	        //sources
+	        var sources = [
+	            {
+	                key: 'medium', // key in options.canvases
+	                format: 'image/png' // default = 'image/jpeg'
+	            }
+	        ]
+	        //settings
+	        var settings = {
+	            url: '/account/upload_image/',
+	            data: {'text': 'This is the text!'}, //three fields (medium, small, text) to upload
+	            onprogress: function (evt) { // function for xhr.upload.onprogress
+	                if (evt.lengthComputable) {
+	                    progress(evt.loaded / evt.total, $progressBar)
+	                }
+	            },
+	            success: function (data) {
+	            	console.log(data)
+	            	$('#id_user_pic_medium').val(data.file);
+	            	$("#user-pic").attr("src", data.path);
+	            	$("#shared-user-pic").attr("src", data.path);
+	            },
+	            error: function ( jqXHR, textStatus, errorThrown ) {
+	                alert(errorThrown + ' ' + textStatus)
+	            }
+	        }
+	        api.upload(sources, settings)
+	    });
+
+
+	    function progress(percent, $element) {
+	        var progressBarWidth = percent * $element.width();
+	        $element.find('div').animate({ width: progressBarWidth }, 50).html(Math.round(percent * 100) + "%&nbsp;");
+	    }
+	    
+	    function updateSharedView() {
+	    	$('#shared-first-name').html($('#id_first_name').val());
+	    	$('#shared-last-name').html($('#id_last_name').val());
+	    	$('#shared-street').html($('#id_street').val());
+	    	if ($('#id_neighborhood').val() != '') {
+	    		$('#shared-neighborhood').html($('#id_neighborhood').val());
+	    	}  else  {
+	    		$('#shared-neighborhood').html($('#id_city').val());
+	    	}
+	    	$('#shared-email').html($('#id_email').val());
+	    	$('#shared-address').html($('#id_full_address').val());
+	    	$('#shared-phone').html($('#id_phone_number').val());
+	    	$('#shared-phone-type').html( '(' + $('#id_phone_type').val() + ')' );
+	    	if ( $('#id_share_email').is(':checked') ) {
+	    		$('#shared-email-show').show();
+	    	} else {
+	    		$('#shared-email-show').hide();
+	    	}
+	    	if ( $('#id_share_address').is(':checked') ) {
+	    		$('#shared-address-show').show();
+	    	} else {
+	    		$('#shared-address-show').hide();
+	    	}
+	    	if ( $('#id_share_phone').is(':checked') ) {
+	    		$('#shared-phone-show').show();
+	    	} else {
+	    		$('#shared-phone-show').hide();
+	    	}
+	    }
+	    
+	    $('#personal-info-form :input').on("change keyup paste", function() {
+	    	updateSharedView();
+	    }).trigger("change");
+	    
+	    $('#id_share_phone').change(function() {
+	    	if ( $(this).is(':checked') ) {
+	    		$('#phone-info').slideDown();
+	    	} else {
+	    		$('#phone-info').hide();
+	    	}
+	    }).trigger("change");
+	    
+
+	    
+	});
+</script>
+
+    <div class="container-fluid">
+        {% include "blocks/create-account-header.html" %}
+	    <form action="{{ callback }}" method="post" id="personal-info-form">
+	        <div style="display:none;">
+	            <!-- Account Info form is hidden here -->
+	        	{% for field in hiddenForm %}	
+			        <div class="form-group">
+				        {{ field.errors }}
+			            {{ field|label_with_classes:"control-label" }} 
+			            {{ field|attr:"class:form-control" }}
+		            </div>
+			    {% endfor %}
+			    <div class="form-group">
+			        {{ form.user_pic_medium.errors }}
+		            {{ form.user_pic_medium|label_with_classes:"control-label" }} 
+		            {{ form.user_pic_medium|attr:"class:form-control"|attr:"readonly" }}
+	            </div>
+	        </div>
+			<div class="row">
+				<div class="col-md-4">
+					    {% csrf_token %}
+				        <div class="form-group">
+					        {{ form.full_address.errors }}
+				            {{ form.full_address|label_with_classes:"control-label" }} 
+				            {{ form.full_address|attr:"class:form-control"|attr:"readonly" }}
+			            </div>
+			            <div class="form-group">
+					        {{ form.street.errors }}
+				            {{ form.street|label_with_classes:"control-label" }} 
+				            {{ form.street|attr:"class:form-control" }}
+			            </div>
+			            <div class="form-group">
+					        {{ form.city.errors }}
+				            {{ form.city|label_with_classes:"control-label" }} 
+				            {{ form.city|attr:"class:form-control" }}
+			            </div>
+			            <div class="form-group">
+					        {{ form.neighborhood.errors }}
+				            {{ form.neighborhood|label_with_classes:"control-label" }} 
+				            {{ form.neighborhood|attr:"class:form-control" }}
+			            </div>
+				</div>
+				<div class="col-md-4">
+						<img id="user-pic" src="{% static "img/generic-user.png" %}" alt="User Pic" width="150" height="150" />
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#upload-pic-modal">
+							Upload Picture
+						</button>
+				        <div class="checkbox">
+					        {{ form.share_email.errors }}
+				             
+				            {{ form.share_email }}
+				            {{ form.share_email.label_tag|remove_colon }}
+			            </div>
+			            <div class="checkbox">
+					        {{ form.share_address.errors }}
+				             
+				            {{ form.share_address }}
+				            {{ form.share_address.label_tag|remove_colon }}
+			            </div>
+			            <div class="checkbox">
+					        {{ form.share_phone.errors }}
+				             
+				            {{ form.share_phone }}
+				            {{ form.share_phone.label_tag|remove_colon }}
+			            </div>
+			            <div id="phone-info">
+			            	<div class="form-group">
+						        {{ form.phone_number.errors }}
+					            {{ form.phone_number|label_with_classes:"control-label" }} 
+					            {{ form.phone_number|attr:"class:form-control" }}
+				            </div>
+				            <div class="form-group">
+						        {{ form.phone_type.errors }}
+					            {{ form.phone_type|label_with_classes:"control-label" }} 
+					            {{ form.phone_type|attr:"class:form-control" }}
+				            </div>
+			            </div>
+					    
+					    <input type="submit" value="Submit" />
+				</div>
+				<div class="col-md-4">
+					<h3>Shared with Everyone</h3>
+					    <img id="shared-user-pic" src="{% static "img/generic-user.png" %}" alt="User Pic" width="55" height="55" />
+					    <span id="shared-first-name"></span> <span id="shared-last-name"></span><br />
+					    <span id="shared-street"></span> (<span id="shared-neighborhood"></span>)
+					<hr>
+					<h3>Shared Only with Friends</h3>
+					<div id="shared-email-show">
+						<strong>Email: </strong> <span id="shared-email"></span>
+					</div>
+					<div id="shared-address-show">
+						<strong>Address: </strong> <span id="shared-address"></span>
+					</div>
+					<div id="shared-phone-show">
+						<strong>Phone: </strong> <span id="shared-phone"></span> <span id="shared-phone-type"></span>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+
+	
+{% include "blocks/upload-tool.html" %}	
+
+{% endblock %}
