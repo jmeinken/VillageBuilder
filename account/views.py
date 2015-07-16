@@ -9,13 +9,67 @@ from django.contrib.auth.models import User
 from django.db import transaction
 
 from villagebuilder.utils import console
-from .forms import AccountInfoForm, AddressForm, PersonalInfoForm
+from .forms import *
 from .models import Member, Participant, Person
 from .helpers import build_nav, handle_uploaded_file, ifkeyset
 
 
+
+
+def account(request):
+    print 'OK'
+    showEditView = ''
+    user = request.user
+    userEmailForm = UserEmailForm(instance=user)
+    userNameForm = UserNameForm(instance=user)
+    userPasswordForm = UserPasswordForm()
+    participant = Participant.objects.get(user=user, participant_type='person')
+    member = Member.objects.get(member=participant)
+    addressForm = AddressForm(instance=member)
+    memberPrivacyForm = MemberPrivacyForm(instance=member)
+    if request.method == "POST":
+        formName = request.POST.get("form-name")
+        if formName == 'userEmailForm':
+            userEmailForm = UserEmailForm(request.POST, instance=user)
+            if userEmailForm.is_valid():
+                userEmailForm.save()
+            else:
+                showEditView = 'userEmailForm'
+        if formName == 'userNameForm':
+            userNameForm = UserNameForm(request.POST, instance=user)
+            if userNameForm.is_valid():
+                userNameForm.save()
+            else:
+                showEditView = 'userNameForm'
+        if formName == 'memberPrivacyForm':
+            memberPrivacyForm = MemberPrivacyForm(request.POST, instance=member)
+            if memberPrivacyForm.is_valid():
+                memberPrivacyForm.save()
+            else:
+                showEditView = 'memberPrivacyForm'
+        if formName == 'userPasswordForm':
+            userPasswordForm = UserPasswordForm(request.POST, instance=member)
+            if userPasswordForm.is_valid():
+                print 'edit password'
+            else:
+                showEditView = 'userPasswordForm'
+        
+    context = {
+        'addressForm' : addressForm,
+        'userEmailForm' : userEmailForm,
+        'userNameForm' : userNameForm,
+        'userPasswordForm' : userPasswordForm,
+        'memberPrivacyForm' : memberPrivacyForm,
+        'showEditView' : showEditView,
+        # display values should always show what's currently in the DB
+        'userEmailDisplay' : UserEmailForm(instance=user),
+        'userNameDisplay' : UserNameForm(instance=user),
+        'memberPrivacyDisplay' : MemberPrivacyForm(instance=member),
+    }
+    return render(request, 'account.html', context)
+
+
 def account_info(request):
-    print 'test'
     if request.method == "POST":
         myform = AccountInfoForm(request.POST)
         if myform.is_valid():
@@ -61,6 +115,7 @@ def address(request):
     }
     return render(request, 'address.html', context)
 
+
 @csrf_exempt
 def upload_image(request):
     response = {}
@@ -79,6 +134,7 @@ def upload_image(request):
             json.dumps('Goodbye world'),
             content_type="application/json"
         )
+
 
 @transaction.atomic
 def personal_info(request):
@@ -146,6 +202,7 @@ def personal_info(request):
         'callback' : reverse('account:personal_info')
     }
     return render(request, 'personal_info.html', context)
+
 
 def confirmation(request):
     return HttpResponse("It worked!")

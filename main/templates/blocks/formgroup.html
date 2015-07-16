@@ -1,0 +1,17 @@
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% if field|field_type == 'booleanfield' %}
+    {{ field.errors }}
+    <div class="checkbox">
+      <label>
+        {{field}} {{ field.label }}
+      </label>
+    </div>
+{% else %}
+	<div class="form-group">
+	    {{ field.errors }}
+	    {{ field|label_with_classes:"control-label" }}
+	    {{ field|attr:"class:form-control" }}
+	</div>
+{% endif %}

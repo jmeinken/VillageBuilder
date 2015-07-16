@@ -22,6 +22,8 @@ urlpatterns = [
     url(r'personal_info/', views.personal_info, name='personal_info'),
     url(r'confirmation/', views.confirmation, name='confirmation'),
     
+    url(r'account/', views.account, name='account'),
+    
     url(r'upload_image/', views.upload_image, name='upload_image'),
     
 ]

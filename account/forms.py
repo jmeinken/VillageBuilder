@@ -45,5 +45,61 @@ class PersonalInfoForm(forms.ModelForm):
             'share_address': 'Allow friends to see my full mailing address',
             'share_phone': 'Allow friends to see my phone number',
         }
+        
+class UserEmailForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['email']
+        
+    def clean(self):
+        cleaned_data = super(UserEmailForm, self).clean()
+        email = cleaned_data.get("email")
+        if email == '':
+            self.add_error('email', 'This field is required.')
+        
+class UserNameForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name',]
+        
+    def clean(self):
+        cleaned_data = super(UserNameForm, self).clean()
+        first_name = cleaned_data.get("first_name")
+        last_name = cleaned_data.get("last_name")
+        if first_name == '':
+            self.add_error('first_name', 'This field is required.')
+        if last_name == '':
+            self.add_error('last_name', 'This field is required.')
+        
+class UserPasswordForm(forms.ModelForm):
+    resubmit_password = forms.CharField(max_length=128, widget=forms.PasswordInput)
+    class Meta:
+        model = User
+        fields = ['password', 'resubmit_password']
+        widgets = {
+            'password': forms.PasswordInput,
+        }
+        labels = {
+            'password': 'New Password',
+        }
+        
+    def clean(self):
+        cleaned_data = super(UserPasswordForm, self).clean()
+        password = cleaned_data.get("password")
+        resubmit_password = cleaned_data.get("resubmit_password")
+        if password != resubmit_password:
+            self.add_error('resubmit_password', 'Password values didn\'t match.')
+        
+class MemberPrivacyForm(forms.ModelForm):
+    class Meta:
+        model = Member
+        fields = ['share_email', 'share_address', 'share_phone',]
+        labels = {
+            'share_email': 'Allow friends to see my email address',
+            'share_address': 'Allow friends to see my full mailing address',
+            'share_phone': 'Allow friends to see my phone number',
+        }
+
+
 
         

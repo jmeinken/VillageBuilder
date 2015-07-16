@@ -1,0 +1,131 @@
+{% extends "home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$('#name-edit-btn, #name-close-btn').click(function() {
+			$('#name-view').toggle();
+			$('#name-edit').toggle();
+			return false;
+		});
+		$('#email-edit-btn, #email-close-btn').click(function() {
+			$('#email-view').toggle();
+			$('#email-edit').toggle();
+			return false;
+		});
+		$('#password-edit-btn, #password-close-btn').click(function() {
+			$('#password-view').toggle();
+			$('#password-edit').toggle();
+			return false;
+		});
+		$('#privacy-edit-btn, #privacy-close-btn').click(function() {
+			$('#privacy-view').toggle();
+			$('#privacy-edit').toggle();
+			return false;
+		});
+		
+	}); 
+    
+</script>
+
+	<h2>Account Settings for {{ userNameDisplay.first_name.value }} {{ userNameDisplay.last_name.value }}</h2>
+	<hr>
+	<div class="row">
+	    <div class="col-md-4">
+		    <div class="list-group">
+		        <div class="list-group-item" id="email-view" {% if showEditView == 'userEmailForm' %}style="display:none;"{% endif %}>
+			        <a href="#" class="badge" id="email-edit-btn">Edit</a>
+			        <dl class="dl dl-3">
+			            <dt>Email</dt>
+			            <dd>{{ userEmailDisplay.email.value }}</dd>
+			        </dl>     
+			    </div>
+			    <div class="list-group-item" id="email-edit" {% if showEditView != 'userEmailForm' %}style="display:none;"{% endif %}>
+			        <a href="#" class="badge" id="email-close-btn">Close</a>
+			        <form action="{{ callback }}" method="post">
+			            {% csrf_token %}
+			            <input type="hidden" name="form-name" value="userEmailForm" />
+				        {% for field in userEmailForm %}
+					        {% include 'blocks/formgroup.html' %}
+				        {% endfor %}
+				        <input type="submit" class="btn btn-primary" value="Save Changes" />
+				    </form>
+			    </div>
+			    <div class="list-group-item" id="password-view" {% if showEditView == 'userPasswordForm' %}style="display:none;"{% endif %}>
+			        <a href="#" class="badge" id="password-edit-btn">Edit</a>
+			        <dl class="dl dl-3">
+			            <dt>Password</dt>
+			            <dd>********</dd>
+			        </dl>     
+			    </div>
+			    <div class="list-group-item" id="password-edit" {% if showEditView != 'userPasswordForm' %}style="display:none;"{% endif %}>
+			        <a href="#" class="badge" id="password-close-btn">Close</a>
+			        <form action="{{ callback }}" method="post">
+			            {% csrf_token %}
+			            <input type="hidden" name="form-name" value="userPasswordForm" />
+				        {% for field in userPasswordForm %}
+					        {% include 'blocks/formgroup.html' %}
+				        {% endfor %}
+				        <input type="submit" class="btn btn-primary" value="Save Changes" />
+				    </form>
+			    </div>
+			    <div class="list-group-item" id="name-view" {% if showEditView == 'userNameForm' %}style="display:none;"{% endif %}>
+			        <a href="#" class="badge" id="name-edit-btn">Edit</a>
+			        <dl class="dl dl-3">
+			            <dt>Name</dt>
+			            <dd>{{ userNameDisplay.first_name.value }} {{ userNameDisplay.last_name.value }}</dd>
+			        </dl>     
+			    </div>
+			    <div class="list-group-item" id="name-edit" {% if showEditView != 'userNameForm' %}style="display:none;"{% endif %}>
+			        <a href="#" class="badge" id="name-close-btn">Close</a>
+			        <form action="{{ callback }}" method="post">
+			            {% csrf_token %}
+			            <input type="hidden" name="form-name" value="userNameForm" />
+				        {% for field in userNameForm %}
+					        {% include 'blocks/formgroup.html' %}
+				        {% endfor %}
+				        <input type="submit" class="btn btn-primary" value="Save Changes" />
+				    </form>
+			    </div>
+			    <div class="list-group-item" id="privacy-view" {% if showEditView == 'memberPrivacyForm' %}style="display:none;"{% endif %}>
+			        <a href="#" class="badge" id="privacy-edit-btn">Edit</a>
+			        <dl class="dl dl-3">
+			            <dt>Privacy</dt>
+			            <dd>
+			                {% if memberPrivacyDisplay.share_email.value %}
+			                    sharing email with friends<br>
+			                {% endif %}
+			                {% if memberPrivacyDisplay.share_address.value %}
+			                    sharing address with friends<br>
+			                {% endif %}
+			                {% if memberPrivacyDisplay.share_phone.value %}
+			                    sharing phone number with friends<br>
+			                {% endif %}
+			            </dd>
+			        </dl>     
+			    </div>
+			    <div class="list-group-item" id="privacy-edit" {% if showEditView != 'memberPrivacyForm' %}style="display:none;"{% endif %}>
+			        <a href="#" class="badge" id="privacy-close-btn">Close</a>
+			        <form action="{{ callback }}" method="post">
+			        	<label>Privacy Settings:</label>
+			            {% csrf_token %}
+			            <input type="hidden" name="form-name" value="memberPrivacyForm" />
+				        {% for field in memberPrivacyForm %}
+					        {% include 'blocks/formgroup.html' %}
+				        {% endfor %}
+			        	<input type="submit" class="btn btn-primary" value="Save Changes" />
+			        </form>
+			    </div>
+			</div>
+		</div>
+		<div class="col-md-4 col-md-offset-2">
+			
+		</div>
+	</div>
+
+	
+{% endblock %}	

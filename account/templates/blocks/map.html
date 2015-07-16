@@ -1,0 +1,111 @@
+{% load app_filters %}
+{% load widget_tweaks %}
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$('#geocode-results-container').hide();
+		
+		//initialize page
+		var mapOptions = {
+           center: { lat: 39.83, lng: -98.58},
+           zoom: 4
+       	};
+	    var mymap = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+	    var geocoder = new google.maps.Geocoder();
+	    var geocodeResults = [];
+	    
+	    //EVENTS/////////////////////////////////////////////////////////
+	    
+	    //when a different result is selected, update map
+	    $('#geocode-results').on("click", ".geocode-result", function() {
+	    	var index = $(this).val();
+	    	mymap.setCenter(geocodeResults[index].geometry.location);
+    		mymap.setZoom(15);
+    		mymarker = new google.maps.Marker({ map: mymap });
+    		mymarker.setPosition(geocodeResults[index].geometry.location);
+	    })
+	    $('#button-lookup-address').click(function() {
+	    	var geocoderRequest = {
+                address: $('#lookup-address').val()
+            }
+	    	geocoder.geocode(geocoderRequest, function(results, status) {
+	    		if (results.length > 0) {
+	    			geocodeResults = results.slice(0,10);
+	    			$('#geocode-results').html('');
+	    			for (var i=0; i<geocodeResults.length; i++) {
+	    				$('#geocode-results').append(
+	    					'<input class="geocode-result" type="radio" value="' + i + '" ' +  
+	    					(i==0 ? 'checked="checked" ' : '') + 
+	    					'name="geocode-results" /> ' +
+    						geocodeResults[i].formatted_address + "<br />"
+   						);
+	    			}	    			
+		    		mymap.setCenter(results[0].geometry.location);
+		    		mymap.setZoom(15);
+		    		mymarker = new google.maps.Marker({ map: mymap });
+		    		mymarker.setPosition(results[0].geometry.location);
+		    		$('#geocode-results-container').show();
+	    		} else {
+	    			alert('No results found for that address.');
+	    		}
+	    	});
+	    });
+	    $('#button-use-address').click(function() {
+	    	var index = $('input[name=geocode-results]:checked').val();
+	    	var add = geocodeResults[index];
+	    	$('input[name=full_address]').val(add.formatted_address);
+	    	$('input[name=street]').val('');
+	    	$('input[name=city]').val('');
+	    	$('input[name=neighborhood]').val('');
+	    	var lat = parseFloat(add.geometry.location.lat()).toFixed(7);
+	    	var lng = parseFloat(add.geometry.location.lng()).toFixed(7)
+	    	$('input[name=latitude]').val(lat);
+	    	$('input[name=longitude]').val(lng);
+	    	for (var i=0; i<add.address_components.length; i++) {
+		    	if ($.inArray("route", add.address_components[i].types) != -1) {
+		    		$('input[name=street]').val(add.address_components[i].short_name);
+	            } 
+		    	if ($.inArray("neighborhood", add.address_components[i].types) != -1) {
+	                $('input[name=neighborhood]').val(add.address_components[i].short_name);
+	            }
+	            if ($.inArray("locality", add.address_components[i].types) != -1) {
+	                $('input[name=city]').val(add.address_components[i].long_name);
+	            }
+	    	}
+	    	$("#address-form").submit();
+	    });
+	}); 
+    
+</script>
+
+<div class="form-group">
+	<div class="input-group">
+		<input class="form-control" type="text" id="lookup-address">
+		<span class="input-group-btn">
+		    <button class="btn btn-default" type="button" id="button-lookup-address">Lookup Address</button>
+		</span>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+	    <div id="map-canvas" style="height:300px"></div>
+	</div>
+	<div class="col-md-6" id="geocode-results-container">
+		<h4>Select Address to Use</h4>
+	    <div id="geocode-results"></div>
+	    <br>
+	    <button id="button-use-address" class="btn btn-primary">Save and Continue</button>
+	</div>
+</div>				
+<form action="{{ callback }}" method="post" id="address-form" style="display:none;">
+    {% csrf_token %}
+    {% for field in form %}	
+        <div class="form-group">
+	        {{ field.errors }}
+            {{ field|label_with_classes:"control-label" }} 
+            {{ field|attr:"class:form-control" }}
+           </div>
+    {% endfor %}
+    <input type="submit" value="Submit" />
+</form>
