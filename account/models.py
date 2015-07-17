@@ -60,7 +60,12 @@ class Member(models.Model):
     share_phone = models.BooleanField()
     user_pic_medium = models.CharField(max_length=100, blank=True, null=True)
     user_pic_small = models.CharField(max_length=100, blank=True, null=True)
-
+    
+    def get_user_pic(self):
+        if self.user_pic_medium:
+            return '/static/uploads/user_pics/' + self.user_pic_medium
+        else:
+            return '/static/img/generic-user.png'
 
 
 

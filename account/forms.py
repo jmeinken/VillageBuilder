@@ -71,23 +71,23 @@ class UserNameForm(forms.ModelForm):
         if last_name == '':
             self.add_error('last_name', 'This field is required.')
         
-class UserPasswordForm(forms.ModelForm):
+class UserPasswordForm(forms.Form):
+    old_password = forms.CharField(max_length=128, widget=forms.PasswordInput)
+    new_password = forms.CharField(max_length=128, widget=forms.PasswordInput)
     resubmit_password = forms.CharField(max_length=128, widget=forms.PasswordInput)
-    class Meta:
-        model = User
-        fields = ['password', 'resubmit_password']
-        widgets = {
-            'password': forms.PasswordInput,
-        }
-        labels = {
-            'password': 'New Password',
-        }
+    
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(UserPasswordForm, self).__init__(*args, **kwargs)
         
     def clean(self):
         cleaned_data = super(UserPasswordForm, self).clean()
-        password = cleaned_data.get("password")
+        old_password = cleaned_data.get("old_password")
+        new_password = cleaned_data.get("new_password")
         resubmit_password = cleaned_data.get("resubmit_password")
-        if password != resubmit_password:
+        if not self.user.check_password(old_password):
+            self.add_error('old_password', 'Old password was incorrect.')
+        if new_password != resubmit_password:
             self.add_error('resubmit_password', 'Password values didn\'t match.')
         
 class MemberPrivacyForm(forms.ModelForm):
@@ -99,6 +99,16 @@ class MemberPrivacyForm(forms.ModelForm):
             'share_address': 'Allow friends to see my full mailing address',
             'share_phone': 'Allow friends to see my phone number',
         }
+        
+class MemberPhoneForm(forms.ModelForm):
+    class Meta:
+        model = Member
+        fields = ['phone_number', 'phone_type',]
+
+class MemberDisplayAddressForm(forms.ModelForm):
+    class Meta:
+        model = Member
+        fields = ['street', 'city', 'neighborhood']
 
 
 

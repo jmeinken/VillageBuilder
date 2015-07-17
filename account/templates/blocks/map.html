@@ -15,6 +15,13 @@
 	    var geocoder = new google.maps.Geocoder();
 	    var geocodeResults = [];
 	    
+	    //google maps will not diplay in modal unless resize event is triggered
+	    $("#full-address-modal").on("shown.bs.modal", function(e) {
+	        google.maps.event.trigger(mymap, "resize");
+	        mymap.setZoom(mapOptions.zoom);
+	        mymap.setCenter(mapOptions.center);
+	    });
+	    
 	    //EVENTS/////////////////////////////////////////////////////////
 	    
 	    //when a different result is selected, update map

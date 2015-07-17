@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.db import transaction
+from django.contrib.auth.decorators import login_required
 
 from villagebuilder.utils import console
 from .forms import *
@@ -15,18 +16,20 @@ from .helpers import build_nav, handle_uploaded_file, ifkeyset
 
 
 
-
+@login_required
 def account(request):
     print 'OK'
     showEditView = ''
     user = request.user
     userEmailForm = UserEmailForm(instance=user)
     userNameForm = UserNameForm(instance=user)
-    userPasswordForm = UserPasswordForm()
+    userPasswordForm = UserPasswordForm(user)
     participant = Participant.objects.get(user=user, participant_type='person')
     member = Member.objects.get(member=participant)
     addressForm = AddressForm(instance=member)
     memberPrivacyForm = MemberPrivacyForm(instance=member)
+    memberPhoneForm = MemberPhoneForm(instance=member)
+    memberDisplayAddressForm = MemberDisplayAddressForm(instance=member)
     if request.method == "POST":
         formName = request.POST.get("form-name")
         if formName == 'userEmailForm':
@@ -47,10 +50,23 @@ def account(request):
                 memberPrivacyForm.save()
             else:
                 showEditView = 'memberPrivacyForm'
+        if formName == 'memberPhoneForm':
+            memberPhoneForm = MemberPhoneForm(request.POST, instance=member)
+            if memberPhoneForm.is_valid():
+                memberPhoneForm.save()
+            else:
+                showEditView = 'memberPhoneForm'
+        if formName == 'memberDisplayAddressForm':
+            memberDisplayAddressForm = MemberDisplayAddressForm(request.POST, instance=member)
+            if memberDisplayAddressForm.is_valid():
+                memberDisplayAddressForm.save()
+            else:
+                showEditView = 'memberDisplayAddressForm'
         if formName == 'userPasswordForm':
-            userPasswordForm = UserPasswordForm(request.POST, instance=member)
+            userPasswordForm = UserPasswordForm(user, request.POST)
             if userPasswordForm.is_valid():
-                print 'edit password'
+                user.set_password(userPasswordForm.cleaned_data['new_password'])
+                user.save()
             else:
                 showEditView = 'userPasswordForm'
         
@@ -60,11 +76,16 @@ def account(request):
         'userNameForm' : userNameForm,
         'userPasswordForm' : userPasswordForm,
         'memberPrivacyForm' : memberPrivacyForm,
+        'memberPhoneForm' : memberPhoneForm,
+        'memberDisplayAddressForm' : memberDisplayAddressForm,
         'showEditView' : showEditView,
         # display values should always show what's currently in the DB
         'userEmailDisplay' : UserEmailForm(instance=user),
         'userNameDisplay' : UserNameForm(instance=user),
         'memberPrivacyDisplay' : MemberPrivacyForm(instance=member),
+        'memberPhoneDisplay' : MemberPhoneForm(instance=member),
+        'memberDisplayAddressDisplay' : MemberDisplayAddressForm(instance=member),
+        'member' : member,
     }
     return render(request, 'account.html', context)
 
@@ -122,9 +143,13 @@ def upload_image(request):
     if request.method == "POST" and request.is_ajax():
         if 'medium' in request.FILES:
             path = handle_uploaded_file(request.FILES['medium'])
+            if 'member_id' in request.POST:
+                member = Member.objects.get(id=request.POST['member_id'])
+                member.user_pic_medium = path['file']
+                member.save()
             response = path
         else:
-            response['test'] = 'Goodbly world'
+            response['test'] = 'Goodbye cruel world'
         return HttpResponse(
             json.dumps(response),
             content_type="application/json"
