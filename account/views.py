@@ -12,7 +12,9 @@ from django.contrib.auth.decorators import login_required
 from villagebuilder.utils import console
 from .forms import *
 from .models import Member, Participant, Person
-from .helpers import build_nav, handle_uploaded_file, ifkeyset
+from .helpers import *
+
+
 
 
 
@@ -69,7 +71,17 @@ def account(request):
                 user.save()
             else:
                 showEditView = 'userPasswordForm'
-        
+        if formName == 'addressForm':
+            addressForm = AddressForm(request.POST, instance=member)
+            if addressForm.is_valid():
+                addressForm.save()
+                memberDisplayAddressForm = MemberDisplayAddressForm(instance=member)
+            else:
+                print 'fail'
+                showEditView = 'addressForm'
+        if formName == 'deleteAccountForm':
+            user.delete()
+            return redirect(reverse('login'))
     context = {
         'addressForm' : addressForm,
         'userEmailForm' : userEmailForm,
@@ -85,7 +97,7 @@ def account(request):
         'memberPrivacyDisplay' : MemberPrivacyForm(instance=member),
         'memberPhoneDisplay' : MemberPhoneForm(instance=member),
         'memberDisplayAddressDisplay' : MemberDisplayAddressForm(instance=member),
-        'member' : member,
+        'current' : getCurrentUser(request),
     }
     return render(request, 'account.html', context)
 

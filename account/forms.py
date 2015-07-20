@@ -108,7 +108,10 @@ class MemberPhoneForm(forms.ModelForm):
 class MemberDisplayAddressForm(forms.ModelForm):
     class Meta:
         model = Member
-        fields = ['street', 'city', 'neighborhood']
+        fields = ['street', 'neighborhood', 'city', ]
+        help_texts = {
+            'neighborhood': 'leave blank to use city',
+        }
 
 
 

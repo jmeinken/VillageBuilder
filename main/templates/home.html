@@ -3,6 +3,33 @@
 {% load widget_tweaks %}
 
 {% block subcontent %}
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$('.add-friend').click(function(event) {
+			event.preventDefault;
+			var friendId = $(this).attr('id').replace("participant-","");
+			redirect = window.location.href
+			$('#add-friend-form-' + friendId).submit();
+		});
+		$('.remove-friend').click(function(event) {
+			event.preventDefault;
+			var friendId = $(this).attr('id').replace("participant-","");
+			redirect = window.location.href
+			$('#remove-friend-form-' + friendId).submit();
+		});
+
+		
+	}); 
+</script>
+
+
+
+
+
+
+
     <div class="row">
     	<div class="col-md-3">
 			<div class="form-group">
@@ -29,16 +56,18 @@
 			</div>
     	</div>
     	<div class="col-md-6">
-	    	<div class="btn-group float-right" style="margin-top: 5px">
-				<a href="#" class="btn btn-primary">Share Something</a>
-				<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-				<ul class="dropdown-menu">
-					<li><a href="#">Resources</a></li>
-					<li><a href="#">Space</a></li>
-					<li><a href="#">Meals</a></li>
-					<li><a href="#">Skills/Labor</a></li>
-					<li><a href="#">Activity</a></li>
-				</ul>
+    	    <div class="float-right" style="margin-top: 5px">
+		    	<div class="btn-group">
+					<a href="#" class="btn btn-primary">Share Something</a>
+					<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down"></i>&nbsp;</a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Resources</a></li>
+						<li><a href="#">Space</a></li>
+						<li><a href="#">Meals</a></li>
+						<li><a href="#">Skills/Labor</a></li>
+						<li><a href="#">Activity</a></li>
+					</ul>
+				</div>
 			</div>
 			<ul class="nav nav-tabs">
 				<li class="active" style="margin: 5px 5px -1px 0">
@@ -69,14 +98,9 @@
 			<hr>
 			<h3>People Near You</h3>
 			<div class="list-group">
-				<a href="#" class="list-group-item">
-				    <h4 class="list-group-item-heading">List group item heading</h4>
-				    <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-				</a>
-				<a href="#" class="list-group-item">
-				    <h4 class="list-group-item-heading">List group item heading</h4>
-				    <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-				</a>
+				{% for participant in peopleNearYou %}
+				    {% include 'blocks/participantgroup.html' %}
+				{% endfor %}
 			</div>
 			<h3>Friends of Friends</h3>
 			<div class="list-group">

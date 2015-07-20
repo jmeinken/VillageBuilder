@@ -1,0 +1,60 @@
+	    
+<div class="list-group-item participant-block" >
+	<div style="float: right;">
+	
+	    {% if participant.relationship == RelationshipTypes.FRIENDS %}
+	    	<div class="btn-group">
+			  <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+			  <ul class="dropdown-menu dropdown-menu-right">
+			    <li><i class="fa fa-check"></i> Friends</li>
+			    <li class="divider"></li>
+			    <li><a href="#" class="participant-{{participant.id}}">Unfriend</a></li>
+			  </ul>
+			</div>
+		{% endif %}	
+		{% if participant.relationship == RelationshipTypes.NOT_FRIENDS %}
+	    	<div class="btn-group">
+			  <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+			  <ul class="dropdown-menu dropdown-menu-right">
+			    <li>
+			        <form style="display:none;" method="POST" action="{% url 'relationships:add-friend' %}" id="add-friend-form-{{participant.id}}">
+			            {% csrf_token %}
+			            <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+			            <input type="hidden" name="friend-id" value="{{participant.id}}" />
+			        </form>
+		            <a href="#" id="participant-{{participant.id}}" class="add-friend participant-{{participant.id}}">
+		                Add as friend
+	                </a>
+		        </li>
+			  </ul>
+			</div>
+		{% endif %}		
+		{% if participant.relationship == RelationshipTypes.REQUEST_SENT %}
+	    	<div class="btn-group">
+			  <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+			  <ul class="dropdown-menu dropdown-menu-right">
+			    <li><i class="fa fa-check"></i> Request Sent (awaiting confirmation)</li>
+			    <li class="divider"></li>
+			    <li>
+			        <form style="display:none;" method="POST" action="{% url 'relationships:remove-friend' %}" id="remove-friend-form-{{participant.id}}">
+			            {% csrf_token %}
+			            <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+			            <input type="hidden" name="friend-id" value="{{participant.id}}" />
+			        </form>
+			        <a href="#" id="participant-{{participant.id}}" class="remove-friend participant-{{participant.id}}">
+		                Cancel Request
+	                </a>
+		        </li>
+			  </ul>
+			</div>
+		{% endif %}	
+		
+   	</div>
+    <div style="float: left;padding-right:10px;">
+    	<img src="{{ participant.user_pic }}" alt="my alt" width="40" height="40" />
+   	</div>
+    {{ participant.name }}<br>
+    {{ participant.display_address }}
+</div>
+
+				

@@ -1,6 +1,9 @@
 from django.core.urlresolvers import reverse
+from enum import Enum
 
 from villagebuilder.settings import BASE_DIR
+
+from .models import Member, Participant, Person
 
 # used by account creation views to render wizard navigation
 def build_nav(request, current_view):
@@ -58,6 +61,60 @@ def ifkeyset(arr, key, ifempty='', ifset='[+]'):
     else:
         return ifempty
     
+def getCurrentUser(request):
+    user = request.user
+    participant = Participant.objects.get(user=user, participant_type='person')
+    member = Member.objects.get(member=participant)
+    return {
+        'user' : user,
+        'member' : member,
+    }
+    
+def getPeopleNearYou(currentParticipant):
+    participants = Participant.objects.all()
+    results = []
+    for participant in participants:
+        results.append(getParticipant(participant.id, currentParticipant))
+    return results
+    
+    
+    
+def getParticipant(participantId, currentParticipant):
+    participant = Participant.objects.get(id=participantId)
+    # member = Member.objects.get(member=participant)
+    return {
+        'id' : participant.id,
+        'name' : participant.user.first_name + ' ' + participant.user.last_name,
+        'display_address' : participant.member.get_display_address(),
+        'user_pic' : participant.member.get_user_pic(),
+        'relationship' : getRelationship(currentParticipant, participant),
+    }
+    
+class RelationshipTypes():
+    SELF = 0
+    FRIENDS = 1
+    NOT_FRIENDS = 2
+    REQUEST_SENT = 3
+    REQUEST_RECEIVED = 4
+    
+def getRelationship(currentParticipant, participant):
+    forward = False
+    backward = False
+    if currentParticipant == participant:
+        return RelationshipTypes.SELF
+    for friendship in currentParticipant.member.person.friendship_set.all():
+        if friendship.friend == participant.member.person:
+            forward = True
+    for friendship in currentParticipant.member.person.reverse_friendship_set.all():
+        if friendship.person == participant.member.person:
+            backward = True
+    if forward and backward:
+        return RelationshipTypes.FRIENDS
+    if forward:
+        return RelationshipTypes.REQUEST_SENT
+    if backward:
+        return RelationshipTypes.REQUEST_RECEIVED
+    return RelationshipTypes.NOT_FRIENDS
     
     
     

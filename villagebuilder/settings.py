@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'widget_tweaks',
     'account',
     'main',
+    'relationships',
 )
 
 MIDDLEWARE_CLASSES = (

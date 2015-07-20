@@ -32,7 +32,7 @@ class Participant(models.Model):
         ('guest', 'guest'),
         ('group', 'group'),
     )
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     participant_type = models.CharField(max_length=6, choices=PARTICIPANT_TYPES)
 
 
@@ -42,7 +42,7 @@ class Member(models.Model):
       ("home", "home"),
       ("work", "work"),
     )
-    member = models.OneToOneField('Participant')
+    member = models.OneToOneField('Participant', on_delete=models.CASCADE)
     full_address = models.CharField(max_length=400)
     address1 = models.CharField(max_length=50, blank=True, null=True)
     address2 = models.CharField(max_length=50, blank=True, null=True)
@@ -51,7 +51,7 @@ class Member(models.Model):
     zip_code = models.CharField(max_length=10, blank=True, null=True)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
-    street = models.CharField(max_length=50, blank=True, null=True)
+    street = models.CharField(max_length=50)
     neighborhood = models.CharField(max_length=50, blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     phone_type = models.CharField(max_length=20, blank=True, null=True, choices=PHONE_TYPE_CHOICES)
@@ -66,11 +66,15 @@ class Member(models.Model):
             return '/static/uploads/user_pics/' + self.user_pic_medium
         else:
             return '/static/img/generic-user.png'
-
-
+    
+    def get_display_address(self):
+        if self.neighborhood:
+            return self.street + ' (' + self.neighborhood + ')'
+        else:
+            return self.street + ' (' + self.city + ')'
 
 class Guest(models.Model):
-    guest = models.OneToOneField('Participant')
+    guest = models.OneToOneField('Participant', on_delete=models.CASCADE)
     code = models.CharField(max_length=60)
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=30, blank=True, null=True)
@@ -79,7 +83,7 @@ class Guest(models.Model):
     
     
 class Group(models.Model):
-    group = models.OneToOneField('Member')
+    group = models.OneToOneField('Member', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)
@@ -88,7 +92,7 @@ class Group(models.Model):
         
         
 class Person(models.Model):
-    person = models.OneToOneField('Member')
+    person = models.OneToOneField('Member', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
 

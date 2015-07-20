@@ -13,5 +13,6 @@
 	    {{ field.errors }}
 	    {{ field|label_with_classes:"control-label" }}
 	    {{ field|attr:"class:form-control" }}
+	    <span class="help-block">{{ field.help_text }}</span>
 	</div>
 {% endif %}

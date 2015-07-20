@@ -4,10 +4,17 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 
+from account.helpers import *
+
 @login_required
 def home(request):
+    user = request.user
+    currentParticipant = Participant.objects.get(user=user, participant_type='person')
+    peopleNearYou = getPeopleNearYou(currentParticipant)
     context = {
-            'user' : request.user,
+            'current' : getCurrentUser(request),
+            'peopleNearYou' : peopleNearYou,
+            'RelationshipTypes' : RelationshipTypes
         }
     return render(request, 'home.html', context)
 
