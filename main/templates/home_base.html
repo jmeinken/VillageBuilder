@@ -19,7 +19,7 @@
 				<ul class="nav navbar-nav">
 					<li><a href="{% url 'home' %}">Home</a></li>
 					<li><a href="#">My Shared Items</a></li>
-					<li><a href="#">Friends/Groups</a></li>
+					<li><a href="{% url 'relationships:relationships' %}">Friends/Groups</a></li>
 					<li><a href="#">Messages[0]</a></li>
 					<li><a href="#">Alerts[0]</a></li>
 					<li><a href="#">User Guide</a></li>
@@ -29,7 +29,7 @@
 		            <li class="dropdown">
 			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 			              <img class="current-user-pic" src="{{ current.member.get_user_pic }}" alt="my alt" width="25" height="25" />
-			              {{current.user.get_username}} <span class="caret"></span>
+			              {{current.user.get_full_name}} <span class="caret"></span>
 			          </a>
 			          <ul class="dropdown-menu" role="menu">
 			            <li><a href="{% url 'logout' %}">Logout</a></li>

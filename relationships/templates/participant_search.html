@@ -1,0 +1,50 @@
+{% extends "home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$('.add-friend').click(function(event) {
+			event.preventDefault;
+			var friendId = $(this).attr('id').replace("participant-","");
+			redirect = window.location.href
+			$('#add-friend-form-' + friendId).submit();
+		});
+		$('.remove-friend').click(function(event) {
+			event.preventDefault;
+			var friendId = $(this).attr('id').replace("participant-","");
+			redirect = window.location.href
+			$('#remove-friend-form-' + friendId).submit();
+		});
+
+		
+	}); 
+</script>
+
+<form action="{% url 'relationships:participant_search' %}" method="get">
+	<div class="form-group">
+		  <div class="input-group">
+		      <input class="form-control" type="text" 
+		          placeholder="Search for people or groups" 
+		          name="participant-search-txt" />
+		      <span class="input-group-btn">
+		          <input class="btn btn-default" type="submit" id="participant-search-btn" value="Go" />
+		      </span>
+		  </div>
+	</div>
+</form>
+
+<div class="list-group">
+	{% for participant in matches %}
+	    {% include 'blocks/participantgroup.html' %}
+	{% endfor %}
+</div>
+
+{% endblock %}	
+
+
+
+

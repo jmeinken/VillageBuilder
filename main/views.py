@@ -10,10 +10,10 @@ from account.helpers import *
 def home(request):
     user = request.user
     currentParticipant = Participant.objects.get(user=user, participant_type='person')
-    peopleNearYou = getPeopleNearYou(currentParticipant)
     context = {
             'current' : getCurrentUser(request),
-            'peopleNearYou' : peopleNearYou,
+            'peopleNearYou' : getPeopleNearYou(currentParticipant),
+            'friendsOfFriends' : getFriendsOfFriends(currentParticipant),
             'RelationshipTypes' : RelationshipTypes
         }
     return render(request, 'home.html', context)

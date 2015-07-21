@@ -61,7 +61,7 @@
 					<a href="#" class="btn btn-primary">Share Something</a>
 					<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down"></i>&nbsp;</a>
 					<ul class="dropdown-menu">
-						<li><a href="#">Resources</a></li>
+						<li><a href="#">Stuff</a></li>
 						<li><a href="#">Space</a></li>
 						<li><a href="#">Meals</a></li>
 						<li><a href="#">Skills/Labor</a></li>
@@ -87,14 +87,18 @@
 			Here is where the feed is
 		</div>
 		<div class="col-md-3">
-			<div class="form-group">
-				  <div class="input-group">
-				      <input class="form-control" type="text" placeholder="Search for people or groups">
-				      <span class="input-group-btn">
-				          <button class="btn btn-default" type="button">Go</button>
-				      </span>
-				  </div>
-			</div>
+			<form action="{% url 'relationships:participant_search' %}" method="get">
+				<div class="form-group">
+					  <div class="input-group">
+					      <input class="form-control" type="text" 
+					          placeholder="Search for people or groups" 
+					          name="participant-search-txt" />
+					      <span class="input-group-btn">
+					          <input class="btn btn-default" type="submit" id="participant-search-btn" value="Go" />
+					      </span>
+					  </div>
+				</div>
+			</form>
 			<hr>
 			<h3>People Near You</h3>
 			<div class="list-group">
@@ -104,15 +108,14 @@
 			</div>
 			<h3>Friends of Friends</h3>
 			<div class="list-group">
-				<a href="#" class="list-group-item">
-				    <h4 class="list-group-item-heading">List group item heading</h4>
-				    <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-				</a>
-				<a href="#" class="list-group-item">
-				    <h4 class="list-group-item-heading">List group item heading</h4>
-				    <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-				</a>
+				{% for participant in friendsOfFriends %}
+				    {% include 'blocks/participantgroup.html' %}
+				{% endfor %}
 			</div>
     	</div>
     </div>
 {% endblock %}	
+
+
+
+

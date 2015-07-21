@@ -1,4 +1,6 @@
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+from django.db.models import Q
 from enum import Enum
 
 from villagebuilder.settings import BASE_DIR
@@ -76,7 +78,46 @@ def getPeopleNearYou(currentParticipant):
     for participant in participants:
         results.append(getParticipant(participant.id, currentParticipant))
     return results
-    
+
+def getFriendsOfFriends(currentParticipant):
+    participants = Participant.objects.all()
+    results = []
+    for participant in participants:
+        results.append(getParticipant(participant.id, currentParticipant))
+    return results  
+
+def getFriends(currentParticipant):
+    friends = Person.objects.all().filter(reverse_friendship_set__person=currentParticipant.member.person)
+    results = []
+    for friend in friends:
+        results.append(getParticipant(friend.id, currentParticipant))
+    return results  
+
+def getFriendRequests(currentParticipant):   
+    friends = (
+        Person.objects.all()
+        .filter(friendship_set__friend=currentParticipant.member.person)
+        .exclude(reverse_friendship_set__person=currentParticipant.member.person)
+    )
+    results = []
+    for friend in friends:
+        results.append(getParticipant(friend.id, currentParticipant))
+    return results  
+
+def searchParticipants(currentParticipant, searchString='', limit=0):
+    #tokenize string
+    if searchString=='':
+        return []
+    terms = searchString.split(' ')
+    users = User.objects.all()
+    for term in terms:
+        users = users.filter( Q(last_name__icontains=term)  |  Q(first_name__icontains=term) )
+    results = []
+    for user in users:
+        print str(user)
+        participant = user.participant_set.get(participant_type='person')
+        results.append(getParticipant(participant.id, currentParticipant))
+    return results
     
     
 def getParticipant(participantId, currentParticipant):

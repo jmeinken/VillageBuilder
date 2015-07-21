@@ -1,0 +1,76 @@
+{% extends "home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$('.add-friend').click(function(event) {
+			event.preventDefault;
+			var friendId = $(this).attr('id').replace("participant-","");
+			redirect = window.location.href
+			$('#add-friend-form-' + friendId).submit();
+		});
+		$('.remove-friend').click(function(event) {
+			event.preventDefault;
+			var friendId = $(this).attr('id').replace("participant-","");
+			redirect = window.location.href
+			$('#remove-friend-form-' + friendId).submit();
+		});
+
+		
+	}); 
+</script>
+
+
+	<div class="row">
+		<div class="col-md-6">
+			<ul class="nav nav-tabs">
+				<li class="active"><a aria-expanded="false" data-target="#friends" data-toggle="tab">Friends</a></li>
+				<li class=""><a aria-expanded="false" data-target="#friend_requests" data-toggle="tab">Friend Requests</a></li>
+				<li class=""><a aria-expanded="false" data-target="#groups" data-toggle="tab">Groups</a></li>
+				<li class="disabled"><a>Disabled</a></li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade active in" id="friends">
+					<div class="list-group">
+						{% for participant in friends %}
+						    {% include 'blocks/participantgroup.html' %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="tab-pane fade" id="friend_requests">
+					<div class="list-group">
+						{% for participant in friendRequests %}
+						    {% include 'blocks/participantgroup.html' %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="tab-pane fade" id="groups">
+					groups
+				</div>
+			</div>  
+		</div>
+		<div class="col-md-6">
+			<form action="{% url 'relationships:participant_search' %}" method="get">
+				<div class="form-group">
+					  <div class="input-group">
+					      <input class="form-control" type="text" 
+					          placeholder="Search for people or groups" 
+					          name="participant-search-txt" />
+					      <span class="input-group-btn">
+					          <input class="btn btn-default" type="submit" id="participant-search-btn" value="Go" />
+					      </span>
+					  </div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+{% endblock %}	
+
+
+
+

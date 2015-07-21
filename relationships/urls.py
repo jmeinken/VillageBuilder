@@ -19,7 +19,8 @@ from . import views
 urlpatterns = [
     url(r'add-friend/', views.add_friend, name='add-friend'),
     url(r'remove-friend/', views.remove_friend, name='remove-friend'),
-    
+    url(r'relationships/', views.relationships, name='relationships'),
+    url(r'participant_search/', views.participant_search, name='participant_search'),
 ]
 
 
