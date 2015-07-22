@@ -9,7 +9,19 @@ from account.models import Member, Participant, Person
 
 
 
-    
+def emailSearch(email, firstName, lastName, currentParticipant):    
+    # see if that email exists
+    participants = Participant.objects.all().filter(user__email=email)
+    if participants.count() != 0:
+        match = getParticipant(participants[0].id, currentParticipant)
+    else :
+        match = simulateParticipant(firstName, lastName)
+    return {
+        'email' : email,
+        'name' : firstName + ' ' + lastName,
+        'match' : [match,],
+        'status' : 'new guest'
+    }
    
 def getPeopleNearYou(currentParticipant):
     participants = Participant.objects.all()
@@ -70,12 +82,22 @@ def getParticipant(participantId, currentParticipant):
         'relationship' : getRelationship(currentParticipant, participant),
     }
     
+def simulateParticipant(firstName, lastName):
+    return {
+        'id' : 0,
+        'name' : firstName + ' ' + lastName,
+        'display_address' : '(guest account)',
+        'user_pic' : '/static/img/generic-user.png',
+        'relationship' : RelationshipTypes.NO_ACCOUNT,
+    }
+    
 class RelationshipTypes():
     SELF = 0
     FRIENDS = 1
     NOT_FRIENDS = 2
     REQUEST_SENT = 3
     REQUEST_RECEIVED = 4
+    NO_ACCOUNT = 5
     
 def getRelationship(currentParticipant, participant):
     forward = False

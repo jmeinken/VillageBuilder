@@ -1,0 +1,56 @@
+{% extends "home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+    <div class="row">
+	    <div class="col-sm-3">
+			<h3>You Entered</h3>
+		</div>
+		<div class="col-sm-3">
+		    <h3>Account(s) Found</h3>
+		</div>
+		<div class="col-sm-3">
+		    <h3>Select Action</h3>
+		</div>
+	</div>
+	{% for result in results %}
+		<div class="row" style="border-top: 2px black solid;padding:3px;">
+		    <div class="col-sm-3">
+				email: {{ result.email }}<br>
+				name: {{ result.name }}
+			</div>
+			<div class="col-sm-3">
+			    {% for participant in result.match %}
+			    	{% include 'blocks/participantgroup.html' %}
+				{% endfor %}
+			</div>
+			<div class="col-sm-3">
+			    <a href="#" class="btn btn-primary">Add as Friend</a>
+			</div>
+		</div>
+	{% endfor %}
+{% endblock %}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

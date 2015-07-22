@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'remove-friend/', views.remove_friend, name='remove-friend'),
     url(r'relationships/', views.relationships, name='relationships'),
     url(r'participant_search/', views.participant_search, name='participant_search'),
+    url(r'email_search/', views.email_search, name='email_search'),
 ]
 
 

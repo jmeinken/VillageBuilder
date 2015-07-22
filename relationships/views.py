@@ -45,6 +45,23 @@ def remove_friend(request):
     return redirect('login')
 
 @login_required
+def email_search(request):
+    email = request.POST.getlist("email[]")
+    firstName = request.POST.getlist("first_name[]")
+    lastName = request.POST.getlist("last_name[]")
+    currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
+    results = []
+    for i, value in enumerate(email):
+        if email[i] and firstName[i]:
+            results.append( emailSearch(email[i], firstName[i], lastName[i], currentParticipant) )
+    return render(request, 'email_search.html', {
+        'current' : getCurrentUser(request), 
+        'RelationshipTypes' : RelationshipTypes,
+        'results' : results,
+    })
+
+
+@login_required
 def relationships(request):
     currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
     context = {

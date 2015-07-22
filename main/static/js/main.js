@@ -25,19 +25,9 @@ $(document).ready(function(){
     
 	//reset alert count when alerts are viewed (maybe use setTimeout here)
     $('#open-alerts').click(function() {
-    	$.post("/alerts/alerts/", {action : 'reset_count'}, function(data, status){
-			if (status == 'success') {
-	    		$('#alert-container').html(data.html)
-	    		if (data.count != 0) {
-	    			$('#alert-count').html('[' + data.count + ']')
-	    		} else {
-	    			$('#alert-count').html('')
-	    		}
-	    		$('.delete-alert').click(function() {
-			        alert('hello');
-			    });
-			}
-	    });
+    	setTimeout(function() {
+    		postAlerts({action : 'reset_count'});
+    	}, 10000);
     });
     
     function postAlerts(postData) {
@@ -50,8 +40,8 @@ $(document).ready(function(){
 	    			$('#alert-count').html('')
 	    		}
 	    		$('.delete-alert').click(function() {
-			        alert('hello');
-			        postAlerts({})
+			        var alertId = $(this).attr('id').replace('delete-alert-', '')
+			        postAlerts({action : 'delete_alert', alert_id : alertId})
 			    });
 			}
 	    });
