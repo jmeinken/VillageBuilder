@@ -1,0 +1,18 @@
+.widen {
+    min-width: 300px !important;
+}
+
+.alert-box {
+	overflow:hidden;
+	border-bottom:black 1px solid;
+}
+
+.alert-not-viewed {
+	background-color: #CCFFCC;
+}
+
+.alert-form {
+	padding-top: 5px;
+	clear: both;
+	text-align: center;
+}

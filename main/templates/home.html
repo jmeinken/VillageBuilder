@@ -4,30 +4,6 @@
 
 {% block subcontent %}
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		
-		$('.add-friend').click(function(event) {
-			event.preventDefault;
-			var friendId = $(this).attr('id').replace("participant-","");
-			redirect = window.location.href
-			$('#add-friend-form-' + friendId).submit();
-		});
-		$('.remove-friend').click(function(event) {
-			event.preventDefault;
-			var friendId = $(this).attr('id').replace("participant-","");
-			redirect = window.location.href
-			$('#remove-friend-form-' + friendId).submit();
-		});
-
-		
-	}); 
-</script>
-
-
-
-
-
 
 
     <div class="row">

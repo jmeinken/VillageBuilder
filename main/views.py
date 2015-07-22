@@ -5,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 
 from account.helpers import *
+from main.helpers import *
+from relationships.helpers import *
+from alerts.helpers import *
 
 @login_required
 def home(request):
@@ -14,7 +17,7 @@ def home(request):
             'current' : getCurrentUser(request),
             'peopleNearYou' : getPeopleNearYou(currentParticipant),
             'friendsOfFriends' : getFriendsOfFriends(currentParticipant),
-            'RelationshipTypes' : RelationshipTypes
+            'RelationshipTypes' : RelationshipTypes,
         }
     return render(request, 'home.html', context)
 

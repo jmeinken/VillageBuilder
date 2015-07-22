@@ -1,14 +1,20 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
 from account.models import Participant
+
 from account.helpers import *
+from main.helpers import *
+from relationships.helpers import *
+from alerts.helpers import registerEvent
 
 
 
 @login_required
+@csrf_exempt
 def add_friend(request):
     print 'add friend'
     if request.method == "POST":
@@ -17,6 +23,12 @@ def add_friend(request):
         currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
         friendship = Friendship(person=currentParticipant.member.person, friend_id=friendId)
         friendship.save()
+        #register event
+        eventDict = {
+            'person_id' : currentParticipant.id,
+            'friend_id' : friendId,
+        }
+        registerEvent('add friend', eventDict)
         return redirect(url)
     return redirect('login')
 

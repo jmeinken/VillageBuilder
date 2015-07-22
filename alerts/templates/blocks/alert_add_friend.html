@@ -1,0 +1,7 @@
+<form method="post" action="{% url 'relationships:add-friend' %}">
+    <input name="csrfmiddlewaretoken" value="" type="hidden">
+    <input name="redirect" value="/" type="hidden">
+    <input type="hidden" name="friend-id" value="{{ friendId }}" />
+    <input type="submit" class="btn btn-primary btn-xs" name="add-friend" value="Add Friend" />
+</form>
+

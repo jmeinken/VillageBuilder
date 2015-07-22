@@ -12,7 +12,10 @@ from django.contrib.auth.decorators import login_required
 from villagebuilder.utils import console
 from .forms import *
 from .models import Member, Participant, Person
-from .helpers import *
+
+from account.helpers import *
+from main.helpers import *
+from relationships.helpers import *
 
 
 
@@ -27,7 +30,7 @@ def account(request):
     userNameForm = UserNameForm(instance=user)
     userPasswordForm = UserPasswordForm(user)
     participant = Participant.objects.get(user=user, participant_type='person')
-    member = Member.objects.get(member=participant)
+    member = Member.objects.get(participant=participant)
     addressForm = AddressForm(instance=member)
     memberPrivacyForm = MemberPrivacyForm(instance=member)
     memberPhoneForm = MemberPhoneForm(instance=member)
@@ -197,7 +200,8 @@ def personal_info(request):
         participant.save()
         #save member through PersonalInfoForm
         member = Member(
-            member = participant,
+            id = participant.id,
+            participant = participant,
             latitude = ifkeyset(request.session, 'latitude'),
             longitude = ifkeyset(request.session, 'longitude'), 
         )
@@ -208,7 +212,8 @@ def personal_info(request):
             personalInfoForm.save()
             #save person
             person = Person(
-                person = member,
+                id = member.id,
+                member = member,
                 first_name = ifkeyset(request.session, 'first_name'),
                 last_name = ifkeyset(request.session, 'last_name')
             )

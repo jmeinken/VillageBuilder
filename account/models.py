@@ -36,13 +36,15 @@ class Participant(models.Model):
     participant_type = models.CharField(max_length=6, choices=PARTICIPANT_TYPES)
 
 
+# need non-auto pk field so that it can be set to the same value as participant
 class Member(models.Model):
     PHONE_TYPE_CHOICES = (
       ("mobile", "mobile"),
       ("home", "home"),
       ("work", "work"),
     )
-    member = models.OneToOneField('Participant', on_delete=models.CASCADE)
+    id = models.IntegerField(primary_key=True)
+    participant = models.OneToOneField('Participant', on_delete=models.CASCADE)
     full_address = models.CharField(max_length=400)
     address1 = models.CharField(max_length=50, blank=True, null=True)
     address2 = models.CharField(max_length=50, blank=True, null=True)
@@ -74,7 +76,8 @@ class Member(models.Model):
             return self.street + ' (' + self.city + ')'
 
 class Guest(models.Model):
-    guest = models.OneToOneField('Participant', on_delete=models.CASCADE)
+    id = models.IntegerField(primary_key=True)
+    participant = models.OneToOneField('Participant', on_delete=models.CASCADE)
     code = models.CharField(max_length=60)
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=30, blank=True, null=True)
@@ -83,7 +86,8 @@ class Guest(models.Model):
     
     
 class Group(models.Model):
-    group = models.OneToOneField('Member', on_delete=models.CASCADE)
+    id = models.IntegerField(primary_key=True)
+    member = models.OneToOneField('Member', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)
@@ -92,7 +96,8 @@ class Group(models.Model):
         
         
 class Person(models.Model):
-    person = models.OneToOneField('Member', on_delete=models.CASCADE)
+    id = models.IntegerField(primary_key=True)
+    member = models.OneToOneField('Member', on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
 

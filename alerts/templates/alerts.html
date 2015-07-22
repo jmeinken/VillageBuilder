@@ -1,0 +1,14 @@
+{% for alert in alerts %}
+	<li class="alert-box{% if alert.viewed %} alert-viewed{% else %} alert-not-viewed{% endif %}">
+	    <img src="{{ alert.image }}" alt="{{ alert.alt }}"
+	        width="45" height="45" style="float:left;padding:5px;"
+	    />
+	    <div style="width:100%;text-align:right;padding:0 5px 0 0;">
+	    	<a href="#" class="delete-alert" id="delete-alert-{{ alert.id }}"><i class="fa fa-times"></i></a>
+    	</div>
+	    {{ alert.text }}
+	    <div class="alert-form">{{ alert.form }}</div>
+	</li>
+{% empty %}
+    &nbsp;&nbsp;<em>no alerts to show</em>
+{% endfor %}
