@@ -52,7 +52,7 @@ def email_search(request):
     currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
     results = []
     for i, value in enumerate(email):
-        if email[i] and firstName[i]:
+        if email[i] or (firstName[i] and lastName[i]):
             results.append( emailSearch(email[i], firstName[i], lastName[i], currentParticipant) )
     return render(request, 'email_search.html', {
         'current' : getCurrentUser(request), 

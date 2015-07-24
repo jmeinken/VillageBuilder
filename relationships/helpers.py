@@ -11,16 +11,21 @@ from account.models import Member, Participant, Person
 
 def emailSearch(email, firstName, lastName, currentParticipant):    
     # see if that email exists
+    matches = []
     participants = Participant.objects.all().filter(user__email=email)
-    if participants.count() != 0:
-        match = getParticipant(participants[0].id, currentParticipant)
-    else :
-        match = simulateParticipant(firstName, lastName)
+    if participants.count() == 0:
+        participants = Participant.objects.all().filter(user__first_name=firstName).filter(user__last_name=lastName)
+        for participant in participants:
+            matches.append(getParticipant(participant.id, currentParticipant))
+        if email:
+            matches.append(simulateParticipant(email, firstName, lastName))
+    else:    
+        for participant in participants:
+            matches.append(getParticipant(participant.id, currentParticipant))
     return {
         'email' : email,
         'name' : firstName + ' ' + lastName,
-        'match' : [match,],
-        'status' : 'new guest'
+        'matches' : matches
     }
    
 def getPeopleNearYou(currentParticipant):
@@ -80,15 +85,17 @@ def getParticipant(participantId, currentParticipant):
         'display_address' : participant.member.get_display_address(),
         'user_pic' : participant.member.get_user_pic(),
         'relationship' : getRelationship(currentParticipant, participant),
+        'participant_type' : ParticipantTypes.PERSON,
     }
     
-def simulateParticipant(firstName, lastName):
+def simulateParticipant(email, firstName, lastName):
     return {
         'id' : 0,
         'name' : firstName + ' ' + lastName,
-        'display_address' : '(guest account)',
+        'display_address' : email,
         'user_pic' : '/static/img/generic-user.png',
         'relationship' : RelationshipTypes.NO_ACCOUNT,
+        'participant_type' : ParticipantTypes.NONE,
     }
     
 class RelationshipTypes():
@@ -98,6 +105,12 @@ class RelationshipTypes():
     REQUEST_SENT = 3
     REQUEST_RECEIVED = 4
     NO_ACCOUNT = 5
+    
+class ParticipantTypes():
+    PERSON = 0
+    GUEST = 1
+    GROUP = 2
+    NONE = 4
     
 def getRelationship(currentParticipant, participant):
     forward = False

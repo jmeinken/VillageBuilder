@@ -7,6 +7,9 @@ from account.models import Person
 class Friendship(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='friendship_set')
     friend = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='reverse_friendship_set')
+    
+    class Meta:
+        unique_together = ('person', 'friend',)
 
 
 

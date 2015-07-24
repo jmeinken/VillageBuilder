@@ -11,7 +11,7 @@
 		    <h3>Account(s) Found</h3>
 		</div>
 		<div class="col-sm-3">
-		    <h3>Select Action</h3>
+		    <a href="#" class="btn btn-success" style="margin-top:15px;">Add Everyone Listed</a>
 		</div>
 	</div>
 	{% for result in results %}
@@ -20,16 +20,61 @@
 				email: {{ result.email }}<br>
 				name: {{ result.name }}
 			</div>
-			<div class="col-sm-3">
-			    {% for participant in result.match %}
-			    	{% include 'blocks/participantgroup.html' %}
-				{% endfor %}
-			</div>
-			<div class="col-sm-3">
-			    <a href="#" class="btn btn-primary">Add as Friend</a>
+			<div class="col-sm-6">
+			    {% for participant in result.matches %}
+				    <div class="row">
+				        <div class="col-sm-6  vcenter">
+				            {% include 'blocks/participantgroup.html' %}
+				        </div><!--  
+				        --><div class="col-sm-6 vcenter">
+				            {% if participant.relationship == RelationshipTypes.REQUEST_RECEIVED or participant.relationship == RelationshipTypes.NOT_FRIENDS %}
+				                <a href="#" class="btn btn-primary btn-sm" class="add-friend-button">Add as Friend</a>
+				            {% endif %}
+				            {% if participant.relationship == RelationshipTypes.NO_ACCOUNT %}
+				            	<a href="#" class="btn btn-primary btn-sm" class="add-friend-button">Add as Guest</a>
+				            	<a href="#" data-toggle="modal" data-target="#about-guests-modal">(About guests)</a>
+				            {% endif %}
+				            {% if participant.relationship == RelationshipTypes.FRIENDS %}
+				                <strong class="text-success"><i class="fa fa-check"></i> already friends</strong>
+				            {% endif %}
+				            {% if participant.relationship == RelationshipTypes.SELF %}
+				                this is your account
+				            {% endif %}
+				        </div>
+				    </div>
+				 {% empty %}
+				     <em>no matches</em> - add this person as a 
+				     <a href="#" data-toggle="modal" data-target="#about-guests-modal">guest</a> 
+				     by providing an email
+				 {% endfor %}    
 			</div>
 		</div>
 	{% endfor %}
+	
+	<div class="modal" id="about-guests-modal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+	        <h4 class="modal-title">About Guests</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>
+	        	The guest system allows you to share with your friends even if they're not on VillageBuilder.
+	        	Your guests will not be contacted unless you share something with them,
+	        	and they don't need an account to view the items you've shared.
+	        	For more info, see our <a href="#">no-spam policy</a>.
+	        </p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	
+	
 {% endblock %}	
 
 
