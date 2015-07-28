@@ -1,0 +1,15 @@
+{% extends "home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+
+	{% for key, value in account_info.items %}
+		{{ key }}: {{ value }}<br>
+	{% endfor %}
+
+{% endblock %}	
+
+
+
+

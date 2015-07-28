@@ -19,7 +19,14 @@ from relationships.helpers import *
 
 
 
-
+@login_required
+def view(request, participantId):
+    currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
+    accountInfo = getParticipantFull(participantId, currentParticipant)
+    context = {
+        'account_info' : accountInfo
+    }
+    return render(request, 'account_view.html', context)
 
 @login_required
 def account(request):

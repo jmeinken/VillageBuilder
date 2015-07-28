@@ -74,6 +74,15 @@ class Member(models.Model):
             return self.street + ' (' + self.neighborhood + ')'
         else:
             return self.street + ' (' + self.city + ')'
+        
+    def get_phone(self):
+        if self.phone_number:
+            if self.phone_type:
+                return self.phone_number + ' (' + self.phone_type + ')'
+            else:
+                return self.phone_number
+        else:
+            return ''
 
 class Guest(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -81,6 +90,9 @@ class Guest(models.Model):
     code = models.CharField(max_length=60)
     first_name = models.CharField(max_length=30, blank=True, null=True)
     last_name = models.CharField(max_length=30, blank=True, null=True)
+    
+    def get_user_pic(self):
+        return '/static/img/generic-user.png'
 
 
     

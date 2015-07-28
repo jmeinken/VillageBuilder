@@ -1,10 +1,15 @@
+import json
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+from django.db import transaction
+from django.contrib.auth.models import User
 
 from .models import *
-from account.models import Participant
+from account.models import Participant, Guest
 
 from account.helpers import *
 from main.helpers import *
@@ -29,7 +34,67 @@ def add_friend(request):
             'friend_id' : friendId,
         }
         registerEvent('add friend', eventDict)
-        return redirect(url)
+        if request.is_ajax():
+            data = {'friendId' : friendId}
+            return HttpResponse(json.dumps(data), content_type = "application/json")
+        else:
+            return redirect(url)
+    return redirect('login')
+
+@login_required
+@csrf_exempt
+@transaction.atomic
+def create_guest(request):
+    print 'create guest'
+    if request.method == "POST":
+        url = request.POST.get("redirect")
+        tempId = request.POST.get("guest_temp_id")
+        guestEmail = request.POST.get("guest_email")
+        guestFirstName = request.POST.get("guest_first_name")
+        guestLastName = request.POST.get("guest_last_name")
+        currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
+        # check if guest already exists
+        user = User.objects.all().filter(email=guestEmail)
+        if user.count() == 0:
+            # create user, participant and guest
+            user = User.objects.create_user(
+                guestEmail, 
+                guestEmail, 
+                createRandomString(15), 
+            )
+            user.first_name = guestFirstName
+            user.last_name = guestLastName
+            user.save()
+            participant = Participant(
+                user = user, 
+                participant_type = 'guest',
+            )
+            participant.save()
+            guest = Guest(
+                id = participant.id,
+                participant = participant,
+                code = createRandomString(60)
+            )
+            guest.save()
+        else:
+            guest = Participant.objects.all().get(user=user,participant_type='guest').guest
+        # add guest as friend
+        guestFriendship = GuestFriendship(
+            person=currentParticipant.member.person, 
+            guest=guest
+        )
+        guestFriendship.save()
+        #register event
+        #eventDict = {
+        #   'person_id' : currentParticipant.id,
+        #    'guest_id' : guest.id,
+        #}
+        # registerEvent('add friend', eventDict)
+        if request.is_ajax():
+            data = {'guestId' : guest.id, 'tempId' : tempId}
+            return HttpResponse(json.dumps(data), content_type = "application/json")
+        else:
+            return redirect(url)
     return redirect('login')
 
 @login_required
@@ -41,6 +106,18 @@ def remove_friend(request):
         currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
         friendship = Friendship.objects.get(person=currentParticipant.member.person, friend_id=friendId)
         friendship.delete()
+        return redirect(url)
+    return redirect('login')
+
+@login_required
+def remove_guest_friend(request):
+    print 'remove guest friend'
+    if request.method == "POST":
+        url = request.POST.get("redirect")
+        friendId = request.POST.get("friend-id")
+        currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
+        guestFriendship = GuestFriendship.objects.get(person=currentParticipant.member.person, guest_id=friendId)
+        guestFriendship.delete()
         return redirect(url)
     return redirect('login')
 

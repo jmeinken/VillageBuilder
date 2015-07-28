@@ -3,6 +3,40 @@
 {% load widget_tweaks %}
 
 {% block subcontent %}
+
+	<script>
+	
+	$(document).ready(function(){
+	
+		$('.add-friend-form-ajax').submit(function(event) {
+			$(this).find('.add-friend-button-ajax').html('<i class="fa fa-spinner fa-pulse"></i>');
+			var formData = $(this).serializeArray();
+			$.post('/relationships/add-friend/', formData, function(data, status) {
+				if (status == 'success') {
+					$('#add-friend-btn-' + data.friendId)
+					    .replaceWith('<strong class="text-success"><i class="fa fa-check"></i> added to friends</strong>');
+				}
+			});
+			event.preventDefault();
+		});
+		
+		$('.create-guest-form-ajax').submit(function(event) {
+			$(this).find('.create-guest-button-ajax').html('<i class="fa fa-spinner fa-pulse"></i>');
+			var formData = $(this).serializeArray();
+			$.post('/relationships/create-guest/', formData, function(data, status) {
+				if (status == 'success') {
+					$('#create-guest-btn-' + data.tempId)
+					    .replaceWith('<strong class="text-success"><i class="fa fa-check"></i> added to friends</strong>');
+				}
+			});
+			event.preventDefault();
+		});
+		
+	});
+		
+	</script>
+	
+	
     <div class="row">
 	    <div class="col-sm-3">
 			<h3>You Entered</h3>
@@ -28,13 +62,25 @@
 				        </div><!--  
 				        --><div class="col-sm-6 vcenter">
 				            {% if participant.relationship == RelationshipTypes.REQUEST_RECEIVED or participant.relationship == RelationshipTypes.NOT_FRIENDS %}
-				                <a href="#" class="btn btn-primary btn-sm" class="add-friend-button">Add as Friend</a>
+				                <form id="add-friend-form-{{participant.id}}" class="add-friend-form-ajax">
+				                	<input type="hidden" name="friend-id" value="{{participant.id}}" />
+				                	<button type="submit" class="btn btn-primary btn-sm add-friend-button-ajax" id="add-friend-btn-{{participant.id}}">Add as Friend</button>
+				                </form>
 				            {% endif %}
-				            {% if participant.relationship == RelationshipTypes.NO_ACCOUNT %}
-				            	<a href="#" class="btn btn-primary btn-sm" class="add-friend-button">Add as Guest</a>
+				            {% if participant.relationship == RelationshipTypes.NO_ACCOUNT or participant.relationship == RelationshipTypes.NOT_GUEST_FRIENDS %}
+				            	<form class="create-guest-form-ajax">
+				            		<input type="hidden" name="guest_temp_id" value="{{participant.id}}" />
+				                	<input type="hidden" name="guest_email" value="{{result.email}}" />
+				                	<input type="hidden" name="guest_first_name" value="{{result.first_name}}" />
+				                	<input type="hidden" name="guest_last_name" value="{{result.last_name}}" />
+				                	<button type="submit" class="btn btn-primary btn-sm create-guest-button-ajax" id="create-guest-btn-{{participant.id}}">Add as Guest</button>
+				                </form>
 				            	<a href="#" data-toggle="modal" data-target="#about-guests-modal">(About guests)</a>
 				            {% endif %}
 				            {% if participant.relationship == RelationshipTypes.FRIENDS %}
+				                <strong class="text-success"><i class="fa fa-check"></i> already friends</strong>
+				            {% endif %}
+				            {% if participant.relationship == RelationshipTypes.GUEST_FRIENDS %}
 				                <strong class="text-success"><i class="fa fa-check"></i> already friends</strong>
 				            {% endif %}
 				            {% if participant.relationship == RelationshipTypes.SELF %}

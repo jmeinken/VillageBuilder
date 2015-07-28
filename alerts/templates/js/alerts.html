@@ -1,3 +1,5 @@
+<script type="text/javascript">
+
 $(document).ready(function(){
 		
 	$('.add-friend').click(function(event) {
@@ -11,6 +13,12 @@ $(document).ready(function(){
 		var friendId = $(this).attr('id').replace("participant-","");
 		redirect = window.location.href
 		$('#remove-friend-form-' + friendId).submit();
+	});
+	$('.remove-guest-friend').click(function(event) {
+		event.preventDefault;
+		var friendId = $(this).attr('id').replace("participant-","");
+		redirect = window.location.href
+		$('#remove-guest-friend-form-' + friendId).submit();
 	});
 	
 	//load alerts when page opens
@@ -54,3 +62,5 @@ $(document).ready(function(){
 
 	
 }); 
+
+</script>

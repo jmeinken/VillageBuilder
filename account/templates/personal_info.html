@@ -5,151 +5,10 @@
 
 {% block content %}
 
-<style>
-.drag-drop {
-            width: 300px;
-            height: 88px;
-            border: 2px dotted #0B85A1;
-            text-align: center;
-            line-height: 88px;
-            background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.02)
-        }
+{% include "js/personal_info.html" %}
 
-        .drag-drop-active {
-            border: 2px solid #0B85A1;
-            background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.08)
-        }
-</style>
-
-<script type="text/javascript">
-	$(document).ready(function(){
-		var api  // Jcrop api
-	    var $progressBar = $('#progressBar')
-	    //options
-	    var options = {
-	        fileInputs: ['#file'],
-	        canvases: {
-	            medium: {
-	                'object': '#medium'
-	            }
-			},
-	        dragDrops: ['#dragDrop'],
-	        afterPick: function () {
-	            this.setSelect([0, 0, 400, 300])  // initial selection
-	        },
-	        beforePick: function (img) {
-	            if (img) {//valid file
-	                if (img.width < 300 || img.height < 300) {
-	                    alert('The image width and height must be over or equal to 300!')
-	                    return true  // ignore this img
-	                }
-	            }
-	            else {// invalid file
-	                alert('Invalid file!')
-	            }
-	        },
-	        aspectRatio: 1 / 1,
-	        minSize: [150, 150],
-	        boxWidth: 400,
-	        boxHeight: 400
-	    }
-	    $('#image').Jcrop(options, function () {
-	        api = this;
-	        this.setSelect([50, 38, 300, 225]);
-	        //api.drawInCanvas($('#medium')[0])
-	    })
-	    
-   
-	    $('#upload').click(function() {
-	        if (!api) {
-	            return
-	        }
-	        if (!api.isSelected()) {
-	            alert('No selection!')
-	            return
-	        }
-	        $progressBar.find('div').width(0)
-	        //sources
-	        var sources = [
-	            {
-	                key: 'medium', // key in options.canvases
-	                format: 'image/png' // default = 'image/jpeg'
-	            }
-	        ]
-	        //settings
-	        var settings = {
-	            url: '/account/upload_image/',
-	            data: {'text': 'This is the text!'}, //three fields (medium, small, text) to upload
-	            onprogress: function (evt) { // function for xhr.upload.onprogress
-	                if (evt.lengthComputable) {
-	                    progress(evt.loaded / evt.total, $progressBar)
-	                }
-	            },
-	            success: function (data) {
-	            	console.log(data)
-	            	$('#id_user_pic_medium').val(data.file);
-	            	$("#user-pic").attr("src", data.path);
-	            	$("#shared-user-pic").attr("src", data.path);
-	            },
-	            error: function ( jqXHR, textStatus, errorThrown ) {
-	                alert(errorThrown + ' ' + textStatus)
-	            }
-	        }
-	        api.upload(sources, settings)
-	    });
-
-
-	    function progress(percent, $element) {
-	        var progressBarWidth = percent * $element.width();
-	        $element.find('div').animate({ width: progressBarWidth }, 50).html(Math.round(percent * 100) + "%&nbsp;");
-	    }
-	    
-	    function updateSharedView() {
-	    	$('#shared-first-name').html($('#id_first_name').val());
-	    	$('#shared-last-name').html($('#id_last_name').val());
-	    	$('#shared-street').html($('#id_street').val());
-	    	if ($('#id_neighborhood').val() != '') {
-	    		$('#shared-neighborhood').html($('#id_neighborhood').val());
-	    	}  else  {
-	    		$('#shared-neighborhood').html($('#id_city').val());
-	    	}
-	    	$('#shared-email').html($('#id_email').val());
-	    	$('#shared-address').html($('#id_full_address').val());
-	    	$('#shared-phone').html($('#id_phone_number').val());
-	    	$('#shared-phone-type').html( '(' + $('#id_phone_type').val() + ')' );
-	    	if ( $('#id_share_email').is(':checked') ) {
-	    		$('#shared-email-show').show();
-	    	} else {
-	    		$('#shared-email-show').hide();
-	    	}
-	    	if ( $('#id_share_address').is(':checked') ) {
-	    		$('#shared-address-show').show();
-	    	} else {
-	    		$('#shared-address-show').hide();
-	    	}
-	    	if ( $('#id_share_phone').is(':checked') ) {
-	    		$('#shared-phone-show').show();
-	    	} else {
-	    		$('#shared-phone-show').hide();
-	    	}
-	    }
-	    
-	    $('#personal-info-form :input').on("change keyup paste", function() {
-	    	updateSharedView();
-	    }).trigger("change");
-	    
-	    $('#id_share_phone').change(function() {
-	    	if ( $(this).is(':checked') ) {
-	    		$('#phone-info').slideDown();
-	    	} else {
-	    		$('#phone-info').hide();
-	    	}
-	    }).trigger("change");
-	    
-
-	    
-	});
-</script>
+{% include "js/upload_pic.html" %}	
+{% include "modals/upload_tool.html" %}	
 
     <div class="container-fluid">
         {% include "blocks/create-account-header.html" %}
@@ -253,7 +112,6 @@
 	</div>
 
 
-	
-{% include "blocks/upload-tool.html" %}	
+
 
 {% endblock %}

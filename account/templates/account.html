@@ -4,132 +4,52 @@
 
 {% block subcontent %}
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		
-		$('#name-edit-btn, #name-close-btn').click(function() {
-			$('#name-view').toggle();
-			$('#name-edit').toggle();
-			return false;
-		});
-		$('#email-edit-btn, #email-close-btn').click(function() {
-			$('#email-view').toggle();
-			$('#email-edit').toggle();
-			return false;
-		});
-		$('#password-edit-btn, #password-close-btn').click(function() {
-			$('#password-view').toggle();
-			$('#password-edit').toggle();
-			return false;
-		});
-		$('#privacy-edit-btn, #privacy-close-btn').click(function() {
-			$('#privacy-view').toggle();
-			$('#privacy-edit').toggle();
-			return false;
-		});
-		$('#phone-edit-btn, #phone-close-btn').click(function() {
-			$('#phone-view').toggle();
-			$('#phone-edit').toggle();
-			return false;
-		});
-		$('#display-address-edit-btn, #display-address-close-btn').click(function() {
-			$('#display-address-view').toggle();
-			$('#display-address-edit').toggle();
-			return false;
-		});
-		$('#account-status-edit-btn, #account-status-close-btn').click(function() {
-			$('#account-status-view').toggle();
-			$('#account-status-edit').toggle();
-			return false;
-		}); 
-		
-	}); 
-</script>
+{% include "js/account.html" %}
+{% include "js/account_address.html" %}
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		
-		$('#geocode-results-container').hide();
-		
-		//initialize page
-		var mapOptions = {
-           center: { lat: 39.83, lng: -98.58},
-           zoom: 4
-       	};
-	    var mymap = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-	    var geocoder = new google.maps.Geocoder();
-	    var geocodeResults = [];
-	    
-	    //google maps will not diplay in modal unless resize event is triggered
-	    $("#full-address-modal").on("shown.bs.modal", function(e) {
-	        google.maps.event.trigger(mymap, "resize");
-	        mymap.setZoom(mapOptions.zoom);
-	        mymap.setCenter(mapOptions.center);
-	    });
-	    
-	    //EVENTS/////////////////////////////////////////////////////////
-	    
-	    //when a different result is selected, update map
-	    $('#geocode-results').on("click", ".geocode-result", function() {
-	    	var index = $(this).val();
-	    	mymap.setCenter(geocodeResults[index].geometry.location);
-    		mymap.setZoom(15);
-    		mymarker = new google.maps.Marker({ map: mymap });
-    		mymarker.setPosition(geocodeResults[index].geometry.location);
-	    })
-	    $('#button-lookup-address').click(function() {
-	    	var geocoderRequest = {
-                address: $('#lookup-address').val()
-            }
-	    	geocoder.geocode(geocoderRequest, function(results, status) {
-	    		if (results.length > 0) {
-	    			geocodeResults = results.slice(0,10);
-	    			$('#geocode-results').html('');
-	    			for (var i=0; i<geocodeResults.length; i++) {
-	    				$('#geocode-results').append(
-	    					'<input class="geocode-result" type="radio" value="' + i + '" ' +  
-	    					(i==0 ? 'checked="checked" ' : '') + 
-	    					'name="geocode-results" /> ' +
-    						geocodeResults[i].formatted_address + "<br />"
-   						);
-	    			}	    			
-		    		mymap.setCenter(results[0].geometry.location);
-		    		mymap.setZoom(15);
-		    		mymarker = new google.maps.Marker({ map: mymap });
-		    		mymarker.setPosition(results[0].geometry.location);
-		    		$('#geocode-results-container').show();
-	    		} else {
-	    			alert('No results found for that address.');
-	    		}
-	    	});
-	    });
-	    $('#button-use-address').click(function() {
-	    	var index = $('input[name=geocode-results]:checked').val();
-	    	var add = geocodeResults[index];
-	    	$('form[name=address-form] input[name=full_address]').val(add.formatted_address);
-	    	$('form[name=address-form] input[name=street]').val('');
-	    	$('form[name=address-form] input[name=city]').val('');
-	    	$('form[name=address-form] input[name=neighborhood]').val('');
-	    	var lat = parseFloat(add.geometry.location.lat()).toFixed(7);
-	    	var lng = parseFloat(add.geometry.location.lng()).toFixed(7)
-	    	$('form[name=address-form] input[name=latitude]').val(lat);
-	    	$('form[name=address-form] input[name=longitude]').val(lng);
-	    	for (var i=0; i<add.address_components.length; i++) {
-		    	if ($.inArray("route", add.address_components[i].types) != -1) {
-		    		$('form[name=address-form] input[name=street]').val(add.address_components[i].short_name);
-	            } 
-		    	if ($.inArray("neighborhood", add.address_components[i].types) != -1) {
-	                $('form[name=address-form] input[name=neighborhood]').val(add.address_components[i].short_name);
-	            }
-	            if ($.inArray("locality", add.address_components[i].types) != -1) {
-	                $('form[name=address-form] input[name=city]').val(add.address_components[i].long_name);
-	            }
-	    	}
-	    	$("form[name=address-form]").submit();
-	    });
-	}); 
-    
-</script>
+{% include "js/account_upload_pic.html" %}
+{% include "modals/upload_tool.html" %}
+
+<div class="modal" id="full-address-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        <h4 class="modal-title">Set Address</h4>
+      </div>
+      <div class="modal-body">
+          {% include "blocks/map.html" %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form action="{{ callback }}" method="post">
+	<div class="modal" id="delete-account-modal">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+	        <h4 class="modal-title">Delete Account</h4>
+	      </div>
+	      <div class="modal-body">
+	            {% csrf_token %}
+	            This will <strong class="text-danger">permanently</strong> delete your account and all items associated with your account.
+	            Are you sure you want to continue?
+	            <input type="hidden" name="form-name" value="deleteAccountForm" />
+	      </div>
+	      <div class="modal-footer">
+	        <input type="submit" class="btn btn-danger" value="Delete Account" />
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</form>
+
 
 	<h2>Account Settings for {{ current.user.get_full_name }}</h2>
 	<hr>
@@ -319,147 +239,6 @@
 	</div>
 
 
-<form action="{{ callback }}" method="post">
-	<div class="modal" id="delete-account-modal">
-	  <div class="modal-dialog modal-sm">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-	        <h4 class="modal-title">Delete Account</h4>
-	      </div>
-	      <div class="modal-body">
-	          
-	            {% csrf_token %}
-	            This will <strong class="text-danger">permanently</strong> delete your account and all items associated with your account.
-	            Are you sure you want to continue?
-	            <input type="hidden" name="form-name" value="deleteAccountForm" />
-	      </div>
-	      <div class="modal-footer">
-	        <input type="submit" class="btn btn-danger" value="Delete Account" />
-	        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-</form>
 
-<div class="modal" id="full-address-modal">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-        <h4 class="modal-title">Set Address</h4>
-      </div>
-      <div class="modal-body">
-          {% include "blocks/map.html" %}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-	
-<script type="text/javascript">
-	$(document).ready(function(){
-		var api  // Jcrop api
-	    var $progressBar = $('#progressBar')
-	    //options
-	    var options = {
-	        fileInputs: ['#file'],
-	        canvases: {
-	            medium: {
-	                'object': '#medium'
-	            }
-			},
-	        dragDrops: ['#dragDrop'],
-	        afterPick: function () {
-	            this.setSelect([0, 0, 400, 300])  // initial selection
-	        },
-	        beforePick: function (img) {
-	            if (img) {//valid file
-	                if (img.width < 300 || img.height < 300) {
-	                    alert('The image width and height must be over or equal to 300!')
-	                    return true  // ignore this img
-	                }
-	            }
-	            else {// invalid file
-	                alert('Invalid file!')
-	            }
-	        },
-	        aspectRatio: 1 / 1,
-	        minSize: [150, 150],
-	        boxWidth: 400,
-	        boxHeight: 400
-	    }
-	    $('#image').Jcrop(options, function () {
-	        api = this;
-	        this.setSelect([50, 38, 300, 225]);
-	        //api.drawInCanvas($('#medium')[0])
-	    })
-	    
-   
-	    $('#upload').click(function() {
-	        if (!api) {
-	            return
-	        }
-	        if (!api.isSelected()) {
-	            alert('No selection!')
-	            return
-	        }
-	        $progressBar.find('div').width(0)
-	        //sources
-	        var sources = [
-	            {
-	                key: 'medium', // key in options.canvases
-	                format: 'image/png' // default = 'image/jpeg'
-	            }
-	        ]
-	        //settings
-	        var settings = {
-	            url: '/account/upload_image/',
-	            data: {'member_id': '{{ current.member.id }}'}, //three fields (medium, small, text) to upload
-	            onprogress: function (evt) { // function for xhr.upload.onprogress
-	                if (evt.lengthComputable) {
-	                    progress(evt.loaded / evt.total, $progressBar)
-	                }
-	            },
-	            success: function (data) {
-	            	console.log(data)
-	            	$('#id_user_pic_medium').val(data.file);
-	            	$(".current-user-pic").attr("src", data.path);
-	            	$("#shared-user-pic").attr("src", data.path);
-	            },
-	            error: function ( jqXHR, textStatus, errorThrown ) {
-	                alert(errorThrown + ' ' + textStatus)
-	            }
-	        }
-	        api.upload(sources, settings)
-	    });
-
-
-	    function progress(percent, $element) {
-	        var progressBarWidth = percent * $element.width();
-	        $element.find('div').animate({ width: progressBarWidth }, 50).html(Math.round(percent * 100) + "%&nbsp;");
-	    }
-	    
-	    
-	    
-
-	    
-
-	    
-	});
-</script>
-
-{% include "blocks/upload-tool.html" %}
 	
 {% endblock %}	
