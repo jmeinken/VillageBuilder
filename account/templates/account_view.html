@@ -4,67 +4,57 @@
 
 {% block subcontent %}
 
-	{% for key, value in account_info.items %}
-		{{ key }}: {{ value }}<br>
-	{% endfor %}
-	
-	<br><hr>
-	
-	<div style="overflow:hidden;">
-    		<img src="{{}}" alt="{{}}" style="float:left;">
-		<h1>{{ account.name }}</h1>
-		<p>{{ account.display_address }}</p>
-		<dl>
-			{% if account.email  %}
-			   <dt>Email:</dt>
-			   <dd>{{ account.email }}</dd>
-			{% endif %}
-			{% if account.full_address  %}
-			   <dt>Full Address:</dt>
-			   <dd>{{ account.full_address }}</dd>
-			{% endif %}
-			{% if account.phone  %}
-			   <dt>Phone:</dt>
-			   <dd>{{ account.phone }}</dd>
-			{% endif %}
-		</dl>
-		{% if account.relationship == RelationshipTypes.FRIENDS %}
-		    <i class="fa fa-check"></i> You are friends
-		{% endif %}
-		{% if account.relationship == RelationshipTypes.NOT_FRIENDS %}
-		    <button class="btn btn-primary">Add as Friend</button>
-		{% endif %}
 
-		
+	
+	<div class="row">
+	    <div class="col-sm-2">
+    		<img src="{{ account.user_pic }}" alt="" style="float:left;">
+    	</div>
+    	<div class="col-sm-5">
+			<h1>{{ account.name }}</h1>
+			<p>{{ account.display_address }}</p>
+			{% if account.relationship == RelationshipTypes.FRIENDS %}
+			    <i class="fa fa-check"></i> You are friends
+			{% endif %}
+			{% if account.relationship == RelationshipTypes.NOT_FRIENDS %}
+			    <button class="btn btn-primary">Add as Friend <i class="fa fa-plus"></i></button>
+			{% endif %}
+		</div>
+		<div class="col-sm-4 well">
+			<h4>Contact Info</h4>
+			{% if account.relationship == RelationshipTypes.SELF %}
+			    <div class="alert alert-success">
+				  Your contact info is only visible to friends.
+				</div>
+			{% endif %}
+			<dl class="dl dl-3">
+				{% if account.email  %}
+				   <dt>Email:</dt>
+				   <dd>{{ account.email }}</dd>
+				{% endif %}
+				{% if account.full_address  %}
+				   <dt>Full Address:</dt>
+				   <dd>{{ account.full_address }}</dd>
+				{% endif %}
+				{% if account.phone  %}
+				   <dt>Phone:</dt>
+				   <dd>{{ account.phone }}</dd>
+				{% endif %}
+			</dl><br>
+			<button class="btn btn-primary">Send a Message <i class="fa fa-paper-plane"></i></button>
+		</div>
 	</div>
-    
+    <hr>
     <ul class="nav nav-tabs">
-		<li class="active"><a href="#home" data-toggle="tab">Shared Items</a></li>
-		<li><a href="#profile" data-toggle="tab">Friends</a></li>
-		<li class="disabled"><a>Disabled</a></li>
-		<li class="dropdown">
-		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
-			Dropdown <span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu">
-			<li><a href="#dropdown1" data-toggle="tab">Action</a></li>
-			<li class="divider"></li>
-			<li><a href="#dropdown2" data-toggle="tab">Another action</a></li>
-		</ul>
-		</li>
+		<li class="active"><a href="#items" data-toggle="tab">Shared Items</a></li>
+		<li><a href="#friends" data-toggle="tab">Friends</a></li>
 	</ul>
 	<div id="myTabContent" class="tab-content">
-	  <div class="tab-pane fade active in" id="home">
+	  <div class="tab-pane fade active in" id="items">
 	    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
 	  </div>
-	  <div class="tab-pane fade" id="profile">
+	  <div class="tab-pane fade" id="friends">
 	    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
-	  </div>
-	  <div class="tab-pane fade" id="dropdown1">
-	    <p>Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony. Leggings gentrify squid 8-bit cred pitchfork.</p>
-	  </div>
-	  <div class="tab-pane fade" id="dropdown2">
-	    <p>Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table VHS viral locavore cosby sweater.</p>
 	  </div>
 </div>
 

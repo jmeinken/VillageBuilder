@@ -110,11 +110,12 @@ def getParticipant(participantId, currentParticipant):
 def getParticipantFull(participantId, currentParticipant):
     participant = Participant.objects.get(id=participantId)
     result = getParticipant(participantId, currentParticipant)
+    print(result)
     result['email'] = ''
     result['full_address'] = ''
     result['phone'] = ''
     if participant.participant_type == 'guest' and currentParticipant.participant_type == 'person':
-        if result.relationship == RelationshipTypes.GUEST_FRIENDS:
+        if result['relationship'] == RelationshipTypes.GUEST_FRIENDS:
             result['email'] = participant.user.email
     if participant.participant_type == 'person': 
         if (    result['relationship'] == RelationshipTypes.FRIENDS   

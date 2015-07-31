@@ -24,7 +24,9 @@ def view(request, participantId):
     currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
     accountInfo = getParticipantFull(participantId, currentParticipant)
     context = {
-        'account_info' : accountInfo
+        'account' : accountInfo,
+        'RelationshipTypes' : RelationshipTypes,
+        'current' : getCurrentUser(request),
     }
     return render(request, 'account_view.html', context)
 

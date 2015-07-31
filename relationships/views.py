@@ -49,9 +49,12 @@ def create_guest(request):
     if request.method == "POST":
         url = request.POST.get("redirect")
         tempId = request.POST.get("guest_temp_id")
-        guestEmail = request.POST.get("guest_email")
         guestFirstName = request.POST.get("guest_first_name")
         guestLastName = request.POST.get("guest_last_name")
+        if request.POST.get("guest_email"):
+            guestEmail = request.POST.get("guest_email")
+        else:
+            guestEmail = User.objects.all().filter(first_name=guestFirstName, last_name=guestLastName)[0].email
         currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
         # check if guest already exists
         user = User.objects.all().filter(email=guestEmail)
