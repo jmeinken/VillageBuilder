@@ -3,7 +3,7 @@
 			    	{% for entry in nav %}	
 			            <li class="{{ entry.class_attr }}">
 			            	{% if not forloop.first %}<div class="nav-wedge"></div>{% endif %}
-			                    <a href="{{ entry.link }}">{{ entry.label }}</a>
+			                    <a href="{{ entry.link }}" id="{{ entry.id }}">{{ entry.label }}</a>
 			                {% if not forloop.last %}<div class="nav-arrow"></div>{% endif %}
 			            </li>
 		            {% endfor %}

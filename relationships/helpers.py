@@ -119,7 +119,8 @@ def getParticipantFull(participantId, currentParticipant):
     if participant.participant_type == 'person': 
         if (    result['relationship'] == RelationshipTypes.FRIENDS   
                 or result['relationship'] == RelationshipTypes.GUEST_FRIENDS   
-                or result['relationship'] == RelationshipTypes.REQUEST_RECEIVED   
+                or result['relationship'] == RelationshipTypes.REQUEST_RECEIVED
+                or result['relationship'] == RelationshipTypes.SELF     
            ):
             if participant.member.share_email:
                 result['email'] = participant.user.email

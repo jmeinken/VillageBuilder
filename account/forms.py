@@ -29,6 +29,8 @@ class AccountInfoForm(forms.ModelForm):
             self.add_error('first_name', 'This field is required.')
         if last_name == '':
             self.add_error('last_name', 'This field is required.')
+        if User.objects.all().filter(email=email).count() != 0:
+            self.add_error('email', 'An account already exists with this email.')
 
 class AddressForm(forms.ModelForm):
     class Meta:

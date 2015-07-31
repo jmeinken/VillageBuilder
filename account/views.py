@@ -120,7 +120,8 @@ def account_info(request):
             for field in myform.cleaned_data:
                 request.session[field] = myform.cleaned_data[field]
             request.session['account_info'] = 'complete'
-            return redirect(reverse('account:address'))
+            destination = ifset(request.POST['redirect-url'], 'account:address')
+            return redirect(reverse(destination))
     else:
         myform = AccountInfoForm(initial={
             'email': ifkeyset(request.session, 'email'),
@@ -147,7 +148,8 @@ def address(request):
             for field in myform.cleaned_data:
                 request.session[field] = str(myform.cleaned_data[field])
             request.session['address'] = 'complete'
-            return redirect(reverse('account:personal_info'))
+            destination = ifset(request.POST['redirect-url'], 'account:personal_info')
+            return redirect(reverse(destination))
     else:
         myform = AddressForm()
     context = {

@@ -1,6 +1,7 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		
+	
 		$('#geocode-results-container').hide();
 		
 		//initialize page
@@ -55,7 +56,12 @@
 	    		}
 	    	});
 	    });
+	    
 	    $('#button-use-address').click(function() {
+	    	prepareAndSubmitAddress();
+	    });
+	    
+	    function prepareAndSubmitAddress() {
 	    	var index = $('input[name=geocode-results]:checked').val();
 	    	var add = geocodeResults[index];
 	    	$('input[name=full_address]').val(add.formatted_address);
@@ -78,7 +84,8 @@
 	            }
 	    	}
 	    	$("#address-form").submit();
-	    });
+	    }
+	    
 	}); 
     
 </script>

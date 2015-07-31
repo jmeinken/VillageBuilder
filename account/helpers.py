@@ -12,12 +12,9 @@ def build_nav(request, current_view):
     if current_view == 'account_info':
         nav_account_info = { 'label' : 'Account Info', 'class_attr' : 'active disabled' }
         nav_complete = { 'label' : 'Confirmation', 'class_attr' : 'disabled' }
-        if 'account_info' in request.session.keys():
-            nav_address = { 'label' : 'Address', 'link' : reverse('account:address') }
-        else:
-            nav_address = { 'label' : 'Address', 'class_attr' : 'disabled' }
+        nav_address = { 'label' : 'Address', 'link' :  '#', 'id' : 'address-link'}
         if 'address'  in request.session.keys():
-            nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'link' : reverse('account:personal_info') }
+            nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'link' : '#', 'id' : 'personal-info-link' }
         else:
             nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'class_attr' : 'disabled' }
     if current_view == 'address':
@@ -27,7 +24,7 @@ def build_nav(request, current_view):
         if 'address'  in request.session.keys():
             nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'link' : reverse('account:personal_info') }
         else:
-            nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'class_attr' : 'disabled' }   
+            nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'class_attr' : 'disabled' }
     if current_view == 'personal_info':
         nav_account_info = { 'label' : 'Account Info', 'link' : reverse('account:account_info') }
         nav_complete = { 'label' : 'Confirmation', 'class_attr' : 'disabled' }

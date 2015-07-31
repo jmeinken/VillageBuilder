@@ -33,6 +33,12 @@ def ifkeyset(arr, key, ifempty='', ifset='[+]'):
     else:
         return ifempty
     
+def ifset(val, ifempty='', ifset='[+]'):
+    if val:
+        return ifset.replace('[+]', str(val))
+    else:
+        return ifempty
+    
 def getCurrentUser(request):
     user = request.user
     participant = Participant.objects.get(user=user, participant_type='person')

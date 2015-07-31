@@ -3,19 +3,24 @@
 {% load widget_tweaks %}
 
 {% block content %}
+    {% include "js/account_info.html" %}
+    
     <div class="container-fluid">
         {% include "blocks/create-account-header.html" %}
 	    </div>
 		<div class="row">
 			<div class="col-md-6">
-				<form action="{{ callback }}" method="post">
+				<form action="{{ callback }}" method="post" id="main-form">
 				    {% csrf_token %}
-				    {% for field in form %}	
+				    {{ form.non_field_errors }}
+				    {% for field in form %}
 				        <div class="form-group">
 				            {{ field|label_with_classes:"control-label" }} 
 				            {{ field|attr:"class:form-control" }}
 			            </div>
+			            <div id="form-errors" style="color:red;">{{ field.errors }}</div>
 				    {% endfor %}
+				    <input type="hidden" name="redirect-url" value="" />
 				    <input type="submit" value="Submit" />
 				</form>
 			</div>
