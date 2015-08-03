@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from .models import Member
+from .models import Member, Group
 
 class AccountInfoForm(forms.ModelForm):
     resubmit_password = forms.CharField(max_length=128, widget=forms.PasswordInput)
@@ -31,6 +31,15 @@ class AccountInfoForm(forms.ModelForm):
             self.add_error('last_name', 'This field is required.')
         if User.objects.all().filter(email=email).count() != 0:
             self.add_error('email', 'An account already exists with this email.')
+
+
+class GroupForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = ['title', 'description', 'neighborhood', 'city', 
+                  'phone_number', 'phone_type', 'email', 'website', 'image', 'thumb']
+
+
 
 class AddressForm(forms.ModelForm):
     class Meta:

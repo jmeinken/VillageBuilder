@@ -22,6 +22,9 @@ urlpatterns = [
     url(r'personal_info/', views.personal_info, name='personal_info'),
     url(r'confirmation/', views.confirmation, name='confirmation'),
     
+    url(r'create_group/', views.create_group, name='create_group'),
+    url(r'edit_group/([0-9]*)', views.edit_group, name='edit_group'),
+    
     url(r'account/', views.account, name='account'),
     
     url(r'upload_image/', views.upload_image, name='upload_image'),

@@ -27,6 +27,9 @@
 				  Your contact info is only visible to friends.
 				</div>
 			{% endif %}
+			{% if account.type == 'group' %}
+			    Owner: {{ account.owner.id }} {{ account.owner.name }}
+			{% endif %}
 			<dl class="dl dl-3">
 				{% if account.email  %}
 				   <dt>Email:</dt>

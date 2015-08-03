@@ -44,6 +44,11 @@
 			            <li><a href="{% url 'account:view' current.member.id %}">Your Profile</a></li>
 			            <li><a href="{% url 'account:account' %}">Account Settings</a></li>
 			            <li><a href="{% url 'logout' %}">Logout</a></li>
+			            <li class="divider"></li>
+			            {% for group in current.groups %}
+			                <li><a href="{% url 'account:edit_group' group.id %}">{{ group.title }}</a></li>
+			            {% endfor %}
+			            <li><a href="{% url 'account:create_group' %}">Create New Group</a></li>
 			          </ul>
 			        </li>
 		        </ul>

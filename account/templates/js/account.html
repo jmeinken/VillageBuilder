@@ -1,4 +1,16 @@
 <script type="text/javascript">
+
+	function updatePageAfterImageUpload(data) {
+		console.log(data)
+		$('#id_image').val(data.image.file);
+		$(".current-user-pic").attr("src", data.image.path);
+		$("#shared-user-pic").attr("src", data.image.path);
+	}
+	
+	var dataToAccompanyImageUpload = {'member_id': '{{ current.member.id }}'}
+	var imageUploadUrl = '{% url 'account:upload_image' %}'
+
+
 	$(document).ready(function(){
 		
 		$('#name-edit-btn, #name-close-btn').click(function() {

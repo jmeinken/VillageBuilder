@@ -1,0 +1,29 @@
+{% extends "home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+   
+
+	<div class="row">
+		<div class="col-md-6">
+		    
+			<form action="{{ callback }}" method="post" id="main-form">
+			    {% csrf_token %}
+			    {{ form.non_field_errors }}
+			    {% for field in groupForm %}
+			        {% if field.label != 'Image' and field.label != 'Thumb' %}
+				        <div class="form-group">
+				            {{ field|label_with_classes:"control-label" }} 
+				            {{ field|attr:"class:form-control" }}
+			            </div>
+			            <div id="form-errors" style="color:red;">{{ field.errors }}</div>
+			        {% endif %}
+			    {% endfor %}
+			    <input type="hidden" name="redirect-url" value="" />
+			    <input type="submit" value="Submit" />
+			</form>
+		</div>
+	</div>
+
+{% endblock %}

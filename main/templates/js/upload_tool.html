@@ -1,12 +1,42 @@
+{% comment %}
+
+This code expects some JS variables to already be set:
+
+imageUploadUrl: the destination url to pass image data to
+
+dataToAccompanyImageUpload: a JS object containing any data to pass together with the image upload
+
+updatePageAfterImageUpload(data): a function to run after the image is successfully uploaded
+
+
+{% endcomment %}
+
+<style>
+	.drag-drop {
+	    width: 300px;
+	    height: 88px;
+	    border: 2px dotted #0B85A1;
+	    text-align: center;
+	    line-height: 88px;
+	    background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.02)
+	}
+	
+	.drag-drop-active {
+	    border: 2px solid #0B85A1;
+	    background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.08)
+	}
+</style>
+
 <script type="text/javascript">
 	$(document).ready(function(){
+		
 		var api  // Jcrop api
 	    var $progressBar = $('#progressBar')
 	    //options
 	    var options = {
 	        fileInputs: ['#file'],
 	        canvases: {
-	        	image: {
+	            image: {
 	                'object': '#medium'
 	            },
 	            thumb: {
@@ -62,19 +92,14 @@
 	        ]
 	        //settings
 	        var settings = {
-	            url: '/account/upload_image/',
-	            data: {'member_id': '{{ current.member.id }}'}, //three fields (medium, small, text) to upload
+	            url: imageUploadUrl,
+	            data: dataToAccompanyImageUpload,
 	            onprogress: function (evt) { // function for xhr.upload.onprogress
 	                if (evt.lengthComputable) {
 	                    progress(evt.loaded / evt.total, $progressBar)
 	                }
 	            },
-	            success: function (data) {
-	            	console.log(data)
-	            	$('#id_image').val(data.image.file);
-	            	$(".current-user-pic").attr("src", data.image.path);
-	            	$("#shared-user-pic").attr("src", data.image.path);
-	            },
+	            success: updatePageAfterImageUpload,
 	            error: function ( jqXHR, textStatus, errorThrown ) {
 	                alert(errorThrown + ' ' + textStatus)
 	            }
@@ -87,12 +112,6 @@
 	        var progressBarWidth = percent * $element.width();
 	        $element.find('div').animate({ width: progressBarWidth }, 50).html(Math.round(percent * 100) + "%&nbsp;");
 	    }
-	    
-	    
-	    
 
-	    
-
-	    
 	});
 </script>

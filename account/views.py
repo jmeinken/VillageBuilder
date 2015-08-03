@@ -113,6 +113,38 @@ def account(request):
     }
     return render(request, 'account.html', context)
 
+@transaction.atomic
+def create_group(request):
+    groupForm = GroupForm
+    if request.method == "POST":
+        groupForm = GroupForm(request.POST)
+        if groupForm.is_valid():
+            group = groupForm.save(commit=False)
+            user = request.user
+            participant = Participant(user=user, type='group')
+            participant.save()
+            group.participant = participant
+            group.owner = Participant.objects.get(type='member', user=user).member
+            group.id = participant.id
+            group.save()
+    context = {
+        'current' : getCurrentUser(request),  
+        'groupForm' : groupForm,
+    }
+    return render(request, 'create_group.html', context)
+
+def edit_group(request, groupId):
+    group = Group.objects.get(id=groupId)
+    groupForm = GroupForm(instance=group)
+    if request.method == "POST":
+        groupForm = GroupForm(request.POST, instance=group)
+        if groupForm.is_valid():
+            groupForm.save()
+    context = {
+        'current' : getCurrentUser(request),  
+        'groupForm' : groupForm,
+    }
+    return render(request, 'edit_group.html', context)
 
 def account_info(request):
     if request.method == "POST":

@@ -1,8 +1,20 @@
 <script type="text/javascript">
+
+	function updatePageAfterImageUpload(data) {
+		console.log(data)
+	   	$('#id_image').val(data.image.file);
+	   	$('#id_thumb').val(data.thumb.file);
+	   	$("#user-pic").attr("src", data.image.path);
+	   	$("#shared-user-pic").attr("src", data.image.path);
+	}
+	
+	var dataToAccompanyImageUpload = {}
+	
+	var imageUploadUrl = '{% url 'account:upload_image' %}'
+
+
 	$(document).ready(function(){
 
-		
-		
 		function updateSharedView() {
 	    	$('#shared-first-name').html($('#id_first_name').val());
 	    	$('#shared-last-name').html($('#id_last_name').val());
@@ -50,8 +62,6 @@
 	    		$('#phone-info').hide();
 	    	}
 	    }).trigger("change");
-	    
-
 	    
 	});
 </script>

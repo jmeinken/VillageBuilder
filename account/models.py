@@ -101,7 +101,7 @@ class Participant(models.Model):
             return ''
         
     def get_public(self):
-        return {
+        result = {
             'id' : self.id,
             'type' : self.type,
             'name' : self.get_name(),
@@ -109,6 +109,15 @@ class Participant(models.Model):
             'image' : self.get_image(),
             'thumb' : self.get_thumb(),
         }
+        if self.type == 'group':
+            result['owner'] = self.group.owner.participant.get_public()
+        return result
+    
+    def get_private(self, currentUser):
+        result = self.get_public()
+        result['email'] = ''
+        result['phone'] = ''
+        return result
         
 
 

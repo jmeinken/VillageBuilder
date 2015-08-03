@@ -18,6 +18,10 @@ class RelationshipTypes():
     NO_ACCOUNT = 5
     GUEST_FRIENDS = 6
     NOT_GUEST_FRIENDS = 7
+    OWNER = 8
+    MEMBER = 10
+    PRIVELEGED_MEMBER = 11
+    
 
 
 
@@ -150,6 +154,8 @@ def getRelationship(currentParticipant, participant):
     # guest friendships
     if currentParticipant.type == 'member' and participant.type == 'guest':
         return getPersonToGuestRelationship(currentParticipant, participant)
+    if currentParticipant.type == 'member' and participant.type == 'group':
+        return RelationshipTypes.OWNER
     
 def getPersonToPersonRelationship(currentParticipant, participant):
     forward = False

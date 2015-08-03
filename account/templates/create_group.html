@@ -1,0 +1,53 @@
+{% extends "home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+
+{% include 'modals/upload_tool.html' %}
+
+<script type="text/javascript">
+
+	function updatePageAfterImageUpload(data) {
+		console.log(data)
+		$('#id_image').val(data.image.file);
+		$('#id_thumb').val(data.thumb.file);
+		//$(".current-user-pic").attr("src", data.image.path);
+		//$("#shared-user-pic").attr("src", data.image.path);
+	}
+	
+	var dataToAccompanyImageUpload = {}
+	var imageUploadUrl = '{% url 'account:upload_image' %}'
+
+
+	$(document).ready(function(){
+		
+
+	}); 
+</script>
+
+   
+
+	<div class="row">
+		<div class="col-md-6">
+		    <a href="#" id="user-pic-edit-btn" data-toggle="modal" data-target="#upload-pic-modal">Edit Pic</a>
+			<form action="{{ callback }}" method="post" id="main-form">
+			    {% csrf_token %}
+			    {{ form.non_field_errors }}
+			    {% for field in groupForm %}
+			        {% if field.label != 'Imagefff' and field.label != 'Thumbfff' %}
+				        <div class="form-group">
+				            {{ field|label_with_classes:"control-label" }} 
+				            {{ field|attr:"class:form-control" }}
+			            </div>
+			            <div id="form-errors" style="color:red;">{{ field.errors }}</div>
+			        {% endif %}
+			    {% endfor %}
+			    <input type="hidden" name="redirect-url" value="" />
+			    <input type="submit" value="Submit" />
+			</form>
+			
+		</div>
+	</div>
+
+{% endblock %}
