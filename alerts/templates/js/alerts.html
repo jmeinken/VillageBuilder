@@ -28,14 +28,18 @@ $(document).ready(function(){
     		if (data.count != 0) {
     			$('#alert-count').html('[' + data.count + ']')
     		}
+    		$('.delete-alert').click(function() {
+		        var alertId = $(this).attr('id').replace('delete-alert-', '')
+		        postAlerts({action : 'delete_alert', alert_id : alertId})
+		    });
 		}
     });
     
 	//reset alert count when alerts are viewed (maybe use setTimeout here)
     $('#open-alerts').click(function() {
-    	setTimeout(function() {
-    		postAlerts({action : 'reset_count'});
-    	}, 10000);
+    	if ( $('#alert-count').html() != '' ) {
+    	    postAlerts({action : 'reset_count'});
+    	}
     });
     
     function postAlerts(postData) {

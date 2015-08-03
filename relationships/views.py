@@ -25,12 +25,12 @@ def add_friend(request):
     if request.method == "POST":
         url = request.POST.get("redirect")
         friendId = request.POST.get("friend-id")
-        currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
-        friendship = Friendship(person=currentParticipant.member.person, friend_id=friendId)
+        currentParticipant = Participant.objects.get(user=request.user, type='member')
+        friendship = Friendship(member=currentParticipant.member, friend_id=friendId)
         friendship.save()
         #register event
         eventDict = {
-            'person_id' : currentParticipant.id,
+            'member_id' : currentParticipant.id,
             'friend_id' : friendId,
         }
         registerEvent('add friend', eventDict)
@@ -55,7 +55,7 @@ def create_guest(request):
             guestEmail = request.POST.get("guest_email")
         else:
             guestEmail = User.objects.all().filter(first_name=guestFirstName, last_name=guestLastName)[0].email
-        currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
+        currentParticipant = Participant.objects.get(user=request.user, type='member')
         # check if guest already exists
         user = User.objects.all().filter(email=guestEmail)
         if user.count() == 0:
@@ -70,20 +70,21 @@ def create_guest(request):
             user.save()
             participant = Participant(
                 user = user, 
-                participant_type = 'guest',
+                type = 'guest',
             )
             participant.save()
             guest = Guest(
                 id = participant.id,
                 participant = participant,
-                code = createRandomString(60)
+                code = createRandomString(60),
+                created_by = currentParticipant.member,
             )
             guest.save()
         else:
-            guest = Participant.objects.all().get(user=user,participant_type='guest').guest
+            guest = Participant.objects.all().get(user=user,type='guest').guest
         # add guest as friend
         guestFriendship = GuestFriendship(
-            person=currentParticipant.member.person, 
+            member=currentParticipant.member, 
             guest=guest
         )
         guestFriendship.save()
@@ -106,8 +107,8 @@ def remove_friend(request):
     if request.method == "POST":
         url = request.POST.get("redirect")
         friendId = request.POST.get("friend-id")
-        currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
-        friendship = Friendship.objects.get(person=currentParticipant.member.person, friend_id=friendId)
+        currentParticipant = Participant.objects.get(user=request.user, type='member')
+        friendship = Friendship.objects.get(member=currentParticipant.member, friend_id=friendId)
         friendship.delete()
         return redirect(url)
     return redirect('login')
@@ -118,7 +119,7 @@ def remove_guest_friend(request):
     if request.method == "POST":
         url = request.POST.get("redirect")
         friendId = request.POST.get("friend-id")
-        currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
+        currentParticipant = Participant.objects.get(user=request.user, type='person')
         guestFriendship = GuestFriendship.objects.get(person=currentParticipant.member.person, guest_id=friendId)
         guestFriendship.delete()
         return redirect(url)
@@ -129,7 +130,7 @@ def email_search(request):
     email = request.POST.getlist("email[]")
     firstName = request.POST.getlist("first_name[]")
     lastName = request.POST.getlist("last_name[]")
-    currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
+    currentParticipant = Participant.objects.get(user=request.user, type='member')
     results = []
     for i, value in enumerate(email):
         if email[i] or (firstName[i] and lastName[i]):
@@ -143,7 +144,7 @@ def email_search(request):
 
 @login_required
 def relationships(request):
-    currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
+    currentParticipant = Participant.objects.get(user=request.user, type='member')
     context = {
         'current' : getCurrentUser(request),
         'friends' : getFriends(currentParticipant),
@@ -154,7 +155,7 @@ def relationships(request):
 
 @login_required
 def participant_search(request):
-    currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
+    currentParticipant = Participant.objects.get(user=request.user, type='member')
     searchString = request.GET.get("participant-search-txt")
     matches = searchParticipants(currentParticipant, searchString)
     context = {

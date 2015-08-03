@@ -4,7 +4,7 @@ from django.db.models import Q
 
 from villagebuilder.settings import BASE_DIR
 
-from .models import Member, Participant, Person, Guest
+from .models import Member, Participant, Guest
 from relationships.helpers import *
 
 # used by account creation views to render wizard navigation
@@ -47,22 +47,22 @@ def getParticipantInfo(participantId, currentParticipant, basic=True):
 
 def getInfoForFriend(participant, currentParticipant):
     result = {}
-    if participant.participant_type == 'person':
+    if participant.type == 'person':
         member = Member.objects.get(participant=participant)
         person = Person.objects.get(member=member)
         result['name'] = participant.user.get_full_name()
-    if participant.participant_type == 'guest':
+    if participant.type == 'guest':
         guest = Guest.objects.get(guest=guest)
         result['name'] = participant.user.get_full_name()
     return result    
         
 def getInfoForNonFriend(participant, currentParticipant):
     result = {}
-    if participant.participant_type == 'person':
+    if participant.type == 'person':
         member = Member.objects.get(participant=participant)
         person = Person.objects.get(member=member)
         result['name'] = participant.user.get_full_name()
-    if participant.participant_type == 'guest':
+    if participant.type == 'guest':
         guest = Guest.objects.get(guest=guest)
         result['name'] = participant.user.get_full_name()
     return result          

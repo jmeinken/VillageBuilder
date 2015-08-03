@@ -1,4 +1,5 @@
 import json
+import time
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -16,10 +17,11 @@ from .helpers import *
 @csrf_exempt
 def alerts(request):
     user = request.user
-    currentParticipant = Participant.objects.get(user=user, participant_type='person')
+    currentParticipant = Participant.objects.get(user=user, type='member')
     if request.method == "POST":
         action = request.POST.get("action")
         if action == 'reset_count':
+            time.sleep(10)
             resetAlertCount(currentParticipant)
         if action == 'delete_alert':
             deleteAlert(request.POST.get("alert_id"))

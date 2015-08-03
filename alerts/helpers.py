@@ -47,15 +47,15 @@ def getAlerts(currentParticipant):
         data = json.loads(event.event_data)
         if event.event_type == 'add friend':
             # check if still exists
-            if Friendship.objects.all().filter(person_id=data['person_id'],friend_id=data['friend_id']).count()!=1:
+            if Friendship.objects.all().filter(member_id=data['member_id'],friend_id=data['friend_id']).count()!=1:
                 event.delete()
                 continue
             # check if reciprocated
-            member = Member.objects.get(id=data['person_id'])
+            member = Member.objects.get(id=data['member_id'])
             image = member.get_user_pic()
             friendName = member.participant.user.get_full_name()
             friendId = member.participant.id
-            if Friendship.objects.all().filter(person_id=data['friend_id'],friend_id=data['person_id']).count()==1:
+            if Friendship.objects.all().filter(member_id=data['friend_id'],friend_id=data['member_id']).count()==1:
                 response = {
                     'id' : event.id,
                     'image' : image,

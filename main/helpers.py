@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 from villagebuilder.settings import BASE_DIR
 
-from account.models import Member, Participant, Person
+from account.models import Member, Participant
 
 def handle_uploaded_file(f):
     indexPath = BASE_DIR + '/main/static/uploads/user_pics.txt'
@@ -41,7 +41,7 @@ def ifset(val, ifempty='', ifset='[+]'):
     
 def getCurrentUser(request):
     user = request.user
-    participant = Participant.objects.get(user=user, participant_type='person')
+    participant = Participant.objects.get(user=user, type='member')
     member = Member.objects.get(participant=participant)
     return {
         'user' : user,

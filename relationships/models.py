@@ -1,22 +1,24 @@
 from django.db import models
 
-from account.models import Person, Guest
+from account.models import Guest, Member
 
 # person-person relationship
 
 class Friendship(models.Model):
-    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='friendship_set')
-    friend = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='reverse_friendship_set')
+    member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='friendship_set')
+    friend = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='reverse_friendship_set')
     
     class Meta:
-        unique_together = ('person', 'friend',)
+        unique_together = ('member', 'friend',)
+        
+
         
 class GuestFriendship(models.Model):
-    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
     guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
     
     class Meta:
-        unique_together = ('person', 'guest',)
+        unique_together = ('member', 'guest',)
 
 
 

@@ -15,8 +15,8 @@ class Migration(migrations.Migration):
             name='Friendship',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('friend', models.ForeignKey(related_name='reverse_friendship_set', to='account.Person')),
-                ('person', models.ForeignKey(related_name='friendship_set', to='account.Person')),
+                ('friend', models.ForeignKey(related_name='reverse_friendship_set', to='account.Member')),
+                ('member', models.ForeignKey(related_name='friendship_set', to='account.Member')),
             ],
         ),
         migrations.CreateModel(
@@ -24,15 +24,15 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('guest', models.ForeignKey(to='account.Guest')),
-                ('person', models.ForeignKey(to='account.Person')),
+                ('member', models.ForeignKey(to='account.Member')),
             ],
         ),
         migrations.AlterUniqueTogether(
             name='guestfriendship',
-            unique_together=set([('person', 'guest')]),
+            unique_together=set([('member', 'guest')]),
         ),
         migrations.AlterUniqueTogether(
             name='friendship',
-            unique_together=set([('person', 'friend')]),
+            unique_together=set([('member', 'friend')]),
         ),
     ]

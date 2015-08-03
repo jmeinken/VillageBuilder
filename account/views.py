@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 
 from villagebuilder.utils import console
 from .forms import *
-from .models import Member, Participant, Person
+from .models import Member, Participant
 
 from account.helpers import *
 from main.helpers import *
@@ -21,7 +21,7 @@ from relationships.helpers import *
 
 @login_required
 def view(request, participantId):
-    currentParticipant = Participant.objects.get(user=request.user, participant_type='person')
+    currentParticipant = Participant.objects.get(user=request.user, type='member')
     accountInfo = getParticipantFull(participantId, currentParticipant)
     context = {
         'account' : accountInfo,
@@ -38,7 +38,7 @@ def account(request):
     userEmailForm = UserEmailForm(instance=user)
     userNameForm = UserNameForm(instance=user)
     userPasswordForm = UserPasswordForm(user)
-    participant = Participant.objects.get(user=user, participant_type='person')
+    participant = Participant.objects.get(user=user, type='member')
     member = Member.objects.get(participant=participant)
     addressForm = AddressForm(instance=member)
     memberPrivacyForm = MemberPrivacyForm(instance=member)
@@ -167,13 +167,18 @@ def address(request):
 def upload_image(request):
     response = {}
     if request.method == "POST" and request.is_ajax():
-        if 'medium' in request.FILES:
-            path = handle_uploaded_file(request.FILES['medium'])
+        if 'image' in request.FILES:
+            imagePath = handle_uploaded_file(request.FILES['image'])
+            thumbPath = handle_uploaded_file(request.FILES['thumb'])
             if 'member_id' in request.POST:
                 member = Member.objects.get(id=request.POST['member_id'])
-                member.user_pic_medium = path['file']
+                member.image = imagePath['file']
+                member.thumb = thumbPath['file']
                 member.save()
-            response = path
+            response = {
+                'image' : imagePath,
+                'thumb' : thumbPath,
+            }
         else:
             response['test'] = 'Goodbye cruel world'
         return HttpResponse(
@@ -206,7 +211,7 @@ def personal_info(request):
         #save participant
         participant = Participant(
             user = user, 
-            participant_type = 'person',
+            type = 'member',
         )
         participant.save()
         #save member through PersonalInfoForm
@@ -221,16 +226,8 @@ def personal_info(request):
             # get data from session
             print personalInfoForm
             personalInfoForm.save()
-            #save person
-            person = Person(
-                id = member.id,
-                member = member,
-                first_name = ifkeyset(request.session, 'first_name'),
-                last_name = ifkeyset(request.session, 'last_name')
-            )
-            person.save()
             print 'validated'
-            #save user to database
+            request.session.flush()
             return redirect(reverse('account:confirmation'))
         else:
             print 'invalid'

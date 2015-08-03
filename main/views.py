@@ -12,7 +12,7 @@ from alerts.helpers import *
 @login_required
 def home(request):
     user = request.user
-    currentParticipant = Participant.objects.get(user=user, participant_type='person')
+    currentParticipant = Participant.objects.get(user=user, type='member')
     context = {
             'current' : getCurrentUser(request),
             'peopleNearYou' : getPeopleNearYou(currentParticipant),

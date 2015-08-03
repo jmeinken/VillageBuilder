@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib import admin
 from django.contrib.auth.models import User
+from django.conf import settings
+
 
 # User Model:
 # username *
@@ -28,12 +30,86 @@ from django.contrib.auth.models import User
 
 class Participant(models.Model):
     PARTICIPANT_TYPES = (
-        ('person', 'person'),
+        ('member', 'member'),
         ('guest', 'guest'),
         ('group', 'group'),
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    participant_type = models.CharField(max_length=6, choices=PARTICIPANT_TYPES)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    type = models.CharField(max_length=6, choices=PARTICIPANT_TYPES)
+    
+    def get_name(self, length='full'):
+        if self.type == 'group':
+            return self.group.title
+        else:
+            if length=='full':
+                return self.user.get_full_name()
+            else:
+                return self.user.get_short_name()
+            
+    def get_email(self):
+        if self.type == 'group' and self.group.email:
+            return self.group.email
+        else:
+            return self.user.email
+        
+    def get_image(self):
+        if self.type == 'member' and self.member.image:
+            return '/static/uploads/user_pics/' + self.member.image
+        if self.type == 'group' and self.group.image:
+            return '/static/uploads/user_pics/' + self.group.image
+        return '/static/img/generic-user.png'
+        
+    def get_thumb(self):
+        if self.type == 'member' and self.member.thumb:
+            return '/static/uploads/user_pics/' + self.member.thumb
+        if self.type == 'group' and self.group.thumb:
+            return '/static/uploads/user_pics/' + self.group.thumb
+        else:
+            return '/static/img/generic-user.png'
+        
+    def get_display_address(self):
+        if self.type == 'guest':
+            return '(guest account)'
+        if self.type == 'group':
+            if self.group.neighborhood:
+                return self.group.neighborhood
+            if self.group.city:
+                return self.group.city
+            return self.group.owner.city
+        if self.type == 'member':
+            if self.member.neighborhood:
+                return self.member.street + ' (' + self.member.neighborhood + ')'
+            else:
+                return self.member.street + ' (' + self.member.city + ')'
+
+    def get_phone(self):
+        if self.type == 'guest':
+            return ''
+        if self.type == 'group':
+            if self.group.phone_number:
+                if self.group.phone_type:
+                    return self.group.phone_number + ' (' + self.group.phone_type + ')'
+                else:
+                    return self.group.phone_number
+        if self.type == 'member':
+            if self.member.phone_number:
+                if self.member.phone_type:
+                    return self.member.phone_number + ' (' + self.member.phone_type + ')'
+                else:
+                    return self.member.phone_number
+        else:
+            return ''
+        
+    def get_public(self):
+        return {
+            'id' : self.id,
+            'type' : self.type,
+            'name' : self.get_name(),
+            'display_address' : self.get_display_address(),
+            'image' : self.get_image(),
+            'thumb' : self.get_thumb(),
+        }
+        
 
 
 # need non-auto pk field so that it can be set to the same value as participant
@@ -45,27 +121,26 @@ class Member(models.Model):
     )
     id = models.IntegerField(primary_key=True)
     participant = models.OneToOneField('Participant', on_delete=models.CASCADE)
-    full_address = models.CharField(max_length=400)
-    address1 = models.CharField(max_length=50, blank=True, null=True)
-    address2 = models.CharField(max_length=50, blank=True, null=True)
-    city = models.CharField(max_length=50, blank=True, null=True)
-    state = models.CharField(max_length=2, blank=True, null=True)
-    zip_code = models.CharField(max_length=10, blank=True, null=True)
+    full_address = models.CharField(max_length=600)
+    # address1 = models.CharField(max_length=50, blank=True, null=True)
+    # address2 = models.CharField(max_length=50, blank=True, null=True)
+    street = models.CharField(max_length=60)
+    neighborhood = models.CharField(max_length=60, blank=True, null=True)
+    city = models.CharField(max_length=60)
+    # state = models.CharField(max_length=2, blank=True, null=True)
+    # zip_code = models.CharField(max_length=10, blank=True, null=True)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
-    street = models.CharField(max_length=50)
-    neighborhood = models.CharField(max_length=50, blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     phone_type = models.CharField(max_length=20, blank=True, null=True, choices=PHONE_TYPE_CHOICES)
     share_email = models.BooleanField()
-    share_address = models.BooleanField()
     share_phone = models.BooleanField()
-    user_pic_medium = models.CharField(max_length=100, blank=True, null=True)
-    user_pic_small = models.CharField(max_length=100, blank=True, null=True)
+    image = models.CharField(max_length=30, blank=True, null=True)
+    thumb = models.CharField(max_length=30, blank=True, null=True)
     
     def get_user_pic(self):
-        if self.user_pic_medium:
-            return '/static/uploads/user_pics/' + self.user_pic_medium
+        if self.image:
+            return '/static/uploads/user_pics/' + self.image
         else:
             return '/static/img/generic-user.png'
     
@@ -88,8 +163,7 @@ class Guest(models.Model):
     id = models.IntegerField(primary_key=True)
     participant = models.OneToOneField('Participant', on_delete=models.CASCADE)
     code = models.CharField(max_length=60)
-    first_name = models.CharField(max_length=30, blank=True, null=True)
-    last_name = models.CharField(max_length=30, blank=True, null=True)
+    created_by = models.ForeignKey('Member')
     
     def get_user_pic(self):
         return '/static/img/generic-user.png'
@@ -98,20 +172,29 @@ class Guest(models.Model):
     
     
 class Group(models.Model):
+    PHONE_TYPE_CHOICES = (
+      ("mobile", "mobile"),
+      ("home", "home"),
+      ("work", "work"),
+    )
     id = models.IntegerField(primary_key=True)
-    member = models.OneToOneField('Member', on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
+    participant = models.OneToOneField('Participant', on_delete=models.CASCADE)
+    title = models.CharField(max_length=120)
     description = models.TextField(blank=True, null=True)
-    email = models.CharField(max_length=100, blank=True, null=True)
+    neighborhood = models.CharField(max_length=60, blank=True, null=True)
+    city = models.CharField(max_length=60, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    phone_type = models.CharField(max_length=20, blank=True, null=True, choices=PHONE_TYPE_CHOICES)
+    email = models.CharField(max_length=120, blank=True, null=True)
+    website = models.CharField(max_length=240, blank=True, null=True)
+    image = models.CharField(max_length=30, blank=True, null=True)
+    thumb = models.CharField(max_length=30, blank=True, null=True)
+    owner = models.ForeignKey('Member', on_delete=models.CASCADE)
 
 
         
         
-class Person(models.Model):
-    id = models.IntegerField(primary_key=True)
-    member = models.OneToOneField('Member', on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+
 
 
         

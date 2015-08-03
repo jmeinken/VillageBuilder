@@ -6,8 +6,11 @@
 	    var options = {
 	        fileInputs: ['#file'],
 	        canvases: {
-	            medium: {
+	        	image: {
 	                'object': '#medium'
+	            },
+	            thumb: {
+	                'object': '#small'
 	            }
 			},
 	        dragDrops: ['#dragDrop'],
@@ -49,9 +52,13 @@
 	        //sources
 	        var sources = [
 	            {
-	                key: 'medium', // key in options.canvases
+	                key: 'image', // key in options.canvases
 	                format: 'image/png' // default = 'image/jpeg'
-	            }
+	            },
+	            {
+	                key: 'thumb', // key in options.canvases
+	                format: 'image/png' // default = 'image/jpeg'
+	            },
 	        ]
 	        //settings
 	        var settings = {
@@ -64,9 +71,9 @@
 	            },
 	            success: function (data) {
 	            	console.log(data)
-	            	$('#id_user_pic_medium').val(data.file);
-	            	$(".current-user-pic").attr("src", data.path);
-	            	$("#shared-user-pic").attr("src", data.path);
+	            	$('#id_image').val(data.image.file);
+	            	$(".current-user-pic").attr("src", data.image.path);
+	            	$("#shared-user-pic").attr("src", data.image.path);
 	            },
 	            error: function ( jqXHR, textStatus, errorThrown ) {
 	                alert(errorThrown + ' ' + textStatus)

@@ -40,11 +40,10 @@ class AddressForm(forms.ModelForm):
 class PersonalInfoForm(forms.ModelForm):
     class Meta:
         model = Member
-        fields = ['full_address', 'street', 'city', 'neighborhood', 'share_email', 'share_address', 'share_phone',
-                  'phone_number', 'phone_type', 'user_pic_medium']
+        fields = ['full_address', 'street', 'city', 'neighborhood', 'share_email', 'share_phone',
+                  'phone_number', 'phone_type', 'image', 'thumb',]
         labels = {
             'share_email': 'Allow friends to see my email address',
-            'share_address': 'Allow friends to see my full mailing address',
             'share_phone': 'Allow friends to see my phone number',
         }
         
@@ -95,10 +94,9 @@ class UserPasswordForm(forms.Form):
 class MemberPrivacyForm(forms.ModelForm):
     class Meta:
         model = Member
-        fields = ['share_email', 'share_address', 'share_phone',]
+        fields = ['share_email', 'share_phone',]
         labels = {
             'share_email': 'Allow friends to see my email address',
-            'share_address': 'Allow friends to see my full mailing address',
             'share_phone': 'Allow friends to see my phone number',
         }
         
