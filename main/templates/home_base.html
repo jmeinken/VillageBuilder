@@ -41,14 +41,15 @@
 			              {{current.user.get_full_name}} <span class="caret"></span>
 			          </a>
 			          <ul class="dropdown-menu" role="menu">
-			            <li><a href="{% url 'account:view' current.member.id %}">Your Profile</a></li>
-			            <li><a href="{% url 'account:account' %}">Account Settings</a></li>
-			            <li><a href="{% url 'logout' %}">Logout</a></li>
+			            <li><a href="{% url 'account:view' current.member.id %}"><i class="fa fa-user"></i> Your Profile</a></li>
+			            <li><a href="{% url 'account:account' %}"><i class="fa fa-wrench"></i> Account Settings</a></li>
+			            <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a></li>
 			            <li class="divider"></li>
+			            <li>Groups</li>
 			            {% for group in current.groups %}
-			                <li><a href="{% url 'account:edit_group' group.id %}">{{ group.title }}</a></li>
+			                <li><a href="{% url 'account:view' group.id %}"><i class="fa fa-users"></i> {{ group.title }}</a></li>
 			            {% endfor %}
-			            <li><a href="{% url 'account:create_group' %}">Create New Group</a></li>
+			            <li><a href="{% url 'account:create_group' %}"><i class="fa fa-plus"></i> Create New Group</a></li>
 			          </ul>
 			        </li>
 		        </ul>

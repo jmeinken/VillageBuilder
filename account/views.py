@@ -16,6 +16,7 @@ from .models import Member, Participant
 from account.helpers import *
 from main.helpers import *
 from relationships.helpers import *
+from relationships.models import GroupMembership
 
 
 
@@ -135,6 +136,8 @@ def create_group(request):
 
 def edit_group(request, groupId):
     group = Group.objects.get(id=groupId)
+    currentMembers = getGroupMembers(group, [RelationshipTypes.GROUP_MEMBER])
+    awaitingApproval = getGroupMembers(group, [RelationshipTypes.GROUP_MEMBER_REQUESTED])
     groupForm = GroupForm(instance=group)
     if request.method == "POST":
         groupForm = GroupForm(request.POST, instance=group)
@@ -142,7 +145,11 @@ def edit_group(request, groupId):
             groupForm.save()
     context = {
         'current' : getCurrentUser(request),  
-        'groupForm' : groupForm,
+        'RelationshipTypes' : RelationshipTypes,
+        'group' : group,
+        'form' : groupForm,
+        'currentMembers' : currentMembers,
+        'awaitingApproval' : awaitingApproval,
     }
     return render(request, 'edit_group.html', context)
 

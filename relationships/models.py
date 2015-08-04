@@ -1,6 +1,6 @@
 from django.db import models
 
-from account.models import Guest, Member
+from account.models import Guest, Member, Group
 
 # person-person relationship
 
@@ -19,6 +19,17 @@ class GuestFriendship(models.Model):
     
     class Meta:
         unique_together = ('member', 'guest',)
+        
+class GroupMembership(models.Model):
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    member = models.ForeignKey(Member, on_delete=models.CASCADE)
+    requested = models.BooleanField(default=False)
+    invited = models.BooleanField(default=False)
+    
+    class Meta:
+        unique_together = ('group', 'member',)
+        
+
 
 
 

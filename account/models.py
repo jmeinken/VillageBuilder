@@ -199,6 +199,7 @@ class Group(models.Model):
     image = models.CharField(max_length=30, blank=True, null=True)
     thumb = models.CharField(max_length=30, blank=True, null=True)
     owner = models.ForeignKey('Member', on_delete=models.CASCADE)
+    private = models.BooleanField(default=False)
 
 
         

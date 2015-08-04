@@ -8,6 +8,7 @@ from django.db.models import Q
 from villagebuilder.settings import BASE_DIR
 
 from account.models import Member, Participant, Guest
+from .models import *
 
 class RelationshipTypes():
     SELF = 0
@@ -18,9 +19,13 @@ class RelationshipTypes():
     NO_ACCOUNT = 5
     GUEST_FRIENDS = 6
     NOT_GUEST_FRIENDS = 7
-    OWNER = 8
-    MEMBER = 10
-    PRIVELEGED_MEMBER = 11
+    GROUP_OWNER = 8
+    GROUP_MEMBER = 10
+    NOT_GROUP_MEMBER = 11
+    GROUP_MEMBER_REQUESTED = 12
+    GROUP_MEMBER_INVITED = 13
+    PRIVELEGED_MEMBER = 14
+    NONE = 15
     
 
 
@@ -71,6 +76,15 @@ def getFriends(currentParticipant):
         results.append(getParticipant(guestFriend.id, currentParticipant))
     return results  
 
+def getGroupMembers(group, relationshipTypes):
+    memberships = GroupMembership.objects.filter(group=group)
+    results = []
+    for membership in memberships:
+        result = getParticipant(membership.member.id, group.participant)
+        if result['relationship'] in relationshipTypes:
+            results.append(result)
+    return results
+
 def getFriendRequests(currentParticipant):   
     friends = (
         Member.objects.all()
@@ -98,11 +112,14 @@ def searchParticipants(currentParticipant, searchString='', limit=0):
     return results
     
     
-def getParticipant(participantId, currentParticipant):
+def getParticipant(participantId, contextParticipant=None):
     participant = Participant.objects.get(id=participantId)
     # member = Member.objects.get(member=participant)
     result = participant.get_public()
-    result['relationship'] = getRelationship(currentParticipant, participant)
+    if contextParticipant:
+        result['relationship'] = getRelationship(contextParticipant, participant)
+    else:
+        result['relationship'] = RelationshipTypes.NONE
     print(result)
     return result
 
@@ -146,27 +163,47 @@ def simulateParticipant(email, firstName, lastName):
     
     
 
-    
-def getRelationship(currentParticipant, participant):
+# relationship of participantA to participantB
+def getRelationship(a, b):
     # p2p
-    if currentParticipant.type == 'member' and participant.type == 'member':
-        return getPersonToPersonRelationship(currentParticipant, participant)
+    if a.type == 'member' and b.type == 'member':
+        return getMemberToMemberRelationship(a.member, b.member)
     # guest friendships
-    if currentParticipant.type == 'member' and participant.type == 'guest':
-        return getPersonToGuestRelationship(currentParticipant, participant)
-    if currentParticipant.type == 'member' and participant.type == 'group':
-        return RelationshipTypes.OWNER
+    if a.type == 'guest' and b.type == 'member':
+        return getMemberToGuestRelationship(b.member, a.guest)
+    if a.type == 'member' and b.type == 'guest':
+        return getMemberToGuestRelationship(a.member, b.guest)
+    # group memberships
+    if a.type == 'member' and b.type == 'group':
+        return getMemberToGroupRelationship(a.member, b.group)
+    if a.type == 'group' and b.type == 'member':
+        return getMemberToGroupRelationship(b.member, a.group)
+    return RelationshipTypes.NONE
     
-def getPersonToPersonRelationship(currentParticipant, participant):
+def getMemberToGroupRelationship(member, group):
+    if member.id == group.owner.id:
+        return RelationshipTypes.GROUP_OWNER
+    membership = GroupMembership.objects.filter(member=member, group=group)
+    if membership.count() == 0:
+        return RelationshipTypes.NOT_GROUP_MEMBER
+    if membership[0].requested and membership[0].invited:
+        return RelationshipTypes.GROUP_MEMBER
+    if membership[0].requested:
+        return RelationshipTypes.GROUP_MEMBER_REQUESTED
+    if membership[0].invited:
+        return RelationshipTypes.GROUP_MEMBER_INVITED
+    
+    
+def getMemberToMemberRelationship(memberA, memberB):
     forward = False
     backward = False
-    if currentParticipant == participant:
+    if memberA.id == memberB.id:
         return RelationshipTypes.SELF
-    for friendship in currentParticipant.member.friendship_set.all():
-        if friendship.friend == participant.member:
+    for friendship in memberA.friendship_set.all():
+        if friendship.friend == memberB:
             forward = True
-    for friendship in currentParticipant.member.reverse_friendship_set.all():
-        if friendship.member == participant.member:
+    for friendship in memberA.reverse_friendship_set.all():
+        if friendship.member == memberB:
             backward = True
     if forward and backward:
         return RelationshipTypes.FRIENDS
@@ -176,9 +213,9 @@ def getPersonToPersonRelationship(currentParticipant, participant):
         return RelationshipTypes.REQUEST_RECEIVED
     return RelationshipTypes.NOT_FRIENDS
     
-def getPersonToGuestRelationship(currentParticipant, participant):
-    for guestFriendship in currentParticipant.member.guestfriendship_set.all():
-        if guestFriendship.guest == participant.guest:
+def getMemberToGuestRelationship(member, guest):
+    for guestFriendship in member.guestfriendship_set.all():
+        if guestFriendship.guest == guest:
             return RelationshipTypes.GUEST_FRIENDS
     return RelationshipTypes.NOT_GUEST_FRIENDS
     

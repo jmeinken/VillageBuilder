@@ -42,6 +42,29 @@ def add_friend(request):
     return redirect('login')
 
 @login_required
+def join_group(request):
+    print 'join_group'
+    if request.method == "POST":
+        url = request.POST.get("redirect")
+        groupId = request.POST.get("group-id")
+        currentParticipant = Participant.objects.get(user=request.user, type='member')
+        groupMembership = GroupMembership.objects.all().filter(member=currentParticipant.member, group_id=groupId)
+        if groupMembership.count() == 0:
+            groupMembership = GroupMembership(member=currentParticipant.member, group_id=groupId)
+        groupMembership.requested = True
+        groupMembership.save()
+        #register event
+        #eventDict = {
+        #    'member_id' : currentParticipant.id,
+        #    'friend_id' : friendId,
+        #}
+        # registerEvent('add friend', eventDict)
+        return redirect(url)
+    return redirect('login')
+
+
+
+@login_required
 @csrf_exempt
 @transaction.atomic
 def create_guest(request):
