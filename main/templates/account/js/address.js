@@ -1,6 +1,5 @@
-<script type="text/javascript">
+
 	$(document).ready(function(){
-		
 		
 	
 		$('#geocode-results-container').hide();
@@ -57,30 +56,35 @@
 	    		}
 	    	});
 	    });
+	    
 	    $('#button-use-address').click(function() {
+	    	prepareAndSubmitAddress();
+	    });
+	    
+	    function prepareAndSubmitAddress() {
 	    	var index = $('input[name=geocode-results]:checked').val();
 	    	var add = geocodeResults[index];
-	    	$('form[name=address-form] input[name=full_address]').val(add.formatted_address);
-	    	$('form[name=address-form] input[name=street]').val('');
-	    	$('form[name=address-form] input[name=city]').val('');
-	    	$('form[name=address-form] input[name=neighborhood]').val('');
+	    	$('input[name=full_address]').val(add.formatted_address);
+	    	$('input[name=street]').val('');
+	    	$('input[name=city]').val('');
+	    	$('input[name=neighborhood]').val('');
 	    	var lat = parseFloat(add.geometry.location.lat()).toFixed(7);
 	    	var lng = parseFloat(add.geometry.location.lng()).toFixed(7)
-	    	$('form[name=address-form] input[name=latitude]').val(lat);
-	    	$('form[name=address-form] input[name=longitude]').val(lng);
+	    	$('input[name=latitude]').val(lat);
+	    	$('input[name=longitude]').val(lng);
 	    	for (var i=0; i<add.address_components.length; i++) {
 		    	if ($.inArray("route", add.address_components[i].types) != -1) {
-		    		$('form[name=address-form] input[name=street]').val(add.address_components[i].short_name);
+		    		$('input[name=street]').val(add.address_components[i].short_name);
 	            } 
 		    	if ($.inArray("neighborhood", add.address_components[i].types) != -1) {
-	                $('form[name=address-form] input[name=neighborhood]').val(add.address_components[i].short_name);
+	                $('input[name=neighborhood]').val(add.address_components[i].short_name);
 	            }
 	            if ($.inArray("locality", add.address_components[i].types) != -1) {
-	                $('form[name=address-form] input[name=city]').val(add.address_components[i].long_name);
+	                $('input[name=city]').val(add.address_components[i].long_name);
 	            }
 	    	}
-	    	$("form[name=address-form]").submit();
-	    });
+	    	$("#address-form").submit();
+	    }
+	    
 	}); 
     
-</script>

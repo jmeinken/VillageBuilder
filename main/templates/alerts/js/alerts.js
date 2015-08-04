@@ -1,5 +1,3 @@
-<script type="text/javascript">
-
 $(document).ready(function(){
 		
 	$('.add-friend').click(function(event) {
@@ -66,5 +64,3 @@ $(document).ready(function(){
 
 	
 }); 
-
-</script>

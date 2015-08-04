@@ -1,11 +1,13 @@
-{% extends "core/home_base.html" %}
+{% extends "core/bases/home_base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}
 
 {% block subcontent %}
 
-{% include "account/js/account.html" %}
-{% include "account/js/account_address.html" %}
+<script type="text/javascript">
+	{% include "account/js/account.js" %}
+	{% include "account/js/account_address.js" %}
+</script>
 
 
 {% include "core/modals/upload_tool.html" %}

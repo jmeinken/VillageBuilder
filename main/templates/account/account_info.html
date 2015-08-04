@@ -1,9 +1,12 @@
-{% extends "core/base.html" %}
+{% extends "core/bases/base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}
 
 {% block content %}
-    {% include "account/js/account_info.html" %}
+
+<script type="text/javascript">
+    {% include "account/js/account_info.js" %}
+</script>
     
     <div class="container-fluid">
         {% include "account/blocks/create-account-header.html" %}

@@ -1,4 +1,4 @@
-<script type="text/javascript">
+
 
 	function updatePageAfterImageUpload(data) {
 		console.log(data)
@@ -50,5 +50,5 @@
 		}); 
 		
 	}); 
-</script>
+
 

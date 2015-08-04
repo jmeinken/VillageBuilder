@@ -1,9 +1,10 @@
-{% extends "core/base.html" %}
+{% extends "core/bases/base.html" %}
 
 {% block content %}
 
-
-	{% include "account/js/address.html" %}
+<script type="text/javascript">
+	{% include "account/js/address.js" %}
+</script>
 
     <div class="container-fluid">
         {% include "account/blocks/create-account-header.html" %}

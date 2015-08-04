@@ -19,7 +19,7 @@ from django.contrib import admin
 
 urlpatterns = [
     #direct links to views
-    url(r'login/', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='login'),
+    url(r'login/', 'django.contrib.auth.views.login', {'template_name': 'core/login.html'}, name='login'),
     url(r'logout/', 'main.views.logout_view', name='logout'),
     
     #note: pages in main do not have a namespace 

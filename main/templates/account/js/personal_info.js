@@ -1,4 +1,4 @@
-<script type="text/javascript">
+
 
 	function updatePageAfterImageUpload(data) {
 		console.log(data)
@@ -64,4 +64,3 @@
 	    }).trigger("change");
 	    
 	});
-</script>

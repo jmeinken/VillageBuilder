@@ -1,11 +1,14 @@
-{% extends "core/base.html" %}
+{% extends "core/bases/base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}<!-- https://pypi.python.org/pypi/django-widget-tweaks -->
 {% load staticfiles %}
 
 {% block content %}
 
-{% include "account/js/personal_info.html" %}
+<script type="text/javascript">
+    {% include "account/js/personal_info.js" %}
+</script>
+
 {% include "core/modals/upload_tool.html" %}	
 
     <div class="container-fluid">

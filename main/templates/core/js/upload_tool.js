@@ -11,23 +11,9 @@ updatePageAfterImageUpload(data): a function to run after the image is successfu
 
 {% endcomment %}
 
-<style>
-	.drag-drop {
-	    width: 300px;
-	    height: 88px;
-	    border: 2px dotted #0B85A1;
-	    text-align: center;
-	    line-height: 88px;
-	    background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.02)
-	}
-	
-	.drag-drop-active {
-	    border: 2px solid #0B85A1;
-	    background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.08)
-	}
-</style>
 
-<script type="text/javascript">
+
+
 	$(document).ready(function(){
 		
 		var api  // Jcrop api
@@ -114,4 +100,3 @@ updatePageAfterImageUpload(data): a function to run after the image is successfu
 	    }
 
 	});
-</script>

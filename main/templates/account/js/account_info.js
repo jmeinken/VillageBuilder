@@ -1,4 +1,4 @@
-<script type="text/javascript">
+
 	$(document).ready(function(){
 		
 		$('#address-link').click(function() {
@@ -11,5 +11,4 @@
 		});
 
 	}); 
-    
-</script>
+

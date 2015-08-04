@@ -65,7 +65,7 @@ def getAlerts(currentParticipant):
                     'form' : '', 
                 }
             else:
-                form = render_to_string('blocks/alert_add_friend.html', { 'friendId' : friendId })
+                form = render_to_string('alerts/blocks/alert_add_friend.html', { 'friendId' : friendId })
                 response = {
                     'id' : event.id,
                     'image' : image,
