@@ -1,4 +1,4 @@
-{% extends "home_base.html" %}
+{% extends "core/home_base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}
 
@@ -39,7 +39,7 @@
 
 <div class="list-group">
 	{% for participant in matches %}
-	    {% include 'blocks/participantgroup.html' %}
+	    {% include 'core/blocks/participantgroup.html' %}
 	{% endfor %}
 </div>
 

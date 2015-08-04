@@ -19,7 +19,7 @@ def home(request):
             'friendsOfFriends' : getFriendsOfFriends(currentParticipant),
             'RelationshipTypes' : RelationshipTypes,
         }
-    return render(request, 'home.html', context)
+    return render(request, 'core/home.html', context)
 
 def logout_view(request):
     logout(request)

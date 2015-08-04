@@ -1,15 +1,15 @@
-{% extends "base.html" %}
+{% extends "core/base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}<!-- https://pypi.python.org/pypi/django-widget-tweaks -->
 {% load staticfiles %}
 
 {% block content %}
 
-{% include "js/personal_info.html" %}
-{% include "modals/upload_tool.html" %}	
+{% include "account/js/personal_info.html" %}
+{% include "core/modals/upload_tool.html" %}	
 
     <div class="container-fluid">
-        {% include "blocks/create-account-header.html" %}
+        {% include "account/blocks/create-account-header.html" %}
 	    <form action="{{ callback }}" method="post" id="personal-info-form">
 	        <div style="display:none;">
 	            <!-- Account Info form is hidden here -->

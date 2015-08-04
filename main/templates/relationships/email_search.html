@@ -1,4 +1,4 @@
-{% extends "home_base.html" %}
+{% extends "core/home_base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}
 
@@ -58,7 +58,7 @@
 			    {% for participant in result.matches %}
 				    <div class="row">
 				        <div class="col-sm-6  vcenter">
-				            {% include 'blocks/participantgroup.html' %}
+				            {% include 'core/blocks/participantgroup.html' %}
 				        </div><!--  
 				        --><div class="col-sm-6 vcenter">
 				            {% if participant.relationship == RelationshipTypes.REQUEST_RECEIVED or participant.relationship == RelationshipTypes.NOT_FRIENDS %}

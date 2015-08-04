@@ -1,4 +1,4 @@
-{% extends "home_base.html" %}
+{% extends "core/home_base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}
 
@@ -33,7 +33,7 @@
 				    <div class="col-md-6">
 					    {% for field in form %}
 					    	{% if field.label == 'Neighborhood' or field.label == 'City' or field.label == 'Phone number' or field.label == 'Phone type' or field.label == 'Email' or field.label == 'Website' %}
-			                {% include 'blocks/formgroup.html' %}
+			                {% include 'core/blocks/formgroup.html' %}
 			                {% endif %}
 						{% endfor %}
 					</div>
@@ -44,14 +44,14 @@
 			    <h3>Members</h3>
 			    <strong>Awaiting Approval:</strong><br>
 			    {% for participant in awaitingApproval %}
-			        {% include 'blocks/participantgroup.html' %}
+			        {% include 'core/blocks/participantgroup.html' %}
 			    {% empty %}
 			        <em>None</em>
 			    {% endfor %}
 			    <hr>
 			    <strong>Current Members:</strong><br>
 			    {% for participant in currentMembers %}
-			        {% include 'blocks/participantgroup.html' %}
+			        {% include 'core/blocks/participantgroup.html' %}
 			    {% empty %}
 			        <em>None</em>
 			    {% endfor %}

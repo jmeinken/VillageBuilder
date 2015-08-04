@@ -1,14 +1,14 @@
-{% extends "home_base.html" %}
+{% extends "core/home_base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}
 
 {% block subcontent %}
 
-{% include "js/account.html" %}
-{% include "js/account_address.html" %}
+{% include "account/js/account.html" %}
+{% include "account/js/account_address.html" %}
 
 
-{% include "modals/upload_tool.html" %}
+{% include "core/modals/upload_tool.html" %}
 
 <div class="modal" id="full-address-modal">
   <div class="modal-dialog modal-lg">
@@ -18,7 +18,7 @@
         <h4 class="modal-title">Set Address</h4>
       </div>
       <div class="modal-body">
-          {% include "blocks/map.html" %}
+          {% include "core/blocks/map.html" %}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -69,7 +69,7 @@
 			            {% csrf_token %}
 			            <input type="hidden" name="form-name" value="userEmailForm" />
 				        {% for field in userEmailForm %}
-					        {% include 'blocks/formgroup.html' %}
+					        {% include 'core/blocks/formgroup.html' %}
 				        {% endfor %}
 				        <input type="submit" class="btn btn-primary" value="Save Changes" />
 				    </form>
@@ -87,7 +87,7 @@
 			            {% csrf_token %}
 			            <input type="hidden" name="form-name" value="userPasswordForm" />
 				        {% for field in userPasswordForm %}
-					        {% include 'blocks/formgroup.html' %}
+					        {% include 'core/blocks/formgroup.html' %}
 				        {% endfor %}
 				        <input type="submit" class="btn btn-primary" value="Save Changes" />
 				    </form>
@@ -105,7 +105,7 @@
 			            {% csrf_token %}
 			            <input type="hidden" name="form-name" value="userNameForm" />
 				        {% for field in userNameForm %}
-					        {% include 'blocks/formgroup.html' %}
+					        {% include 'core/blocks/formgroup.html' %}
 				        {% endfor %}
 				        <input type="submit" class="btn btn-primary" value="Save Changes" />
 				    </form>
@@ -134,7 +134,7 @@
 			            {% csrf_token %}
 			            <input type="hidden" name="form-name" value="memberPrivacyForm" />
 				        {% for field in memberPrivacyForm %}
-					        {% include 'blocks/formgroup.html' %}
+					        {% include 'core/blocks/formgroup.html' %}
 				        {% endfor %}
 			        	<input type="submit" class="btn btn-primary" value="Save Changes" />
 			        </form>
@@ -152,7 +152,7 @@
 			            {% csrf_token %}
 			            <input type="hidden" name="form-name" value="memberPhoneForm" />
 				        {% for field in memberPhoneForm %}
-					        {% include 'blocks/formgroup.html' %}
+					        {% include 'core/blocks/formgroup.html' %}
 				        {% endfor %}
 				        <input type="submit" class="btn btn-primary" value="Save Changes" />
 				    </form>
@@ -170,7 +170,7 @@
 				            {% csrf_token %}
 				            <input type="hidden" name="form-name" value="addressForm" />
 					        {% for field in addressForm %}
-						        {% include 'blocks/formgroup.html' %}
+						        {% include 'core/blocks/formgroup.html' %}
 					        {% endfor %}
 					        <input type="submit" class="btn btn-primary" value="Save Changes" />
 					    </form>
@@ -199,7 +199,7 @@
 			            {% csrf_token %}
 			            <input type="hidden" name="form-name" value="memberDisplayAddressForm" />
 				        {% for field in memberDisplayAddressForm %}
-					        {% include 'blocks/formgroup.html' %}
+					        {% include 'core/blocks/formgroup.html' %}
 				        {% endfor %}
 				        <input type="submit" class="btn btn-primary" value="Save Changes" />
 				    </form>

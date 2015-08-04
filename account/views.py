@@ -29,7 +29,7 @@ def view(request, participantId):
         'RelationshipTypes' : RelationshipTypes,
         'current' : getCurrentUser(request),
     }
-    return render(request, 'account_view.html', context)
+    return render(request, 'account/account_view.html', context)
 
 @login_required
 def account(request):
@@ -112,7 +112,7 @@ def account(request):
         'memberDisplayAddressDisplay' : MemberDisplayAddressForm(instance=member),
         'current' : getCurrentUser(request),
     }
-    return render(request, 'account.html', context)
+    return render(request, 'account/account.html', context)
 
 @transaction.atomic
 def create_group(request):
@@ -132,7 +132,7 @@ def create_group(request):
         'current' : getCurrentUser(request),  
         'groupForm' : groupForm,
     }
-    return render(request, 'create_group.html', context)
+    return render(request, 'account/create_group.html', context)
 
 def edit_group(request, groupId):
     group = Group.objects.get(id=groupId)
@@ -151,7 +151,7 @@ def edit_group(request, groupId):
         'currentMembers' : currentMembers,
         'awaitingApproval' : awaitingApproval,
     }
-    return render(request, 'edit_group.html', context)
+    return render(request, 'account/edit_group.html', context)
 
 def account_info(request):
     if request.method == "POST":
@@ -176,7 +176,7 @@ def account_info(request):
         'form' : myform,
         'callback' : reverse('account:account_info')
     }
-    return render(request, 'account_info.html', context)
+    return render(request, 'account/account_info.html', context)
 
 
 def address(request):
@@ -199,7 +199,7 @@ def address(request):
         'form' : myform,
         'callback' : reverse('account:address')
     }
-    return render(request, 'address.html', context)
+    return render(request, 'account/address.html', context)
 
 
 @csrf_exempt
@@ -290,7 +290,7 @@ def personal_info(request):
         'hiddenForm' : accountInfoForm,
         'callback' : reverse('account:personal_info')
     }
-    return render(request, 'personal_info.html', context)
+    return render(request, 'account/personal_info.html', context)
 
 
 def confirmation(request):

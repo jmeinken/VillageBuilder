@@ -158,7 +158,7 @@ def email_search(request):
     for i, value in enumerate(email):
         if email[i] or (firstName[i] and lastName[i]):
             results.append( emailSearch(email[i], firstName[i], lastName[i], currentParticipant) )
-    return render(request, 'email_search.html', {
+    return render(request, 'relationships/email_search.html', {
         'current' : getCurrentUser(request), 
         'RelationshipTypes' : RelationshipTypes,
         'results' : results,
@@ -174,7 +174,7 @@ def relationships(request):
         'friendRequests' : getFriendRequests(currentParticipant),
         'RelationshipTypes' : RelationshipTypes
     }
-    return render(request, 'relationships.html', context)
+    return render(request, 'relationships/relationships.html', context)
 
 @login_required
 def participant_search(request):
@@ -186,4 +186,4 @@ def participant_search(request):
         'matches' : matches,
         'RelationshipTypes' : RelationshipTypes
     }
-    return render(request, 'participant_search.html', context)
+    return render(request, 'relationships/participant_search.html', context)

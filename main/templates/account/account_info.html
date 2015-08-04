@@ -1,12 +1,12 @@
-{% extends "base.html" %}
+{% extends "core/base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}
 
 {% block content %}
-    {% include "js/account_info.html" %}
+    {% include "account/js/account_info.html" %}
     
     <div class="container-fluid">
-        {% include "blocks/create-account-header.html" %}
+        {% include "account/blocks/create-account-header.html" %}
 	    </div>
 		<div class="row">
 			<div class="col-md-6">

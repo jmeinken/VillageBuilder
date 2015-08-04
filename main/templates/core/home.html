@@ -1,4 +1,4 @@
-{% extends "home_base.html" %}
+{% extends "core/home_base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}
 
@@ -79,13 +79,13 @@
 			<h3>People Near You</h3>
 			<div class="list-group">
 				{% for participant in peopleNearYou %}
-				    {% include 'blocks/participantgroup.html' %}
+				    {% include 'core/blocks/participantgroup.html' %}
 				{% endfor %}
 			</div>
 			<h3>Friends of Friends</h3>
 			<div class="list-group">
 				{% for participant in friendsOfFriends %}
-				    {% include 'blocks/participantgroup.html' %}
+				    {% include 'core/blocks/participantgroup.html' %}
 				{% endfor %}
 			</div>
     	</div>

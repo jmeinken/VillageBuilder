@@ -30,7 +30,7 @@ def alerts(request):
             'alerts' : alerts['alerts'],
             'alertCount' : alerts['count'],
         }
-    html = render_to_string('alerts.html', context)
+    html = render_to_string('alerts/alerts.html', context)
     data = {
         'html' : html,
         'count' : alerts['count']
