@@ -62,7 +62,7 @@ def join_group(request):
     print 'join_group'
     if request.method == "POST":
         url = request.POST.get("redirect")
-        groupId = request.POST.get("group-id")
+        groupId = request.POST.get("group_id")
         currentParticipant = Participant.objects.get(user=request.user, type='member')
         groupMembership = GroupMembership.objects.all().filter(member=currentParticipant.member, group_id=groupId)
         if groupMembership.count() == 0:
@@ -77,6 +77,24 @@ def join_group(request):
         #    'friend_id' : friendId,
         #}
         # registerEvent('add friend', eventDict)
+        return redirect(url)
+    return redirect('login')
+
+@login_required
+def unjoin_group(request):
+    print('unjoin')
+    if request.method == "POST":
+        url = request.POST.get("redirect")
+        groupId = request.POST.get("group_id")
+        currentParticipant = Participant.objects.get(user=request.user, type='member')
+        groupMembership = GroupMembership.objects.all().filter(member=currentParticipant.member, group_id=groupId)
+        if groupMembership.count() != 0:
+            groupMembership = groupMembership[0]
+            if groupMembership.invited:
+                groupMembership.requested = False
+                groupMembership.save()
+            else:
+                groupMembership.delete()
         return redirect(url)
     return redirect('login')
 

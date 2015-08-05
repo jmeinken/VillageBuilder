@@ -71,11 +71,7 @@ class Participant(models.Model):
         if self.type == 'guest':
             return '(guest account)'
         if self.type == 'group':
-            if self.group.neighborhood:
-                return self.group.neighborhood
-            if self.group.city:
-                return self.group.city
-            return self.group.owner.city
+            return 'Group created by ' + self.group.owner.participant.get_name()
         if self.type == 'member':
             if self.member.neighborhood:
                 return self.member.street + ' (' + self.member.neighborhood + ')'

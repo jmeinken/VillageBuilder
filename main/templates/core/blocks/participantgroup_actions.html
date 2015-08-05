@@ -3,7 +3,7 @@
 {% if participant.relationship != RelationshipTypes.SELF %}
 	<div class="btn-group">
 		<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
-		<ul class="dropdown-menu dropdown-menu-right" style="padding: 5px 10px;">
+		<ul class="dropdown-menu dropdown-menu-right widen" style="padding: 5px 10px;">
 		    {% if participant.relationship == RelationshipTypes.FRIENDS %}
 				<li><i class="fa fa-check"></i> You are Friends</li>
 				<li class="hcenter-content">
@@ -62,6 +62,61 @@
 			        </form>
 		        </li>
 			{% endif %}	
+			{% if participant.relationship == RelationshipTypes.GROUP_OWNER %}
+			    <li>This is your group.</li>
+			{% endif %}	
+			{% if participant.relationship == RelationshipTypes.GROUP_MEMBER %}
+			    <li>You belong to this group.</li>
+			    <li class="hcenter-content">
+				    <form method="POST" 
+			        		action="{% url 'relationships:unjoin_group' %}" 
+			        		id="remove-guest-friend-form-{{participant.id}}">
+			            {% csrf_token %}
+			            <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+			            <input type="hidden" name="group_id" value="{{participant.id}}" />
+			            <button type="submit" class="btn btn-primary btn-xs btn-participantgroup">Unjoin Group</button>
+			        </form>
+			    </li>
+			{% endif %}	
+			{% if participant.relationship == RelationshipTypes.NOT_GROUP_MEMBER %}
+			    <li class="hcenter-content">
+				    <form method="POST" 
+			        		action="{% url 'relationships:join_group' %}" 
+			        		id="remove-guest-friend-form-{{participant.id}}">
+			            {% csrf_token %}
+			            <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+			            <input type="hidden" name="group_id" value="{{participant.id}}" />
+			            <button type="submit" class="btn btn-primary btn-xs btn-participantgroup">Request to Join Group</button>
+			        </form>
+			    </li>
+			{% endif %}	
+			{% if participant.relationship == RelationshipTypes.GROUP_MEMBER_REQUESTED %}
+			    <li>Membership requested (awaiting approval)</li>
+			    <li class="hcenter-content">
+				    <form method="POST" 
+			        		action="{% url 'relationships:unjoin_group' %}" 
+			        		id="remove-guest-friend-form-{{participant.id}}">
+			            {% csrf_token %}
+			            <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+			            <input type="hidden" name="group_id" value="{{participant.id}}" />
+			            <button type="submit" class="btn btn-primary btn-xs btn-participantgroup">Cancel Request</button>
+			        </form>
+			    </li>
+			{% endif %}	
+			{% if participant.relationship == RelationshipTypes.GROUP_MEMBER_INVITED %}
+			    <li>You have been invited by the group owner to join this group.</li>
+			    <li class="hcenter-content">
+				    <form method="POST" 
+			        		action="{% url 'relationships:join_group' %}" 
+			        		id="remove-guest-friend-form-{{participant.id}}">
+			            {% csrf_token %}
+			            <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+			            <input type="hidden" name="group_id" value="{{participant.id}}" />
+			            <button type="submit" class="btn btn-primary btn-xs btn-participantgroup">Join Group</button>
+			        </form>
+			    </li>
+			{% endif %}	
+
 			{% for group_relationship in participant.group_relationships %}
 			    {% if group_relationship.relationship == RelationshipTypes.GROUP_MEMBER %}
 					<li class="divider"></li>

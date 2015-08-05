@@ -26,17 +26,36 @@
 				<form method="post" action="{% url 'relationships:join_group' %}">
 				    {% csrf_token %}
 					<input type="hidden" name="redirect" value="{{ request.build_absolute_uri }}" />
-					<input type="hidden" name="group-id" value="{{ account.id }}" />
+					<input type="hidden" name="group_id" value="{{ account.id }}" />
 			    	<button type="submit" class="btn btn-primary">Join Group</a>
 			    </form>
 			{% endif %}
 			{% if account.relationship == RelationshipTypes.GROUP_MEMBER_REQUESTED %}
 				You have requested membership in this group and are awaiting confirmation from the group owner.<br>
-			    <a href="{% url 'account:edit_group' account.id %}" class="btn btn-primary">Cancel Request to Join</a>
+			    <form method="post" action="{% url 'relationships:unjoin_group' %}">
+				    {% csrf_token %}
+					<input type="hidden" name="redirect" value="{{ request.build_absolute_uri }}" />
+					<input type="hidden" name="group_id" value="{{ account.id }}" />
+			    	<button type="submit" class="btn btn-primary">Cancel Request to Join</a>
+			    </form>
 			{% endif %}
 			{% if account.relationship == RelationshipTypes.GROUP_MEMBER_INVITED %}
 				The owner of this group has invited you to join.<br>
-			    <a href="{% url 'account:edit_group' account.id %}" class="btn btn-primary">Join Group</a>
+			    <form method="post" action="{% url 'relationships:join_group' %}">
+				    {% csrf_token %}
+					<input type="hidden" name="redirect" value="{{ request.build_absolute_uri }}" />
+					<input type="hidden" name="group_id" value="{{ account.id }}" />
+			    	<button type="submit" class="btn btn-primary">Join Group</a>
+			    </form>
+			{% endif %}
+			{% if account.relationship == RelationshipTypes.GROUP_MEMBER %}
+				You are a member of this group.<br>
+			    <form method="post" action="{% url 'relationships:unjoin_group' %}">
+				    {% csrf_token %}
+					<input type="hidden" name="redirect" value="{{ request.build_absolute_uri }}" />
+					<input type="hidden" name="group_id" value="{{ account.id }}" />
+			    	<button type="submit" class="btn btn-primary">Unjoin Group</a>
+			    </form>
 			{% endif %}
 		</div>
 		<div class="col-sm-4 well">
@@ -74,6 +93,7 @@
 		{% endif %}
 		{% if account.type == 'group' %}
 		    <li><a href="#members" data-toggle="tab">Members</a></li>
+		    <li><a href="#about" data-toggle="tab">About</a></li>
 		{% endif %}
 	</ul>
 	<div id="myTabContent" class="tab-content">
@@ -83,6 +103,11 @@
 	  <div class="tab-pane fade" id="friends">
 	    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
 	  </div>
+	  {% if account.type == 'group' %}
+		  <div class="tab-pane fade" id="about">
+		      {{ account.description }}
+		  </div>
+	  {% endif %}
 </div>
 
 {% endblock %}	

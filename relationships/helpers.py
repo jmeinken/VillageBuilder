@@ -129,6 +129,9 @@ def searchParticipants(currentParticipant, searchString='', limit=0):
         print str(user)
         participant = user.participant_set.get(type='member')
         results.append(getParticipant(participant.id, currentParticipant))
+    groups = Group.objects.all().filter(title__icontains=searchString)
+    for group in groups:
+        results.append(getParticipant(group.participant.id, currentParticipant))
     return results
     
     
@@ -170,6 +173,8 @@ def getParticipantFull(participantId, currentParticipant):
                 result['email'] = participant.user.email
             if participant.member.share_phone:
                 result['phone'] = participant.member.get_phone()
+    if participant.type == 'group':
+        result['description'] = participant.group.description
     return result
             
 def createRandomString(length):

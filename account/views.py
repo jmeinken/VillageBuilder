@@ -151,6 +151,9 @@ def edit_group(request, groupId):
         RelationshipTypes.REQUEST_RECEIVED,                 
     ]
     ownerFriends = getRelations(currentParticipant, relationshipTypes)
+    for participant in list(ownerFriends):
+        if participant in currentMembers or participant in invited:
+            ownerFriends.remove(participant)
     context = {
         'current' : getCurrentUser(request),  
         'RelationshipTypes' : RelationshipTypes,
