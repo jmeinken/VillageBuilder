@@ -33,6 +33,11 @@ class AccountInfoForm(forms.ModelForm):
             self.add_error('email', 'An account already exists with this email.')
 
 
+class GroupCreateForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = ['title', 'description',]
+
 class GroupForm(forms.ModelForm):
     class Meta:
         model = Group

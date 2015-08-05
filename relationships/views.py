@@ -41,6 +41,22 @@ def add_friend(request):
             return redirect(url)
     return redirect('login')
 
+def add_group_members(request):
+    if request.method == "POST":
+        url = request.POST.get("redirect")
+        groupId = request.POST.get("group_id")
+        invites = request.POST.getlist("invites[]")
+        for memberId in invites:
+            groupMembership = GroupMembership.objects.all().filter(member_id=memberId, group_id=groupId)
+            if groupMembership.count() == 0:
+                groupMembership = GroupMembership(member_id=memberId, group_id=groupId)
+            else:
+                groupMembership = groupMembership[0]
+            groupMembership.invited = True
+            groupMembership.save()
+        return redirect(url)
+    return redirect('login')
+
 @login_required
 def join_group(request):
     print 'join_group'
@@ -51,6 +67,8 @@ def join_group(request):
         groupMembership = GroupMembership.objects.all().filter(member=currentParticipant.member, group_id=groupId)
         if groupMembership.count() == 0:
             groupMembership = GroupMembership(member=currentParticipant.member, group_id=groupId)
+        else:
+            groupMembership = groupMembership[0]
         groupMembership.requested = True
         groupMembership.save()
         #register event
@@ -62,6 +80,34 @@ def join_group(request):
         return redirect(url)
     return redirect('login')
 
+def add_to_group(request):
+    if request.method == "POST":
+        url = request.POST.get("redirect")
+        groupId = request.POST.get("group-id")
+        memberId = request.POST.get("member-id")
+        groupMembership = GroupMembership.objects.all().filter(member_id=memberId, group_id=groupId)
+        if groupMembership.count() == 0:
+            groupMembership = GroupMembership(member_id=memberId, group_id=groupId)
+        else:
+            groupMembership = groupMembership[0]
+        groupMembership.invited = True
+        groupMembership.save()
+        return redirect(url)
+    return redirect('login')
+
+def remove_from_group(request):
+    if request.method == "POST":
+        url = request.POST.get("redirect")
+        groupId = request.POST.get("group-id")
+        memberId = request.POST.get("member-id")
+        groupMembership = GroupMembership.objects.get(member_id=memberId, group_id=groupId)
+        if groupMembership.requested:
+            groupMembership.invited = False
+            groupMembership.save()
+        else:
+            groupMembership.delete()
+        return redirect(url)
+    return redirect('login')
 
 
 @login_required

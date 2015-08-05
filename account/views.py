@@ -116,9 +116,9 @@ def account(request):
 
 @transaction.atomic
 def create_group(request):
-    groupForm = GroupForm
+    groupForm = GroupCreateForm
     if request.method == "POST":
-        groupForm = GroupForm(request.POST)
+        groupForm = GroupCreateForm(request.POST)
         if groupForm.is_valid():
             group = groupForm.save(commit=False)
             user = request.user
@@ -128,6 +128,7 @@ def create_group(request):
             group.owner = Participant.objects.get(type='member', user=user).member
             group.id = participant.id
             group.save()
+            return redirect('account:edit_group', group.id)
     context = {
         'current' : getCurrentUser(request),  
         'groupForm' : groupForm,
@@ -136,13 +137,20 @@ def create_group(request):
 
 def edit_group(request, groupId):
     group = Group.objects.get(id=groupId)
-    currentMembers = getGroupMembers(group, [RelationshipTypes.GROUP_MEMBER])
-    awaitingApproval = getGroupMembers(group, [RelationshipTypes.GROUP_MEMBER_REQUESTED])
+    currentParticipant = Participant.objects.get(user=request.user, type='member')
+    currentMembers = getGroupMembers(group, [RelationshipTypes.GROUP_OWNER, RelationshipTypes.GROUP_MEMBER], currentParticipant)
+    awaitingApproval = getGroupMembers(group, [RelationshipTypes.GROUP_MEMBER_REQUESTED], currentParticipant)
+    invited = getGroupMembers(group, [RelationshipTypes.GROUP_MEMBER_INVITED], currentParticipant)
     groupForm = GroupForm(instance=group)
     if request.method == "POST":
         groupForm = GroupForm(request.POST, instance=group)
         if groupForm.is_valid():
             groupForm.save()
+    relationshipTypes = [
+        RelationshipTypes.FRIENDS,
+        RelationshipTypes.REQUEST_RECEIVED,                 
+    ]
+    ownerFriends = getRelations(currentParticipant, relationshipTypes)
     context = {
         'current' : getCurrentUser(request),  
         'RelationshipTypes' : RelationshipTypes,
@@ -150,6 +158,8 @@ def edit_group(request, groupId):
         'form' : groupForm,
         'currentMembers' : currentMembers,
         'awaitingApproval' : awaitingApproval,
+        'invited' : invited,
+        'owner_friends' : ownerFriends
     }
     return render(request, 'account/edit_group.html', context)
 
@@ -214,6 +224,15 @@ def upload_image(request):
                 member.image = imagePath['file']
                 member.thumb = thumbPath['file']
                 member.save()
+            response = {
+                'image' : imagePath,
+                'thumb' : thumbPath,
+            }
+            if 'group_id' in request.POST:
+                group = Group.objects.get(id=request.POST['group_id'])
+                group.image = imagePath['file']
+                group.thumb = thumbPath['file']
+                group.save()
             response = {
                 'image' : imagePath,
                 'thumb' : thumbPath,

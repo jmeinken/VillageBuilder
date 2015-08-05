@@ -24,7 +24,6 @@ class RelationshipTypes():
     NOT_GROUP_MEMBER = 11
     GROUP_MEMBER_REQUESTED = 12
     GROUP_MEMBER_INVITED = 13
-    PRIVELEGED_MEMBER = 14
     NONE = 15
     
 
@@ -66,6 +65,22 @@ def getFriendsOfFriends(currentParticipant):
         results.append(getParticipant(participant.id, currentParticipant))
     return results  
 
+# requires a member be provided for current participant
+def getRelations(currentParticipant, relationshipTypes=[]):
+    relations = Participant.objects.all().filter(
+        Q(member__reverse_friendship_set__member    =currentParticipant.member) | 
+        Q(member__friendship_set__friend            =currentParticipant.member) |
+        Q(guest__guestfriendship__member            =currentParticipant.member) | 
+        Q(group__groupmembership__member            =currentParticipant.member) |
+        Q(group__owner                              =currentParticipant.member)
+    )
+    results = []
+    for relation in relations:
+        participant = getParticipant(relation.id, currentParticipant)
+        if participant['relationship'] in relationshipTypes:
+            results.append(participant)
+    return results
+
 def getFriends(currentParticipant):
     friends = Member.objects.all().filter(reverse_friendship_set__member=currentParticipant.member)
     results = []
@@ -76,12 +91,17 @@ def getFriends(currentParticipant):
         results.append(getParticipant(guestFriend.id, currentParticipant))
     return results  
 
-def getGroupMembers(group, relationshipTypes):
+def getGroupMembers(group, relationshipTypes, currentParticipant):
     memberships = GroupMembership.objects.filter(group=group)
     results = []
+    if group.owner == currentParticipant.member and RelationshipTypes.GROUP_OWNER in relationshipTypes:
+        result = getParticipant(group.owner.id, currentParticipant)
+        relationship = getRelationship(group.participant, group.owner.participant)
+        results.append(result)
     for membership in memberships:
-        result = getParticipant(membership.member.id, group.participant)
-        if result['relationship'] in relationshipTypes:
+        result = getParticipant(membership.member.id, currentParticipant)
+        relationship = getRelationship(group.participant, membership.member.participant)
+        if relationship in relationshipTypes:
             results.append(result)
     return results
 
@@ -120,7 +140,15 @@ def getParticipant(participantId, contextParticipant=None):
         result['relationship'] = getRelationship(contextParticipant, participant)
     else:
         result['relationship'] = RelationshipTypes.NONE
-    print(result)
+    if contextParticipant:
+        contextGroups = Group.objects.filter(owner=contextParticipant.member)
+        result['group_relationships'] = []
+        for group in contextGroups:
+            result['group_relationships'].append({
+                'id' : group.id,
+                'name' : group.title,
+                'relationship' : getRelationship(group.participant, participant),
+            })
     return result
 
 def getParticipantFull(participantId, currentParticipant):

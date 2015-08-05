@@ -26,6 +26,9 @@ urlpatterns = [
     url(r'email_search/', views.email_search, name='email_search'),
     
     url(r'join_group/', views.join_group, name='join_group'),
+    url(r'add_to_group/', views.add_to_group, name='add_to_group'),
+    url(r'remove_from_group/', views.remove_from_group, name='remove_from_group'),
+    url(r'add_group_members/', views.add_group_members, name='add_group_members'),
 ]
 
 
