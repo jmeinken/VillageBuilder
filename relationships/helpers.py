@@ -81,6 +81,14 @@ def getRelations(currentParticipant, relationshipTypes=[]):
             results.append(participant)
     return results
 
+def getReciprocatedFriends(currentParticipant):
+    friends = (
+        Member.objects.all()
+        .filter(reverse_friendship_set__member=currentParticipant.member)
+        .filter(friendship_set__friend=currentParticipant.member)
+    )
+    return friends
+
 def getFriends(currentParticipant):
     friends = Member.objects.all().filter(reverse_friendship_set__member=currentParticipant.member)
     results = []

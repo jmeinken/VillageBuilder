@@ -41,7 +41,8 @@ INSTALLED_APPS = (
     'account',
     'main',
     'relationships',
-    'alerts'
+    'alerts',
+    'requests',
 )
 
 MIDDLEWARE_CLASSES = (

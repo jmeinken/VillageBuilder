@@ -8,6 +8,7 @@ from account.helpers import *
 from main.helpers import *
 from relationships.helpers import *
 from alerts.helpers import *
+from requests.helpers import *
 
 @login_required
 def home(request):
@@ -18,6 +19,7 @@ def home(request):
             'peopleNearYou' : getPeopleNearYou(currentParticipant),
             'friendsOfFriends' : getFriendsOfFriends(currentParticipant),
             'RelationshipTypes' : RelationshipTypes,
+            'requests' : getRequestList(currentParticipant)
         }
     return render(request, 'core/home.html', context)
 

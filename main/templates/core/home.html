@@ -4,6 +4,88 @@
 
 {% block subcontent %}
 
+<script>
+
+
+	$(document).ready(function(){
+		
+		$('.btn-edit-request').click(function(event) {
+			var requestId = this.id.replace("btn-edit-request-", "");
+			if ( $(this).html().trim() == 'Edit' ) {
+				$('#view-request-' + requestId).hide();
+				$('#edit-request-' + requestId).show();
+				$(this).html('Cancel Edit');
+			} else {
+				$('#edit-request-' + requestId).hide();
+				$('#view-request-' + requestId).show();
+				$(this).html('Edit');
+			}
+			event.preventDefault();
+		});
+		
+		$('.btn-edit-request-comment').click(function(event) {
+			var commentId = this.id.replace("btn-edit-request-comment-", "");
+			if ( $(this).html().trim() == 'Edit' ) {
+				$('#view-request-comment-' + commentId).hide();
+				$('#edit-request-comment-' + commentId).show();
+				$(this).html('Cancel Edit');
+			} else {
+				$('#edit-request-comment-' + commentId).hide();
+				$('#view-request-comment-' + commentId).show();
+				$(this).html('Edit');
+			}
+			event.preventDefault();
+		});
+		
+		$('.show-comments').click(function(event) {
+			var requestId = this.id.replace("show-comments-for-request-", "");
+			if ( $(this).html().indexOf('up') == -1 ) {
+				$('#comments-for-request-' + requestId).slideDown();
+				$(this).append(' <i class="fa fa-caret-up"></i>');
+			} else {
+				$('#comments-for-request-' + requestId).slideUp();
+				$(this).html($(this).html().replace( '<i class="fa fa-caret-up"></i>', ''));
+			}
+			event.preventDefault();
+		});
+		
+		$('.btn-delete-request').click(function(event) {
+			var requestId = this.id.replace("btn-delete-request-", "");
+			var data = {
+				'redirect' : '{{request.build_absolute_uri}}',
+				'request_id' : requestId,
+			}
+			$.post("{% url 'requests:delete_request' %}", data, function(data, status) {
+                if (status == 'success') {
+                	$('#request-' + data).html('<div class="alert alert-dismissible alert-danger">'
+                			  + '<button type="button" class="close" data-dismiss="alert">X</button>'
+                			  + 'Request Deleted</div>');
+                }
+			});
+			event.preventDefault();
+		});
+		
+		$('.btn-delete-request-comment').click(function(event) {
+			var commentId = this.id.replace("btn-delete-request-comment-", "");
+			var data = {
+				'redirect' : '{{request.build_absolute_uri}}',
+				'comment_id' : commentId,
+			}
+			$.post("{% url 'requests:delete_request_comment' %}", data, function(data, status) {
+                if (status == 'success') {
+                	$('#comment-' + data).html('<div class="alert alert-dismissible alert-danger">'
+                			  + '<button type="button" class="close" data-dismiss="alert">X</button>'
+                			  + 'Comment Deleted</div>');
+                }
+			});
+			event.preventDefault();
+		});
+		
+		
+		
+	});
+</script>
+
 
 
     <div class="row">
@@ -19,7 +101,7 @@
 			<button class="btn btn-primary btn-block">
 			    Browse Items Shared with You >
 			</button>
-			<h3>Recent Listings</h3>
+			<h3>Recently Shared</h3>
 			<div class="list-group">
 				<a href="#" class="list-group-item">
 				    <h4 class="list-group-item-heading">List group item heading</h4>
@@ -54,13 +136,151 @@
 			</ul>
 			<div class="tab-content" style="background-color:#F5F5F5; padding:0 7px 0 7px; border:solid 1px #DDDDDD; border-top: none">
 				<br>
-				<div class="form-group">
-					<textarea class="form-control" rows="2" placeholder="Ask for something you need..."></textarea>
-					<button type="submit" class="btn btn-default" style="margin-top: 5px">Post Request</button>
-				</div> 
+				<form method="post" action="{% url 'requests:post_request' %}">
+				    {% csrf_token %}
+				    <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+					<div class="form-group">
+						<textarea class="form-control" rows="2" name="body"
+								placeholder="Ask for something you need..."></textarea>
+						<button type="submit" class="btn btn-default" style="margin-top: 5px">Post Request</button>
+					</div> 
+				</form>
 			</div>
-			<hr>
-			Here is where the feed is
+			<h3 style="border-bottom:solid 1px #527EAC;">Requests</h3>
+			{% for myrequest in requests %}
+				<div id="request-{{ myrequest.request.id }}">
+					<div style="padding: 10px 0;">
+						
+					    <div class="row">
+					        <div class="col-sm-1" style="min-width:51px;">
+					    		<img src="{{ myrequest.request.member.participant.get_image }}" alt="my alt" width="50" height="50" />
+							</div>
+							<div class="col-sm-11">
+							    <div style="float:right;">
+						    		{% if myrequest.request.member.id == current.member.id %}
+								    	<div class="btn-group">
+											<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+											     <span class="caret"></span>
+										     </a>
+										     <ul class="dropdown-menu dropdown-menu-right">
+										        <li>
+										            <a href="#" class="btn-edit-request" id="btn-edit-request-{{ myrequest.request.id }}">
+										                Edit
+										            </a>
+										            <a href="#" class="btn-delete-request" id="btn-delete-request-{{ myrequest.request.id }}">
+										            	Delete
+										            </a>
+										        </li>
+										     </ul>
+									    </div>
+									{% endif %}
+								</div>
+								<div id="view-request-{{ myrequest.request.id }}">
+								   	<em class="text-muted">
+								   		Posted by 
+								   		<a href="{% url 'account:view' myrequest.request.member.id %}">
+								   			{{ myrequest.request.member.participant.get_name }}
+								   		</a> 
+								   		on {{ myrequest.request.date }}
+							   		</em>
+							   		<div style="padding-top:5px;">
+										{{ myrequest.request.body|linebreaksbr|urlize }}
+									</div>
+								</div>
+								<div style="display:none" id="edit-request-{{ myrequest.request.id }}">
+									<br><br>
+									<form method="post" action="{% url 'requests:edit_request' %}">
+									    {% csrf_token %}
+									    <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+									    <input type="hidden" name="request_id" value="{{myrequest.request.id}}" />
+										<textarea class="form-control" rows="5" name="body">{{ myrequest.request.body }}</textarea>
+										<br>
+										<button type="submit" class="btn btn-primary">Submit Changes</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>	
+					<div style="clear:both;padding-left:25px; padding-right:25px;" class="well well-sm">
+						<a href="#" class="show-comments" id="show-comments-for-request-{{myrequest.request.id}}">
+						    Comments ({{ myrequest.comments.count }})
+						</a>
+						<div id="comments-for-request-{{myrequest.request.id}}" style="display:none;font-size:0.9em;">
+							{% for comment in myrequest.comments %}
+							    <div id="comment-{{ comment.id }}" style="clear:both;padding: 5px 0;">
+							    	<div class="row" style="border-top: 1px solid #B0B0B0;">
+							    		<div class="col-sm-1" style="min-width:41px;">
+							    		    <img src="{{ comment.member.participant.get_image }}" alt="my alt" width="40" height="40" />
+							    		</div>
+							    		<div class="col-sm-11" style="padding-top: 3px;">
+							    		    <div style="float:right;">
+									    		{% if comment.member.id == current.member.id %}
+											    	<div class="btn-group">
+														<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+														     <span class="caret"></span>
+													     </a>
+													     <ul class="dropdown-menu dropdown-menu-right">
+													        <li>
+													            <a href="#" class="btn-edit-request-comment" 
+													                    id="btn-edit-request-comment-{{ comment.id }}">
+													                Edit
+													            </a>
+													            <a href="#" class="btn-delete-request-comment" id="btn-delete-request-comment-{{ comment.id }}">
+													            	Delete
+													            </a>
+													        </li>
+													     </ul>
+												    </div>
+												{% endif %}
+											</div>
+											<div id="view-request-comment-{{ comment.id }}">
+								    		    <span class="text-muted">
+											   		<a href="{% url 'account:view' comment.member.id %}" class="text-muted">
+											   			{{ comment.member.participant.get_name }} 
+											   		</a> 
+											   		({{ comment.date }})
+										   		</span><br>
+											    <div style="padding-top:4px;">
+													{{ comment.body|linebreaksbr|urlize }}
+												</div>
+											</div>
+											<div id="edit-request-comment-{{ comment.id }}" style="display:none;">
+								    		    <br><br>
+												<form method="post" action="{% url 'requests:edit_request_comment' %}">
+												    {% csrf_token %}
+												    <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+												    <input type="hidden" name="comment_id" value="{{comment.id}}" />
+													<textarea class="form-control" rows="5" name="body">{{ comment.body }}</textarea>
+													<br>
+													<button type="submit" class="btn btn-primary">Submit Changes</button>
+												</form>
+											</div>
+							    		</div>
+							    	</div>
+							    </div>
+							{% endfor %}
+							
+							<div style="padding-top:10px;">
+								<form method="post" action="{% url 'requests:post_request_comment' %}">
+								    {% csrf_token %}
+								    <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+								    <input type="hidden" name="request_id" value="{{myrequest.request.id}}" />
+									<div class="row">
+									    <div class="col-sm-8">
+											<textarea class="form-control" rows="1" name="body"
+													placeholder="Add a comment..."></textarea>
+										</div>
+										<div class="col-sm-4">
+											<button type="submit" class="btn btn-default" style="margin-top: 5px">Add Comment</button>
+										</div>
+									</div> 
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+			{% endfor %}
 		</div>
 		<div class="col-md-3">
 			<form action="{% url 'relationships:participant_search' %}" method="get">

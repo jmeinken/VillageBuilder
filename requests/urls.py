@@ -14,22 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
-from django.contrib import admin
-
+from . import views
 
 urlpatterns = [
-    #direct links to views
-    url(r'login/', 'django.contrib.auth.views.login', {'template_name': 'core/login.html'}, name='login'),
-    url(r'logout/', 'main.views.logout_view', name='logout'),
-    
-    #note: pages in main do not have a namespace 
-    url(r'^$', include('main.urls')),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^account/', include('account.urls', namespace="account")),
-    url(r'^relationships/', include('relationships.urls', namespace="relationships")),
-    url(r'^alerts/', include('alerts.urls', namespace="alerts")),
-    url(r'^requests/', include('requests.urls', namespace="requests")),
+    url(r'^request_list/', views.request_list, name='request_list'),
+    url(r'^post_request/', views.post_request, name='post_request'),
+    url(r'^edit_request/', views.edit_request, name='edit_request'),
+    url(r'^delete_request/', views.delete_request, name='delete_request'),
+    url(r'^post_request_comment/', views.post_request_comment, name='post_request_comment'),
+    url(r'^edit_request_comment/', views.edit_request_comment, name='edit_request_comment'),
+    url(r'^delete_request_comment/', views.delete_request_comment, name='delete_request_comment'),
 ]
+
+
+
 
 
 
