@@ -1,9 +1,19 @@
+import os
+import datetime
+import string
+import random
+
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from villagebuilder.settings import BASE_DIR
 
 from account.models import Member, Participant, Group
+
+
+def createRandomString(length):
+    return ''.join(random.choice(string.ascii_letters) for _ in range(length))
+
 
 def handle_uploaded_file(f):
     indexPath = BASE_DIR + '/main/static/uploads/user_pics.txt'
@@ -49,6 +59,8 @@ def getCurrentUser(request):
         'member' : member,
         'groups' : groups,
     }
+    
+
     
 
     

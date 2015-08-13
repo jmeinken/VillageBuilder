@@ -8,7 +8,10 @@ from django.db.models import Q
 from villagebuilder.settings import BASE_DIR
 
 from account.models import Member, Participant, Guest
+from main import helpers
+
 from .models import *
+
 
 class RelationshipTypes():
     SELF = 0
@@ -25,10 +28,35 @@ class RelationshipTypes():
     GROUP_MEMBER_REQUESTED = 12
     GROUP_MEMBER_INVITED = 13
     NONE = 15
-    
 
 
+'''
+    The following functions return model object querysets
+'''
 
+def getReciprocatedFriends(currentParticipant):
+    friends = (
+        Member.objects.all()
+        .filter(reverse_friendship_set__member=currentParticipant.member)
+        .filter(friendship_set__friend=currentParticipant.member)
+    )
+    return friends
+
+#only works for members getting guests
+def getReciprocatedFriendsAndGuests(currentParticipant):
+    relations = Participant.objects.all().filter(
+        (
+            Q(member__reverse_friendship_set__member    =currentParticipant.member) & 
+            Q(member__friendship_set__friend            =currentParticipant.member)
+        ) |
+        Q(guest__guestfriendship__member            =currentParticipant.member)
+    )
+    return relations
+
+
+'''
+    The rest don't return querysets but special participant dicts
+'''
 
 def emailSearch(email, firstName, lastName, currentParticipant):    
     # see if that email exists
@@ -81,13 +109,7 @@ def getRelations(currentParticipant, relationshipTypes=[]):
             results.append(participant)
     return results
 
-def getReciprocatedFriends(currentParticipant):
-    friends = (
-        Member.objects.all()
-        .filter(reverse_friendship_set__member=currentParticipant.member)
-        .filter(friendship_set__friend=currentParticipant.member)
-    )
-    return friends
+
 
 def getFriends(currentParticipant):
     friends = Member.objects.all().filter(reverse_friendship_set__member=currentParticipant.member)
@@ -185,8 +207,7 @@ def getParticipantFull(participantId, currentParticipant):
         result['description'] = participant.group.description
     return result
             
-def createRandomString(length):
-    return ''.join(random.choice(string.ascii_letters) for _ in range(length))
+
     
 def simulateParticipant(email, firstName, lastName):
     temp_id = createRandomString(30)

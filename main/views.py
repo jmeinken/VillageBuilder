@@ -1,14 +1,57 @@
+#-----------------------------------------------------------------
+# all this crap is from django.contrib.auth.views
+# much of it is needed to make login view work
+import warnings
+
+from django.conf import settings
+# Avoid shadowing the login() and logout() views below.
+from django.contrib.auth import (
+    REDIRECT_FIELD_NAME, get_user_model, login as auth_login,
+    logout as auth_logout, update_session_auth_hash,
+)
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import (
+    AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,
+)
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect, QueryDict
+from django.shortcuts import resolve_url
+from django.template.response import TemplateResponse
+from django.utils.deprecation import RemovedInDjango20Warning
+from django.utils.encoding import force_text
+from django.utils.http import is_safe_url, urlsafe_base64_decode
+from django.utils.six.moves.urllib.parse import urlparse, urlunparse
+from django.utils.translation import ugettext as _
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.debug import sensitive_post_parameters
+
+#-----------------------------------------------------------------
+
+
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.debug import sensitive_post_parameters
+from django.core.mail import send_mail
+from django.db import transaction
 
 from account.helpers import *
 from main.helpers import *
 from relationships.helpers import *
 from alerts.helpers import *
 from requests.helpers import *
+from email_system.helpers import *
+
+from .forms import RequestResetPasswordForm, ResetPasswordForm
+
 
 @login_required
 def home(request):
@@ -29,3 +72,100 @@ def logout_view(request):
 
 def test_view(request):
     return HttpResponse("It worked!")
+
+@csrf_protect
+@transaction.atomic
+def reset_password(request, code):
+    message = 'none'
+    members = Member.objects.all().filter(code=code)
+    if members.count() == 0:
+        return redirect('login')
+    member = members[0]
+    user = member.participant.user
+    if request.method == "POST":
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            user.set_password(form.cleaned_data['new_password'])
+            user.save()
+            member.code = ''
+            member.save()
+            message = 'Password Changed'
+    else:
+        form = ResetPasswordForm()
+    context = {
+        'code' : code,
+        'message' : message,
+        'form' : form,
+    }
+    return render(request, 'core/reset_password.html', context)
+
+@csrf_protect
+def request_reset_password(request):
+    action = 'nothing'
+    if request.method == "POST":
+        form = RequestResetPasswordForm(request.POST)
+        if form.is_valid():
+            # get user
+            user = User.objects.get(username=form.cleaned_data['email'])
+            member = Participant.objects.get(user=user, type='member').member
+            member.code = createRandomString(60)
+            member.save()
+            result = email_forgot_password(member)
+            if result:
+                action = 'sent email'
+            else:
+                action = 'failed email attempt'
+    else:
+        form = RequestResetPasswordForm()
+    context = {
+        'form' : form,
+        'action' : action,
+    }
+    return render(request, 'core/request_reset_password.html', context)
+
+@sensitive_post_parameters()
+@csrf_protect
+@never_cache
+def login_view(request, template_name='core/login.html',
+          redirect_field_name=REDIRECT_FIELD_NAME,
+          authentication_form=AuthenticationForm,
+          current_app=None, extra_context=None):
+    """
+    Displays the login form and handles the login action.
+    This was copied and modified from django.contrib.auth.views.py.
+    """
+    redirect_to = request.POST.get(redirect_field_name,
+                                   request.GET.get(redirect_field_name, ''))
+
+    if request.method == "POST":
+        form = authentication_form(request, data=request.POST)
+        if form.is_valid():
+
+            # Ensure the user-originating redirection url is safe.
+            if not is_safe_url(url=redirect_to, host=request.get_host()):
+                redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
+
+            # Okay, security check complete. Log the user in.
+            auth_login(request, form.get_user())
+
+            return HttpResponseRedirect(redirect_to)
+    else:
+        form = authentication_form(request)
+
+    current_site = get_current_site(request)
+
+    context = {
+        'form': form,
+        redirect_field_name: redirect_to,
+        'site': current_site,
+        'site_name': current_site.name,
+    }
+    if extra_context is not None:
+        context.update(extra_context)
+
+    if current_app is not None:
+        request.current_app = current_app
+
+    return TemplateResponse(request, template_name, context)
+
+

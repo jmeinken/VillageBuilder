@@ -19,8 +19,10 @@ from django.contrib import admin
 
 urlpatterns = [
     #direct links to views
-    url(r'login/', 'django.contrib.auth.views.login', {'template_name': 'core/login.html'}, name='login'),
+    url(r'login/', 'main.views.login_view', name='login'),
     url(r'logout/', 'main.views.logout_view', name='logout'),
+    url(r'request_reset_password/', 'main.views.request_reset_password', name='request_reset_password'),
+    url(r'reset_password/([a-zA-Z0-9]*)', 'main.views.reset_password', name='reset_password'),
     
     #note: pages in main do not have a namespace 
     url(r'^$', include('main.urls')),
@@ -29,6 +31,7 @@ urlpatterns = [
     url(r'^relationships/', include('relationships.urls', namespace="relationships")),
     url(r'^alerts/', include('alerts.urls', namespace="alerts")),
     url(r'^requests/', include('requests.urls', namespace="requests")),
+    url(r'^pm/', include('pm.urls', namespace="pm")),
 ]
 
 

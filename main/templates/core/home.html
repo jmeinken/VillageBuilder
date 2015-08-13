@@ -41,10 +41,10 @@
 			var requestId = this.id.replace("show-comments-for-request-", "");
 			if ( $(this).html().indexOf('up') == -1 ) {
 				$('#comments-for-request-' + requestId).slideDown();
-				$(this).append(' <i class="fa fa-caret-up"></i>');
+				$(this).html($(this).html().replace( 'down', 'up'));
 			} else {
 				$('#comments-for-request-' + requestId).slideUp();
-				$(this).html($(this).html().replace( '<i class="fa fa-caret-up"></i>', ''));
+				$(this).html($(this).html().replace( 'up', 'down'));
 			}
 			event.preventDefault();
 		});
@@ -148,7 +148,7 @@
 			</div>
 			<h3 style="border-bottom:solid 1px #527EAC;">Requests</h3>
 			{% for myrequest in requests %}
-				<div id="request-{{ myrequest.request.id }}">
+				<div id="request-{{ myrequest.request.id }}" style="border-bottom:solid 1px #527EAC;">
 					<div style="padding: 10px 0;">
 						
 					    <div class="row">
@@ -203,7 +203,7 @@
 					</div>	
 					<div style="clear:both;padding-left:25px; padding-right:25px;" class="well well-sm">
 						<a href="#" class="show-comments" id="show-comments-for-request-{{myrequest.request.id}}">
-						    Comments ({{ myrequest.comments.count }})
+						    Comments ({{ myrequest.comments.count }}) <i class="fa fa-caret-down"></i>
 						</a>
 						<div id="comments-for-request-{{myrequest.request.id}}" style="display:none;font-size:0.9em;">
 							{% for comment in myrequest.comments %}
@@ -238,7 +238,6 @@
 											   		<a href="{% url 'account:view' comment.member.id %}" class="text-muted">
 											   			{{ comment.member.participant.get_name }} 
 											   		</a> 
-											   		({{ comment.date }})
 										   		</span><br>
 											    <div style="padding-top:4px;">
 													{{ comment.body|linebreaksbr|urlize }}
@@ -279,7 +278,6 @@
 						</div>
 					</div>
 				</div>
-				<hr>
 			{% endfor %}
 		</div>
 		<div class="col-md-3">

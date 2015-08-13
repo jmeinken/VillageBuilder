@@ -1,0 +1,7 @@
+<form method="post" action="{% url 'relationships:join_group' %}">
+    <input name="csrfmiddlewaretoken" value="" type="hidden">
+    <input name="redirect" value="/" type="hidden">
+    <input type="hidden" name="group_id" value="{{ groupId }}" />
+    <input type="submit" class="btn btn-primary btn-xs" name="join-group" value="Accept Invitation" />
+</form>
+

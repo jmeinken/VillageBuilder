@@ -1,0 +1,8 @@
+<form method="post" action="{% url 'relationships:add_to_group' %}">
+    <input name="csrfmiddlewaretoken" value="" type="hidden">
+    <input name="redirect" value="/" type="hidden">
+    <input type="hidden" name="group-id" value="{{ groupId }}" />
+    <input type="hidden" name="member-id" value="{{ memberId }}" />
+    <input type="submit" class="btn btn-primary btn-xs" name="add-member" value="Add as Member" />
+</form>
+

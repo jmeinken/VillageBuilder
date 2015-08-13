@@ -35,7 +35,7 @@
 						</div>
 				    {% endif %}
 				
-				    <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+				    <form method="post" action="{% url 'login' %}">
 				        {% csrf_token %}
 				        <div class="form-group">
 						    {{ form.username|label_with_classes:"control-label" }}
@@ -49,7 +49,7 @@
 				       <button type="submit" class="btn btn-primary" value="Login">Submit</button>
 				       <input type="hidden" name="next" value="{{ next }}" />
 				   </form>
-				   <a href="{% url 'account:account_info' %}">Create Account</a> | <a href="">Forget Password</a>
+				   <a href="{% url 'account:account_info' %}">Create Account</a> | <a href="{% url 'request_reset_password' %}">Forgot Password?</a>
 			  	</div>
 			</div>	
     	</div>

@@ -37,6 +37,9 @@ class Participant(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     type = models.CharField(max_length=6, choices=PARTICIPANT_TYPES)
     
+    def __unicode__(self):
+         return self.get_name()
+    
     def get_name(self, length='full'):
         if self.type == 'group':
             return self.group.title
@@ -142,6 +145,10 @@ class Member(models.Model):
     share_phone = models.BooleanField()
     image = models.CharField(max_length=30, blank=True, null=True)
     thumb = models.CharField(max_length=30, blank=True, null=True)
+    code = models.CharField(max_length=60, blank=True, null=True)
+    
+    def __unicode__(self):
+         return self.participant.get_name()
     
     def get_user_pic(self):
         if self.image:

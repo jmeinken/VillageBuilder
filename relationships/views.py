@@ -41,6 +41,7 @@ def add_friend(request):
             return redirect(url)
     return redirect('login')
 
+@login_required
 def add_group_members(request):
     if request.method == "POST":
         url = request.POST.get("redirect")
@@ -54,10 +55,17 @@ def add_group_members(request):
                 groupMembership = groupMembership[0]
             groupMembership.invited = True
             groupMembership.save()
+            # register event
+            eventDict = {
+                'group_id' : groupId,
+                'member_id' : memberId,
+            }
+            registerEvent('group invite', eventDict)
         return redirect(url)
     return redirect('login')
 
 @login_required
+@csrf_exempt
 def join_group(request):
     print 'join_group'
     if request.method == "POST":
@@ -71,12 +79,12 @@ def join_group(request):
             groupMembership = groupMembership[0]
         groupMembership.requested = True
         groupMembership.save()
-        #register event
-        #eventDict = {
-        #    'member_id' : currentParticipant.id,
-        #    'friend_id' : friendId,
-        #}
-        # registerEvent('add friend', eventDict)
+        # register event
+        eventDict = {
+            'group_id' : groupId,
+            'member_id' : currentParticipant.id,
+        }
+        registerEvent('group request', eventDict)
         return redirect(url)
     return redirect('login')
 
@@ -98,6 +106,8 @@ def unjoin_group(request):
         return redirect(url)
     return redirect('login')
 
+@login_required
+@csrf_exempt
 def add_to_group(request):
     if request.method == "POST":
         url = request.POST.get("redirect")
@@ -110,9 +120,16 @@ def add_to_group(request):
             groupMembership = groupMembership[0]
         groupMembership.invited = True
         groupMembership.save()
+        # register event
+        eventDict = {
+            'group_id' : groupId,
+            'member_id' : memberId,
+        }
+        registerEvent('group invite', eventDict)
         return redirect(url)
     return redirect('login')
 
+@login_required
 def remove_from_group(request):
     if request.method == "POST":
         url = request.POST.get("redirect")

@@ -2,14 +2,40 @@
 import json
 
 from .models import *
-from relationships.models import Friendship
-from account.models import Member
+from relationships.models import Friendship, GroupMembership
+from account.models import Member, Group
 from django.template.loader import render_to_string
 
+
+# CALLING FOR ADDING FRIEND
+#eventDict = {
+#    'member_id' : currentParticipant.id,
+#    'friend_id' : friendId,
+#}
+#registerEvent('add friend', eventDict)
+
+# CALLING FOR INVITING TO GROUP
+#eventDict = {
+#    'group_id' : currentParticipant.id,
+#    'member_id' : friendId,
+#}
+#registerEvent('group invite', eventDict)
+
+# CALLING FOR REQUESTING TO JOIN GROUP
+#eventDict = {
+#    'group_id' : currentParticipant.id,
+#    'member_id' : friendId,
+#}
+#registerEvent('group request', eventDict)
 
 def registerEvent(eventType, eventDict):
     if eventType == 'add friend':
         affectedParticipant = eventDict['friend_id']
+    if eventType == 'group invite':
+        affectedParticipant = eventDict['member_id']
+    if eventType == 'group request':
+        group = Group.objects.get(id=eventDict['group_id'])
+        affectedParticipant = group.owner.id
     ## check for duplicate
     duplicate = (Event.objects.all()
             .filter(affected_participant_id = affectedParticipant)
@@ -44,45 +70,110 @@ def getAlerts(currentParticipant):
     responses = []
     count = 0
     for event in events:
-        data = json.loads(event.event_data)
-        if event.event_type == 'add friend':
-            # check if still exists
-            if Friendship.objects.all().filter(member_id=data['member_id'],friend_id=data['friend_id']).count()!=1:
-                event.delete()
-                continue
-            # check if reciprocated
-            member = Member.objects.get(id=data['member_id'])
-            image = member.get_user_pic()
-            friendName = member.participant.user.get_full_name()
-            friendId = member.participant.id
-            if Friendship.objects.all().filter(member_id=data['friend_id'],friend_id=data['member_id']).count()==1:
-                response = {
-                    'id' : event.id,
-                    'image' : image,
-                    'alt' : 'my image',
-                    'text' : 'You are now friends with ' + friendName + '.',
-                    'viewed' : event.viewed,
-                    'form' : '', 
-                }
-            else:
-                form = render_to_string('alerts/blocks/alert_add_friend.html', { 'friendId' : friendId })
-                response = {
-                    'id' : event.id,
-                    'image' : image,
-                    'alt' : 'my image',
-                    'text' : friendName + ' added you as a friend.',
-                    'viewed' : event.viewed,
-                    'form' : form,
-                }
-            # get image 
-            responses.append(response)
-            if event.viewed == False:
-                count += 1
+        if event.event_type == 'add friend' and getAddFriendAlert(event):
+            responses.append( getAddFriendAlert(event) )
+        if event.event_type == 'group request' and getGroupRequestAlert(event):
+            responses.append( getGroupRequestAlert(event) )
+        if event.event_type == 'group invite' and getGroupInviteAlert(event):
+            responses.append( getGroupInviteAlert(event) )
+        if event.viewed == False:
+            count += 1
     return {
         'alerts' : responses,
         'count' : count,
     }
+    
+def getGroupInviteAlert(event):
+    data = json.loads(event.event_data)
+    # check if still exists
+    memberships = GroupMembership.objects.all().filter(member_id=data['member_id'],group_id=data['group_id'])
+    if memberships.count() != 1 or not memberships[0].invited:
+        event.delete()
+        return None
+    # check if reciprocated
+    membership = memberships[0]
+    if membership.requested:
+        response = {
+            'id' : event.id,
+            'image' : membership.group.participant.get_image(),
+            'alt' : 'my image',
+            'text' : 'You are now a member of ' + membership.group.participant.get_name(),
+            'viewed' : event.viewed,
+            'form' : '', 
+        }
+    else:
+        form = render_to_string('alerts/blocks/alert_join_group.html', { 'groupId' : data['group_id'] })
+        response = {
+            'id' : event.id,
+            'image' : membership.member.participant.get_image(),
+            'alt' : 'my image',
+            'text' : membership.group.owner.participant.get_name() + ' has invited you to join the group ' + membership.group.participant.get_name(),
+            'viewed' : event.viewed,
+            'form' : form,
+        }
+    return response
 
+def getGroupRequestAlert(event):
+    data = json.loads(event.event_data)
+    # check if still exists
+    memberships = GroupMembership.objects.all().filter(member_id=data['member_id'],group_id=data['group_id'])
+    if memberships.count() != 1 or not memberships[0].requested:
+        event.delete()
+        return None
+    # check if reciprocated
+    membership = memberships[0]
+    if membership.invited:
+        response = {
+            'id' : event.id,
+            'image' : membership.member.participant.get_image(),
+            'alt' : 'my image',
+            'text' : membership.member.participant.get_name() + ' has joined your group ' + membership.group.participant.get_name(),
+            'viewed' : event.viewed,
+            'form' : '', 
+        }
+    else:
+        form = render_to_string('alerts/blocks/alert_invite_to_group.html', { 'groupId' : data['group_id'], 'memberId' : data['member_id'] })
+        response = {
+            'id' : event.id,
+            'image' : membership.member.participant.get_image(),
+            'alt' : 'my image',
+            'text' : membership.member.participant.get_name() + ' wants to join your group ' + membership.group.participant.get_name(),
+            'viewed' : event.viewed,
+            'form' : form,
+        }
+    return response
+    
+def getAddFriendAlert(event):
+    data = json.loads(event.event_data)
+    # check if still exists
+    if Friendship.objects.all().filter(member_id=data['member_id'],friend_id=data['friend_id']).count()!=1:
+        event.delete()
+        return None
+    # check if reciprocated
+    member = Member.objects.get(id=data['member_id'])
+    image = member.get_user_pic()
+    friendName = member.participant.user.get_full_name()
+    friendId = member.participant.id
+    if Friendship.objects.all().filter(member_id=data['friend_id'],friend_id=data['member_id']).count()==1:
+        response = {
+            'id' : event.id,
+            'image' : image,
+            'alt' : 'my image',
+            'text' : 'You are now friends with ' + friendName + '.',
+            'viewed' : event.viewed,
+            'form' : '', 
+        }
+    else:
+        form = render_to_string('alerts/blocks/alert_add_friend.html', { 'friendId' : friendId })
+        response = {
+            'id' : event.id,
+            'image' : image,
+            'alt' : 'my image',
+            'text' : friendName + ' added you as a friend.',
+            'viewed' : event.viewed,
+            'form' : form,
+        } 
+    return response
         
         
     

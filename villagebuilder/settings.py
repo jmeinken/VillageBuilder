@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'relationships',
     'alerts',
     'requests',
+    'pm',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -20,6 +20,11 @@ from relationships.models import GroupMembership
 
 
 
+    
+
+
+
+
 @login_required
 def view(request, participantId):
     currentParticipant = Participant.objects.get(user=request.user, type='member')

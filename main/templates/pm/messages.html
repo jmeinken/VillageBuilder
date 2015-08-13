@@ -1,0 +1,40 @@
+{% extends "core/bases/home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+  <h2>Messages</h2>
+  <div class="row">
+  	<div class="col-md-3">
+  	    <a href="{% url 'pm:messages' 0 %}" type="button" class="btn btn-primary">Write a New Message</a>
+  	    <br><br>
+  	    <h4>Recent Conversations</h4>
+  	    {% for participant in participants %}
+  	        <a href="{% url 'pm:messages' participant.id %}">
+  	        	{% include 'core/blocks/participantgroup_noactions.html' %}
+  	        </a>
+  	    {% endfor %}
+  	</div>
+  	<div class="col-md-6">
+  	    {% if messages %}
+  	       yessss<br>
+  	    {% endif %}
+  	    <form method="post" action="{% url 'pm:messages' conversation %}">
+  	        {% csrf_token %}
+		    {{ form.non_field_errors }}
+		    {% for field in newMessageForm %}
+		        <div class="form-group">
+		            {{ field|label_with_classes:"control-label" }} 
+		            {{ field|attr:"class:form-control" }}
+	            </div>
+	            <div id="form-errors" style="color:red;">{{ field.errors }}</div>
+		    {% endfor %}
+		    <button type="submit" class="btn btn-primary">Send Message</button>
+  	    </form>
+  	</div>
+  </div>
+{% endblock %}	
+
+
+
+
