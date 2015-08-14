@@ -1,0 +1,49 @@
+    <div id="comment-{{ comment.id }}" style="clear:both;padding: 5px 0;">
+    	<div class="row" style="border-top: 1px solid #B0B0B0;">
+    		<div class="col-sm-1" style="min-width:41px;">
+    		    <img src="{{ comment.member.participant.get_image }}" alt="my alt" width="40" height="40" />
+    		</div>
+    		<div class="col-sm-11" style="padding-top: 3px;">
+    		    <div style="float:right;">
+		    		{% if comment.member.id == current.member.id %}
+				    	<div class="btn-group">
+							<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							     <span class="caret"></span>
+						     </a>
+						     <ul class="dropdown-menu dropdown-menu-right">
+						        <li>
+						            <a href="#" class="btn-show-edit-request-comment" 
+						                    id="btn-show-edit-request-comment-{{ comment.id }}">
+						                Edit
+						            </a>
+						            <a href="#" class="btn-delete-request-comment" id="btn-delete-request-comment-{{ comment.id }}">
+						            	Delete
+						            </a>
+						        </li>
+						     </ul>
+					    </div>
+					{% endif %}
+				</div>
+				<div id="view-request-comment-{{ comment.id }}">
+	    		    <span class="text-muted">
+				   		<a href="{% url 'account:view' comment.member.id %}" class="text-muted">
+				   			{{ comment.member.participant.get_name }} 
+				   		</a> 
+			   		</span><br>
+				    <div style="padding-top:4px;">
+						{{ comment.body|linebreaksbr|urlize }}
+					</div>
+				</div>
+				<div id="edit-request-comment-{{ comment.id }}" style="display:none;">
+	    		    <br><br>
+						<textarea class="form-control" rows="5" name="body" 
+						        id="edit-request-comment-body-{{ comment.id }}">{{ comment.body }}</textarea>
+						<br>
+						<button type="submit" class="btn btn-primary btn-edit-request-comment" 
+							 id="btn-edit-request-comment-{{ comment.id }}">
+						    Submit Changes
+						</button>
+				</div>
+    		</div>
+    	</div>
+    </div>

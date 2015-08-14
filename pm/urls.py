@@ -18,6 +18,7 @@ from . import views
 
 urlpatterns = [
     url(r'messages/([0-9]*)', views.messages, name='messages'),
+    url(r'message_list', views.message_list, name='message_list'),
 ]
 
 

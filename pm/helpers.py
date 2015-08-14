@@ -13,12 +13,20 @@ def getParticipantsWithRecentMessages(currentParticipant, count=10):
     ).distinct()
     results = []
     for participant in participants:
-        results.append(getParticipant(participant.id, currentParticipant))
+        result = getParticipant(participant.id, currentParticipant)
+        messages = currentParticipant.message_received_set.all().filter(sender=participant)
+        hasUnviewedMessages = False
+        for message in messages:
+            print message.recipient
+            if not message.viewed :
+                hasUnviewedMessages = True
+        result['has_unviewed_messages'] = hasUnviewedMessages
+        results.append(result)
     return results
 
 def getConversation(participant, currentParticipant, count=10):
     messages = Message.objects.all().filter(
         ( Q(sender=participant) & Q(recipient=currentParticipant) ) |
         ( Q(sender=currentParticipant) & Q(recipient=participant) )
-    )
+    ).order_by('-sent_on')
     return messages

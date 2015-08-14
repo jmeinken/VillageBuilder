@@ -4,8 +4,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import render_to_string
 
 from account.models import Participant
+from main.helpers import getCurrentUser
 from .models import *
 
 
@@ -55,27 +57,45 @@ def delete_request_comment(request):
         return HttpResponse(json.dumps(data), content_type = "application/json")
 
 @login_required
+@csrf_exempt
 def edit_request_comment(request):
     if request.method == "POST":
-        url = request.POST.get("redirect")
         body = request.POST.get("body")
         commentId = request.POST.get("comment_id")
         comment = RequestComment.objects.get(id=commentId)
         comment.body = body
         comment.save()
-        return redirect(url)
+        context = {
+            'current' : getCurrentUser(request),
+            'comment' : comment,
+            }
+        html = render_to_string('requests/blocks/commentblock.html', context)
+        data = {
+            'comment_id' : commentId,
+            'html' : html,
+        }
+        return HttpResponse(json.dumps(data), content_type = "application/json")
     return redirect('login')
 
 @login_required
+@csrf_exempt
 def post_request_comment(request):
     if request.method == "POST":
-        url = request.POST.get("redirect")
         body = request.POST.get("body")
         requestId = request.POST.get("request_id")
         currentParticipant = Participant.objects.get(user=request.user, type='member')
         comment = RequestComment(member=currentParticipant.member, body=body, request_id=requestId)
         comment.save()
-        return redirect(url)
+        context = {
+            'current' : getCurrentUser(request),
+            'comment' : comment,
+            }
+        html = render_to_string('requests/blocks/commentblock.html', context)
+        data = {
+            'request_id' : requestId,
+            'html' : html,
+        }
+        return HttpResponse(json.dumps(data), content_type = "application/json")
     return redirect('login')
 
 

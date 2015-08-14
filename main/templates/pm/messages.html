@@ -3,6 +3,16 @@
 {% load widget_tweaks %}
 
 {% block subcontent %}
+
+  <style>
+  .selected_block .participant-block {
+  	  background-color: blue;
+  }
+  .unviewed_block .participant-block {
+  	  background-color: red;
+  }
+  </style>
+
   <h2>Messages</h2>
   <div class="row">
   	<div class="col-md-3">
@@ -10,15 +20,16 @@
   	    <br><br>
   	    <h4>Recent Conversations</h4>
   	    {% for participant in participants %}
-  	        <a href="{% url 'pm:messages' participant.id %}">
+  	        <a href="{% url 'pm:messages' participant.id %}" class="
+  	          	  {% if participant.id == conversation %}selected_block
+  	          	  {% elif participant.has_unviewed_messages %}  unviewed_block
+  	           	  {% endif %}
+  	        ">
   	        	{% include 'core/blocks/participantgroup_noactions.html' %}
   	        </a>
   	    {% endfor %}
   	</div>
   	<div class="col-md-6">
-  	    {% if messages %}
-  	       yessss<br>
-  	    {% endif %}
   	    <form method="post" action="{% url 'pm:messages' conversation %}">
   	        {% csrf_token %}
 		    {{ form.non_field_errors }}
@@ -31,6 +42,14 @@
 		    {% endfor %}
 		    <button type="submit" class="btn btn-primary">Send Message</button>
   	    </form>
+  	    {% for message in messages %}
+	  	    <div style="float:left; padding:0 10px 10px 0;">
+	  	    	<img src="{{ message.sender.get_thumb }}" />
+  	    	</div>
+  	    	<div class="text-muted">{{ message.sender.get_name }} ({{ message.sent_on }})</div>
+  	    	<strong>{{ message.subject }}</strong>
+  	    	<p style="clear:both;">{{ message.body|linebreaksbr|urlize }}</p>
+  	    {% endfor %}
   	</div>
   </div>
 {% endblock %}	

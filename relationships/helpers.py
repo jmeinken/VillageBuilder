@@ -80,17 +80,26 @@ def emailSearch(email, firstName, lastName, currentParticipant):
     }
    
 def getPeopleNearYou(currentParticipant):
-    participants = Participant.objects.all().filter(type='member')
+    friends = Member.objects.all().filter(reverse_friendship_set__member=currentParticipant.member)
+    lat = currentParticipant.member.latitude
+    lng = currentParticipant.member.longitude
+    members = Member.objects.raw('''SELECT *, POW(latitude - %s, 2) + POW(longitude - %s, 2) as distance
+        FROM account_member
+        ORDER BY distance
+        LIMIT 6''', [lat, lng])
     results = []
-    for participant in participants:
-        results.append(getParticipant(participant.id, currentParticipant))
+    for member in members:
+        if member != currentParticipant.member and not member in friends:
+            results.append(getParticipant(member.id, currentParticipant))
     return results
 
 def getFriendsOfFriends(currentParticipant):
-    participants = Participant.objects.all().filter(type='member')
+    friends = Member.objects.all().filter(reverse_friendship_set__member=currentParticipant.member)
+    friendsOfFriends = Member.objects.all().filter(reverse_friendship_set__member__in=friends)[:5]
     results = []
-    for participant in participants:
-        results.append(getParticipant(participant.id, currentParticipant))
+    for member in friendsOfFriends:
+        if member != currentParticipant.member and not member in friends:
+            results.append(getParticipant(member.id, currentParticipant))
     return results  
 
 # requires a member be provided for current participant

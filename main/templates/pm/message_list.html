@@ -1,0 +1,18 @@
+{% for message in messages %}
+	<li class="message-box" style="clear:both;">
+	    <a href="{% url 'pm:messages' message.sender.id %}">
+		    <img src="{{ message.sender.get_thumb }}" alt="{{ message.sender.get_name }}"
+		        width="45" height="45" style="float:left;padding:5px;"
+		    />
+		    <strong>{{ message.subject|truncatechars:30 }}</strong><br>
+		    {{ message.body|truncatechars:30 }}
+		</a>
+	</li>
+{% empty %}
+    &nbsp;&nbsp;<em>no new messages</em> &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="{% url 'pm:messages' 0 %}">View Messages <i class="fa fa-arrow-right"></i></a>
+{% endfor %}
+{% if messages %}
+	<li class="divider"></li>
+	<li><a href="{% url 'pm:messages' 0 %}">View All Messages <i class="fa fa-arrow-right"></i></a></li>
+{% endif %}

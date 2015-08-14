@@ -1,5 +1,10 @@
+import json
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 
 from account.models import Member, Participant
 from main.helpers import getCurrentUser
@@ -7,6 +12,24 @@ from main.helpers import getCurrentUser
 from .forms import NewMessageForm, NewConversationMessageForm
 from .models import *
 from .helpers import *
+
+
+
+@login_required
+@csrf_exempt
+def message_list(request):
+    user = request.user
+    currentParticipant = Participant.objects.get(user=user, type='member')
+    messages = Message.objects.all().filter(recipient=currentParticipant).filter(viewed=False)
+    context = {
+            'messages' : messages,
+        }
+    html = render_to_string('pm/message_list.html', context)
+    data = {
+        'html' : html,
+        'count' : messages.count()
+    }
+    return HttpResponse(json.dumps(data), content_type = "application/json")
 
 
 
@@ -23,13 +46,14 @@ def messages(request, participantId):
     if participantId != '0':
         talkingTo = Participant.objects.get(id=participantId)
         messages = getConversation(talkingTo, currentParticipant)
+        messages.filter(sender=talkingTo).update(viewed=True)
         form = NewConversationMessageForm(participantId)
     else:
-        messages = False
+        messages = []
         form = NewMessageForm(currentParticipant)
     context = {
         'messages' : messages,
-        'conversation' : participantId,
+        'conversation' : int(participantId),
         'current' : getCurrentUser(request),
         'newMessageForm' : form,
         'participants' : participants
