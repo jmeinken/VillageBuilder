@@ -1,0 +1,84 @@
+{% if account.relationship == RelationshipTypes.FRIENDS %}
+	<p class="text-muted"><i class="fa fa-check"></i> You are Friends</p>
+	<form method="POST" action="{% url 'relationships:remove-friend' %}">
+		{% csrf_token %}
+		<input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+		<input type="hidden" name="friend-id" value="{{account.id}}" />
+		<button type="submit" class="btn btn-default">Unfriend</button>
+	</form>
+{% endif %}
+{% if account.relationship == RelationshipTypes.NOT_FRIENDS %}
+    <form method="POST" action="{% url 'relationships:add-friend' %}">
+           {% csrf_token %}
+           <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+           <input type="hidden" name="friend-id" value="{{account.id}}" />
+           <button type="submit" class="btn btn-primary">Add as friend</button>
+       </form>
+{% endif %}
+{% if account.relationship == RelationshipTypes.REQUEST_SENT %}
+    <p class="text-muted">You sent a friend request to {{account.name}} and are waiting for a response.</p>
+       <form method="POST" action="{% url 'relationships:remove-friend' %}">
+           {% csrf_token %}
+           <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+           <input type="hidden" name="friend-id" value="{{account.id}}" />
+           <button type="submit" class="btn btn-default">Cancel Friend Request</button>
+       </form>
+{% endif %}	
+{% if account.relationship == RelationshipTypes.REQUEST_RECEIVED %}
+    <p class="text-muted">{{ account.name }} wants to be friends with you.</p>
+       <form method="POST" action="{% url 'relationships:add-friend' %}">
+           {% csrf_token %}
+           <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+           <input type="hidden" name="friend-id" value="{{account.id}}" />
+           <button type="submit" class="btn btn-primary">Accept Friend Request</button>
+       </form>
+{% endif %}	
+{% if account.relationship == RelationshipTypes.GUEST_FRIENDS %}
+    <p class="text-muted">Guest Friends</p>
+       <form method="POST" 
+       		action="{% url 'relationships:remove-guest-friend' %}">
+           {% csrf_token %}
+           <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+           <input type="hidden" name="friend-id" value="{{account.id}}" />
+           <button type="submit" class="btn btn-default">Unfriend</button>
+       </form>
+{% endif %}	
+{% if account.relationship == RelationshipTypes.GROUP_OWNER %}
+    <a href="{% url 'account:edit_group' account.id %}" class="btn btn-primary">Manage Group</a>
+{% endif %}
+{% if account.relationship == RelationshipTypes.NOT_GROUP_MEMBER %}
+	<form method="post" action="{% url 'relationships:join_group' %}">
+	    {% csrf_token %}
+		<input type="hidden" name="redirect" value="{{ request.build_absolute_uri }}" />
+		<input type="hidden" name="group_id" value="{{ account.id }}" />
+    	<button type="submit" class="btn btn-primary">Join Group</a>
+    </form>
+{% endif %}
+{% if account.relationship == RelationshipTypes.GROUP_MEMBER_REQUESTED %}
+	<p class="text-muted">You have requested membership in this group and 
+	are awaiting confirmation from the group owner.</p>
+    <form method="post" action="{% url 'relationships:unjoin_group' %}">
+	    {% csrf_token %}
+		<input type="hidden" name="redirect" value="{{ request.build_absolute_uri }}" />
+		<input type="hidden" name="group_id" value="{{ account.id }}" />
+    	<button type="submit" class="btn btn-default">Cancel Request to Join</a>
+    </form>
+{% endif %}
+{% if account.relationship == RelationshipTypes.GROUP_MEMBER_INVITED %}
+	<p class="text-muted">The owner of this group has invited you to join.</p>
+    <form method="post" action="{% url 'relationships:join_group' %}">
+	    {% csrf_token %}
+		<input type="hidden" name="redirect" value="{{ request.build_absolute_uri }}" />
+		<input type="hidden" name="group_id" value="{{ account.id }}" />
+    	<button type="submit" class="btn btn-primary">Join Group</a>
+    </form>
+{% endif %}
+{% if account.relationship == RelationshipTypes.GROUP_MEMBER %}
+	<p class="text-muted">You are a member of this group.</p>
+    <form method="post" action="{% url 'relationships:unjoin_group' %}">
+	    {% csrf_token %}
+		<input type="hidden" name="redirect" value="{{ request.build_absolute_uri }}" />
+		<input type="hidden" name="group_id" value="{{ account.id }}" />
+    	<button type="submit" class="btn btn-default">Unjoin Group</a>
+    </form>
+{% endif %}

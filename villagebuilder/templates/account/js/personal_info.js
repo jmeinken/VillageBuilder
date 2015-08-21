@@ -18,7 +18,11 @@
 		function updateSharedView() {
 	    	$('#shared-first-name').html($('#id_first_name').val());
 	    	$('#shared-last-name').html($('#id_last_name').val());
-	    	$('#shared-street').html($('#id_street').val());
+	    	if ( $('#id_share_street').is(':checked') ) {
+	    		$('#shared-street').html($('#id_street').val());
+	    	} else {
+	    	    $('#shared-street').html('');
+	    	}
 	    	if ($('#id_neighborhood').val() != '') {
 	    		$('#shared-neighborhood').html($('#id_neighborhood').val());
 	    	}  else  {
@@ -36,6 +40,11 @@
 	    		$('#shared-phone-show').show();
 	    	} else {
 	    		$('#shared-phone-show').hide();
+	    	}
+	    	if ( !$('#id_share_email').is(':checked') && !$('#id_share_phone').is(':checked') ) {
+	    	    $('#nothing-shared-show').show();
+	    	} else {
+	    	    $('#nothing-shared-show').hide();
 	    	}
 	    }
 	    

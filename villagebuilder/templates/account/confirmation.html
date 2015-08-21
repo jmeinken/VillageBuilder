@@ -1,0 +1,29 @@
+{% extends "core/bases/base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}<!-- https://pypi.python.org/pypi/django-widget-tweaks -->
+{% load staticfiles %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        {% include "account/blocks/create-account-header.html" %}
+	    
+	    <div class="row">
+	    	<div class="col-md-6 col-md-offset-1">
+	    	    {% include 'core/blocks/alerts.html' %}
+	    	    
+	    	    <a href="{% url 'home' %}">
+	    	    	<h2>Continue to the home page <i class="fa fa-hand-o-right"></i></h2>
+	    	    </a>
+	    	    <br><br><br><br><br><br><br><br><br><br><br>
+	    	</div>
+	    </div>
+	    
+	    
+		{% include 'core/blocks/footer.html' %}
+	</div>
+
+
+
+
+{% endblock %}

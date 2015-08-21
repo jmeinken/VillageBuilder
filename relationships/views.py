@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.db import transaction
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 from .models import *
 from account.models import Participant, Guest
@@ -38,6 +39,12 @@ def add_friend(request):
             data = {'friendId' : friendId}
             return HttpResponse(json.dumps(data), content_type = "application/json")
         else:
+            friend = Participant.objects.all().get(pk=friendId)
+            relationship = getRelationship(currentParticipant, friend)
+            if relationship == RelationshipTypes.FRIENDS:
+                messages.success(request, 'You are now friends with ' + friend.get_name() + '.')
+            else:
+                messages.success(request, 'A friend invite has been sent to ' + friend.get_name() + '.')
             return redirect(url)
     return redirect('login')
 
@@ -212,8 +219,14 @@ def remove_friend(request):
         url = request.POST.get("redirect")
         friendId = request.POST.get("friend-id")
         currentParticipant = Participant.objects.get(user=request.user, type='member')
-        friendship = Friendship.objects.get(member=currentParticipant.member, friend_id=friendId)
-        friendship.delete()
+        friendships = Friendship.objects.all().filter(member=currentParticipant.member, friend_id=friendId)
+        if friendships.count() > 0:
+            friendships[0].delete()
+        reverseFriendships = Friendship.objects.all().filter(friend=currentParticipant.member, member_id=friendId)
+        if reverseFriendships.count() > 0:
+            reverseFriendships[0].delete()
+        friend = Participant.objects.all().get(pk=friendId)
+        messages.success(request, 'You are no longer friends with ' + friend.get_name() + '.')
         return redirect(url)
     return redirect('login')
 

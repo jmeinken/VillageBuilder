@@ -9,12 +9,37 @@
     <div class="container-fluid">
         {% include "account/blocks/create-account-header.html" %}
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-10 col-md-offset-1">
 				<br>
 				{% include "core/blocks/map.html" %}
 			</div>
 		</div>
+		{% include 'core/blocks/footer.html' %}
 	</div>
+	
+<div class="modal" id="address-privacy-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			    <h4 class="modal-title">Address Privacy</h4>
+			</div>
+			<div class="modal-body">
+			    <p>
+			    	Your address is used to help you find neighbors that you know and is not publicly displayed.
+			    	We recommend entering a full address. However, if you prefer
+			    	you may leave off your house number or street name.
+			    </p>
+			    <p>
+			    	You will have further options for setting address privacy on the next screen.
+			    </p>
+			</div>
+			<div class="modal-footer">
+			    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 	
 	
 	

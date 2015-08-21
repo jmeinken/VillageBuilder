@@ -25,7 +25,7 @@
 	<form action="{{ callback }}" method="post" id="main-form">
 		<div class="row">
 			<div class="col-md-6">
-			    <h3>{{ group.participant.get_name }}</h3>
+			    <h3><em>{{ group.participant.get_name }}</em> Info</h3>
 			    <div class="row">
 			        <div class="col-md-6">
 					    {% csrf_token %}
@@ -74,8 +74,8 @@
 				<input type="submit" class="btn btn-primary" value="Save Changes" />
 			</div>
 			
-			<div class="col-md-6">
-			    <h3>Members</h3>
+			<div class="col-md-6" style="border-left:#A0A0A0 1px solid;">
+			    <h3><em>{{ group.participant.get_name }}</em> Members</h3>
 			    
 			    <ul class="nav nav-tabs">
 				    <li class="active"><a href="#current_members" data-toggle="tab">Current Members</a></li>

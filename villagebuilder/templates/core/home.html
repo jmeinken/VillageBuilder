@@ -277,16 +277,21 @@
 				</div>
 			</form>
 			<hr>
-			<h3>People Near You</h3>
+			<h3>Find Friends</h3>
+			<span class="text-primary">People Near You:</span>
 			<div class="list-group">
 				{% for participant in peopleNearYou %}
 				    {% include 'core/blocks/participantgroup.html' %}
+				{% empty %}
+				    &nbsp;&nbsp;&nbsp;&nbsp;<em>none</em>
 				{% endfor %}
 			</div>
-			<h3>Friends of Friends</h3>
+			<span class="text-primary">Friends of Friends:</span>
 			<div class="list-group">
 				{% for participant in friendsOfFriends %}
 				    {% include 'core/blocks/participantgroup.html' %}
+				{% empty %}
+				    &nbsp;&nbsp;&nbsp;&nbsp;<em>none</em>
 				{% endfor %}
 			</div>
     	</div>

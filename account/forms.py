@@ -58,8 +58,9 @@ class PersonalInfoForm(forms.ModelForm):
     class Meta:
         model = Member
         fields = ['full_address', 'street', 'city', 'neighborhood', 'share_email', 'share_phone',
-                  'phone_number', 'phone_type', 'image', 'thumb',]
+                  'share_street', 'phone_number', 'phone_type', 'image', 'thumb',]
         labels = {
+            'share_street': 'Allow people to see my street name',
             'share_email': 'Allow friends to see my email address',
             'share_phone': 'Allow friends to see my phone number',
         }

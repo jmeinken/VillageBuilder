@@ -30,6 +30,11 @@ def build_nav(request, current_view):
         nav_complete = { 'label' : 'Confirmation', 'class_attr' : 'disabled' }
         nav_address = { 'label' : 'Address', 'link' : reverse('account:address') }
         nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'class_attr' : 'active disabled' }
+    if current_view == 'confirmation':
+        nav_account_info = { 'label' : 'Account Info', 'class_attr' : 'disabled' }
+        nav_complete = { 'label' : 'Confirmation', 'class_attr' : ' active disabled' }
+        nav_address = { 'label' : 'Address', 'class_attr' : 'disabled' }
+        nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'class_attr' : 'disabled' }
     return [nav_account_info, nav_address, nav_personal_info, nav_complete]
 
 def getParticipantInfo(participantId, currentParticipant, basic=True):

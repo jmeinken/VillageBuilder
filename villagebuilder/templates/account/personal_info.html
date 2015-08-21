@@ -35,7 +35,9 @@
 	            </div>
 	        </div>
 			<div class="row">
-				<div class="col-md-4">
+				<div class="col-md-3 col-md-offset-1">
+				    <fieldset>
+				    <legend>Address</legend>
 					    {% csrf_token %}
 				        <div class="form-group">
 					        {{ form.full_address.errors }}
@@ -57,24 +59,41 @@
 				            {{ form.neighborhood|label_with_classes:"control-label" }} 
 				            {{ form.neighborhood|attr:"class:form-control" }}
 			            </div>
+			        </fieldset>
 				</div>
-				<div class="col-md-4">
-						<img id="user-pic" src="{% static "img/generic-user.png" %}" alt="User Pic" width="150" height="150" />
+				<div class="col-md-3" style="padding:0 30px;">
+				    <fieldset>
+				        <legend>User Pic</legend>
+						<img id="user-pic" src="{% static "img/generic-user.png" %}" 
+						        alt="User Pic" width="150" height="150"
+						        style="margin-right:10px;" />
 						<button type="button" class="btn btn-info" data-toggle="modal" data-target="#upload-pic-modal">
 							Upload Picture
 						</button>
-				        <div class="checkbox">
-					        {{ form.share_email.errors }}
-				             
-				            {{ form.share_email }}
-				            {{ form.share_email.label_tag|remove_colon }}
-			            </div>
-			            <div class="checkbox">
-					        {{ form.share_phone.errors }}
-				             
-				            {{ form.share_phone }}
-				            {{ form.share_phone.label_tag|remove_colon }}
-			            </div>
+					</fieldset>
+					<fieldset style="margin-top:20px;">
+						<legend style="margin-bottom:5px;">Privacy Settings</legend>
+						<div style="padding-left:20px;">
+					        <div class="checkbox">
+						        {{ form.share_street.errors }}
+					            {{ form.share_street }}
+					            {{ form.share_street.label_tag|remove_colon }}
+				            </div>
+				        </div>
+						<div style="padding-left:20px;">
+					        <div class="checkbox">
+						        {{ form.share_email.errors }}
+					            {{ form.share_email }}
+					            {{ form.share_email.label_tag|remove_colon }}
+				            </div>
+				        </div>
+				        <div style="padding-left:20px;">
+				            <div class="checkbox">
+						        {{ form.share_phone.errors }}
+					            {{ form.share_phone }}
+					            {{ form.share_phone.label_tag|remove_colon }}
+				            </div>
+				        </div>
 			            <div id="phone-info">
 			            	<div class="form-group">
 						        {{ form.phone_number.errors }}
@@ -87,25 +106,45 @@
 					            {{ form.phone_type|attr:"class:form-control" }}
 				            </div>
 			            </div>
-					    
-					    <input type="submit" value="Submit" />
+			        </fieldset>
 				</div>
-				<div class="col-md-4">
-					<h3>Shared with Everyone</h3>
-					    <img id="shared-user-pic" src="{% static "img/generic-user.png" %}" alt="User Pic" width="55" height="55" />
-					    <span id="shared-first-name"></span> <span id="shared-last-name"></span><br />
-					    <span id="shared-street"></span> (<span id="shared-neighborhood"></span>)
-					<hr>
-					<h3>Shared Only with Friends</h3>
-					<div id="shared-email-show">
-						<strong>Email: </strong> <span id="shared-email"></span>
-					</div>
-					<div id="shared-phone-show">
-						<strong>Phone: </strong> <span id="shared-phone"></span> <span id="shared-phone-type"></span>
-					</div>
+				<div class="col-md-3">
+					<fieldset>
+					    <legend class="text-primary">What can people see?</legend>
+					    <div class="panel panel-primary">
+						    <div class="panel-heading">
+						        <h3 class="panel-title">Shared Only with Friends</h3>
+						    </div>
+						    <div class="panel-body">
+						        <div id="shared-email-show">
+									<strong>Email: </strong> <span id="shared-email"></span>
+								</div>
+								<div id="shared-phone-show">
+									<strong>Phone: </strong> <span id="shared-phone"></span> <span id="shared-phone-type"></span>
+								</div>
+								<div id="nothing-shared-show">
+									<em>nothing</em>
+								</div>
+						    </div>
+						</div>
+					    <div class="panel panel-primary">
+						    <div class="panel-heading">
+						        <h3 class="panel-title">Shared with Everyone</h3>
+						    </div>
+						    <div class="panel-body">
+						        <img id="shared-user-pic" src="{% static 'img/generic-user.png' %}" 
+						                alt="User Pic" width="55" height="55"
+						                style="float:left;margin-right:10px;" />
+							    <span id="shared-first-name"></span> <span id="shared-last-name"></span><br />
+							    <span id="shared-street"></span> (<span id="shared-neighborhood"></span>)
+						    </div>
+						</div>
+						<button type="submit" class="btn btn-success">Create Account</button>
+					</fieldset>
 				</div>
 			</div>
 		</form>
+		{% include 'core/blocks/footer.html' %}
 	</div>
 
 

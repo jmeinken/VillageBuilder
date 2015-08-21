@@ -7,56 +7,13 @@
 
 	
 	<div class="row">
-	    <div class="col-sm-2">
-    		<img src="{{ account.image }}" alt="" width="250" height="250" style="float:left;">
-    	</div>
-    	<div class="col-sm-5">
+    	<div class="col-sm-7">
+    	    <img src="{{ account.image }}" alt="" width="250" height="250" 
+    	            style="float:left;margin-right:10px;">
 			<h1>{{ account.name }}</h1>
 			<p>{{ account.display_address }}</p>
-			{% if account.relationship == RelationshipTypes.FRIENDS %}
-			    <i class="fa fa-check"></i> You are friends
-			{% endif %}
-			{% if account.relationship == RelationshipTypes.NOT_FRIENDS %}
-			    <button class="btn btn-primary">Add as Friend <i class="fa fa-plus"></i></button>
-			{% endif %}
-			{% if account.relationship == RelationshipTypes.GROUP_OWNER %}
-			    <a href="{% url 'account:edit_group' account.id %}" class="btn btn-primary">Manage Group</a>
-			{% endif %}
-			{% if account.relationship == RelationshipTypes.NOT_GROUP_MEMBER %}
-				<form method="post" action="{% url 'relationships:join_group' %}">
-				    {% csrf_token %}
-					<input type="hidden" name="redirect" value="{{ request.build_absolute_uri }}" />
-					<input type="hidden" name="group_id" value="{{ account.id }}" />
-			    	<button type="submit" class="btn btn-primary">Join Group</a>
-			    </form>
-			{% endif %}
-			{% if account.relationship == RelationshipTypes.GROUP_MEMBER_REQUESTED %}
-				You have requested membership in this group and are awaiting confirmation from the group owner.<br>
-			    <form method="post" action="{% url 'relationships:unjoin_group' %}">
-				    {% csrf_token %}
-					<input type="hidden" name="redirect" value="{{ request.build_absolute_uri }}" />
-					<input type="hidden" name="group_id" value="{{ account.id }}" />
-			    	<button type="submit" class="btn btn-primary">Cancel Request to Join</a>
-			    </form>
-			{% endif %}
-			{% if account.relationship == RelationshipTypes.GROUP_MEMBER_INVITED %}
-				The owner of this group has invited you to join.<br>
-			    <form method="post" action="{% url 'relationships:join_group' %}">
-				    {% csrf_token %}
-					<input type="hidden" name="redirect" value="{{ request.build_absolute_uri }}" />
-					<input type="hidden" name="group_id" value="{{ account.id }}" />
-			    	<button type="submit" class="btn btn-primary">Join Group</a>
-			    </form>
-			{% endif %}
-			{% if account.relationship == RelationshipTypes.GROUP_MEMBER %}
-				You are a member of this group.<br>
-			    <form method="post" action="{% url 'relationships:unjoin_group' %}">
-				    {% csrf_token %}
-					<input type="hidden" name="redirect" value="{{ request.build_absolute_uri }}" />
-					<input type="hidden" name="group_id" value="{{ account.id }}" />
-			    	<button type="submit" class="btn btn-primary">Unjoin Group</a>
-			    </form>
-			{% endif %}
+			<hr>
+			{% include 'account/blocks/account_view_actions.html' %}
 		</div>
 		<div class="col-sm-4 well">
 			<h4>Contact Info</h4>
@@ -87,27 +44,38 @@
 	</div>
     <hr>
     <ul class="nav nav-tabs">
-		<li class="active"><a href="#items" data-toggle="tab">Shared Items</a></li>
 		{% if account.type == 'member' %}
-		    <li><a href="#friends" data-toggle="tab">Friends</a></li>
+		    <li class="active"><a href="#friends" data-toggle="tab">Friends</a></li>
 		{% endif %}
 		{% if account.type == 'group' %}
+		    <li class="active"><a href="#about" data-toggle="tab">About</a></li>
 		    <li><a href="#members" data-toggle="tab">Members</a></li>
-		    <li><a href="#about" data-toggle="tab">About</a></li>
 		{% endif %}
+		<li><a href="#items" data-toggle="tab">Shared Items</a></li>
 	</ul>
-	<div id="myTabContent" class="tab-content">
-	  <div class="tab-pane fade active in" id="items">
-	    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
-	  </div>
-	  <div class="tab-pane fade" id="friends">
-	    <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit.</p>
-	  </div>
+	<div id="myTabContent" class="tab-content well">
+	  {% if account.type == 'member' %}
+		  <div class="tab-pane fade active in" id="friends">
+		      <div class="row" style="margin-top:20px;">
+		          <div class="col-sm-4 col-sm-offset-1">
+				      {% for participant in friends %}
+				          {% include 'core/blocks/participantgroup.html' %}
+				      {% endfor %}
+			      </div>
+		      </div>
+		  </div>
+	  {% endif %}
 	  {% if account.type == 'group' %}
-		  <div class="tab-pane fade" id="about">
+	  	  <div class="tab-pane fade active in" id="about">
+		      {{ account.description|linebreaksbr|urlize }}
+		  </div>
+	      <div class="tab-pane fade" id="members">
 		      {{ account.description|linebreaksbr|urlize }}
 		  </div>
 	  {% endif %}
+	  <div class="tab-pane fade" id="items">
+	    <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.</p>
+	  </div>
 </div>
 
 {% endblock %}	

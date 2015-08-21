@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth import login, authenticate
 
 from villagebuilder.utils import console
 from .forms import *
@@ -29,8 +31,14 @@ from relationships.models import GroupMembership
 def view(request, participantId):
     currentParticipant = Participant.objects.get(user=request.user, type='member')
     accountInfo = getParticipantFull(participantId, currentParticipant)
+    participant = Participant.objects.get(pk=participantId)
+    if participant.type == 'member':
+        friends = getFriends(participant)
+    if participant.type == 'group':
+        members = getMembers(participant)
     context = {
         'account' : accountInfo,
+        'relationships' : friends,
         'RelationshipTypes' : RelationshipTypes,
         'current' : getCurrentUser(request),
     }
@@ -133,6 +141,10 @@ def create_group(request):
             group.owner = Participant.objects.get(type='member', user=user).member
             group.id = participant.id
             group.save()
+            messages.success(request, '''
+                Your group has been successfully created.
+                From this page you can add group info and invite more members.
+            ''')
             return redirect('account:edit_group', group.id)
     context = {
         'current' : getCurrentUser(request),  
@@ -292,8 +304,15 @@ def personal_info(request):
             # get data from session
             print personalInfoForm
             personalInfoForm.save()
-            print 'validated'
-            request.session.flush()
+            # log the user in
+            user = authenticate(
+                username=ifkeyset(request.session, 'email'),
+                password=ifkeyset(request.session, 'password')
+            )
+            request.session.flush()  #don't flush after login
+            # user.backend = 'django.contrib.auth.backends.ModelBackend'
+            login(request, user)
+            messages.success(request, 'Account successfully created for ' + participant.get_name() + '.')
             return redirect(reverse('account:confirmation'))
         else:
             print 'invalid'
@@ -321,4 +340,9 @@ def personal_info(request):
 
 
 def confirmation(request):
-    return HttpResponse("It worked!")
+    # show page
+    context = {
+        'user' : request.user,
+        'nav'  : build_nav(request, 'confirmation'),
+    }
+    return render(request, 'account/confirmation.html', context)

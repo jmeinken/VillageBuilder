@@ -45,7 +45,12 @@
 			            <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
 			            <input type="hidden" name="friend-id" value="{{participant.id}}" />
 			            <button type="submit" class="btn btn-primary btn-xs btn-participantgroup">Accept Friend Request</button>
-			            <button type="button" class="btn btn-warning btn-xs btn-participantgroup">Ignore</button>
+			        </form>
+			        <form method="POST" action="{% url 'relationships:remove-friend' %}" id="ignore-friend-form-{{participant.id}}">
+			            {% csrf_token %}
+			            <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+			            <input type="hidden" name="friend-id" value="{{participant.id}}" />
+			            <button type="submit" class="btn btn-warning btn-xs btn-participantgroup">Ignore</button>
 			        </form>
 		        </li>
 			{% endif %}	

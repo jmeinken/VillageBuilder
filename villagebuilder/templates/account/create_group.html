@@ -27,24 +27,46 @@
 </script>
 
    
-
 	<div class="row">
-		<div class="col-md-6">
-		    <a href="#" id="user-pic-edit-btn" data-toggle="modal" data-target="#upload-pic-modal">Edit Pic</a>
+		<div class="col-md-10 col-md-offset-1">
+			<h2>VillageBuilder Groups</h2>
+			<hr>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4 col-md-offset-1">
+			<p>VillageBuilder Groups make it easy to share items within your club, organization, etc.
+			Simply create a group and invite members to join.</p>
+			
+			<p>How it works:
+			<ul>
+			    <li>If you create the group, you are the group owner.</li>
+				<li>All new members must be approved by the group owner before joining.</li>
+				<li>Whenever a member shares an item, they will have the option of sharing
+				    it with your entire group.</li>
+			</ul>
+			</p>
+			
+			
+		</div>
+		<div class="col-md-4 well">
 			<form action="{{ callback }}" method="post" id="main-form">
-			    {% csrf_token %}
-			    {{ form.non_field_errors }}
-			    {% for field in groupForm %}
-			        {% if field.label != 'Imagefff' and field.label != 'Thumbfff' %}
-				        <div class="form-group">
-				            {{ field|label_with_classes:"control-label" }} 
-				            {{ field|attr:"class:form-control" }}
-			            </div>
-			            <div id="form-errors" style="color:red;">{{ field.errors }}</div>
-			        {% endif %}
-			    {% endfor %}
-			    <input type="hidden" name="redirect-url" value="" />
-			    <input type="submit" value="Submit" />
+				<fieldset>
+				    <legend>Create a New Group</legend>
+				    {% csrf_token %}
+				    {{ form.non_field_errors }}
+				    {% for field in groupForm %}
+				        {% if field.label != 'Imagefff' and field.label != 'Thumbfff' %}
+					        <div class="form-group">
+					            {{ field|label_with_classes:"control-label" }} 
+					            {{ field|attr:"class:form-control" }}
+				            </div>
+				            <div id="form-errors" style="color:red;">{{ field.errors }}</div>
+				        {% endif %}
+				    {% endfor %}
+				    <input type="hidden" name="redirect-url" value="" />
+				    <input type="submit" value="Submit" />
+				</fieldset>
 			</form>
 			
 		</div>

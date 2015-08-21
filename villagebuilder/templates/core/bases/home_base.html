@@ -68,6 +68,14 @@
 	    </div>
 	</nav>
     <div class="container-fluid">
+    	{% if messages %}
+    	    <div class="row">
+    	        <div class="col-md-10 col-md-offset-1">
+                    {% include 'core/blocks/alerts.html' %}
+                </div>
+            </div>
+        {% endif %}
 		{% block subcontent %}{% endblock %}
+		{% include 'core/blocks/footer.html' %}
     </div>
 {% endblock %}

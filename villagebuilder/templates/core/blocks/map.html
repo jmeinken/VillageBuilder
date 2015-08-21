@@ -2,13 +2,19 @@
 {% load widget_tweaks %}
 
 
-
-<div class="form-group">
-	<div class="input-group">
-		<input class="form-control" type="text" id="lookup-address">
-		<span class="input-group-btn">
-		    <button class="btn btn-default" type="button" id="button-lookup-address">Lookup Address</button>
-		</span>
+<div class="row">
+	<div class="col-md-8">
+		<div class="form-group">
+			<div class="input-group">
+				<input class="form-control" type="text" id="lookup-address">
+				<span class="input-group-btn">
+				    <button class="btn btn-default" type="button" id="button-lookup-address">Lookup Address</button>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4" style="margin-top:10px;">
+		<a href="#" data-toggle="modal" data-target="#address-privacy-modal" class="text-warning"> <i class="fa fa-question-circle"></i> Why do you need my address?</a>
 	</div>
 </div>
 <div class="row">
