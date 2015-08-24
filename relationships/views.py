@@ -262,11 +262,43 @@ def email_search(request):
 @login_required
 def relationships(request):
     currentParticipant = Participant.objects.get(user=request.user, type='member')
+    friends = getRelations(currentParticipant, currentParticipant, [
+        RelationshipTypes.FRIENDS, 
+        RelationshipTypes.GUEST_FRIENDS,
+    ])
+    friendRequestReceived = getRelations(currentParticipant, currentParticipant, [
+        RelationshipTypes.REQUEST_RECEIVED, 
+    ])
+    friendRequestSent = getRelations(currentParticipant, currentParticipant, [
+        RelationshipTypes.REQUEST_SENT, 
+    ])
+    groupOwner = getRelations(currentParticipant, currentParticipant, [
+        RelationshipTypes.GROUP_OWNER, 
+    ])
+    groupMember = getRelations(currentParticipant, currentParticipant, [
+        RelationshipTypes.GROUP_MEMBER, 
+    ])
+    groupMemberRequested = getRelations(currentParticipant, currentParticipant, [
+        RelationshipTypes.GROUP_MEMBER_REQUESTED, 
+    ])
+    groupMemberInvited = getRelations(currentParticipant, currentParticipant, [
+        RelationshipTypes.GROUP_MEMBER_INVITED, 
+    ])
+    if not groupOwner and not groupMember and not groupMemberRequested and not groupMemberInvited:
+        noGroupRelationships = True
+    else:
+        noGroupRelationships = False
     context = {
         'current' : getCurrentUser(request),
-        'friends' : getFriends(currentParticipant),
-        'friendRequests' : getFriendRequests(currentParticipant),
-        'RelationshipTypes' : RelationshipTypes
+        'friends' : friends,
+        'friendRequestReceived' : friendRequestReceived,
+        'friendRequestSent' : friendRequestSent,
+        'groupOwner' : groupOwner,
+        'groupMember' : groupMember,
+        'groupMemberRequested' : groupMemberRequested,
+        'groupMemberInvited' : groupMemberInvited,        
+        'RelationshipTypes' : RelationshipTypes,
+        'noGroupRelationships' : noGroupRelationships,
     }
     return render(request, 'relationships/relationships.html', context)
 

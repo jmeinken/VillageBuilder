@@ -33,12 +33,20 @@ def view(request, participantId):
     accountInfo = getParticipantFull(participantId, currentParticipant)
     participant = Participant.objects.get(pk=participantId)
     if participant.type == 'member':
-        friends = getFriends(participant)
+        relTypes = [
+            RelationshipTypes.FRIENDS,
+            RelationshipTypes.GUEST_FRIENDS,
+        ]
+        relations = getRelations(participant, currentParticipant, relTypes)
     if participant.type == 'group':
-        members = getMembers(participant)
+        relTypes = [
+            RelationshipTypes.GROUP_OWNER,
+            RelationshipTypes.GROUP_MEMBER,
+        ]
+        relations = getRelations(participant, currentParticipant, relTypes)
     context = {
         'account' : accountInfo,
-        'relationships' : friends,
+        'relations' : relations,
         'RelationshipTypes' : RelationshipTypes,
         'current' : getCurrentUser(request),
     }
@@ -155,9 +163,9 @@ def create_group(request):
 def edit_group(request, groupId):
     group = Group.objects.get(id=groupId)
     currentParticipant = Participant.objects.get(user=request.user, type='member')
-    currentMembers = getGroupMembers(group, [RelationshipTypes.GROUP_OWNER, RelationshipTypes.GROUP_MEMBER], currentParticipant)
-    awaitingApproval = getGroupMembers(group, [RelationshipTypes.GROUP_MEMBER_REQUESTED], currentParticipant)
-    invited = getGroupMembers(group, [RelationshipTypes.GROUP_MEMBER_INVITED], currentParticipant)
+    currentMembers = getRelations(group.participant, currentParticipant, [RelationshipTypes.GROUP_OWNER, RelationshipTypes.GROUP_MEMBER])
+    awaitingApproval = getRelations(group.participant, currentParticipant, [RelationshipTypes.GROUP_MEMBER_REQUESTED])
+    invited = getRelations(group.participant, currentParticipant, [RelationshipTypes.GROUP_MEMBER_INVITED])
     groupForm = GroupForm(instance=group)
     if request.method == "POST":
         groupForm = GroupForm(request.POST, instance=group)
@@ -167,7 +175,7 @@ def edit_group(request, groupId):
         RelationshipTypes.FRIENDS,
         RelationshipTypes.REQUEST_RECEIVED,                 
     ]
-    ownerFriends = getRelations(currentParticipant, relationshipTypes)
+    ownerFriends = getRelations(currentParticipant, currentParticipant, relationshipTypes)
     for participant in list(ownerFriends):
         if participant in currentMembers or participant in invited:
             ownerFriends.remove(participant)

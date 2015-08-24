@@ -51,9 +51,9 @@
 		    <h2>Your Friends</h2>
 			<ul class="nav nav-tabs">
 				<li class="active"><a aria-expanded="false" data-target="#friends" data-toggle="tab">Friends</a></li>
-				<li class=""><a aria-expanded="false" data-target="#friend_requests" data-toggle="tab">Friend Requests</a></li>
-				<li class=""><a aria-expanded="false" data-target="#groups" data-toggle="tab">Groups</a></li>
-				<li class="disabled"><a>Disabled</a></li>
+				<li class=""><a aria-expanded="false" data-target="#request_received" data-toggle="tab">Request Received</a></li>
+				<li class=""><a aria-expanded="false" data-target="#request_sent" data-toggle="tab">Request Sent</a></li>
+				<li class="{% if noGroupRelationships %}disabled{% endif %}"><a aria-expanded="false" data-target="#groups" data-toggle="tab">Groups</a></li>
 			</ul>
 			<div id="myTabContent" class="tab-content">
 				<div class="tab-pane fade active in" id="friends">
@@ -63,15 +63,37 @@
 						{% endfor %}
 					</div>
 				</div>
-				<div class="tab-pane fade" id="friend_requests">
+				<div class="tab-pane fade" id="request_received">
 					<div class="list-group">
-						{% for participant in friendRequests %}
+						{% for participant in friendRequestReceived %}
+						    {% include 'core/blocks/participantgroup.html' %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="tab-pane fade" id="request_sent">
+					<div class="list-group">
+						{% for participant in friendRequestSent %}
 						    {% include 'core/blocks/participantgroup.html' %}
 						{% endfor %}
 					</div>
 				</div>
 				<div class="tab-pane fade" id="groups">
-					groups
+					Groups you own:<br />
+					{% for participant in groupOwner %}
+						{% include 'core/blocks/participantgroup.html' %}
+					{% endfor %}
+					Groups you belong to:<br />
+					{% for participant in groupMember %}
+						{% include 'core/blocks/participantgroup.html' %}
+					{% endfor %}
+					Groups you have been invited to join:<br />
+					{% for participant in groupMemberInvited %}
+						{% include 'core/blocks/participantgroup.html' %}
+					{% endfor %}
+					Awaiting Approval from group owner:<br />
+					{% for participant in groupMemberRequested %}
+						{% include 'core/blocks/participantgroup.html' %}
+					{% endfor %}
 				</div>
 			</div>  
 		</div>

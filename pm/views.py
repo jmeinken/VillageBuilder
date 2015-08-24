@@ -6,6 +6,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 
+
+
 from account.models import Member, Participant
 from main.helpers import getCurrentUser
 
@@ -45,17 +47,17 @@ def messages(request, participantId):
     participants = getParticipantsWithRecentMessages(currentParticipant)
     if participantId != '0':
         talkingTo = Participant.objects.get(id=participantId)
-        messages = getConversation(talkingTo, currentParticipant)
-        messages.filter(sender=talkingTo).update(viewed=True)
+        messageList = getConversation(talkingTo, currentParticipant)
+        messageList.filter(sender=talkingTo).update(viewed=True)
         form = NewConversationMessageForm(participantId)
     else:
-        messages = []
+        messageList = []
         form = NewMessageForm(currentParticipant)
     context = {
-        'messages' : messages,
+        'messages' : messageList,
         'conversation' : int(participantId),
         'current' : getCurrentUser(request),
         'newMessageForm' : form,
-        'participants' : participants
+        'participants' : participants,
     }
     return render(request, 'pm/messages.html', context)

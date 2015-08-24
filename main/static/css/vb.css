@@ -45,3 +45,14 @@
 .btn-participantgroup {
 	margin-top: 5px;
 }
+
+#alert-container > li > a {
+	display: inline;
+	padding: 0;
+	color: #3CAAE8;
+}
+
+#alert-container > li > a:hover, #alert-container > li > a:focus {
+	background-color: #FFF;
+	text-decoration: underline;
+}

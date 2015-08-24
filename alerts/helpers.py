@@ -5,6 +5,7 @@ from .models import *
 from relationships.models import Friendship, GroupMembership
 from account.models import Member, Group
 from django.template.loader import render_to_string
+from django.core.urlresolvers import reverse
 
 
 # CALLING FOR ADDING FRIEND
@@ -92,12 +93,18 @@ def getGroupInviteAlert(event):
         return None
     # check if reciprocated
     membership = memberships[0]
+    groupOwnerName = membership.group.owner.participant.get_name()
+    groupOwnerId = membership.group.owner.id
+    groupName = membership.group.participant.get_name()
+    groupId = membership.group.id
+    linkedGroupOwnerName = '<a href="' + reverse('account:view', args=[groupOwnerId]) + '">' + groupOwnerName + '</a>'
+    linkedGroupName = '<a href="' + reverse('account:view', args=[groupId]) + '">' + groupName + '</a>'
     if membership.requested:
         response = {
             'id' : event.id,
             'image' : membership.group.participant.get_image(),
             'alt' : 'my image',
-            'text' : 'You are now a member of ' + membership.group.participant.get_name(),
+            'text' : 'You are now a member of ' + linkedGroupName,
             'viewed' : event.viewed,
             'form' : '', 
         }
@@ -107,7 +114,7 @@ def getGroupInviteAlert(event):
             'id' : event.id,
             'image' : membership.member.participant.get_image(),
             'alt' : 'my image',
-            'text' : membership.group.owner.participant.get_name() + ' has invited you to join the group ' + membership.group.participant.get_name(),
+            'text' : linkedGroupOwnerName + ' has invited you to join the group ' + linkedGroupName,
             'viewed' : event.viewed,
             'form' : form,
         }
@@ -122,12 +129,15 @@ def getGroupRequestAlert(event):
         return None
     # check if reciprocated
     membership = memberships[0]
+    memberName = membership.member.participant.get_name()
+    memberId = membership.member.id
+    linkedName = '<a href="' + reverse('account:view', args=[memberId]) + '">' + memberName + '</a>'
     if membership.invited:
         response = {
             'id' : event.id,
             'image' : membership.member.participant.get_image(),
             'alt' : 'my image',
-            'text' : membership.member.participant.get_name() + ' has joined your group ' + membership.group.participant.get_name(),
+            'text' : linkedName + ' has joined your group ' + membership.group.participant.get_name(),
             'viewed' : event.viewed,
             'form' : '', 
         }
@@ -137,7 +147,7 @@ def getGroupRequestAlert(event):
             'id' : event.id,
             'image' : membership.member.participant.get_image(),
             'alt' : 'my image',
-            'text' : membership.member.participant.get_name() + ' wants to join your group ' + membership.group.participant.get_name(),
+            'text' : linkedName + ' wants to join your group ' + membership.group.participant.get_name(),
             'viewed' : event.viewed,
             'form' : form,
         }
@@ -154,12 +164,13 @@ def getAddFriendAlert(event):
     image = member.get_user_pic()
     friendName = member.participant.user.get_full_name()
     friendId = member.participant.id
+    linkedName = '<a href="' + reverse('account:view', args=[friendId]) + '">' + friendName + '</a>'
     if Friendship.objects.all().filter(member_id=data['friend_id'],friend_id=data['member_id']).count()==1:
         response = {
             'id' : event.id,
             'image' : image,
             'alt' : 'my image',
-            'text' : 'You are now friends with ' + friendName + '.',
+            'text' : 'You are now friends with ' + linkedName + '.',
             'viewed' : event.viewed,
             'form' : '', 
         }
@@ -169,7 +180,7 @@ def getAddFriendAlert(event):
             'id' : event.id,
             'image' : image,
             'alt' : 'my image',
-            'text' : friendName + ' added you as a friend.',
+            'text' : linkedName + ' wants to be friends.',
             'viewed' : event.viewed,
             'form' : form,
         } 

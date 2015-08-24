@@ -6,7 +6,7 @@
 	    <div style="width:100%;text-align:right;padding:0 5px 0 0;">
 	    	<a href="#" class="delete-alert" id="delete-alert-{{ alert.id }}"><i class="fa fa-times"></i></a>
     	</div>
-	    {{ alert.text }}
+	    {{ alert.text|safe }}
 	    <div class="alert-form">{{ alert.form }}</div>
 	</li>
 {% empty %}

@@ -116,8 +116,21 @@
 
 		}
 		
+		$('#load-more-requests').click(function() {
+			var start = maxRequest;
+			var end = maxRequest + 10;
+			$.get("{% url 'requests:request_list' %}", { 'start' : start, 'end' : end }, function(data, status){
+				if (!data.moreRequests) {
+		        	$('#load-more-requests').hide();
+		        }
+		        $('#request-section').append(data.html);
+		        attachEvents();
+		        maxRequest = data.maxRequest;
+		    });
+		});
 		
 		
+		var maxRequest = {{ maxRequest }};
 		attachEvents();
 		
 	});
@@ -150,7 +163,7 @@
 				</a>
 			</div>
     	</div>
-    	<div class="col-md-6" id="request-section">
+    	<div class="col-md-6">
     	    <div class="float-right" style="margin-top: 5px">
 		    	<div class="btn-group">
 					<a href="#" class="btn btn-primary">Share Something</a>
@@ -184,89 +197,12 @@
 				</form>
 			</div>
 			<h3 style="border-bottom:solid 1px #527EAC;">Requests</h3>
-			{% for myrequest in requests %}
-				<div id="request-{{ myrequest.request.id }}" style="border-bottom:solid 1px #527EAC;">
-					<div style="padding: 10px 0;">
-						
-					    <div class="row">
-					        <div class="col-sm-1" style="min-width:51px;">
-					    		<img src="{{ myrequest.request.member.participant.get_image }}" alt="my alt" width="50" height="50" />
-							</div>
-							<div class="col-sm-11">
-							    <div style="float:right;">
-						    		{% if myrequest.request.member.id == current.member.id %}
-								    	<div class="btn-group">
-											<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-											     <span class="caret"></span>
-										     </a>
-										     <ul class="dropdown-menu dropdown-menu-right">
-										        <li>
-										            <a href="#" class="btn-edit-request" id="btn-edit-request-{{ myrequest.request.id }}">
-										                Edit
-										            </a>
-										            <a href="#" class="btn-delete-request" id="btn-delete-request-{{ myrequest.request.id }}">
-										            	Delete
-										            </a>
-										        </li>
-										     </ul>
-									    </div>
-									{% endif %}
-								</div>
-								<div id="view-request-{{ myrequest.request.id }}">
-								   	<em class="text-muted">
-								   		Posted by 
-								   		<a href="{% url 'account:view' myrequest.request.member.id %}">
-								   			{{ myrequest.request.member.participant.get_name }}
-								   		</a> 
-								   		on {{ myrequest.request.date }}
-							   		</em>
-							   		<div style="padding-top:5px;">
-										{{ myrequest.request.body|linebreaksbr|urlize }}
-									</div>
-								</div>
-								<div style="display:none" id="edit-request-{{ myrequest.request.id }}">
-									<br><br>
-									<form method="post" action="{% url 'requests:edit_request' %}">
-									    {% csrf_token %}
-									    <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
-									    <input type="hidden" name="request_id" value="{{myrequest.request.id}}" />
-										<textarea class="form-control" rows="5" name="body">{{ myrequest.request.body }}</textarea>
-										<br>
-										<button type="submit" class="btn btn-primary">Submit Changes</button>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>	
-					<div style="clear:both;padding-left:25px; padding-right:25px;" class="well well-sm">
-						<a href="#" class="show-comments" id="show-comments-for-request-{{myrequest.request.id}}">
-						    Comments ({{ myrequest.comments.count }}) <i class="fa fa-caret-down"></i>
-						</a>
-						<div id="comments-for-request-{{myrequest.request.id}}" style="display:none;font-size:0.9em;">
-							{% for comment in myrequest.comments %}
-							    {% include 'requests/blocks/commentblock.html' %}
-							{% endfor %}
-							<div id="new-comments-{{myrequest.request.id}}"></div>
-							<div style="padding-top:10px;">
-								<div class="row">
-								    <div class="col-sm-8">
-										<textarea class="form-control" rows="1" name="body"
-												placeholder="Add a comment..."
-												id="add-request-comment-body-{{myrequest.request.id}}"></textarea>
-									</div>
-									<div class="col-sm-4">
-										<button type="submit" class="btn btn-default btn-add-request-comment" 
-										        style="margin-top: 5px"
-										        id="btn-add-request-comment-{{myrequest.request.id}}">
-										    Add Comment
-										</button>
-									</div>
-								</div> 
-							</div>
-						</div>
-					</div>
-				</div>
-			{% endfor %}
+			<div id="request-section">
+			    {% include 'requests/request_list.html' %}
+			</div>
+			{% if moreRequests %} 
+			    <button id="load-more-requests" class="btn btn-default">Load More</button>
+			{% endif %}
 		</div>
 		<div class="col-md-3">
 			<form action="{% url 'relationships:participant_search' %}" method="get">

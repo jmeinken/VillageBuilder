@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from account.models import Participant
 from main.helpers import getCurrentUser
 from .models import *
+from requests.helpers import *
 
 
 @login_required
@@ -101,4 +102,25 @@ def post_request_comment(request):
 
 @login_required
 def request_list(request):
-    return True
+    user = request.user
+    currentParticipant = Participant.objects.get(user=user, type='member')
+    start = request.GET.get("start")
+    end = request.GET.get("end")
+    requestList = getRequestList(currentParticipant, start, end)
+    requests = requestList['requests']
+    totalCount = requestList['total_count']
+    if totalCount > int(end):
+        moreRequests = True
+    else:
+        moreRequests = False
+    context = {
+        'requests' : requests,
+    }
+    html = render_to_string('requests/request_list.html', context)
+    data = {
+        'html' : html,
+        'moreRequests' : moreRequests,
+        'maxRequest' : end,
+    }
+    return HttpResponse(json.dumps(data), content_type = "application/json")
+        

@@ -6,7 +6,7 @@ from .models import *
 
 
 
-def getRequestList(currentParticipant):
+def getRequestList(currentParticipant, start=0, end=10):
     #get list of friends
     friends = getReciprocatedFriends(currentParticipant)
     friendIds = []
@@ -15,9 +15,14 @@ def getRequestList(currentParticipant):
         friendIds.append(friend.id)
     requests = Request.objects.all().filter(member_id__in=friendIds).order_by('-date')
     requestList = []
-    for request in requests:
+    for request in requests[start:end]:
         requestList.append({
              'request' : request,
              'comments' : RequestComment.objects.all().filter(request=request).order_by('date')    
         })
-    return requestList
+    return {
+        'requests' : requestList,
+        'total_count' : requests.count(),
+    }
+
+    

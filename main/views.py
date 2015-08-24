@@ -57,12 +57,20 @@ from .forms import RequestResetPasswordForm, ResetPasswordForm
 def home(request):
     user = request.user
     currentParticipant = Participant.objects.get(user=user, type='member')
+    requestList = getRequestList(currentParticipant, 0, 10)
+    totalCount = requestList['total_count']
+    if totalCount > 10:
+        moreRequests = True
+    else:
+        moreRequests = False
     context = {
             'current' : getCurrentUser(request),
             'peopleNearYou' : getPeopleNearYou(currentParticipant),
             'friendsOfFriends' : getFriendsOfFriends(currentParticipant),
             'RelationshipTypes' : RelationshipTypes,
-            'requests' : getRequestList(currentParticipant)
+            'requests' : requestList['requests'],
+            'moreRequests' : moreRequests,
+            'maxRequest' : 10,
         }
     return render(request, 'core/home.html', context)
 
