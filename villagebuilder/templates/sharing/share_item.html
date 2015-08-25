@@ -1,0 +1,138 @@
+{% extends "core/bases/home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+
+{% include 'core/modals/upload_tool.html' %}
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	$('#id_sharingWith').change(function() {
+		if ($(this).val() == 'custom') {
+			$('#custom-friends-form').slideDown();
+		} else {
+			$('#custom-friends-form').slideUp();
+		}
+	});
+	
+
+	if ($('#id_sharingWith').val() == 'custom') {
+		$('#custom-friends-form').show();
+	}
+	
+	$('#fake-submit').click(function() {
+		if ($('#id_sharingWith').val() == 'custom') {
+			$('#save-sharelist-modal').modal('show');
+		} else {
+			alert('submit form');
+		}
+	});
+
+
+}); 
+
+
+
+
+
+
+
+</script>
+
+
+
+<h2>Share Something</h2>
+<div class="row">
+    <div class="col-md-4">
+	<form action="{{ callback }}" method="post" id="main-form">
+	    {% csrf_token %}
+	    {{ form.non_field_errors }}
+	    {% for field in itemForm %}
+	        <div class="form-group">
+	            {{ field|label_with_classes:"control-label" }} 
+	            {{ field|attr:"class:form-control" }}
+            </div>
+            <div id="form-errors" class="text-danger">{{ field.errors }}</div>
+	    {% endfor %}
+	</div>
+	<div class="col-md-8">
+	    {% for field in shareForm %}
+	        <div class="form-group">
+	            {{ field|label_with_classes:"control-label" }} 
+	            {{ field|attr:"class:form-control" }}
+            </div>
+            <div id="form-errors" class="text-danger">{{ field.errors }}</div>
+	    {% endfor %}
+	    <div class="row well" id="custom-friends-form" style="display:none;margin:0 10px;">
+	    	<h4>Custom list - Select who to share with:</h4>
+	        <div class="col-md-6" style="height:300px;overflow-y:auto;">
+	        	Your Friends:
+			    {% for participant in friends %}
+			        <div class="row">
+	        			<div class="col-md-9">
+			        		{% include "core/blocks/participantgroup_noactions.html" %}
+			        	</div>
+			        	<div class="col-md-3">
+			        		<input type="checkbox" name="custom_list[]" value="{{participant.id}}" /> Add
+			        	</div>
+			        </div>		
+			    {% endfor %}
+		    </div>
+		    <div class="col-md-6" style="height:300px;overflow-y:auto;">
+		    	Your Groups:
+			    {% for participant in groups %}
+			        <div class="row">
+	        			<div class="col-md-9">
+			        		{% include "core/blocks/participantgroup_noactions.html" %}
+			        	</div>
+			        	<div class="col-md-3">
+			        		<input type="checkbox" name="custom_list[]" value="{{participant.id}}" /> Add
+			        	</div>
+			        </div>		
+			    {% endfor %}
+		    </div>
+	    </div>
+	    <br>
+	    <input type="button" id="fake-submit" class="btn btn-primary" value="Submit" />
+	</form>
+	</div>
+</div>
+
+<div class="modal" id="save-sharelist-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        <h4 class="modal-title">Save Share List?</h4>
+      </div>
+      <div class="modal-body">
+        <p>You are sharing this item with a custom list of people.  Would you like to save these people
+        in a Share List that you can reuse in the future?</p>
+        <div class="radio">
+          <label>
+            <input name="optionsRadios" id="optionsRadios1" value="option1" checked="" type="radio">
+            No
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input name="optionsRadios" id="optionsRadios2" value="option2" type="radio">
+            Yes
+          </label>
+        </div>
+        <div class="form-group">
+		  <label class="control-label" for="focusedInput">New Share List Name</label>
+		  <input class="form-control" id="focusedInput" placeholder="ex: close friends, neighbors, friends with kids" type="text">
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

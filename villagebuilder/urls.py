@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^alerts/', include('alerts.urls', namespace="alerts")),
     url(r'^requests/', include('requests.urls', namespace="requests")),
     url(r'^pm/', include('pm.urls', namespace="pm")),
+    url(r'^sharing/', include('sharing.urls', namespace="sharing")),
 ]
 
 

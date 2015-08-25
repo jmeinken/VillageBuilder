@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from django.shortcuts import redirect
+from django.core.urlresolvers import reverse
 
 
 
@@ -44,6 +46,7 @@ def messages(request, participantId):
             message = newMessageForm.save(commit=False)
             message.sender = currentParticipant
             message.save()
+            return redirect(reverse("pm:messages", args=[message.recipient.id]))
     participants = getParticipantsWithRecentMessages(currentParticipant)
     if participantId != '0':
         talkingTo = Participant.objects.get(id=participantId)

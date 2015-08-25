@@ -68,6 +68,7 @@ def add_group_members(request):
                 'member_id' : memberId,
             }
             registerEvent('group invite', eventDict)
+        messages.success(request, "Selected people have been invited to join your group.")
         return redirect(url)
     return redirect('login')
 

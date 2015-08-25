@@ -68,10 +68,11 @@
 	    </div>
 	</nav>
     <div class="container-fluid">
-    	{% if messages %}
+    	{% if messages or successMessage %}
     	    <div class="row">
     	        <div class="col-md-10 col-md-offset-1">
-                    {% include 'core/blocks/alerts.html' %}
+                    {% include 'core/blocks/notifications.html' %}
+                    
                 </div>
             </div>
         {% endif %}

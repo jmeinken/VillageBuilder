@@ -24,6 +24,7 @@ def post_request(request):
     return redirect('login')
 
 @login_required
+@csrf_exempt
 def edit_request(request):
     if request.method == "POST":
         url = request.POST.get("redirect")
@@ -114,6 +115,7 @@ def request_list(request):
     else:
         moreRequests = False
     context = {
+        'current' : getCurrentUser(request),
         'requests' : requests,
     }
     html = render_to_string('requests/request_list.html', context)

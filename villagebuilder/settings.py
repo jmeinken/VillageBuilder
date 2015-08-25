@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'alerts',
     'requests',
     'pm',
+    'sharing',
 )
 
 MIDDLEWARE_CLASSES = (
