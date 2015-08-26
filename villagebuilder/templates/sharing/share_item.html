@@ -30,6 +30,33 @@ $(document).ready(function(){
 			alert('submit form');
 		}
 	});
+	
+	$('input[name=optionsRadios]').click(function() {
+		if($('#optionsRadios2').is(':checked')) {
+			$('#new-share-list-name').slideDown();
+		} else {
+			$('#new-share-list-name').slideUp();
+		}
+		if ( $('#txt-share-list-name').val() == '' && $('#optionsRadios2').is(':checked')) {
+    		$('#continue-submission').prop("disabled",true);
+    	} else {
+    		$('#continue-submission').prop("disabled",false);
+    	}
+	});
+	
+	if($('#optionsRadios2').is(':checked')) {
+		$('#new-share-list-name').show();
+	}
+	
+	$('#txt-share-list-name').on("change keyup paste", function() {
+    	if ( $(this).val() == '' && $('#optionsRadios2').is(':checked')) {
+    		$('#continue-submission').prop("disabled",true);
+    	} else {
+    		$('#continue-submission').prop("disabled",false);
+    	}
+    }).trigger("change");
+	
+
 
 
 }); 
@@ -113,23 +140,24 @@ $(document).ready(function(){
         in a Share List that you can reuse in the future?</p>
         <div class="radio">
           <label>
-            <input name="optionsRadios" id="optionsRadios1" value="option1" checked="" type="radio">
+            <input name="optionsRadios" id="optionsRadios1" value="no" checked="" type="radio">
             No
           </label>
         </div>
         <div class="radio">
           <label>
-            <input name="optionsRadios" id="optionsRadios2" value="option2" type="radio">
+            <input name="optionsRadios" id="optionsRadios2" value="yes" type="radio">
             Yes
           </label>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="new-share-list-name" style="display:none;">
 		  <label class="control-label" for="focusedInput">New Share List Name</label>
-		  <input class="form-control" id="focusedInput" placeholder="ex: close friends, neighbors, friends with kids" type="text">
+		  <input class="form-control" id="txt-share-list-name" 
+		          placeholder="ex: close friends, neighbors, friends with kids, woodworking buddies" type="text">
 		</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Continue</button>
+        <button type="button" class="btn btn-primary" id="continue-submission">Continue</button>
       </div>
     </div>
   </div>
