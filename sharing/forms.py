@@ -7,19 +7,35 @@ from .models import *
 
 
 class ItemForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        # the sharingWith field has to be set dynamically
+        participant = kwargs.pop('participant', None)
+        shareLists = ShareList.objects.all().filter(owner=participant.member)
+        shareListOptions = []
+        if shareLists.count() != 0:
+            for shareList in shareLists:
+                shareListOptions.append([shareList.id, shareList.name])
+        shareOptions = [
+            ['all_friends', 'All Friends'],
+            ['all_friends_groups', 'All Friends and All Groups'],
+            ['custom', 'Create New Custom List'],
+        ]
+        if len(shareListOptions) != 0:
+            shareOptions.append(['Share Lists:', shareListOptions])
+        super(ItemForm, self).__init__(*args, **kwargs)
+        self.fields["sharingWith"] = forms.ChoiceField(choices=shareOptions)
+    
     class Meta:
         model = Item
         fields = ['type','title', 'description', 'image', 'thumb']
-        
-class ShareForm(forms.Form):
-    OPTIONS = (
-        ('all_friends', 'All Friends'),
-        ('all_friends_groups', 'All Friends and All Groups'),
-        ('custom', 'Create New Custom List'),
-        ('My Share Lists:', (
-                ('Share List 1', 'Share List 1'),
-                ('Share List 2', 'Share List 2'),
-            )
-        ),
+
+    # sharingWith = forms.ChoiceField(choices=SHARE_OPTIONS)
+    CREATE_SHARE_LIST = (
+        ('no', 'No',),
+        ('yes', 'Yes',), 
     )
-    sharingWith = forms.ChoiceField(choices=OPTIONS)
+    createShareList = forms.ChoiceField(widget=forms.RadioSelect, choices=CREATE_SHARE_LIST, initial='no')
+    shareListName = forms.CharField(max_length=60, label="Share List Name", required=False)
+        
+

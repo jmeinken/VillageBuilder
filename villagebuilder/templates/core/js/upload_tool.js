@@ -8,6 +8,8 @@ dataToAccompanyImageUpload: a JS object containing any data to pass together wit
 
 updatePageAfterImageUpload(data): a function to run after the image is successfully uploaded
 
+defaultImage 
+
 
 {% endcomment %}
 
@@ -15,7 +17,11 @@ updatePageAfterImageUpload(data): a function to run after the image is successfu
 
 
 	$(document).ready(function(){
-		
+	
+		if (typeof defaultImage !== 'undefined') {
+	    	$('#image').attr("src",defaultImage);
+	    }
+	
 		var api  // Jcrop api
 	    var $progressBar = $('#progressBar')
 	    //options

@@ -15,8 +15,8 @@ def createRandomString(length):
     return ''.join(random.choice(string.ascii_letters) for _ in range(length))
 
 
-def handle_uploaded_file(f):
-    indexPath = BASE_DIR + '/main/static/uploads/user_pics.txt'
+def handle_uploaded_file(f, fileGroup='user_pics'):
+    indexPath = BASE_DIR + '/main/static/uploads/' + fileGroup + '.txt'
     indexFile = open(indexPath, 'a+')
     i = indexFile.read()
     indexFile.close()
@@ -27,13 +27,13 @@ def handle_uploaded_file(f):
         j = 1 + int(i)
     indexFile.write(str(j))
     indexFile.close()
-    fileName = 'user' + str(j) + '.png'
-    path = BASE_DIR + '/main/static/uploads/user_pics/' + fileName
+    fileName = 'image' + str(j) + '.png'
+    path = BASE_DIR + '/main/static/uploads/' + fileGroup + '/' + fileName
     with open(path, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
     return {
-        'path' : '/static/uploads/user_pics/' + fileName,
+        'path' : '/static/uploads/' + fileGroup + '/' + fileName,
         'file' : fileName,
     }
     

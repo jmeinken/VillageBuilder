@@ -22,7 +22,7 @@ class Item(models.Model):
     image = models.CharField(max_length=30, blank=True, null=True)
     thumb = models.CharField(max_length=30, blank=True, null=True)
     # category = models.ForeignKey("Category", on_delete=models.CASCADE)
-    sharelist = models.ForeignKey("Sharelist", on_delete=models.CASCADE, null=True, blank=True)
+    sharelist = models.ForeignKey("ShareList", on_delete=models.CASCADE, null=True, blank=True)
 
 #class Category(models.Model):
 #    name = models.CharField(max_length=60)
@@ -32,11 +32,11 @@ class ItemSharee(models.Model):
     item = models.ForeignKey("Item", on_delete=models.CASCADE)
     sharee = models.ForeignKey(Participant, on_delete=models.CASCADE)
     
-class Sharelist(models.Model):
+class ShareList(models.Model):
     name = models.CharField(max_length=60)
     owner = models.ForeignKey(Member, on_delete=models.CASCADE)
     
-class SharelistSharee(models.Model):
-    sharelist = models.ForeignKey("Sharelist", on_delete=models.CASCADE)
+class ShareListSharee(models.Model):
+    shareList = models.ForeignKey("ShareList", on_delete=models.CASCADE)
     sharee = models.ForeignKey(Participant, on_delete=models.CASCADE)
     

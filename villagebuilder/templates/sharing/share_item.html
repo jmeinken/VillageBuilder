@@ -1,14 +1,35 @@
 {% extends "core/bases/home_base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}
+{% load staticfiles %}
 
 {% block subcontent %}
+
+<script type="text/javascript">
+
+	function updatePageAfterImageUpload(data) {
+		console.log(data)
+		$('#id_image').val(data.image.file);
+		$('#id_thumb').val(data.thumb.file);
+		$("#item-pic").attr("src", data.image.path);
+	}
+	
+	var dataToAccompanyImageUpload = {}
+	var imageUploadUrl = '{% url 'sharing:upload_image' %}'
+	
+	var defaultImage = '{% static "img/generic-item.png" %}';
+
+
+    {% include 'core/js/upload_tool.js' %}
+</script>
 
 {% include 'core/modals/upload_tool.html' %}
 
 <script type="text/javascript">
 
 $(document).ready(function(){
+	
+	
 	
 	$('#id_sharingWith').change(function() {
 		if ($(this).val() == 'custom') {
@@ -27,29 +48,29 @@ $(document).ready(function(){
 		if ($('#id_sharingWith').val() == 'custom') {
 			$('#save-sharelist-modal').modal('show');
 		} else {
-			alert('submit form');
+			$('#main-form').submit();
 		}
 	});
 	
-	$('input[name=optionsRadios]').click(function() {
-		if($('#optionsRadios2').is(':checked')) {
+	$('input[name=createShareList]').click(function() {
+		if($('#id_createShareList_1').is(':checked')) {
 			$('#new-share-list-name').slideDown();
 		} else {
 			$('#new-share-list-name').slideUp();
 		}
-		if ( $('#txt-share-list-name').val() == '' && $('#optionsRadios2').is(':checked')) {
+		if ( $('#id_shareListName').val() == '' && $('#id_createShareList_1').is(':checked')) {
     		$('#continue-submission').prop("disabled",true);
     	} else {
     		$('#continue-submission').prop("disabled",false);
     	}
 	});
 	
-	if($('#optionsRadios2').is(':checked')) {
+	if($('#id_createShareList_1').is(':checked')) {
 		$('#new-share-list-name').show();
 	}
 	
-	$('#txt-share-list-name').on("change keyup paste", function() {
-    	if ( $(this).val() == '' && $('#optionsRadios2').is(':checked')) {
+	$('#id_shareListName').on("change keyup paste", function() {
+    	if ( $(this).val() == '' && $('#id_createShareList_1').is(':checked')) {
     		$('#continue-submission').prop("disabled",true);
     	} else {
     		$('#continue-submission').prop("disabled",false);
@@ -69,98 +90,110 @@ $(document).ready(function(){
 
 </script>
 
-
-
 <h2>Share Something</h2>
-<div class="row">
-    <div class="col-md-4">
-	<form action="{{ callback }}" method="post" id="main-form">
-	    {% csrf_token %}
-	    {{ form.non_field_errors }}
-	    {% for field in itemForm %}
-	        <div class="form-group">
-	            {{ field|label_with_classes:"control-label" }} 
-	            {{ field|attr:"class:form-control" }}
-            </div>
-            <div id="form-errors" class="text-danger">{{ field.errors }}</div>
-	    {% endfor %}
-	</div>
-	<div class="col-md-8">
-	    {% for field in shareForm %}
-	        <div class="form-group">
-	            {{ field|label_with_classes:"control-label" }} 
-	            {{ field|attr:"class:form-control" }}
-            </div>
-            <div id="form-errors" class="text-danger">{{ field.errors }}</div>
-	    {% endfor %}
-	    <div class="row well" id="custom-friends-form" style="display:none;margin:0 10px;">
-	    	<h4>Custom list - Select who to share with:</h4>
-	        <div class="col-md-6" style="height:300px;overflow-y:auto;">
-	        	Your Friends:
-			    {% for participant in friends %}
-			        <div class="row">
-	        			<div class="col-md-9">
-			        		{% include "core/blocks/participantgroup_noactions.html" %}
-			        	</div>
-			        	<div class="col-md-3">
-			        		<input type="checkbox" name="custom_list[]" value="{{participant.id}}" /> Add
-			        	</div>
-			        </div>		
-			    {% endfor %}
-		    </div>
-		    <div class="col-md-6" style="height:300px;overflow-y:auto;">
-		    	Your Groups:
-			    {% for participant in groups %}
-			        <div class="row">
-	        			<div class="col-md-9">
-			        		{% include "core/blocks/participantgroup_noactions.html" %}
-			        	</div>
-			        	<div class="col-md-3">
-			        		<input type="checkbox" name="custom_list[]" value="{{participant.id}}" /> Add
-			        	</div>
-			        </div>		
-			    {% endfor %}
-		    </div>
-	    </div>
-	    <br>
-	    <input type="button" id="fake-submit" class="btn btn-primary" value="Submit" />
-	</form>
-	</div>
-</div>
 
-<div class="modal" id="save-sharelist-modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-        <h4 class="modal-title">Save Share List?</h4>
-      </div>
-      <div class="modal-body">
-        <p>You are sharing this item with a custom list of people.  Would you like to save these people
-        in a Share List that you can reuse in the future?</p>
-        <div class="radio">
-          <label>
-            <input name="optionsRadios" id="optionsRadios1" value="no" checked="" type="radio">
-            No
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input name="optionsRadios" id="optionsRadios2" value="yes" type="radio">
-            Yes
-          </label>
-        </div>
-        <div class="form-group" id="new-share-list-name" style="display:none;">
-		  <label class="control-label" for="focusedInput">New Share List Name</label>
-		  <input class="form-control" id="txt-share-list-name" 
-		          placeholder="ex: close friends, neighbors, friends with kids, woodworking buddies" type="text">
-		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" id="continue-submission">Continue</button>
-      </div>
-    </div>
-  </div>
+<form action="{{ callback }}" method="post" id="main-form">
+<div style="display:none;">
+	{% csrf_token %}
+	{{ itemForm.image }}
+	{{ itemForm.thumb }}
 </div>
+	<div class="row">
+	    <div class="col-md-4">
+		    {{ itemForm.non_field_errors }}
+		    <div class="form-group">
+	            {{ itemForm.type|label_with_classes:"control-label" }} 
+	            {{ itemForm.type|attr:"class:form-control" }}
+            </div>
+            <div id="form-errors" class="text-danger">{{ itemForm.type.errors }}</div>
+	        <div class="form-group">
+	            {{ itemForm.title|label_with_classes:"control-label" }} 
+	            {{ itemForm.title|attr:"class:form-control" }}
+            </div>
+            <div id="form-errors" class="text-danger">{{ itemForm.title.errors }}</div>
+            <div>
+	            <img id="item-pic" src="{% static "img/generic-item.png" %}" 
+				        alt="User Pic" width="150" height="150"
+				        style="margin-right:10px;" />
+				<button type="button" class="btn btn-info" data-toggle="modal" data-target="#upload-pic-modal">
+					Upload Picture
+				</button>
+			</div>
+			<hr>
+			<input type="button" id="fake-submit" class="btn btn-success" value="Share Item" />
+		</div>
+		<div class="col-md-8">
+            <div class="form-group">
+	            {{ itemForm.description|label_with_classes:"control-label" }} 
+	            {{ itemForm.description|attr:"class:form-control" }}
+            </div>
+            <div id="form-errors" class="text-danger">{{ itemForm.description.errors }}</div>
+	        <div class="form-group">
+	            {{ itemForm.sharingWith|label_with_classes:"control-label" }} 
+	            {{ itemForm.sharingWith|attr:"class:form-control" }}
+            </div>
+            <div id="form-errors" class="text-danger">{{ itemForm.sharingWith.errors }}</div>
+		    <div class="row well" id="custom-friends-form" style="display:none;margin:0 10px;">
+		    	<h4>Custom list - Select who to share with:</h4>
+		        <div class="col-md-6" style="height:300px;overflow-y:auto;border:#C0C0C0 solid 1px;padding-top:5px;">
+		        	<strong class="text-primary">Your Friends:</strong>
+				    {% for participant in friends %}
+				        <div class="row">
+		        			<div class="col-md-9">
+				        		{% include "core/blocks/participantgroup_noactions.html" %}
+				        	</div>
+				        	<div class="col-md-3">
+				        		<input type="checkbox" name="custom_list[]" value="{{participant.id}}" /> Add
+				        	</div>
+				        </div>		
+				    {% endfor %}
+			    </div>
+			    <div class="col-md-6" style="height:300px;overflow-y:auto;border:#C0C0C0 solid 1px;padding-top:5px;">
+			    	<strong class="text-primary">Your Groups:</strong>
+				    {% for participant in groups %}
+				        <div class="row">
+		        			<div class="col-md-9">
+				        		{% include "core/blocks/participantgroup_noactions.html" %}
+				        	</div>
+				        	<div class="col-md-3">
+				        		<input type="checkbox" name="custom_list[]" value="{{participant.id}}" /> Add
+				        	</div>
+				        </div>		
+				    {% endfor %}
+			    </div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="modal" id="save-sharelist-modal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+	        <h4 class="modal-title">Save Share List?</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>You are sharing this item with a custom list of people.  Would you like to save these people
+	        in a Share List that you can reuse in the future?</p>
+	        {% for radio in itemForm.createShareList %}
+	            <div class="radio">
+	                {{ radio }}
+	            </div>
+	        {% endfor %}
+	        <div class="form-group" id="new-share-list-name" style="display:none;">
+			  {{ itemForm.shareListName|label_with_classes:"control-label" }}
+			  <input class="form-control" id="{{ itemForm.shareListName.id_for_label }}" 
+			          name="{{ itemForm.shareListName.html_name }}"
+			          placeholder="ex: close friends, neighbors, friends with kids, woodworking buddies" type="text">
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="submit" class="btn btn-primary" id="continue-submission">Continue</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</form>
+
 
 {% endblock %}
