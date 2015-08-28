@@ -1,0 +1,106 @@
+{% extends "core/bases/home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+{% load staticfiles %}
+
+{% block subcontent %}
+
+<h2>Shared With You</h2>
+<div class="row" style="border-top:#C0C0C0 1px solid;border-bottom:#C0C0C0 1px solid;margin-bottom:10px;background-color:#FFEBD6;padding-top:10px;">
+	<div class="col-md-2">		
+		<h4>Filters</h4>
+	</div>
+	<div class="col-md-10">
+	    <div class="row">
+			<div class="col-md-6">
+			    <div class="form-group">
+				    <input class="form-control" type="text" placeholder="search text...">
+				</div>
+			</div>
+			<div class="col-md-3" style="padding-top:7px;">
+			    <div class="radios">
+			    	<label>
+			            <input name="optionsRadios" id="optionsRadios1" value="option1" checked="" type="radio">
+			            title only
+			        </label>&nbsp;&nbsp;|&nbsp;&nbsp;
+			        <label>
+			            <input name="optionsRadios" id="optionsRadios1" value="option1" checked="" type="radio">
+			            title and description
+			        </label>
+			    </div>
+			</div>
+			<div class="col-md-3" style="padding-top:7px;">
+			    <div class="checkboxes">
+			    	<label>
+			            <input name="optionsRadios" id="optionsRadios1" value="option1" checked="" type="checkbox">
+			            has image
+			        </label>
+			    </div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+			    <div class="form-group">
+				    <label class="control-label">Category:</label>
+				    <select class="form-control" id="select">
+    				    <option value="">(all)</option>
+			            {% for key, keywords in categories.items %}
+			                <option value="{{key|lower}}">{{ key }}</option>
+			                {% for keyword in keywords %}
+				                <option value="{{keyword.0}}">-- {{ keyword.1 }}</option>
+				            {% endfor %}
+			            {% endfor %}
+			        </select>
+				</div>
+			</div>
+			<div class="col-md-3">
+			    <div class="form-group">
+				    <label class="control-label">Shared by friend:</label>
+				    <select class="form-control" id="select">
+				      <option value="">(all)</option>
+			          {% for friend in friends %}
+			              <option value="{{friend.id}}">{{ friend.participant.get_name }}</option>
+			          {% endfor %}
+			        </select>
+				</div>
+			</div>
+			<div class="col-md-3">
+			    <div class="form-group">
+				    <label class="control-label">Shared through group:</label>
+				    <select class="form-control" id="select">
+			          <option value="">(all)</option>
+			          {% for group in groups %}
+			              <option value="{{group.id}}">{{ group.participant.get_name }}</option>
+			          {% endfor %}
+			        </select>
+				</div>
+			</div>
+			<div class="col-md-3" style="padding-top:24px;">
+			    <button type="submit" class="btn btn-success">Go <i class="fa fa-angle-double-right"></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-2">
+	<h5>Sort Order</h5>
+	<a href="">Date (newest first)</a><br>
+	<a href="">Date (oldest first)</a>
+	</div>
+	<div class="col-md-9">
+		{% for item in items %}
+		    <div style="overflow:hidden;clear:both;">
+			    <img src="{{ item.get_thumb }}" alt="" width="50" height="50" 
+			            style="float:left;margin-right:10px;" />
+			    <span class="text-muted">{{ item.share_date|date:"M d, Y" }} | </span>
+			    <a href="">{{ item.title }}</a><br>
+			    Shared by <a href="{% url 'account:view' item.sharer.id %}">{{ item.sharer.participant.get_name }}</a>
+		    </div>
+		    <hr>
+		{% endfor %}
+	</div>
+</div>
+
+
+{% endblock %}

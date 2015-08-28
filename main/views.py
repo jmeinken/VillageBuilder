@@ -49,6 +49,8 @@ from relationships.helpers import *
 from alerts.helpers import *
 from requests.helpers import *
 from email_system.helpers import *
+from sharing.models import SHARE_CATEGORIES
+from sharing.helpers import *
 
 from .forms import RequestResetPasswordForm, ResetPasswordForm
 
@@ -63,6 +65,8 @@ def home(request):
         moreRequests = True
     else:
         moreRequests = False
+    items = getItemsForParticipant(currentParticipant)
+    shareCategories = getCategoriesWithCounts(items)
     context = {
             'current' : getCurrentUser(request),
             'peopleNearYou' : getPeopleNearYou(currentParticipant),
@@ -71,6 +75,7 @@ def home(request):
             'requests' : requestList['requests'],
             'moreRequests' : moreRequests,
             'maxRequest' : 10,
+            'shareCategories' : shareCategories,
         }
     return render(request, 'core/home.html', context)
 

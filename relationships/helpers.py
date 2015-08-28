@@ -39,8 +39,18 @@ def getReciprocatedFriends(currentParticipant):
         Member.objects.all()
         .filter(reverse_friendship_set__member=currentParticipant.member)
         .filter(friendship_set__friend=currentParticipant.member)
-    )
+    ).distinct()
     return friends
+
+def getReciprocatedGroups(currentParticipant):
+    groups = Group.objects.all().filter(
+            Q(owner = currentParticipant.member) |
+            (  Q(groupmembership__member = currentParticipant.member) &
+               Q(groupmembership__invited = True) &
+               Q(groupmembership__requested = True)
+            )
+        ).distinct()
+    return groups
 
 #only works for members getting guests
 def getReciprocatedFriendsAndGuests(currentParticipant):

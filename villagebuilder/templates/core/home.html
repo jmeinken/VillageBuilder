@@ -129,6 +129,22 @@
 		    });
 		});
 		
+		$('#browse-items-btn').click(function() {
+			$('#browse-items-popup').toggle();
+		});
+		$(document).mouseup(function (e) {
+		    var container = $("#browse-items-popup");
+		    var activationButton = $('#browse-items-btn');
+		    if (!container.is(e.target) // if the target of the click isn't the container...
+		        && container.has(e.target).length === 0 // ... nor a descendant of the container
+		        && !activationButton.is(e.target)
+		        && activationButton.has(e.target).length === 0)
+		    {
+		        container.hide();
+		    }
+		});
+		
+		
 		
 		var maxRequest = {{ maxRequest }};
 		attachEvents();
@@ -148,9 +164,45 @@
 				      </span>
 				  </div>
 			</div>
-			<button class="btn btn-primary btn-block">
-			    Browse Items Shared with You >
-			</button>
+			<div style="position:relative;">
+				<button class="btn btn-primary btn-block" id="browse-items-btn">
+				    Browse Items Shared with You >
+				</button>
+				<div style="position:absolute;left:100%;top:0;z-index:1000;width:500px;display:none;" 
+				        class="well well-sm" id="browse-items-popup">
+				    <div style="text-align:right;padding-right:10px;">
+				        <a href="{% url 'sharing:items' %}">
+				            Show me everything <i class="fa fa-angle-double-right"></i>
+				        </a>
+				    </div>
+					{% for category, values in shareCategories.items %}
+					    <div class="col-md-4">
+							<div class="list-group">
+						        {% if values.count > 0 %}
+						            <a href="" class="list-group-item lead-item">
+						                {{ category }}
+						                <span class="badge">{{ values.count }}</span>
+						            </a>
+						        {% else %}
+						            <div class="list-group-item lead-item">{{ category }}</div>
+						        {% endif %}
+							    <div class="list-group">
+							    {% for keyword, itemCount in values.keywords.items %}
+							             {% if itemCount > 0 %}
+								             <a href=""class="list-group-item">
+								                 {{keyword}}
+								             	 <span class="badge">{{ itemCount }}</span>
+								             </a>
+								         {% else %}
+								             <div class="list-group-item text-muted">{{keyword}}</div>
+								         {% endif %}
+							    {% endfor %}
+							    </div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
 			<h3>Recently Shared</h3>
 			<div class="list-group">
 				<a href="#" class="list-group-item">
@@ -169,11 +221,9 @@
 					<a href="{% url 'sharing:share_item' %}" class="btn btn-primary">Share Something</a>
 					<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down"></i>&nbsp;</a>
 					<ul class="dropdown-menu">
-						<li><a href="{% url 'sharing:share_item' %}?type=stuff">Stuff</a></li>
-						<li><a href="{% url 'sharing:share_item' %}?type=space">Space</a></li>
-						<li><a href="{% url 'sharing:share_item' %}?type=meal">Meals</a></li>
-						<li><a href="{% url 'sharing:share_item' %}?type=labor">Skills/Labor</a></li>
-						<li><a href="{% url 'sharing:share_item' %}?type=activity">Activity</a></li>
+					    {% for category in shareCategories.keys %}
+						    <li><a href="{% url 'sharing:share_item' %}?type={{ category|lower }}">{{ category }}</a></li>
+						{% endfor %}
 					</ul>
 				</div>
 			</div>

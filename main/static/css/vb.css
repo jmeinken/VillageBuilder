@@ -56,3 +56,31 @@
 	background-color: #FFF;
 	text-decoration: underline;
 }
+
+#browse-items-popup {
+	background-color: #04417D;
+}
+
+#browse-items-popup .col-md-4 {
+	padding: 5px;
+}
+
+#browse-items-popup .lead-item {
+	font-weight: bold;
+	font-size: 1.2em;
+	text-transform: uppercase;
+}
+
+#browse-items-popup .lead-item {
+	color: #04417D;
+	border-bottom: 5px #909090 solid;
+}
+
+#browse-items-popup a {
+	color: #2FA4E7;
+}
+
+
+#browse-items-popup .lead-item .badge {
+	background-color: #04417D;
+}

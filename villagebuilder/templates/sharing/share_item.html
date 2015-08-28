@@ -77,7 +77,11 @@ $(document).ready(function(){
     	}
     }).trigger("change");
 	
-
+	$('#id_type').change(function() {
+		var keywordBlockId = '#keywords_' + $(this).val().toLowerCase();
+		$('.keyword_block').slideUp();
+		$(keywordBlockId).slideDown();
+	}).trigger("change");
 
 
 }); 
@@ -106,6 +110,20 @@ $(document).ready(function(){
 	            {{ itemForm.type|attr:"class:form-control" }}
             </div>
             <div id="form-errors" class="text-danger">{{ itemForm.type.errors }}</div>
+            {% for field in keywordForm %}
+                <div id="{{ field.html_name }}" class="keyword_block" style="display:none;">
+	                <label class="control-label">Categories: &nbsp;&nbsp;
+	                <span class="text-muted">(select any that apply)</span></label>
+		            <div class="checkbox" style="overflow: hidden;">
+			            {% for checkbox in field %}
+			                <div class="well well-sm" style="float:left;margin-right:10px;">
+				            	{{ checkbox }}
+				            </div>
+				        {% endfor %}
+			        </div>
+		        </div>
+		    {% endfor %}
+            
 	        <div class="form-group">
 	            {{ itemForm.title|label_with_classes:"control-label" }} 
 	            {{ itemForm.title|attr:"class:form-control" }}

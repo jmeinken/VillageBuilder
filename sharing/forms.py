@@ -6,6 +6,7 @@ from .models import *
 
 
 
+
 class ItemForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
@@ -37,5 +38,13 @@ class ItemForm(forms.ModelForm):
     )
     createShareList = forms.ChoiceField(widget=forms.RadioSelect, choices=CREATE_SHARE_LIST, initial='no')
     shareListName = forms.CharField(max_length=60, label="Share List Name", required=False)
-        
+
+class KeywordForm(forms.Form):
+    
+    def __init__(self, *args, **kwargs):
+        super(KeywordForm, self).__init__(*args, **kwargs)
+        for key, keywords in SHARE_CATEGORIES.iteritems():
+            fieldName = 'keywords_' + key.lower()
+            self.fields[fieldName] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                             choices=keywords, required=False)        
 
