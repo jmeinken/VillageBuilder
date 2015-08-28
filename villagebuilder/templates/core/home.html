@@ -176,10 +176,11 @@
 				        </a>
 				    </div>
 					{% for category, values in shareCategories.items %}
-					    <div class="col-md-4">
+					    <div class="col-xs-4">
 							<div class="list-group">
 						        {% if values.count > 0 %}
-						            <a href="" class="list-group-item lead-item">
+						            <a href="{% url 'sharing:items' %}?category={{category|lower}}" 
+						                    class="list-group-item lead-item">
 						                {{ category }}
 						                <span class="badge">{{ values.count }}</span>
 						            </a>
@@ -189,7 +190,8 @@
 							    <div class="list-group">
 							    {% for keyword, itemCount in values.keywords.items %}
 							             {% if itemCount > 0 %}
-								             <a href=""class="list-group-item">
+								             <a href="{% url 'sharing:items' %}?category={{keyword}}"
+								                     class="list-group-item">
 								                 {{keyword}}
 								             	 <span class="badge">{{ itemCount }}</span>
 								             </a>
