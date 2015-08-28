@@ -26,5 +26,5 @@ def getItemsForParticipant(participant):
             ) |
             ( Q(share_type='all friends and all groups') & Q(sharer__groupmembership__group_id__in=groupIds) )                              
         )
-    return items
+    return items 
         
