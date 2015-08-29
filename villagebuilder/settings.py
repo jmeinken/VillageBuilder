@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+
+
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -90,15 +94,7 @@ WSGI_APPLICATION = 'villagebuilder.wsgi.application'
 #    }
 #}
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'villagebuilder',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-    }
-}
+
 
 # EMAIL
 EMAIL_HOST = 'email-smtp.us-east-1.amazonaws.com'
@@ -148,5 +144,7 @@ LOGGING = {
         },
     },
 }
+
+from .local_settings import *
 
 

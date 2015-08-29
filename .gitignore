@@ -58,3 +58,5 @@ docs/_build/
 target/
 
 .pydevproject
+local_settings.py
+*/uploads/*
