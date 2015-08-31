@@ -59,4 +59,4 @@ target/
 
 .pydevproject
 local_settings.py
-*/uploads/*
+uploads/
