@@ -55,6 +55,8 @@ class Item(models.Model):
     description = models.TextField()
     image = models.CharField(max_length=30, blank=True, null=True)
     thumb = models.CharField(max_length=30, blank=True, null=True)
+    to_borrow = models.BooleanField(default=True)
+    to_keep = models.BooleanField(default=False)
     # category = models.ForeignKey("Category", on_delete=models.CASCADE)
     sharelist = models.ForeignKey("ShareList", on_delete=models.CASCADE, null=True, blank=True)
     

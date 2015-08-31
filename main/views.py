@@ -66,7 +66,12 @@ def home(request):
     else:
         moreRequests = False
     items = getItemsForParticipant(currentParticipant)
+    recentItems = items[:5]
     shareCategories = getCategoriesWithCounts(items)
+    totalSharedWithYou = 0
+    print(shareCategories)
+    for category in shareCategories:
+        totalSharedWithYou = totalSharedWithYou + shareCategories[category]['count']
     context = {
             'current' : getCurrentUser(request),
             'peopleNearYou' : getPeopleNearYou(currentParticipant),
@@ -76,6 +81,8 @@ def home(request):
             'moreRequests' : moreRequests,
             'maxRequest' : 10,
             'shareCategories' : shareCategories,
+            'totalSharedWithYou' : totalSharedWithYou,
+            'recentItems' : recentItems,
         }
     return render(request, 'core/home.html', context)
 

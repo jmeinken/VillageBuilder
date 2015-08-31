@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
-from main.helpers import getCurrentUser, handle_uploaded_file
+from main.helpers import getCurrentUser, handle_uploaded_file, ifset
 from relationships.helpers import *
 from .forms import *
 from .helpers import *
@@ -103,12 +103,42 @@ def upload_image(request):
 @login_required
 def items(request):
     currentParticipant = Participant.objects.get(user=request.user, type='member')
-
+    filters = {
+        'category' : request.GET.get('category'),
+        'sharer' : request.GET.get('sharer'),
+        'group' : request.GET.get('group'),
+        'search_terms' : request.GET.get('search_terms'),
+        'search_scope' : ifset(request.GET.get('search_scope'), 'title'),
+        'has_image' : request.GET.get('has_image'),
+    }
+    print(filters['search_scope'])
+    category = request.GET.get('category');
+    items = getItemsForParticipant(currentParticipant)
+    items = filterItems(
+        items,
+        category = filters['category'],
+        sharerId = filters['sharer'],
+        groupId = filters['group'],
+        searchTerms = filters['search_terms'], 
+        searchScope = filters['search_scope'],
+        hasImage = filters['has_image'],      
+    )
     context = {
         'current' : getCurrentUser(request),
-        'items' : getItemsForParticipant(currentParticipant),   
+        'items' : items,
         'friends' :  getReciprocatedFriends(currentParticipant),
         'groups' : getReciprocatedGroups(currentParticipant),
         'categories' : SHARE_CATEGORIES,
+        'filters' : filters,
     }
     return render(request, 'sharing/items.html', context)
+
+@login_required
+def my_items(request):
+    currentParticipant = Participant.objects.get(user=request.user, type='member')
+    items = getItemsSharedByCurrentMember(currentParticipant.member)
+    context = {
+        'current' : getCurrentUser(request),
+        'items' : items,
+    }
+    return render(request, 'sharing/my_items.html', context)

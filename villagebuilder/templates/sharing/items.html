@@ -11,74 +11,90 @@
 		<h4>Filters</h4>
 	</div>
 	<div class="col-md-10">
-	    <div class="row">
-			<div class="col-md-6">
-			    <div class="form-group">
-				    <input class="form-control" type="text" placeholder="search text...">
+	    <form method="get" action="{% url 'sharing:items' %}">
+		    <div class="row">
+				<div class="col-md-6">
+				    <div class="form-group">
+					    <input class="form-control" type="text" placeholder="search text..."
+					        name="search_terms" 
+					        {% if filters.search_terms %}value="{{ filters.search_terms }}"{% endif %}>
+					</div>
+				</div>
+				<div class="col-md-3" style="padding-top:7px;">
+				    <div class="radios">
+				    	<label>
+				            <input name="search_scope" value="title" type="radio"
+				                {% if filters.search_scope == 'title' %}checked="checked"{% endif %} />
+				            title only
+				        </label>&nbsp;&nbsp;|&nbsp;&nbsp;
+				        <label>
+				            <input name="search_scope" value="desc" type="radio"
+				                {% if filters.search_scope == 'desc' %}checked="checked"{% endif %} />
+				            title and description
+				        </label>
+				    </div>
+				</div>
+				<div class="col-md-3" style="padding-top:7px;">
+				    <div class="checkboxes">
+				    	<label>
+				            <input name="has_image" type="checkbox"
+				                {% if filters.has_image %}checked="checked"{% endif %} />
+				            has image
+				        </label>
+				    </div>
 				</div>
 			</div>
-			<div class="col-md-3" style="padding-top:7px;">
-			    <div class="radios">
-			    	<label>
-			            <input name="optionsRadios" id="optionsRadios1" value="option1" checked="" type="radio">
-			            title only
-			        </label>&nbsp;&nbsp;|&nbsp;&nbsp;
-			        <label>
-			            <input name="optionsRadios" id="optionsRadios1" value="option1" checked="" type="radio">
-			            title and description
-			        </label>
-			    </div>
-			</div>
-			<div class="col-md-3" style="padding-top:7px;">
-			    <div class="checkboxes">
-			    	<label>
-			            <input name="optionsRadios" id="optionsRadios1" value="option1" checked="" type="checkbox">
-			            has image
-			        </label>
-			    </div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-3">
-			    <div class="form-group">
-				    <label class="control-label">Category:</label>
-				    <select class="form-control" id="select">
-    				    <option value="">(all)</option>
-			            {% for key, keywords in categories.items %}
-			                <option value="{{key|lower}}">{{ key }}</option>
-			                {% for keyword in keywords %}
-				                <option value="{{keyword.0}}">-- {{ keyword.1 }}</option>
+			<div class="row">
+				<div class="col-md-3">
+				    <div class="form-group">
+					    <label class="control-label">Category:</label>
+					    <select class="form-control" name="category">
+	    				    <option value="">(all)</option>
+				            {% for key, keywords in categories.items %}
+				                <option value="{{key|lower}}" {% if filters.category.lower == key.lower %}selected{% endif %}>
+				                    {{ key }}
+				                </option>
+				                {% for keyword in keywords %}
+					                <option value="{{keyword.0}}" 
+					                    {% if filters.category.lower == keyword.0.lower %}selected{% endif %}>
+					                    -- {{ keyword.1 }}
+					                </option>
+					            {% endfor %}
 				            {% endfor %}
-			            {% endfor %}
-			        </select>
+				        </select>
+					</div>
+				</div>
+				<div class="col-md-3">
+				    <div class="form-group">
+					    <label class="control-label">Shared by friend:</label>
+					    <select class="form-control" name="sharer">
+					      <option value="">(all)</option>
+				          {% for friend in friends %}
+				              <option value="{{friend.id}}" {% if filters.sharer|add:"0" == friend.id %}selected{% endif %}>
+				                  {{ friend.participant.get_name }}
+				              </option>
+				          {% endfor %}
+				        </select>
+					</div>
+				</div>
+				<div class="col-md-3">
+				    <div class="form-group">
+					    <label class="control-label">Shared through group:</label>
+					    <select class="form-control" name="group">
+				          <option value="">(all)</option>
+				          {% for group in groups %}
+				              <option value="{{group.id}}" {% if filters.group|add:"0" == group.id %}selected{% endif %}>
+				                  {{ group.participant.get_name }}
+				              </option>
+				          {% endfor %}
+				        </select>
+					</div>
+				</div>
+				<div class="col-md-3" style="padding-top:24px;">
+				    <button type="submit" class="btn btn-success">Go <i class="fa fa-angle-double-right"></i></button>
 				</div>
 			</div>
-			<div class="col-md-3">
-			    <div class="form-group">
-				    <label class="control-label">Shared by friend:</label>
-				    <select class="form-control" id="select">
-				      <option value="">(all)</option>
-			          {% for friend in friends %}
-			              <option value="{{friend.id}}">{{ friend.participant.get_name }}</option>
-			          {% endfor %}
-			        </select>
-				</div>
-			</div>
-			<div class="col-md-3">
-			    <div class="form-group">
-				    <label class="control-label">Shared through group:</label>
-				    <select class="form-control" id="select">
-			          <option value="">(all)</option>
-			          {% for group in groups %}
-			              <option value="{{group.id}}">{{ group.participant.get_name }}</option>
-			          {% endfor %}
-			        </select>
-				</div>
-			</div>
-			<div class="col-md-3" style="padding-top:24px;">
-			    <button type="submit" class="btn btn-success">Go <i class="fa fa-angle-double-right"></i></button>
-			</div>
-		</div>
+		</form>
 	</div>
 </div>
 

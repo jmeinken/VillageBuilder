@@ -1,7 +1,13 @@
 {% for myrequest in requests %}
-	<div id="request-{{ myrequest.request.id }}" style="border-bottom:solid 1px #527EAC;">
+
+	<div id="request-{{ myrequest.request.id }}" style="border-bottom:solid 1px #527EAC;"
+			{% if myrequest.request.complete %}class="request-complete"{% endif %}>
 		<div style="padding: 10px 0;">
-			
+		    {% if myrequest.request.complete %}
+				<div style="padding-bottom:10px;margin-left:10px;">
+				    <span class="label label-default">This request has been fulfilled.</span>
+				</div>
+			{% endif %}
 		    <div class="row">
 		        <div class="col-sm-1" style="min-width:51px;">
 		    		<img src="{{ myrequest.request.member.participant.get_image }}" alt="my alt" width="50" height="50" />
@@ -15,6 +21,15 @@
 							     </a>
 							     <ul class="dropdown-menu dropdown-menu-right">
 							        <li>
+							            {% if myrequest.request.complete %}
+								            <a href="#" class="btn-uncomplete-request" id="btn-uncomplete-request-{{ myrequest.request.id }}">
+								                Mark request incomplete
+								            </a>
+								        {% else %}    
+								            <a href="#" class="btn-complete-request" id="btn-complete-request-{{ myrequest.request.id }}">
+								                Mark request complete
+								            </a>
+							            {% endif %}
 							            <a href="#" class="btn-edit-request" id="btn-edit-request-{{ myrequest.request.id }}">
 							                Edit
 							            </a>
@@ -52,7 +67,7 @@
 				</div>
 			</div>
 		</div>	
-		<div style="clear:both;padding-left:25px; padding-right:25px;" class="well well-sm">
+		<div style="clear:both;padding-left:25px; padding-right:25px;" class="well well-sm request-comments">
 			<a href="#" class="show-comments" id="show-comments-for-request-{{myrequest.request.id}}">
 			    Comments ({{ myrequest.comments.count }}) <i class="fa fa-caret-down"></i>
 			</a>

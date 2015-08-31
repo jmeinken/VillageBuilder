@@ -78,9 +78,16 @@ $(document).ready(function(){
     }).trigger("change");
 	
 	$('#id_type').change(function() {
+		//show or hide keyword options for item
 		var keywordBlockId = '#keywords_' + $(this).val().toLowerCase();
-		$('.keyword_block').slideUp();
+		$('.keyword_block').hide();
 		$(keywordBlockId).slideDown();
+		//show or hide type-specific options
+		if ( $(this).val().toLowerCase() == 'stuff' ) {
+			$('#stuff-special-options').slideDown();
+		} else {
+			$('#stuff-special-options').hide();
+		}
 	}).trigger("change");
 
 
@@ -109,6 +116,14 @@ $(document).ready(function(){
 	            {{ itemForm.type|label_with_classes:"control-label" }} 
 	            {{ itemForm.type|attr:"class:form-control" }}
             </div>
+            <div class="checkbox" style="display:none;" id="stuff-special-options">
+				<label>
+	            	{{ itemForm.to_borrow }} {{ itemForm.to_borrow.label }}
+	            </label>&nbsp;&nbsp;&nbsp;&nbsp;
+	            <label>
+	            	{{ itemForm.to_keep }} {{ itemForm.to_keep.label }}
+	            </label> 
+	        </div>
             <div id="form-errors" class="text-danger">{{ itemForm.type.errors }}</div>
             {% for field in keywordForm %}
                 <div id="{{ field.html_name }}" class="keyword_block" style="display:none;">

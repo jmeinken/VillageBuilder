@@ -57,7 +57,40 @@ def getItemsForParticipant(participant):
             ) |
             ( Q(share_type='all_friends_groups') & Q(sharer__groupmembership__group_id__in=groupIds) ) 
         ).exclude(sharer=participant.member).distinct().order_by('-share_date')
+    return items
+    
+
+def filterItems(items, category=None, sharerId=None, groupId=None, searchTerms=None, searchScope='title', hasImage=None):
+    if category:
+        if category in map(lambda x: x.lower(), SHARE_CATEGORIES.keys()):
+            items = items.filter(type=category)
+        else:
+            items = items.filter(itemkeyword__keyword=category)
+    if sharerId:
+        items = items.filter(sharer_id=sharerId)
+    if groupId:
+        items = items.filter( Q(itemsharee__sharee_id=groupId) | Q(sharelist__sharelistsharee__sharee_id=groupId) )
+    if searchTerms and searchScope == 'title':
+        terms = searchTerms.split(' ')
+        for term in terms:
+            items = items.filter(title__contains=term)
+    if searchTerms and searchScope == 'desc':
+        terms = searchTerms.split(' ')
+        queries = []
+        for term in terms:
+            queries.append( Q(title__contains=term) )
+            queries.append( Q(description__contains=term) )
+        print('queries')
+        print(queries)
+        query = queries.pop()
+        for i in queries:
+            query |= i
+        print query
+        items = items.filter(query)
+    if hasImage:
+        items = items.exclude(thumb__isnull=True).exclude(thumb__exact='')
     return items 
+    
 
 def getItemsSharedByCurrentMember(member):
     items = Item.objects.all().filter(sharer=member)

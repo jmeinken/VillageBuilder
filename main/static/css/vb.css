@@ -84,3 +84,10 @@
 #browse-items-popup .lead-item .badge {
 	background-color: #04417D;
 }
+
+.request-complete {
+	background-color:#D0D0D0;
+}
+.request-complete .request-comments {
+	background-color:#E0E0E0;
+}

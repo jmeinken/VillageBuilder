@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^share_item/', views.share_item, name='share_item'),
     url(r'^upload_image/', views.upload_image, name='upload_image'),
     url(r'^items/', views.items, name='items'),
+    url(r'^my_items/', views.my_items, name='my_items'),
 ]
 
 

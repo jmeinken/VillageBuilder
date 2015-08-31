@@ -49,6 +49,46 @@ def delete_request(request):
     
 @login_required
 @csrf_exempt
+def complete_request(request):
+    if request.method == "POST":
+        url = request.POST.get("redirect")
+        requestId = request.POST.get("request_id")
+        myrequest = Request.objects.get(id=requestId)
+        myrequest.complete = True
+        myrequest.save()
+        context = {
+            'current' : getCurrentUser(request),
+            'requests' : getSingleRequest(requestId)['requests']
+            }
+        html = render_to_string('requests/request_list.html', context)
+        data = {
+            'request_id' : requestId,
+            'html' : html,
+        }
+        return HttpResponse(json.dumps(data), content_type = "application/json")
+    
+@login_required
+@csrf_exempt
+def uncomplete_request(request):
+    if request.method == "POST":
+        url = request.POST.get("redirect")
+        requestId = request.POST.get("request_id")
+        myrequest = Request.objects.get(id=requestId)
+        myrequest.complete = False
+        myrequest.save()
+        context = {
+            'current' : getCurrentUser(request),
+            'requests' : getSingleRequest(requestId)['requests']
+            }
+        html = render_to_string('requests/request_list.html', context)
+        data = {
+            'request_id' : requestId,
+            'html' : html,
+        }
+        return HttpResponse(json.dumps(data), content_type = "application/json")
+    
+@login_required
+@csrf_exempt
 def delete_request_comment(request):
     if request.method == "POST":
         url = request.POST.get("redirect")

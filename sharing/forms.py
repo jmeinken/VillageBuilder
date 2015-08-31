@@ -29,7 +29,7 @@ class ItemForm(forms.ModelForm):
     
     class Meta:
         model = Item
-        fields = ['type','title', 'description', 'image', 'thumb']
+        fields = ['type','title', 'description', 'image', 'thumb', 'to_borrow', 'to_keep',]
 
     # sharingWith = forms.ChoiceField(choices=SHARE_OPTIONS)
     CREATE_SHARE_LIST = (

@@ -24,5 +24,18 @@ def getRequestList(currentParticipant, start=0, end=10):
         'requests' : requestList,
         'total_count' : requests.count(),
     }
+    
+def getSingleRequest(requestId):
+    requests = Request.objects.all().filter(pk=requestId)
+    requestList = []
+    for request in requests:
+        requestList.append({
+             'request' : request,
+             'comments' : RequestComment.objects.all().filter(request=request).order_by('date')    
+        })
+    return {
+        'requests' : requestList,
+        'total_count' : requests.count(),
+    }
 
     
