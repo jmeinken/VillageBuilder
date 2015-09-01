@@ -148,10 +148,6 @@ $(document).ready(function(){
 			        </div>
 		        </div>
 		    {% endfor %}
-            
-	        
-			<hr>
-			<input type="button" id="fake-submit" class="btn btn-success" value="Share Item" />
 		</div>
 		<div class="col-md-4">
 		    <div>
@@ -171,6 +167,18 @@ $(document).ready(function(){
             <div id="form-errors" class="text-danger">{{ itemForm.description.errors }}</div>
         </div>
         <div class="col-md-4">
+            {% if item %}
+			    <button type="button" id="fake-submit" class="btn btn-success">Save Changes</button>&nbsp;
+			    <a href="{% url 'sharing:item' item.id %}" class="btn btn-default">Exit Without Changing</a>&nbsp;
+			    <button type="button" id="fake-submit" class="btn btn-danger">
+			        <i class="fa fa-trash-o"></i> Delete Item
+			    </button>
+			{% else %}
+			    <button type="button" id="fake-submit" class="btn btn-success">
+			        Share Item <i class="fa fa-share-alt"></i>
+			    </button>
+			{% endif %}
+			<hr>
 	        <div class="form-group">
 	            {{ itemForm.sharingWith|label_with_classes:"control-label" }} 
 	            {{ itemForm.sharingWith|attr:"class:form-control" }}
@@ -195,7 +203,7 @@ $(document).ready(function(){
 			        			<div class="col-sm-9">
 					        		{% include "core/blocks/participantgroup_noactions.html" %}
 					        	</div>
-					        	<div class="col-sm-3">
+					        	<div class="col-sm-3" style="padding-top:20px;">
 					        		{% if item.share_type == 'custom' and participant.id in sharees %}
 					        			<input type="checkbox" name="custom_list[]" value="{{participant.id}}" checked="checked" />
 					        			include
@@ -214,7 +222,7 @@ $(document).ready(function(){
 		        			<div class="col-sm-9">
 				        		{% include "core/blocks/participantgroup_noactions.html" %}
 				        	</div>
-				        	<div class="col-sm-3">
+				        	<div class="col-sm-3" style="padding-top:20px;">
 				        		{% if item.share_type == 'custom' and participant.id in sharees %}
 				        			<input type="checkbox" name="custom_list[]" value="{{participant.id}}" checked="checked" />
 				        			include

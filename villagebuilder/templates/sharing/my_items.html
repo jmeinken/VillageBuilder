@@ -13,17 +13,9 @@
 	<a href="">Date (newest first)</a><br>
 	<a href="">Date (oldest first)</a>
 	</div>
-	<div class="col-md-9">
+	<div class="col-md-5">
 		{% for item in items %}
-		    <div style="overflow:hidden;clear:both;">
-			    <img src="{{ item.get_thumb }}" alt="" width="50" height="50" 
-			            style="float:left;margin-right:10px;" />
-			    <span class="text-muted">{{ item.share_date|date:"M d, Y" }} | </span>
-			    <a href="{% url 'sharing:item' item.id %}">{{ item.title }}</a><br>
-			    Shared by <a href="{% url 'account:view' item.sharer.id %}">{{ item.sharer.participant.get_name }}</a> | 
-			    <a href="{% url 'sharing:edit_item' item.id %}">edit</a>
-		    </div>
-		    <hr>
+		    {% include 'sharing/blocks/itemblock_withactions.html' %}
 		{% endfor %}
 	</div>
 </div>

@@ -1,6 +1,6 @@
 {% for myrequest in requests %}
 
-	<div id="request-{{ myrequest.request.id }}" style="border-bottom:solid 1px #527EAC;"
+	<div id="request-{{ myrequest.request.id }}" style="border-bottom:solid 2px #527EAC;"
 			{% if myrequest.request.complete %}class="request-complete"{% endif %}>
 		<div style="padding: 10px 0;">
 		    {% if myrequest.request.complete %}
@@ -50,7 +50,7 @@
 					   		on {{ myrequest.request.date }}
 				   		</em>
 				   		<div style="padding-top:5px;">
-							{{ myrequest.request.body|linebreaksbr|urlize }}
+							{{ myrequest.request.body|urlize|linebreaksbr }}
 						</div>
 					</div>
 					<div style="display:none" id="edit-request-{{ myrequest.request.id }}">

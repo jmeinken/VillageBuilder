@@ -67,7 +67,7 @@
 
 	  {% if account.type == 'group' %}
 	  	  <div class="tab-pane fade" id="about">
-		      {{ account.description|linebreaksbr|urlize }}
+		      {{ account.description|urlize|linebreaksbr }}
 		  </div>
 	  {% endif %}
 	  <div class="tab-pane fade" id="items">

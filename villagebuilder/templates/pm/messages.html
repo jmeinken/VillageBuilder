@@ -48,7 +48,7 @@
   	    	</div>
   	    	<div class="text-muted">{{ message.sender.get_name }} ({{ message.sent_on }})</div>
   	    	<strong>{{ message.subject }}</strong>
-  	    	<p style="clear:both;">{{ message.body|linebreaksbr|urlize }}</p>
+  	    	<p style="clear:both;">{{ message.body|urlize|linebreaksbr }}</p>
   	    {% endfor %}
   	</div>
   </div>

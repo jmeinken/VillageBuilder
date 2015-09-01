@@ -63,7 +63,7 @@ def edit_item(request, itemId):
                         record = ItemSharee(item=item, sharee_id=int(participantId))
                         record.save()
             messages.success(request,'Your item "' + item.title + '" has been saved')
-            return redirect(reverse('sharing:edit_item', args=[itemId]))
+            return redirect(reverse('sharing:item', args=[itemId]))
     setKeywords = ItemKeyword.objects.all().filter(item=item).values_list('keyword', flat=True)
     itemForm = ItemForm(instance=item, participant=currentParticipant)
     keywordForm = KeywordForm(setKeywords=setKeywords)
@@ -234,6 +234,8 @@ def item(request, itemId):
     context = {
          'current' : getCurrentUser(request),
          'item' : item,      
+         'sharer' : getParticipantFull(item.sharer.id, currentParticipant),
+         'RelationshipTypes' : RelationshipTypes,
     }
     return render(request, 'sharing/item.html', context)
 

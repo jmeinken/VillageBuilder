@@ -241,10 +241,7 @@
 			<h3>Recently Shared</h3>
 			<div class="list-group">
 			    {% for item in recentItems %}
-					<a href="#" class="list-group-item">
-					    <h4 class="list-group-item-heading">{{item.title}}</h4>
-					    <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-					</a>
+					{% include 'sharing/blocks/itemblock.html' %}
 				{% endfor %}
 			</div>
 			<div style="text-align:right">
@@ -282,7 +279,7 @@
 					</div> 
 				</form>
 			</div>
-			<h3 style="border-bottom:solid 1px #527EAC;">Requests</h3>
+			<h3 style="border-bottom:solid 2px #527EAC;">Requests</h3>
 			<div id="request-section">
 			    {% include 'requests/request_list.html' %}
 			</div>

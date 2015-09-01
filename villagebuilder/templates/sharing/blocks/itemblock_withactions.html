@@ -1,0 +1,31 @@
+
+<div style="clear:both;padding-bottom:15px;" class="list-group-item">
+
+	<div style="float:right;">
+	    <div class="btn-group">
+			<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+			<ul class="dropdown-menu dropdown-menu-right" style="padding: 5px 10px;">
+				<li><a href="{% url 'sharing:item' item.id %}">View</a></li>
+				<li><a href="{% url 'sharing:edit_item' item.id %}"><i class="fa fa-pencil"></i> Edit</a></li>
+				<li><a href=""><i class="fa fa-trash-o"></i> Delete</a></li>
+			</ul>
+		</div>
+	</div>
+
+
+
+
+
+
+    <img src="{{ item.get_thumb }}" alt="" width="50" height="50" 
+            style="float:left;margin-right:10px;" />
+    <div style="padding-top:0;">
+	    <span class="text-muted" style="font-size:0.9em;">{{ item.share_date|date:"M d, Y" }}</span>
+	    <a href="{% url 'sharing:item' item.id %}">
+	        <span style="font-size:1.3em;color:#CC5200;">| {{ item.title }}</span>
+	    </a><br>
+	    <span class="text-muted" style="font-size:0.9em;">
+	        Shared by <a href="{% url 'account:view' item.sharer.id %}">{{ item.sharer.participant.get_name }}</a>
+	    </span>
+	</div>
+</div>
