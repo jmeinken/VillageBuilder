@@ -21,6 +21,8 @@ urlpatterns = [
     url(r'^upload_image/', views.upload_image, name='upload_image'),
     url(r'^items/', views.items, name='items'),
     url(r'^my_items/', views.my_items, name='my_items'),
+    url(r'^item/([0-9]*)', views.item, name='item'),
+    url(r'^edit_item/([0-9]*)', views.edit_item, name='edit_item'),
 ]
 
 

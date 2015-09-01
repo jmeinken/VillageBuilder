@@ -1,0 +1,18 @@
+{% extends "core/bases/home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+{% load staticfiles %}
+
+{% block subcontent %}
+
+<h2>Item</h2>
+
+{{ item.id }}
+
+<br>
+
+{{ item.title }}
+
+
+
+{% endblock %}
