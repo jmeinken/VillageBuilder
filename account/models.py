@@ -151,11 +151,14 @@ class Member(models.Model):
     def __unicode__(self):
          return self.participant.get_name()
     
-    def get_user_pic(self):
-        if self.image:
-            return '/static/uploads/user_pics/' + self.image
-        else:
-            return '/static/img/generic-user.png'
+    def get_image(self):
+        return self.participant.get_image()
+    
+    def get_thumb(self):
+        return self.participant.get_thumb()
+    
+    def get_name(self):
+        return self.participant.get_name()
     
     def get_display_address(self):
         if self.neighborhood:
@@ -178,7 +181,10 @@ class Guest(models.Model):
     code = models.CharField(max_length=60)
     created_by = models.ForeignKey('Member')
     
-    def get_user_pic(self):
+    def get_image(self):
+        return '/static/img/generic-user.png'
+    
+    def get_thumb(self):
         return '/static/img/generic-user.png'
 
 

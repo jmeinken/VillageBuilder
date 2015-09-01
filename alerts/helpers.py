@@ -161,7 +161,7 @@ def getAddFriendAlert(event):
         return None
     # check if reciprocated
     member = Member.objects.get(id=data['member_id'])
-    image = member.get_user_pic()
+    image = member.get_thumb()
     friendName = member.participant.user.get_full_name()
     friendId = member.participant.id
     linkedName = '<a href="' + reverse('account:view', args=[friendId]) + '">' + friendName + '</a>'

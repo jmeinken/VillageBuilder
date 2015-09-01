@@ -74,7 +74,10 @@ def edit_item(request, itemId):
     groups = getRelations(currentParticipant, currentParticipant, [
         RelationshipTypes.GROUP_OWNER,
         RelationshipTypes.GROUP_MEMBER,                         
-    ])     
+    ])   
+    sharees = item.itemsharee_set.values_list('sharee_id', flat=True)
+    shareLists = ShareList.objects.all().filter(owner=currentParticipant.member)
+    print(sharees)
     context = {
         'current' : getCurrentUser(request),
         'item' : item,  
@@ -83,6 +86,8 @@ def edit_item(request, itemId):
         'itemForm' : itemForm, 
         'keywordForm' : keywordForm, 
         'itemImage' : item.get_image(),
+        'sharees' : sharees,
+        'shareLists' : shareLists,
     }
     return render(request, 'sharing/share_item.html', context)
 

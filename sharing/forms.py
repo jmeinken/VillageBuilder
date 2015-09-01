@@ -20,12 +20,18 @@ class ItemForm(forms.ModelForm):
         shareOptions = [
             ['all_friends', 'All Friends'],
             ['all_friends_groups', 'All Friends and All Groups'],
-            ['custom', 'Create New Custom List'],
+            ['custom', 'Custom'],
         ]
         if len(shareListOptions) != 0:
             shareOptions.append(['Share Lists:', shareListOptions])
         super(ItemForm, self).__init__(*args, **kwargs)
         self.fields["sharingWith"] = forms.ChoiceField(choices=shareOptions)
+        instance = kwargs.get('instance', None)
+        if instance:
+            if instance.share_type == 'share_list':
+                self.fields["sharingWith"].initial = instance.sharelist.id
+            else:
+                self.fields["sharingWith"].initial = instance.share_type
     
     class Meta:
         model = Item

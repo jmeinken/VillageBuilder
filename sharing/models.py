@@ -15,6 +15,7 @@ SHARE_CATEGORIES['Stuff'] = (
     ('art', 'art',),
     ('tickets', 'tickets',),
     ('materials', 'materials',),
+    ('other', 'other',),
 )
 SHARE_CATEGORIES['Space'] = [
     ('event space', 'event space',),
@@ -23,6 +24,7 @@ SHARE_CATEGORIES['Space'] = [
     ('storage space', 'storage space',),
     ('play area', 'play area',),
     ('kitchen/dining space', 'kitchen/dining space',),
+    ('other', 'other',),
 ]
 SHARE_CATEGORIES['Skills'] = [
     ('home repair', 'home repair',),
@@ -31,6 +33,7 @@ SHARE_CATEGORIES['Skills'] = [
     ('legal', 'legal',),
     ('creative', 'creative',),
     ('yard/gardening', 'yard/gardening',),
+    ('other', 'other',),
 ]                
 
 

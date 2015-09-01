@@ -32,17 +32,17 @@ $(document).ready(function(){
 	
 	
 	$('#id_sharingWith').change(function() {
-		if ($(this).val() == 'custom') {
+		var value = $(this).val()
+		if (value == 'custom') {
 			$('#custom-friends-form').slideDown();
 		} else {
-			$('#custom-friends-form').slideUp();
+			$('#custom-friends-form').hide();
 		}
-	});
-	
-
-	if ($('#id_sharingWith').val() == 'custom') {
-		$('#custom-friends-form').show();
-	}
+		$('.share-list').hide();
+		if (value != 'all_friends' && value != 'all_friends_groups' && value != 'custom') {
+			$('#share-list-' + value).slideDown();
+		}
+	}).trigger("change");
 	
 	$('#fake-submit').click(function() {
 		if ($('#id_sharingWith').val() == 'custom') {
@@ -113,22 +113,32 @@ $(document).ready(function(){
 	    <div class="col-md-4">
 		    {{ itemForm.non_field_errors }}
 		    <div class="form-group">
+	            {{ itemForm.title|label_with_classes:"control-label" }} 
+	            {{ itemForm.title|attr:"class:form-control" }}
+            </div>
+            <div id="form-errors" class="text-danger">{{ itemForm.title.errors }}</div>
+		    <div class="form-group">
 	            {{ itemForm.type|label_with_classes:"control-label" }} 
 	            {{ itemForm.type|attr:"class:form-control" }}
             </div>
-            <div class="checkbox" style="display:none;" id="stuff-special-options">
-				<label>
-	            	{{ itemForm.to_borrow }} {{ itemForm.to_borrow.label }}
-	            </label>&nbsp;&nbsp;&nbsp;&nbsp;
-	            <label>
-	            	{{ itemForm.to_keep }} {{ itemForm.to_keep.label }}
-	            </label> 
-	        </div>
+            <div style="display:none;" id="stuff-special-options">
+	            <label class="control-label">Options: &nbsp;&nbsp;
+		                <span class="text-muted">(select any that apply or other)</span></label>
+	            <div class="checkbox">
+					<label>
+		            	{{ itemForm.to_borrow }} {{ itemForm.to_borrow.label }}
+		            </label>&nbsp;&nbsp;&nbsp;&nbsp;
+		            <label>
+		            	{{ itemForm.to_keep }} {{ itemForm.to_keep.label }}
+		            </label> 
+		        </div>
+		        <hr>
+		    </div>
             <div id="form-errors" class="text-danger">{{ itemForm.type.errors }}</div>
             {% for field in keywordForm %}
                 <div id="{{ field.html_name }}" class="keyword_block" style="display:none;">
 	                <label class="control-label">Categories: &nbsp;&nbsp;
-	                <span class="text-muted">(select any that apply)</span></label>
+	                <span class="text-muted">(select any that apply or other)</span></label>
 		            <div class="checkbox" style="overflow: hidden;">
 			            {% for checkbox in field %}
 			                <div class="well well-sm" style="float:left;margin-right:10px;">
@@ -139,13 +149,14 @@ $(document).ready(function(){
 		        </div>
 		    {% endfor %}
             
-	        <div class="form-group">
-	            {{ itemForm.title|label_with_classes:"control-label" }} 
-	            {{ itemForm.title|attr:"class:form-control" }}
-            </div>
-            <div id="form-errors" class="text-danger">{{ itemForm.title.errors }}</div>
-            <div>
-		            <img id="item-pic" src="{{ itemImage  }}" 
+	        
+			<hr>
+			<input type="button" id="fake-submit" class="btn btn-success" value="Share Item" />
+		</div>
+		<div class="col-md-4">
+		    <div>
+		        <label class="control-label">Picture:</label><br>
+		        <img id="item-pic" src="{{ itemImage  }}" 
 					        alt="User Pic" width="150" height="150"
 					        style="margin-right:10px;" />
 				<button type="button" class="btn btn-info" data-toggle="modal" data-target="#upload-pic-modal">
@@ -153,43 +164,64 @@ $(document).ready(function(){
 				</button>
 			</div>
 			<hr>
-			<input type="button" id="fake-submit" class="btn btn-success" value="Share Item" />
-		</div>
-		<div class="col-md-8">
             <div class="form-group">
 	            {{ itemForm.description|label_with_classes:"control-label" }} 
 	            {{ itemForm.description|attr:"class:form-control" }}
             </div>
             <div id="form-errors" class="text-danger">{{ itemForm.description.errors }}</div>
+        </div>
+        <div class="col-md-4">
 	        <div class="form-group">
 	            {{ itemForm.sharingWith|label_with_classes:"control-label" }} 
 	            {{ itemForm.sharingWith|attr:"class:form-control" }}
             </div>
             <div id="form-errors" class="text-danger">{{ itemForm.sharingWith.errors }}</div>
-		    <div class="row well" id="custom-friends-form" style="display:none;margin:0 10px;">
+            {% for shareList in shareLists %}
+	            <div class="well share-list" id="share-list-{{ shareList.id }}" style="display:none;">
+	                <strong class="text-primary">{{ shareList.name }}:</strong>
+	                {% for shareListSharee in shareList.sharelistsharee_set.all %}
+	                    {% with participant=shareListSharee.sharee %}
+	                        {% include "core/blocks/participantgroup_fromobjects.html" %}
+	                    {% endwith %}
+	                {% endfor %}
+	            </div>
+            {% endfor %}
+		    <div class="well" id="custom-friends-form" style="display:none;margin:0 10px;">
 		    	<h4>Custom list - Select who to share with:</h4>
-		        <div class="col-md-6" style="height:300px;overflow-y:auto;border:#C0C0C0 solid 1px;padding-top:5px;">
+		        <div style="height:300px;overflow-y:auto;border:#C0C0C0 solid 1px;padding-top:5px;">
 		        	<strong class="text-primary">Your Friends:</strong>
-				    {% for participant in friends %}
-				        <div class="row">
-		        			<div class="col-md-9">
-				        		{% include "core/blocks/participantgroup_noactions.html" %}
-				        	</div>
-				        	<div class="col-md-3">
-				        		<input type="checkbox" name="custom_list[]" value="{{participant.id}}" /> Add
-				        	</div>
-				        </div>		
-				    {% endfor %}
+		        	<div>
+					    {% for participant in friends %}
+			        			<div class="col-sm-9">
+					        		{% include "core/blocks/participantgroup_noactions.html" %}
+					        	</div>
+					        	<div class="col-sm-3">
+					        		{% if item.share_type == 'custom' and participant.id in sharees %}
+					        			<input type="checkbox" name="custom_list[]" value="{{participant.id}}" checked="checked" />
+					        			include
+					        		{% else %}
+					        		    <input type="checkbox" name="custom_list[]" value="{{participant.id}}" />
+					        		    include
+					        		{% endif %}
+					        </div>		
+					    {% endfor %}
+					</div>
 			    </div>
-			    <div class="col-md-6" style="height:300px;overflow-y:auto;border:#C0C0C0 solid 1px;padding-top:5px;">
+			    <div style="height:300px;overflow-y:auto;border:#C0C0C0 solid 1px;padding-top:5px;">
 			    	<strong class="text-primary">Your Groups:</strong>
 				    {% for participant in groups %}
-				        <div class="row">
-		        			<div class="col-md-9">
+				        <div>
+		        			<div class="col-sm-9">
 				        		{% include "core/blocks/participantgroup_noactions.html" %}
 				        	</div>
-				        	<div class="col-md-3">
-				        		<input type="checkbox" name="custom_list[]" value="{{participant.id}}" /> Add
+				        	<div class="col-sm-3">
+				        		{% if item.share_type == 'custom' and participant.id in sharees %}
+				        			<input type="checkbox" name="custom_list[]" value="{{participant.id}}" checked="checked" />
+				        			include
+				        		{% else %}
+				        		    <input type="checkbox" name="custom_list[]" value="{{participant.id}}" />
+				        		    include
+				        		{% endif %}
 				        	</div>
 				        </div>		
 				    {% endfor %}
