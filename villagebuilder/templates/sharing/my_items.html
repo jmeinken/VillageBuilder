@@ -5,6 +5,26 @@
 
 {% block subcontent %}
 
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$('#share-list-select').change(function() {
+			$('.share-list').hide();
+			var displayDiv = '#share-list-' + $(this).val()
+			$(displayDiv).slideDown();
+		}).trigger('change');
+		
+	
+	
+	
+	}); 
+</script>
+
+
+
+
+
+
 <h2>Items Shared by You</h2>
 
 <div class="row">
@@ -16,6 +36,31 @@
 	<div class="col-md-5">
 		{% for item in items %}
 		    {% include 'sharing/blocks/itemblock_withactions.html' %}
+		{% endfor %}
+	</div>
+	<div class="col-md-5">
+	    <h5>Your Share Lists</h5>
+	    <div class="form-group">
+			<select class="form-control" id="share-list-select">
+			    <option> </option>
+				{% for list in shareLists %}
+				    <option value="{{ list.id }}">{{ list.name }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		{% for list in shareLists %}
+		    <div id="share-list-{{ list.id }}" class="share-list">
+		        {% for shareListSharee in list.sharelistsharee_set.all %}
+		        	{% with participant=shareListSharee.sharee %}
+		                {% include 'core/blocks/participantgroup_fromobjects.html' %}
+		        	{% endwith %}
+		        {% endfor %}
+		        <div style="text-align:right;padding:3px;">
+		        	<a href="{% url 'sharing:edit_sharelist' list.id %}">
+		        	    Edit this list <i class="fa fa-angle-double-right"></i>
+		        	</a>
+		        </div>
+		    </div>
 		{% endfor %}
 	</div>
 </div>

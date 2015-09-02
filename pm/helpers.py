@@ -28,5 +28,5 @@ def getConversation(participant, currentParticipant, count=10):
     messages = Message.objects.all().filter(
         ( Q(sender=participant) & Q(recipient=currentParticipant) ) |
         ( Q(sender=currentParticipant) & Q(recipient=participant) )
-    ).order_by('-sent_on')
+    ).order_by('sent_on')
     return messages

@@ -46,7 +46,10 @@
 					   <dd>{{ sharer.phone }}</dd>
 					{% endif %}
 				</dl><br>
-				<button class="btn btn-primary">Send a request message</button>
+				<a class="btn btn-primary" 
+				        href="{% url 'pm:messages' sharer.id %}?msg=%5BRe%3A%20Item%20{{ item.id }}%20-%20{{ item.title|urlencode:'' }}%20({{ request.build_absolute_uri|urlencode:'' }})]%0A%0A">                          
+				    Send a request message
+				</a>
 			{% else %}
 				<div style="float:right">
 					<a href="{% url 'sharing:edit_item' item.id %}" class="btn btn-primary">

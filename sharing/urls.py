@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^my_items/', views.my_items, name='my_items'),
     url(r'^item/([0-9]*)', views.item, name='item'),
     url(r'^edit_item/([0-9]*)', views.edit_item, name='edit_item'),
+    url(r'^edit_sharelist/([0-9]*)', views.edit_sharelist, name='edit_sharelist'),
 ]
 
 

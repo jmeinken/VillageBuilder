@@ -4,7 +4,7 @@
 		    <img src="{{ message.sender.get_thumb }}" alt="{{ message.sender.get_name }}"
 		        width="45" height="45" style="float:left;padding:5px;"
 		    />
-		    <strong>{{ message.subject|truncatechars:30 }}</strong><br>
+		    <span class="text-muted">({{ message.sent_on|date:"M j" }}) {{ message.sender.get_name }}</span><br>
 		    {{ message.body|truncatechars:30 }}
 		</a>
 	</li>

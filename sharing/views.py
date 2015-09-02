@@ -216,9 +216,11 @@ def items(request):
 def my_items(request):
     currentParticipant = Participant.objects.get(user=request.user, type='member')
     items = getItemsSharedByCurrentMember(currentParticipant.member)
+    shareLists = ShareList.objects.all().filter(owner=currentParticipant.member)
     context = {
         'current' : getCurrentUser(request),
         'items' : items,
+        'shareLists' : shareLists,
     }
     return render(request, 'sharing/my_items.html', context)
 
@@ -238,6 +240,29 @@ def item(request, itemId):
          'RelationshipTypes' : RelationshipTypes,
     }
     return render(request, 'sharing/item.html', context)
+
+@login_required
+def edit_sharelist(request, shareListId):
+    shareListId = int(shareListId)
+    currentParticipant = Participant.objects.get(user=request.user, type='member')
+    friends = getRelations(currentParticipant, currentParticipant, [
+        RelationshipTypes.FRIENDS,
+        RelationshipTypes.GUEST_FRIENDS,                                              
+    ])   
+    groups = getRelations(currentParticipant, currentParticipant, [
+        RelationshipTypes.GROUP_OWNER,
+        RelationshipTypes.GROUP_MEMBER,                         
+    ])    
+    shareList = ShareList.objects.get(pk=shareListId)
+    shareeIds = shareList.sharelistsharee_set.values_list('sharee_id', flat=True)
+    context = {
+        'current' : getCurrentUser(request),
+        'shareList' : shareList,
+        'shareeIds' : shareeIds,
+        'friends' :  friends,
+        'groups' : groups,
+    }
+    return render(request, 'sharing/edit_sharelist.html', context)
 
 
 

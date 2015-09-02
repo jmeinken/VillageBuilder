@@ -63,6 +63,14 @@ def getReciprocatedFriendsAndGuests(currentParticipant):
     )
     return relations
 
+def getUnreciprocatedFriendsAndGuests(currentParticipant):
+    relations = Participant.objects.all().filter(
+        Q(member__reverse_friendship_set__member    =currentParticipant.member) | 
+        Q(member__friendship_set__friend            =currentParticipant.member) |
+        Q(guest__guestfriendship__member            =currentParticipant.member)
+    ).distinct()
+    return relations
+
 
 '''
     The rest don't return querysets but special participant dicts

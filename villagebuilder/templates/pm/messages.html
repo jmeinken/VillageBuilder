@@ -12,6 +12,22 @@
   	  background-color: red;
   }
   </style>
+  
+<script>
+
+    $(document).ready(function(){    	
+    	
+    	var height = $('#conversation')[0].scrollHeight;
+    	$('#conversation').scrollTop(height);
+
+    	var myval = $('#id_body').val();
+    	$('#id_body').val('');
+    	$('#id_body').focus();
+    	$('#id_body').val(myval);
+
+    });
+</script>
+
 
   <h2>Messages</h2>
   <div class="row">
@@ -29,8 +45,28 @@
   	        </a>
   	    {% endfor %}
   	</div>
-  	<div class="col-md-6">
-  	    <form method="post" action="{% url 'pm:messages' conversation %}">
+  	<div class="col-md-5">
+  		{% if messageList %}
+	  	    <h3>Conversation with {{ participant.get_name }}</h3>
+	  	    <hr>
+	  	{% endif %}
+  	    <div style="height:300px;overflow-y:auto;background-color:#F0F0F0;" id="conversation">
+	  	    {% for message in messageList %}
+	  	        <hr style="clear:both;border-color:white;">
+		  	    <div style="float:left; padding:0 10px 10px 0;">
+		  	    	<img src="{{ message.sender.get_thumb }}" width="30" height="30" />
+	  	    	</div>
+	  	    	<div style="padding-left:40px;">
+		  	    	<div class="text-muted" style="margin-bottom:10px;"">
+		  	    	    ({{ message.sent_on }}) {{ message.sender.get_name }} 
+		  	    	</div>
+		  	    	<div>{{ message.body|urlize|linebreaksbr }}</div>
+		  	    </div>
+	  	    {% endfor %}
+	  	</div>
+  	</div>
+  	<div class="col-md-4">
+  		<form method="post" action="{% url 'pm:messages' 0 %}">
   	        {% csrf_token %}
 		    {{ form.non_field_errors }}
 		    {% for field in newMessageForm %}
@@ -42,14 +78,6 @@
 		    {% endfor %}
 		    <button type="submit" class="btn btn-primary">Send Message</button>
   	    </form>
-  	    {% for message in messages %}
-	  	    <div style="float:left; padding:0 10px 10px 0;">
-	  	    	<img src="{{ message.sender.get_thumb }}" />
-  	    	</div>
-  	    	<div class="text-muted">{{ message.sender.get_name }} ({{ message.sent_on }})</div>
-  	    	<strong>{{ message.subject }}</strong>
-  	    	<p style="clear:both;">{{ message.body|urlize|linebreaksbr }}</p>
-  	    {% endfor %}
   	</div>
   </div>
 {% endblock %}	

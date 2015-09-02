@@ -39,7 +39,16 @@
 				   <dd>{{ account.phone }}</dd>
 				{% endif %}
 			</dl><br>
-			<button class="btn btn-primary">Send a Message <i class="fa fa-paper-plane"></i></button>
+			{% if account.relationship == RelationshipTypes.FRIEND %}
+				<a class="btn btn-primary" href="{% url 'pm:messages' account.id %}">
+				    Send a Message <i class="fa fa-paper-plane"></i>
+				</a>
+			{% endif %}
+			{% if account.relationship == RelationshipTypes.REQUEST_SENT %}
+				<a class="btn btn-primary" href="{% url 'pm:messages' account.id %}">
+				    Send a Message <i class="fa fa-paper-plane"></i>
+				</a>
+			{% endif %}
 		</div>
 	</div>
     <hr>
