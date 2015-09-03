@@ -112,8 +112,9 @@ class UserPasswordForm(forms.Form):
 class MemberPrivacyForm(forms.ModelForm):
     class Meta:
         model = Member
-        fields = ['share_email', 'share_phone',]
+        fields = ['share_street', 'share_email', 'share_phone',]
         labels = {
+            'share_street': 'Allow people to see my street name',
             'share_email': 'Allow friends to see my email address',
             'share_phone': 'Allow friends to see my phone number',
         }

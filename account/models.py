@@ -76,10 +76,15 @@ class Participant(models.Model):
         if self.type == 'group':
             return 'Group created by ' + self.group.owner.participant.get_name()
         if self.type == 'member':
-            if self.member.neighborhood:
-                return self.member.street + ' (' + self.member.neighborhood + ')'
-            else:
-                return self.member.street + ' (' + self.member.city + ')'
+            return self.member.get_display_address()
+        
+    def get_display_address_long(self):
+        if self.type == 'guest':
+            return '(guest account)'
+        if self.type == 'group':
+            return self.group.get_display_address_long()
+        if self.type == 'member':
+            return self.member.get_display_address_long()
 
     def get_phone(self):
         if self.type == 'guest':
@@ -135,7 +140,7 @@ class Member(models.Model):
     street = models.CharField(max_length=60, blank=True, null=True)
     neighborhood = models.CharField(max_length=60, blank=True, null=True)
     city = models.CharField(max_length=60)
-    # state = models.CharField(max_length=2, blank=True, null=True)
+    state = models.CharField(max_length=2, blank=True, null=True)
     # zip_code = models.CharField(max_length=10, blank=True, null=True)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
@@ -161,10 +166,28 @@ class Member(models.Model):
         return self.participant.get_name()
     
     def get_display_address(self):
-        if self.neighborhood:
-            return self.street + ' (' + self.neighborhood + ')'
+        if self.share_street:
+            if self.neighborhood:
+                return self.street + ' (' + self.neighborhood + ')'
+            else:
+                return self.street + ' (' + self.city + ')'
         else:
-            return self.street + ' (' + self.city + ')'
+            if self.neighborhood:
+                return '(' + self.neighborhood + ')'
+            else:
+                return '(' + self.city + ')'
+            
+    def get_display_address_long(self):
+        x = []
+        if self.share_street:
+            x.append(self.street)
+        if self.neighborhood:
+            x.append(self.neighborhood)
+        x.append(self.city)
+        if self.state:
+            x.append(self.state)
+        return ', '.join(x)
+        
         
     def get_phone(self):
         if self.phone_number:
@@ -202,6 +225,7 @@ class Group(models.Model):
     description = models.TextField(blank=True, null=True)
     neighborhood = models.CharField(max_length=60, blank=True, null=True)
     city = models.CharField(max_length=60, blank=True, null=True)
+    state = models.CharField(max_length=2, blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     phone_type = models.CharField(max_length=20, blank=True, null=True, choices=PHONE_TYPE_CHOICES)
     email = models.CharField(max_length=120, blank=True, null=True)
@@ -210,6 +234,16 @@ class Group(models.Model):
     thumb = models.CharField(max_length=30, blank=True, null=True)
     owner = models.ForeignKey('Member', on_delete=models.CASCADE)
     private = models.BooleanField(default=False)
+    
+    def get_display_address_long(self):
+        x = []
+        if self.neighborhood:
+            x.append(self.neighborhood)
+        if self.city:
+            x.append(self.city)
+        if self.state:
+            x.append(self.state)
+        return ', '.join(x)
 
 
         

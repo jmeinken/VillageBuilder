@@ -209,6 +209,7 @@ def getParticipantFull(participantId, currentParticipant):
     participant = Participant.objects.get(id=participantId)
     result = getParticipant(participantId, currentParticipant)
     print(result)
+    result['full_display_address'] = participant.get_display_address_long()
     result['email'] = ''
     result['phone'] = ''
     if participant.type == 'guest' and currentParticipant.type == 'member':

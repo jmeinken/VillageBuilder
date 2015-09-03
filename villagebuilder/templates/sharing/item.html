@@ -49,7 +49,7 @@
 					{% endif %}
 				</dl><br>
 				<a class="btn btn-primary" 
-				        href="{% url 'pm:messages' sharer.id %}?msg=%5BRe%3A%20Item%20{{ item.id }}%20-%20{{ item.title|urlencode:'' }}%20({{ request.build_absolute_uri|urlencode:'' }})]%0A%0A">                          
+				        href="{% url 'pm:messages' sharer.id %}?msg=%5BRe%3A%20Item%20-%20{{ item.title|urlencode:'' }}]%0A{{ request.build_absolute_uri|urlencode:'' }}%0A%0A">                          
 				    Send a request message
 				</a>
 			{% else %}

@@ -67,7 +67,7 @@ def deleteAlert(alertId):
     event.save()
     
 def getAlerts(currentParticipant):
-    events = Event.objects.all().filter(affected_participant=currentParticipant).filter(active=True).order_by('created')
+    events = Event.objects.all().filter(affected_participant=currentParticipant).filter(active=True).order_by('-created')
     responses = []
     count = 0
     for event in events:

@@ -11,7 +11,7 @@
     	    <img src="{{ account.image }}" alt="" width="250" height="250" 
     	            style="float:left;margin-right:10px;">
 			<h1>{{ account.name }}</h1>
-			<p>{{ account.display_address }}</p>
+			<p>{{ account.full_display_address }}</p>
 			<hr>
 			{% include 'account/blocks/account_view_actions.html' %}
 		</div>
@@ -30,16 +30,12 @@
 				   <dt>Email:</dt>
 				   <dd>{{ account.email }}</dd>
 				{% endif %}
-				{% if account.full_address  %}
-				   <dt>Full Address:</dt>
-				   <dd>{{ account.full_address }}</dd>
-				{% endif %}
 				{% if account.phone  %}
 				   <dt>Phone:</dt>
 				   <dd>{{ account.phone }}</dd>
 				{% endif %}
 			</dl><br>
-			{% if account.relationship == RelationshipTypes.FRIEND %}
+			{% if account.relationship == RelationshipTypes.FRIENDS %}
 				<a class="btn btn-primary" href="{% url 'pm:messages' account.id %}">
 				    Send a Message <i class="fa fa-paper-plane"></i>
 				</a>
