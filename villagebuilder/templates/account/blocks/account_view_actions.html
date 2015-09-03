@@ -15,6 +15,14 @@
            <button type="submit" class="btn btn-primary">Add as friend</button>
        </form>
 {% endif %}
+{% if account.relationship == RelationshipTypes.NOT_GUEST_FRIENDS %}
+    <form method="POST" action="{% url 'relationships:add-guest-friend' %}">
+           {% csrf_token %}
+           <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+           <input type="hidden" name="guest-id" value="{{account.id}}" />
+           <button type="submit" class="btn btn-primary">Add as friend</button>
+       </form>
+{% endif %}
 {% if account.relationship == RelationshipTypes.REQUEST_SENT %}
     <p class="text-muted">You sent a friend request to {{account.name}} and are waiting for a response.</p>
        <form method="POST" action="{% url 'relationships:remove-friend' %}">

@@ -49,6 +49,30 @@ def add_friend(request):
     return redirect('login')
 
 @login_required
+@csrf_exempt
+def add_guest_friend(request):
+    if request.method == "POST":
+        url = request.POST.get("redirect")
+        guestId = request.POST.get("guest-id")
+        currentParticipant = Participant.objects.get(user=request.user, type='member')
+        guestFriendship = GuestFriendship(member=currentParticipant.member, guest_id=guestId)
+        guestFriendship.save()
+        #register event
+        #eventDict = {
+        #    'member_id' : currentParticipant.id,
+        #    'friend_id' : friendId,
+        #}
+        #registerEvent('add friend', eventDict)
+        if request.is_ajax():
+            data = {'guestId' : guestId}
+            return HttpResponse(json.dumps(data), content_type = "application/json")
+        else:
+            guest = Participant.objects.all().get(pk=guestId)
+            messages.success(request, 'You are now friends with ' + guest.get_name() + '.')
+            return redirect(url)
+    return redirect('login')
+
+@login_required
 def add_group_members(request):
     if request.method == "POST":
         url = request.POST.get("redirect")
@@ -240,8 +264,8 @@ def remove_guest_friend(request):
     if request.method == "POST":
         url = request.POST.get("redirect")
         friendId = request.POST.get("friend-id")
-        currentParticipant = Participant.objects.get(user=request.user, type='person')
-        guestFriendship = GuestFriendship.objects.get(person=currentParticipant.member.person, guest_id=friendId)
+        currentParticipant = Participant.objects.get(user=request.user, type='member')
+        guestFriendship = GuestFriendship.objects.get(member=currentParticipant.member, guest_id=friendId)
         guestFriendship.delete()
         return redirect(url)
     return redirect('login')

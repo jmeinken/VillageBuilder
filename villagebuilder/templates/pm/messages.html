@@ -47,7 +47,7 @@
   	</div>
   	<div class="col-md-5">
   		{% if messageList %}
-	  	    <h3>Conversation with {{ participant.get_name }}</h3>
+	  	    <h3>Conversation with <a href="{% url 'account:view' participant.id %}">{{ participant.get_name }}</a></h3>
 	  	    <hr>
 	  	{% endif %}
   	    <div style="height:300px;overflow-y:auto;background-color:#F0F0F0;" id="conversation">

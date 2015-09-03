@@ -67,6 +67,18 @@
 			        </form>
 		        </li>
 			{% endif %}	
+			{% if participant.relationship == RelationshipTypes.NOT_GUEST_FRIENDS %}
+			    <li class="hcenter-content">
+			        <form method="POST" 
+			        		action="{% url 'relationships:add-guest-friend' %}" 
+			        		id="remove-guest-friend-form-{{participant.id}}">
+			            {% csrf_token %}
+			            <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+			            <input type="hidden" name="guest-id" value="{{participant.id}}" />
+			            <button type="submit" class="btn btn-primary btn-xs btn-participantgroup">Add as friend</button>
+			        </form>
+		        </li>
+			{% endif %}	
 			{% if participant.relationship == RelationshipTypes.GROUP_OWNER %}
 			    <li>This is your group.</li>
 			{% endif %}	

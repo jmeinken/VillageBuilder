@@ -242,9 +242,46 @@ def item(request, itemId):
     return render(request, 'sharing/item.html', context)
 
 @login_required
+@transaction.atomic
+def delete_sharelist(request):
+    if request.method == "POST":
+        shareListId = request.POST.get('sharelist_id')
+        shareList = ShareList.objects.get(pk=shareListId)
+        shareeIds = ShareListSharee.objects.all().filter(shareList=shareList).values_list('sharee_id', flat=True)
+        items = Item.objects.all().filter(sharelist=shareList)
+        for item in items:
+            item.sharelist = None
+            item.share_type = 'custom'
+            item.save()
+            for shareeId in shareeIds:
+                itemSharee = ItemSharee(item=item, sharee_id=shareeId)
+                itemSharee.save()
+        shareList.delete()
+        messages.success(request, '''
+            The share list has been deleted.
+            Any items using that share list have been converted
+            to custom-shared items using the same people.
+        ''')
+    return redirect(reverse('sharing:my_items'))
+        
+
+@login_required
+@transaction.atomic
 def edit_sharelist(request, shareListId):
     shareListId = int(shareListId)
     currentParticipant = Participant.objects.get(user=request.user, type='member')
+    shareList = ShareList.objects.get(pk=shareListId)
+    if request.method == "POST":
+        shareListName = request.POST.get('share_list_name')
+        shareListMemberIds = request.POST.getlist('participants[]')
+        shareList.name = shareListName
+        shareList.save()
+        shareListSharees = shareList.sharelistsharee_set.all()
+        shareListSharees.delete()
+        for memberId in shareListMemberIds:
+            shareListSharee = ShareListSharee(shareList=shareList, sharee_id=memberId)
+            shareListSharee.save()
+        messages.success(request, 'Changes to "' + shareList.name + '" have been saved.')
     friends = getRelations(currentParticipant, currentParticipant, [
         RelationshipTypes.FRIENDS,
         RelationshipTypes.GUEST_FRIENDS,                                              
@@ -253,7 +290,6 @@ def edit_sharelist(request, shareListId):
         RelationshipTypes.GROUP_OWNER,
         RelationshipTypes.GROUP_MEMBER,                         
     ])    
-    shareList = ShareList.objects.get(pk=shareListId)
     shareeIds = shareList.sharelistsharee_set.values_list('sharee_id', flat=True)
     context = {
         'current' : getCurrentUser(request),

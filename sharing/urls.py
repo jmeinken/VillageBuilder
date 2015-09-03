@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^item/([0-9]*)', views.item, name='item'),
     url(r'^edit_item/([0-9]*)', views.edit_item, name='edit_item'),
     url(r'^edit_sharelist/([0-9]*)', views.edit_sharelist, name='edit_sharelist'),
+    url(r'^delete_sharelist', views.delete_sharelist, name='delete_sharelist'),
 ]
 
 

@@ -189,8 +189,10 @@ def searchParticipants(currentParticipant, searchString='', limit=0):
     results = []
     for user in users:
         print str(user)
-        participant = user.participant_set.get(type='member')
-        results.append(getParticipant(participant.id, currentParticipant))
+        participants = user.participant_set.filter(type='member')
+        if not participants:
+            participants = user.participant_set.filter(type='guest')
+        results.append(getParticipant(participants[0].id, currentParticipant))
     groups = Group.objects.all().filter(title__icontains=searchString)
     for group in groups:
         results.append(getParticipant(group.participant.id, currentParticipant))

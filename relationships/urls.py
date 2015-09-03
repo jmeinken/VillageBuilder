@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'add-friend/', views.add_friend, name='add-friend'),
     url(r'create-guest/', views.create_guest, name='create-guest'),
     url(r'remove-friend/', views.remove_friend, name='remove-friend'),
+    url(r'add-guest-friend/', views.add_guest_friend, name='add-guest-friend'),
     url(r'remove-guest-friend/', views.remove_guest_friend, name='remove-guest-friend'),
     url(r'relationships/', views.relationships, name='relationships'),
     url(r'participant_search/', views.participant_search, name='participant_search'),

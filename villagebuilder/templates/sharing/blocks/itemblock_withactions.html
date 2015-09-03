@@ -34,6 +34,16 @@
 	            {{ item.sharer.participant.get_name }}
 	        </a>
 	        - {{ item.share_date|date:"M d, Y" }}
+	    </span><br>
+	    <span class="text-muted" style="font-size:0.9em;">
+	    	Sharing with: 
+	    </span>
+	    <span class="text-warning" style="font-size:0.9em;">
+	    	{% if item.share_type == 'share_list' %}
+	    	    share list: "{{ item.sharelist.name }}"
+	    	{% else %}
+	    	    {{ item.share_type }}
+	    	{% endif %}
 	    </span>
 	</div>
 </div>
