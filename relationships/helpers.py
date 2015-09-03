@@ -8,7 +8,7 @@ from django.db.models import Q
 from villagebuilder.settings import BASE_DIR
 
 from account.models import Member, Participant, Guest
-from main import helpers
+from main.helpers import *
 
 from .models import *
 
@@ -79,7 +79,7 @@ def getUnreciprocatedFriendsAndGuests(currentParticipant):
 def emailSearch(email, firstName, lastName, currentParticipant):    
     # see if that email exists
     matches = []
-    participants = Participant.objects.all().filter(user__email=email)
+    participants = Participant.objects.all().filter(user__email=email).exclude(type='group')
     if participants.count() == 0:
         participants = Participant.objects.all().filter(user__first_name=firstName).filter(user__last_name=lastName)
         for participant in participants:
@@ -88,6 +88,8 @@ def emailSearch(email, firstName, lastName, currentParticipant):
             matches.append(simulateParticipant(email, firstName, lastName))
     else:    
         for participant in participants:
+            print('participant Id:')
+            print(participant.id)
             matches.append(getParticipant(participant.id, currentParticipant))
     return {
         'email' : email,
@@ -128,6 +130,9 @@ def getRelations(contextParticipant, currentParticipant, relationshipTypes=[]):
     if contextParticipant.type == 'group':
         allRelations = _getAllRelationsGroup(contextParticipant)
     results = []
+    if contextParticipant.type == 'guest':
+        allRelations = _getAllRelationsGuest(contextParticipant)
+    results = []
     for relation in allRelations:
         contextRel = getRelationship(contextParticipant, relation)
         if contextRel in relationshipTypes:
@@ -149,6 +154,12 @@ def _getAllRelationsGroup(participant):
     allRelations = Participant.objects.all().filter(
         Q(member__groupmembership__group = participant.group) |
         Q(member__group = participant.group)                                           
+    ).distinct()
+    return allRelations
+
+def _getAllRelationsGuest(participant):
+    allRelations = Participant.objects.all().filter(
+        guest__guestfriendship__guest=participant.guest                                   
     ).distinct()
     return allRelations
 

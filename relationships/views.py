@@ -177,8 +177,11 @@ def create_guest(request):
                 guestEmail, 
                 createRandomString(15), 
             )
-            user.first_name = guestFirstName
-            user.last_name = guestLastName
+            if guestFirstName or guestLastName:
+                user.first_name = guestFirstName
+                user.last_name = guestLastName
+            else:
+                user.first_name = guestEmail
             user.save()
             participant = Participant(
                 user = user, 

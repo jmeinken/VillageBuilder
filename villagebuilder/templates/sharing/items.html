@@ -5,13 +5,15 @@
 
 {% block subcontent %}
 
-<h2>Shared With You</h2>
-<div class="row" style="border-top:#C0C0C0 1px solid;border-bottom:#C0C0C0 1px solid;margin-bottom:10px;background-color:#FFEBD6;padding-top:10px;">
+<div id="top-section">
+	<h2 id="top-title">Shared With You</h2>
+</div>
+<div class="row well well-sm">
 	<div class="col-md-1">		
 		<h4>Filters</h4>
 	</div>
 	<div class="col-md-10">
-	    <form method="get" action="{% url 'sharing:items' %}">
+	    <form method="get" action="{% url 'sharing:items' %}" style="margin-bottom: 0;">
 		    <div class="row">
 				<div class="col-md-6">
 				    <div class="form-group">
@@ -102,10 +104,9 @@
 <div class="row">
 	<div class="col-md-2">
 	<h5>Sort Order</h5>
-	<a href="">Date (newest first)</a><br>
-	<a href="">Date (oldest first)</a>
+	Newest First
 	</div>
-	<div class="col-md-9">
+	<div class="col-md-7">
 		{% for item in items %}
 		    {% include 'sharing/blocks/itemblock.html' %}
 		{% endfor %}

@@ -1,4 +1,78 @@
-/*** MORE GENERAL STUFF ****************************************************************/
+/*** GENERAL STUFF ****************************************************************/
+
+#vb .navbar {
+	background-color: #2B355C;
+}
+
+#vb .navbar-nav > li > a {
+	color: #D0D0D0;
+}
+
+#vb .navbar-brand {
+	color: #D0D0D0;
+}
+
+#vb a.navbar-brand:hover {
+	color: #FFF;
+}
+
+#vb .navbar-nav > li > a:hover {
+	color: #FFF;
+}
+
+#vb .btn {
+	border-radius: 2px;
+	padding: 8px 12px;
+}
+
+#vb .input-group-btn .btn {
+	padding: 6px 12px;
+}
+
+
+
+#vb .btn-primary {
+	border-color: #3E528E;
+	background-color: #4D66B1;
+}
+#vb .btn-warning {
+	border-color: #A34200;
+	background-color: #CC5200;
+}
+
+#vb .text-primary {
+	color: #4D66B1;
+}
+#vb .text-muted {
+	color: #A0A0A0;
+}
+#vb .text-info {
+	color: #2B355C;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: #CC5200;
+}
+
+#vb .underline {
+	border-bottom: solid 2px #CC5200;
+}
+
+
+#vb #top-title {
+	border-bottom: solid 1px #CC5200;
+	width: 60%;
+	padding-top: 5px;
+	margin-top: 5px;
+}
+
+a {
+	color: #4D66B1;
+}
+
+
+
+
 
 .navbar-brand {
 	padding: 5px 15px;
@@ -16,20 +90,22 @@
 
 #top-section {
 	margin-bottom: 20px; 
+	margin-top: 10px;
 }
 
 #top-actions {
 	float: right;
 }
 
-#top-title {
-	padding-top: 5px;
-	margin-top: 5px;
-	border-bottom: blue 1px solid;
-	width:60%;
+
+
+
+/*** OUTSIDE LOGIN ***********************************************************************/
+
+.page-header {
+	margin: 30px 0 10px 0;
+	padding-bottom: 0;
 }
-
-
 
 /*** MORE SPECIFIC STUFF ****************************************************************/
 
@@ -93,7 +169,7 @@
 }
 
 #browse-items-popup {
-	background-color: #04417D;
+	background-color: #2B355C;
 }
 
 #browse-items-popup .col-xs-4 {
@@ -112,7 +188,7 @@
 }
 
 #browse-items-popup a {
-	color: #2FA4E7;
+	color: #4D66B1;
 }
 
 
@@ -121,7 +197,7 @@
 }
 
 #request-section {
-	background-color: #C0C0C0;
+	background-color: #808080;
 	padding: 1px 0;
 }
 

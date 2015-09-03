@@ -5,6 +5,10 @@
 {% block subcontent %}
 
 
+<div id="top-section">
+	<h2 id="top-title">People</h2>
+</div>
+
 	
 	<div class="row">
     	<div class="col-sm-7">
@@ -51,12 +55,13 @@
     <ul class="nav nav-tabs">
 		{% if account.type == 'member' %}
 		    <li class="active"><a href="#relations" data-toggle="tab">Friends</a></li>
+		    <li><a href="#items" data-toggle="tab">Shared Items</a></li>
 		{% endif %}
 		{% if account.type == 'group' %}
 		    <li class="active"><a href="#relations" data-toggle="tab">Members</a></li>
 		    <li><a href="#about" data-toggle="tab">About</a></li>
+		    <li><a href="#items" data-toggle="tab">Shared Items</a></li>
 		{% endif %}
-		<li><a href="#items" data-toggle="tab">Shared Items</a></li>
 	</ul>
 	<div id="myTabContent" class="tab-content well">
 

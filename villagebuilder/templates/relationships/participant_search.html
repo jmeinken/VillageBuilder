@@ -24,23 +24,33 @@
 	}); 
 </script>
 
-<form action="{% url 'relationships:participant_search' %}" method="get">
-	<div class="form-group">
-		  <div class="input-group">
-		      <input class="form-control" type="text" 
-		          placeholder="Search for people or groups" 
-		          name="participant-search-txt" />
-		      <span class="input-group-btn">
-		          <input class="btn btn-default" type="submit" id="participant-search-btn" value="Go" />
-		      </span>
-		  </div>
-	</div>
-</form>
+<div id="top-section">
+	<h2 id="top-title">Friend Search</h2>
+</div>
 
-<div class="list-group">
-	{% for participant in matches %}
-	    {% include 'core/blocks/participantgroup.html' %}
-	{% endfor %}
+<div class="row">
+    <div class="col-md-6 col-md-offset-1">
+		<form action="{% url 'relationships:participant_search' %}" method="get">
+			<div class="form-group">
+				  <div class="input-group">
+				      <input class="form-control" type="text" 
+				          placeholder="Search for people or groups" 
+				          name="participant-search-txt" />
+				      <span class="input-group-btn">
+				          <input class="btn btn-default" type="submit" id="participant-search-btn" value="Go" />
+				      </span>
+				  </div>
+			</div>
+		</form>
+		<hr>
+		<div class="list-group">
+			{% for participant in matches %}
+			    {% include 'core/blocks/participantgroup.html' %}
+			{% empty %}
+			    No matches found
+			{% endfor %}
+		</div>
+	</div>
 </div>
 
 {% endblock %}	

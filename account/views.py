@@ -44,6 +44,11 @@ def view(request, participantId):
             RelationshipTypes.GROUP_MEMBER,
         ]
         relations = getRelations(participant, currentParticipant, relTypes)
+    if participant.type == 'guest':
+        relTypes = [
+            RelationshipTypes.GUEST_FRIENDS,
+        ]
+        relations = getRelations(participant, currentParticipant, relTypes)
     context = {
         'account' : accountInfo,
         'relations' : relations,

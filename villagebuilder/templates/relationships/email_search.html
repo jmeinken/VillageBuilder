@@ -36,6 +36,10 @@
 		
 	</script>
 	
+	<div id="top-section">
+		<h2 id="top-title">Invite People</h2>
+	</div>
+	
 	
     <div class="row">
 	    <div class="col-sm-3">
@@ -45,7 +49,7 @@
 		    <h3>Account(s) Found</h3>
 		</div>
 		<div class="col-sm-3">
-		    <a href="#" class="btn btn-success" style="margin-top:15px;">Add Everyone Listed</a>
+		    <!--  <a href="#" class="btn btn-success" style="margin-top:15px;">Add Everyone Listed</a> -->
 		</div>
 	</div>
 	{% for result in results %}
@@ -58,7 +62,7 @@
 			    {% for participant in result.matches %}
 				    <div class="row">
 				        <div class="col-sm-6  vcenter">
-				            {% include 'core/blocks/participantgroup.html' %}
+				            {% include 'core/blocks/participantgroup_noactions.html' %}
 				        </div><!--  
 				        --><div class="col-sm-6 vcenter">
 				            {% if participant.relationship == RelationshipTypes.REQUEST_RECEIVED or participant.relationship == RelationshipTypes.NOT_FRIENDS %}
@@ -68,23 +72,31 @@
 				                </form>
 				            {% endif %}
 				            {% if participant.relationship == RelationshipTypes.NO_ACCOUNT or participant.relationship == RelationshipTypes.NOT_GUEST_FRIENDS %}
-				            	<form class="create-guest-form-ajax">
-				            		<input type="hidden" name="guest_temp_id" value="{{participant.id}}" />
-				                	<input type="hidden" name="guest_email" value="{{result.email}}" />
-				                	<input type="hidden" name="guest_first_name" value="{{result.first_name}}" />
-				                	<input type="hidden" name="guest_last_name" value="{{result.last_name}}" />
-				                	<button type="submit" class="btn btn-primary btn-sm create-guest-button-ajax" id="create-guest-btn-{{participant.id}}">Add as Guest</button>
-				                </form>
-				            	<a href="#" data-toggle="modal" data-target="#about-guests-modal">(About guests)</a>
+				            	<div style="float:left;margin-right:20px;">
+					            	<form class="create-guest-form-ajax">
+					            		<input type="hidden" name="guest_temp_id" value="{{participant.id}}" />
+					                	<input type="hidden" name="guest_email" value="{{result.email}}" />
+					                	<input type="hidden" name="guest_first_name" value="{{result.first_name}}" />
+					                	<input type="hidden" name="guest_last_name" value="{{result.last_name}}" />
+					                	<button type="submit" class="btn btn-primary btn-sm create-guest-button-ajax" id="create-guest-btn-{{participant.id}}">Add as Guest</button>
+					                </form>
+				                </div>
+				            	<a href="#" data-toggle="modal" data-target="#about-guests-modal">
+				            	    <i class="fa fa-question-circle"></i>
+				                    About guests
+				                </a>
 				            {% endif %}
 				            {% if participant.relationship == RelationshipTypes.FRIENDS %}
 				                <strong class="text-success"><i class="fa fa-check"></i> already friends</strong>
+				            {% endif %}
+				            {% if participant.relationship == RelationshipTypes.REQUEST_SENT %}
+				                <strong class="text-success"><i class="fa fa-check"></i> friend request already sent</strong>
 				            {% endif %}
 				            {% if participant.relationship == RelationshipTypes.GUEST_FRIENDS %}
 				                <strong class="text-success"><i class="fa fa-check"></i> already friends</strong>
 				            {% endif %}
 				            {% if participant.relationship == RelationshipTypes.SELF %}
-				                this is your account
+				                This is your account.
 				            {% endif %}
 				        </div>
 				    </div>

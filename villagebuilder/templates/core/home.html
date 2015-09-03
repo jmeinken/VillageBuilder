@@ -186,6 +186,7 @@
 
     <div class="row" style="padding-top:20px;">
     	<div class="col-md-3">
+    	    <h3 class="underline" style="margin-top: 0;">Shared With You</h3>
     	    <form method="get" action="{% url 'sharing:items' %}">
 				<div class="form-group">
 					  <div class="input-group">
@@ -204,7 +205,7 @@
 				<div style="position:absolute;left:0;top:100%;z-index:1000;width:700px;display:none;" 
 				        class="well well-sm" id="browse-items-popup">
 				    <div style="text-align:right;padding-right:10px;">
-				        <a href="{% url 'sharing:items' %}">
+				        <a href="{% url 'sharing:items' %}" style="color: #FFF;">
 				            Show me everything <i class="fa fa-angle-double-right"></i>
 				        </a>
 				    </div>
@@ -238,7 +239,8 @@
 					{% endfor %}
 				</div>
 			</div>
-			<h3>Recently Shared</h3>
+			<br>
+			<div class="text-primary">Recently Shared</div>
 			<div class="list-group">
 			    {% for item in recentItems %}
 					{% include 'sharing/blocks/itemblock.html' %}
@@ -279,7 +281,7 @@
 					</div> 
 				</form>
 			</div>
-			<h3 style="border-bottom:solid 2px #527EAC;">Requests</h3>
+			<h3 class="underline">Requests</h3>
 			<div id="request-section">
 			    {% include 'requests/request_list.html' %}
 			</div>
@@ -288,6 +290,7 @@
 			{% endif %}
 		</div>
 		<div class="col-md-3">
+		    <h3 class="underline" style="margin-top: 0;">Find Friends</h3>
 			<form action="{% url 'relationships:participant_search' %}" method="get">
 				<div class="form-group">
 					  <div class="input-group">
@@ -301,7 +304,7 @@
 				</div>
 			</form>
 			<hr>
-			<h3>Find Friends</h3>
+			
 			<span class="text-primary">People Near You:</span>
 			<div class="list-group">
 				{% for participant in peopleNearYou %}
