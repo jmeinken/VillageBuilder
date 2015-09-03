@@ -120,8 +120,29 @@
 	background-color: #04417D;
 }
 
+#request-section {
+	background-color: #C0C0C0;
+	padding: 1px 0;
+}
+
+.request-item {
+	margin: 6px;
+	border-radius: 10px;
+	padding: 0 5px 5px 5px;
+}
+.request-comments {
+	margin: 0;
+}
+
+.request-uncomplete {
+	background-color:#FFF;
+}
+.request-uncomplete .request-comments {
+	background-color:#FFF;
+}
+
 .request-complete {
-	background-color:#D0D0D0;
+	background-color:#E0E0E0;
 }
 .request-complete .request-comments {
 	background-color:#E0E0E0;

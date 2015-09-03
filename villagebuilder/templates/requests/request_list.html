@@ -1,69 +1,68 @@
 {% for myrequest in requests %}
 
-	<div id="request-{{ myrequest.request.id }}" style="border-bottom:solid 2px #527EAC;"
-			{% if myrequest.request.complete %}class="request-complete"{% endif %}>
+	<div id="request-{{ myrequest.request.id }}"
+			class="request-item {% if myrequest.request.complete %}request-complete{% else %}request-uncomplete{% endif %}">
 		<div style="padding: 10px 0;">
 		    {% if myrequest.request.complete %}
 				<div style="padding-bottom:10px;margin-left:10px;">
 				    <span class="label label-default">This request has been fulfilled.</span>
 				</div>
 			{% endif %}
-		    <div class="row">
-		        <div class="col-sm-1" style="min-width:51px;">
-		    		<img src="{{ myrequest.request.member.participant.get_image }}" alt="my alt" width="50" height="50" />
+	        <div style="min-width:55px;float:left;">
+	    		<img src="{{ myrequest.request.member.participant.get_image }}" alt="my alt" 
+	    		        width="50" height="50" />
+			</div>
+			<div>
+			    <div style="float:right;">
+		    		{% if myrequest.request.member.id == current.member.id %}
+				    	<div class="btn-group">
+							<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+							     <span class="caret"></span>
+						     </a>
+						     <ul class="dropdown-menu dropdown-menu-right">
+						        <li>
+						            {% if myrequest.request.complete %}
+							            <a href="#" class="btn-uncomplete-request" id="btn-uncomplete-request-{{ myrequest.request.id }}">
+							                Mark request incomplete
+							            </a>
+							        {% else %}    
+							            <a href="#" class="btn-complete-request" id="btn-complete-request-{{ myrequest.request.id }}">
+							                Mark request complete
+							            </a>
+						            {% endif %}
+						            <a href="#" class="btn-edit-request" id="btn-edit-request-{{ myrequest.request.id }}">
+						                Edit
+						            </a>
+						            <a href="#" class="btn-delete-request" id="btn-delete-request-{{ myrequest.request.id }}">
+						            	Delete
+						            </a>
+						        </li>
+						     </ul>
+					    </div>
+					{% endif %}
 				</div>
-				<div class="col-sm-11">
-				    <div style="float:right;">
-			    		{% if myrequest.request.member.id == current.member.id %}
-					    	<div class="btn-group">
-								<a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-								     <span class="caret"></span>
-							     </a>
-							     <ul class="dropdown-menu dropdown-menu-right">
-							        <li>
-							            {% if myrequest.request.complete %}
-								            <a href="#" class="btn-uncomplete-request" id="btn-uncomplete-request-{{ myrequest.request.id }}">
-								                Mark request incomplete
-								            </a>
-								        {% else %}    
-								            <a href="#" class="btn-complete-request" id="btn-complete-request-{{ myrequest.request.id }}">
-								                Mark request complete
-								            </a>
-							            {% endif %}
-							            <a href="#" class="btn-edit-request" id="btn-edit-request-{{ myrequest.request.id }}">
-							                Edit
-							            </a>
-							            <a href="#" class="btn-delete-request" id="btn-delete-request-{{ myrequest.request.id }}">
-							            	Delete
-							            </a>
-							        </li>
-							     </ul>
-						    </div>
-						{% endif %}
+				<div id="view-request-{{ myrequest.request.id }}">
+				   	<em class="text-muted">
+				   		Posted by 
+				   		<a href="{% url 'account:view' myrequest.request.member.id %}">
+				   			{{ myrequest.request.member.participant.get_name }}
+				   		</a> 
+				   		on {{ myrequest.request.date }}
+			   		</em>
+			   		<div style="padding-top:5px;">
+						{{ myrequest.request.body|urlize|linebreaksbr }}
 					</div>
-					<div id="view-request-{{ myrequest.request.id }}">
-					   	<em class="text-muted">
-					   		Posted by 
-					   		<a href="{% url 'account:view' myrequest.request.member.id %}">
-					   			{{ myrequest.request.member.participant.get_name }}
-					   		</a> 
-					   		on {{ myrequest.request.date }}
-				   		</em>
-				   		<div style="padding-top:5px;">
-							{{ myrequest.request.body|urlize|linebreaksbr }}
-						</div>
-					</div>
-					<div style="display:none" id="edit-request-{{ myrequest.request.id }}">
-						<br><br>
-						<form method="post" action="{% url 'requests:edit_request' %}">
-						    {% csrf_token %}
-						    <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
-						    <input type="hidden" name="request_id" value="{{myrequest.request.id}}" />
-							<textarea class="form-control" rows="5" name="body">{{ myrequest.request.body }}</textarea>
-							<br>
-							<button type="submit" class="btn btn-primary">Submit Changes</button>
-						</form>
-					</div>
+				</div>
+				<div style="display:none" id="edit-request-{{ myrequest.request.id }}">
+					<br><br>
+					<form method="post" action="{% url 'requests:edit_request' %}">
+					    {% csrf_token %}
+					    <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
+					    <input type="hidden" name="request_id" value="{{myrequest.request.id}}" />
+						<textarea class="form-control" rows="5" name="body">{{ myrequest.request.body }}</textarea>
+						<br>
+						<button type="submit" class="btn btn-primary">Submit Changes</button>
+					</form>
 				</div>
 			</div>
 		</div>	

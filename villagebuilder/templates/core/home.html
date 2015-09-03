@@ -199,9 +199,9 @@
 			</form>
 			<div style="position:relative;">
 				<button class="btn btn-primary btn-block" id="browse-items-btn">
-				    Browse {{ totalSharedWithYou }} Items Shared with You >
+				    Browse {{ totalSharedWithYou }} Items Shared with You <i class="fa fa-chevron-down"></i>
 				</button>
-				<div style="position:absolute;left:100%;top:0;z-index:1000;width:500px;display:none;" 
+				<div style="position:absolute;left:0;top:100%;z-index:1000;width:700px;display:none;" 
 				        class="well well-sm" id="browse-items-popup">
 				    <div style="text-align:right;padding-right:10px;">
 				        <a href="{% url 'sharing:items' %}">

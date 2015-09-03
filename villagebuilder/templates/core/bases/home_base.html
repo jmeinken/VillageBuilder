@@ -23,7 +23,23 @@
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="{% url 'home' %}">Home</a></li>
-					<li><a href="{% url 'sharing:my_items' %}">My Shared Items</a></li>
+					<li class="dropdown">
+					    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+					        Shared Items <span class="caret"></span>
+					    </a>
+					    <ul class="dropdown-menu" role="menu">
+							<li>
+							    <a href="{% url 'sharing:my_items' %}">
+							        shared by you <i class="fa fa-arrow-right"></i>
+							    </a>
+							</li>
+							<li>
+							    <a href="{% url 'sharing:items' %}">
+							        shared with you <i class="fa fa-arrow-right fa-rotate-180"></i>
+							    </a>
+							</li>
+				        </ul>
+					</li>
 					<li><a href="{% url 'relationships:relationships' %}">Friends/Groups</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="open-messages">

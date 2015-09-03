@@ -55,7 +55,7 @@ class Item(models.Model):
     share_date = models.DateTimeField(auto_now_add=True)
     type = models.CharField(max_length=30, choices=ITEM_TYPES)
     title = models.CharField(max_length=120)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     image = models.CharField(max_length=30, blank=True, null=True)
     thumb = models.CharField(max_length=30, blank=True, null=True)
     to_borrow = models.BooleanField(default=True)

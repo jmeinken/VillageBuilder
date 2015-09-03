@@ -5,7 +5,10 @@
     <div style="padding-top:0;">
 	    <span class="text-muted" style="font-size:0.9em;">{{ item.share_date|date:"M d, Y" }}</span>
 	    <a href="{% url 'sharing:item' item.id %}">
-	        <span style="font-size:1.3em;color:#CC5200;">| {{ item.title }}</span>
+	        <span style="font-size:1.3em;color:#CC5200;">
+	        	<i class="fa fa-chevron-right"></i>
+				{{ item.title }}
+			</span>
 	    </a><br>
 	    <span class="text-muted" style="font-size:0.9em;">
 	        Shared by <a href="{% url 'account:view' item.sharer.id %}">{{ item.sharer.participant.get_name }}</a>
