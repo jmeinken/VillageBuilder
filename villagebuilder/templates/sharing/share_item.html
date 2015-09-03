@@ -100,8 +100,22 @@ $(document).ready(function(){
 
 
 </script>
-
-<h2>Share Something</h2>
+<div id="top-section">
+	<div id="top-actions">
+		{% if item %}
+		    <button type="button" id="fake-submit" class="btn btn-success">Save Changes</button>&nbsp;
+		    <a href="{% url 'sharing:item' item.id %}" class="btn btn-default">Exit Without Changing</a>&nbsp;
+		    <button type="button" id="fake-submit" class="btn btn-danger">
+		        <i class="fa fa-trash-o"></i> Delete Item
+		    </button>
+		{% else %}
+		    <button type="button" id="fake-submit" class="btn btn-success">
+		        Share Item <i class="fa fa-share-alt"></i>
+		    </button>
+		{% endif %}
+	</div>
+	<h2 id="top-title">Share Something</h2>
+</div>
 
 <form action="{{ callback }}" method="post" id="main-form">
 <div style="display:none;">
@@ -167,18 +181,6 @@ $(document).ready(function(){
             <div id="form-errors" class="text-danger">{{ itemForm.description.errors }}</div>
         </div>
         <div class="col-md-4">
-            {% if item %}
-			    <button type="button" id="fake-submit" class="btn btn-success">Save Changes</button>&nbsp;
-			    <a href="{% url 'sharing:item' item.id %}" class="btn btn-default">Exit Without Changing</a>&nbsp;
-			    <button type="button" id="fake-submit" class="btn btn-danger">
-			        <i class="fa fa-trash-o"></i> Delete Item
-			    </button>
-			{% else %}
-			    <button type="button" id="fake-submit" class="btn btn-success">
-			        Share Item <i class="fa fa-share-alt"></i>
-			    </button>
-			{% endif %}
-			<hr>
 	        <div class="form-group">
 	            {{ itemForm.sharingWith|label_with_classes:"control-label" }} 
 	            {{ itemForm.sharingWith|attr:"class:form-control" }}
