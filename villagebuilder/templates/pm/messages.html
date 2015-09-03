@@ -6,10 +6,10 @@
 
   <style>
   .selected_block .participant-block {
-  	  background-color: blue;
+  	  background-color: #D1E0FF;
   }
   .unviewed_block .participant-block {
-  	  background-color: red;
+  	  background-color: #F5DCCC;
   }
   </style>
   
@@ -29,11 +29,12 @@
 </script>
 
 
-  <h2>Messages</h2>
+<div id="top-section">
+	<h2 id="top-title">Messages</h2>
+</div>
+
   <div class="row">
   	<div class="col-md-3">
-  	    <a href="{% url 'pm:messages' 0 %}" type="button" class="btn btn-primary">Write a New Message</a>
-  	    <br><br>
   	    <h4>Recent Conversations</h4>
   	    {% for participant in participants %}
   	        <a href="{% url 'pm:messages' participant.id %}" class="
@@ -47,7 +48,10 @@
   	</div>
   	<div class="col-md-5">
   		{% if messageList %}
-	  	    <h3>Conversation with <a href="{% url 'account:view' participant.id %}">{{ participant.get_name }}</a></h3>
+	  	    <h3>
+	  	        Conversation with 
+	  	        <a href="{% url 'account:view' participant.id %}">{{ participant.get_name }}</a>
+	  	    </h3>
 	  	    <hr>
 	  	{% endif %}
   	    <div style="height:300px;overflow-y:auto;background-color:#F0F0F0;" id="conversation">

@@ -4,6 +4,10 @@ form {
 	display: inline;
 }
 
+.tab-pane {
+	padding-top: 20px;
+}
+
 #vb .navbar {
 	background-color: #2B355C;
 }

@@ -46,20 +46,41 @@
 </script>
 
 
+<div id="top-section">
+	<h2 id="top-title">Friends/Groups</h2>
+</div>
+
 	<div class="row">
 		<div class="col-md-6">
-		    <h2>Your Friends</h2>
 			<ul class="nav nav-tabs">
-				<li class="active"><a aria-expanded="false" data-target="#friends" data-toggle="tab">Friends</a></li>
-				<li class=""><a aria-expanded="false" data-target="#request_received" data-toggle="tab">Request Received</a></li>
-				<li class=""><a aria-expanded="false" data-target="#request_sent" data-toggle="tab">Request Sent</a></li>
-				<li class="{% if noGroupRelationships %}disabled{% endif %}"><a aria-expanded="false" data-target="#groups" data-toggle="tab">Groups</a></li>
+				<li class="active">
+				    <a aria-expanded="false" data-target="#friends" data-toggle="tab">
+				        Friends [{{ friends|length }}]
+				    </a>
+				</li>
+				<li class="">
+				    <a aria-expanded="false" data-target="#request_received" data-toggle="tab">
+				        Request Received [{{ friendRequestReceived|length }}]
+				    </a>
+				</li>
+				<li class="">
+				    <a aria-expanded="false" data-target="#request_sent" data-toggle="tab">
+				        Request Sent [{{ friendRequestSent|length }}]
+				    </a>
+				</li>
+				{% if noGroupRelationships %}
+				    <li class="disabled"><a href="#">Groups</a></li>
+				{% else %}
+				    <li><a aria-expanded="false" data-target="#groups" data-toggle="tab">Groups</a></li>
+				{% endif %}
 			</ul>
 			<div id="myTabContent" class="tab-content">
 				<div class="tab-pane fade active in" id="friends">
 					<div class="list-group">
 						{% for participant in friends %}
 						    {% include 'core/blocks/participantgroup.html' %}
+						{% empty %}
+						    no friends
 						{% endfor %}
 					</div>
 				</div>
@@ -67,6 +88,8 @@
 					<div class="list-group">
 						{% for participant in friendRequestReceived %}
 						    {% include 'core/blocks/participantgroup.html' %}
+						{% empty %}
+						    no friend requests received
 						{% endfor %}
 					</div>
 				</div>
@@ -74,31 +97,44 @@
 					<div class="list-group">
 						{% for participant in friendRequestSent %}
 						    {% include 'core/blocks/participantgroup.html' %}
+						{% empty %}
+						    no friend requests sent
 						{% endfor %}
 					</div>
 				</div>
 				<div class="tab-pane fade" id="groups">
-					Groups you own:<br />
-					{% for participant in groupOwner %}
-						{% include 'core/blocks/participantgroup.html' %}
-					{% endfor %}
-					Groups you belong to:<br />
-					{% for participant in groupMember %}
-						{% include 'core/blocks/participantgroup.html' %}
-					{% endfor %}
-					Groups you have been invited to join:<br />
-					{% for participant in groupMemberInvited %}
-						{% include 'core/blocks/participantgroup.html' %}
-					{% endfor %}
-					Awaiting Approval from group owner:<br />
-					{% for participant in groupMemberRequested %}
-						{% include 'core/blocks/participantgroup.html' %}
-					{% endfor %}
+				    {% if groupOwner %}
+						<h5>Groups you own:</h5>
+						{% for participant in groupOwner %}
+							{% include 'core/blocks/participantgroup.html' %}
+						{% endfor %}
+					{% endif %}
+					
+					{% if groupMember %}
+						<h5>Groups you belong to:</h5>
+						{% for participant in groupMember %}
+							{% include 'core/blocks/participantgroup.html' %}
+						{% endfor %}
+					{% endif %}
+					
+					{% if groupMemberInvited %}
+						<h5>Groups you have been invited to join:</h5>
+						{% for participant in groupMemberInvited %}
+							{% include 'core/blocks/participantgroup.html' %}
+						{% endfor %}
+					{% endif %}
+					
+					{% if groupMemberRequested %}
+						<h5>Awaiting Approval from group owner:</h5>
+						{% for participant in groupMemberRequested %}
+							{% include 'core/blocks/participantgroup.html' %}
+						{% endfor %}
+					{% endif %}
 				</div>
 			</div>  
 		</div>
 		<div class="col-md-6">
-			<h2>Invite People</h2>
+			<h3 style="margin-top:0;">Invite People</h2>
 			
 			<p>
 				Our <a href="#" data-toggle="modal" data-target="#about-guests-modal">guest system</a> allows you to share with friends even if they don't have an account.
@@ -121,7 +157,7 @@
 			        </div>
 			    </div>
 			    <button type="button" class="btn btn-warning" id="add-email-input">Add Another Row</button>
-				<button type="submit" class="btn btn-primary">Find Friends</button>
+				<button type="submit" class="btn btn-primary">Search for Friends</button>
 			</form>
 		</div>
 	</div>

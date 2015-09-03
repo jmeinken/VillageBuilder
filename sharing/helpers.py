@@ -58,6 +58,37 @@ def getItemsForParticipant(participant):
             ( Q(share_type='all_friends_groups') & Q(sharer__groupmembership__group_id__in=groupIds) ) 
         ).exclude(sharer=participant.member).distinct().order_by('-share_date')
     return items
+
+def getItemsSharedByAndForParticipant(participant):
+    if participant.type == 'guest':
+        items = Item.objects.all().filter(
+            ( Q(share_type='custom') & Q(itemsharee__sharee=participant) ) |
+            ( Q(share_type='share list') & Q(sharelist__sharelistsharee__sharee=participant) ) |
+            ( 
+                ( Q(share_type='all friends') | Q(share_type='all friends and all groups') ) &
+                Q(sharer__guest_friendship__guest=participant.guest)
+            )
+        )
+    if participant.type == 'member':
+        groups = getReciprocatedGroups(participant)
+        groupIds = []
+        for group in groups:
+            groupIds.append(group.id)
+        partGroupIds = groupIds
+        partGroupIds.append(participant.id)
+        print('groups:')
+        print(partGroupIds)
+        items = Item.objects.all().filter(
+            Q(sharer=participant.member) |
+            ( Q(share_type='custom') & Q(itemsharee__sharee_id__in=partGroupIds) )  |
+            ( Q(share_type='share_list') & Q(sharelist__sharelistsharee__sharee_id__in=partGroupIds) ) |
+            ( 
+                ( Q(share_type='all_friends') | Q(share_type='all_friends_groups') ) &
+                Q(sharer__friendship_set__friend=participant.member)
+            ) |
+            ( Q(share_type='all_friends_groups') & Q(sharer__groupmembership__group_id__in=groupIds) ) 
+        ).distinct().order_by('-share_date')
+    return items
     
 
 def filterItems(items, category=None, sharerId=None, groupId=None, searchTerms=None, searchScope='title', hasImage=None):

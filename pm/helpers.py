@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.db.models import Max
 
 from account.models import Participant
 from relationships.helpers import getParticipant
@@ -10,7 +11,7 @@ def getParticipantsWithRecentMessages(currentParticipant, count=10):
     participants = Participant.objects.all().filter(
         Q(message_sent_set__recipient=currentParticipant) |
         Q(message_received_set__sender=currentParticipant)                            
-    ).distinct()
+    ).annotate(received_date=Max('message_received_set__sent_on')).distinct().order_by('received_date')
     results = []
     for participant in participants:
         result = getParticipant(participant.id, currentParticipant)

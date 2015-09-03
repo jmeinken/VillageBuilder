@@ -18,6 +18,7 @@ from .models import Member, Participant
 from account.helpers import *
 from main.helpers import *
 from relationships.helpers import *
+from sharing.helpers import *
 from relationships.models import GroupMembership
 
 
@@ -38,22 +39,28 @@ def view(request, participantId):
             RelationshipTypes.GUEST_FRIENDS,
         ]
         relations = getRelations(participant, currentParticipant, relTypes)
+        allItems = getItemsSharedByAndForParticipant(currentParticipant)
+        items = filterItems(allItems, sharerId=participant.id) 
     if participant.type == 'group':
         relTypes = [
             RelationshipTypes.GROUP_OWNER,
             RelationshipTypes.GROUP_MEMBER,
         ]
         relations = getRelations(participant, currentParticipant, relTypes)
+        allItems = getItemsSharedByAndForParticipant(currentParticipant)
+        items = filterItems(allItems, groupId=participant.id) 
     if participant.type == 'guest':
         relTypes = [
             RelationshipTypes.GUEST_FRIENDS,
         ]
         relations = getRelations(participant, currentParticipant, relTypes)
+        items = None
     context = {
         'account' : accountInfo,
         'relations' : relations,
         'RelationshipTypes' : RelationshipTypes,
         'current' : getCurrentUser(request),
+        'items' : items,
     }
     return render(request, 'account/account_view.html', context)
 
@@ -325,8 +332,8 @@ def personal_info(request):
             request.session.flush()  #don't flush after login
             # user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
-            messages.success(request, 'Account successfully created for ' + participant.get_name() + '.')
-            return redirect(reverse('account:confirmation'))
+            messages.success(request, 'Account successfully created for ' + participant.get_name() + '. Welcome!')
+            return redirect(reverse('home'))
         else:
             print 'invalid'
     else:

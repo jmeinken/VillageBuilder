@@ -57,6 +57,8 @@
 	    <h5>Your Shared Items</h5>
 		{% for item in items %}
 		    {% include 'sharing/blocks/itemblock_withactions.html' %}
+		{% empty %}
+		    You are not sharing any items yet.
 		{% endfor %}
 	</div>
 	<div class="col-md-5">
@@ -83,7 +85,35 @@
 		        </div>
 		    </div>
 		{% endfor %}
+		<div style="padding-top:20px">
+			<a href="#" data-toggle="modal" data-target="#creating-sharelist-modal">
+			    <i class="fa fa-question-circle"></i> How do I create a new share list?
+			</a>
+		</div>
 	</div>
+</div>
+
+<div class="modal" id="creating-sharelist-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        <h4 class="modal-title">Creating Share Lists</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+            To create a new share list, 
+            <a href="{% url 'sharing:share_item' %}">share a new item</a>
+            and select a custom list of people to share with.
+            When you submit the item, you will be asked if you want
+            to save your custom list as a share list.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 

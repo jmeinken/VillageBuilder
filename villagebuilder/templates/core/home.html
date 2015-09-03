@@ -240,7 +240,7 @@
 				</div>
 			</div>
 			<br>
-			<div class="text-primary">Recently Shared</div>
+			<div class="text-warning"><strong>Recently Shared</strong></div>
 			<div class="list-group">
 			    {% for item in recentItems %}
 					{% include 'sharing/blocks/itemblock.html' %}
@@ -305,7 +305,7 @@
 			</form>
 			<hr>
 			
-			<span class="text-primary">People Near You:</span>
+			<div class="text-warning"><strong>People Near You</strong></div>
 			<div class="list-group">
 				{% for participant in peopleNearYou %}
 				    {% include 'core/blocks/participantgroup.html' %}
@@ -313,7 +313,7 @@
 				    &nbsp;&nbsp;&nbsp;&nbsp;<em>none</em>
 				{% endfor %}
 			</div>
-			<span class="text-primary">Friends of Friends:</span>
+			<div class="text-warning"><strong>Friends of Friends</strong></div>
 			<div class="list-group">
 				{% for participant in friendsOfFriends %}
 				    {% include 'core/blocks/participantgroup.html' %}

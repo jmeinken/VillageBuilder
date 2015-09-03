@@ -107,8 +107,11 @@
 	Newest First
 	</div>
 	<div class="col-md-7">
+	    <h3 style="margin-top:0;">Results:</h3>
 		{% for item in items %}
 		    {% include 'sharing/blocks/itemblock.html' %}
+		{% empty %}
+		    No items matched the search criteria.
 		{% endfor %}
 	</div>
 </div>
