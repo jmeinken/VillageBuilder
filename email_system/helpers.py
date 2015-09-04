@@ -3,6 +3,7 @@ import datetime
 
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
 
 from villagebuilder.settings import BASE_DIR
 
@@ -17,7 +18,7 @@ def email_forgot_password(request, member):
     sendMail(
         'forgot password', 
         body,
-        'admin@villagebuilder.net', 
+        'info@villagebuilder.net', 
         [email], 
     )
 
@@ -29,7 +30,7 @@ def sendMail(subject, message, fromMail, toList, failSilently=False):
         action = 'SENT'
     except:
         action = 'FAIL'
-    logDir = BASE_DIR + '/email_system/logs/'
+    logDir = BASE_DIR + '/villagebuilder/logs/'
     myFile = open(logDir + 'emails.txt', 'a+')
     myFile.write(
         action + '\t' +

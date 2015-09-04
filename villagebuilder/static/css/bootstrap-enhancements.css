@@ -1,0 +1,49 @@
+
+
+dl.dl {
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+}
+dl.dl dt {
+	float: left;
+	clear: left;
+	padding-right: 2%;
+}
+dl.dl dd {
+	float: left;
+}
+
+dl.dl-1 dt, dl.dl-11 dd {
+	width: 8.33%;
+}
+dl.dl-2 dt, dl.dl-10 dd {
+	width: 16.66%;
+}
+dl.dl-3 dt, dl.dl-9 dd {
+	width: 25%;
+}
+dl.dl-4 dt, dl.dl-8 dd {
+	width: 33.33%;
+}
+dl.dl-5 dt, dl.dl-7 dd {
+	width: 41.66%;
+}
+dl.dl-6 dt, dl.dl-6 dd {
+	width: 50%;
+}
+dl.dl-7 dt, dl.dl-5 dd {
+	width: 58.33%;
+}
+dl.dl-8 dt, dl.dl-4 dd {
+	width: 66.66%;
+}
+dl.dl-9 dt, dl.dl-3 dd {
+	width: 75%
+}
+dl.dl-10 dt, dl.dl-2 dd {
+	width: 83.33%;
+}
+dl.dl-11 dt, dl.dl-1 dd {
+	width: 91.66%;
+}
