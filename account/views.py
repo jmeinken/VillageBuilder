@@ -339,7 +339,7 @@ def personal_info(request):
             personalInfoForm.save()
             # add admin as friend
             admins = Member.objects.all().filter(is_admin=True)
-            if admins.count > 0:
+            if admins.count() > 0:
                 admin = admins[0]
                 friendship1 = Friendship(member=member, friend=admin)
                 friendship1.save()
