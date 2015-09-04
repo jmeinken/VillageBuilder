@@ -338,11 +338,13 @@ def personal_info(request):
             print personalInfoForm
             personalInfoForm.save()
             # add admin as friend
-            admin = Member.objects.get(is_admin=True)
-            friendship1 = Friendship(member=member, friend=admin)
-            friendship1.save()
-            friendship2 = Friendship(member=admin, friend=member)
-            friendship2.save()
+            admins = Member.objects.all().filter(is_admin=True)
+            if admins.count > 0:
+                admin = admins[0]
+                friendship1 = Friendship(member=member, friend=admin)
+                friendship1.save()
+                friendship2 = Friendship(member=admin, friend=member)
+                friendship2.save()
             # log the user in
             user = authenticate(
                 username=ifkeyset(request.session, 'email'),
@@ -388,16 +390,7 @@ def confirmation(request):
     }
     return render(request, 'account/confirmation.html', context)
 
-def reset_password(request, code):
-    members = Member.objects.all().filter(code=code)
-    if mebers.count() != 1:
-        form = None
-    else:
-        form = PasswordResetForm()
-        context = {
-            'form' : form       
-        }
-    return render(request, 'account/reset_password.html', context)
+
     
     
     

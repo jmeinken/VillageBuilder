@@ -30,7 +30,6 @@ urlpatterns = [
     
     url(r'upload_image/', views.upload_image, name='upload_image'),
     url(r'view/([0-9]*)', views.view, name='view'),
-    url(r'reset_password/([0-9]*)', views.reset_password, name='reset_password'),
     
 ]
 
