@@ -8,10 +8,10 @@
     {% include "account/js/account_info.js" %}
 </script>
     
-    <div class="container-fluid">
+    <div class="container-fluid" style="max-width:1280px;">
         {% include "account/blocks/create-account-header.html" %}
 		<div class="row">
-			<div class="col-md-4 col-md-offset-1">
+			<div class="col-md-4">
 				<form action="{{ callback }}" method="post" id="main-form">
 				    {% csrf_token %}
 				    {{ form.non_field_errors }}
@@ -19,16 +19,19 @@
 				        <div class="form-group">
 				            {{ field|label_with_classes:"control-label" }} 
 				            {{ field|attr:"class:form-control" }}
-				            {% if field.id_for_label == "id_first_name" %}
+				            {% if field.id_for_label == "id_last_name" %}
 					            <a href="#" data-toggle="modal" data-target="#name-privacy-modal" class="text-warning"> 
 					                <i class="fa fa-question-circle"></i> Why do you need my name?
 				                </a>
+				            {% endif %}
+				            {% if field.id_for_label == "id_password" %}
+					            <span class="text-muted">minimum 8 characters</span>
 				            {% endif %}
 			            </div>
 			            <div id="form-errors" class="text-danger">{{ field.errors }}</div>
 				    {% endfor %}
 				    <input type="hidden" name="redirect-url" value="" />
-				    <input type="submit" class="btn btn-primary" value="Submit" />
+				    <button type="submit" class="btn btn-primary">Submit <i class="fa fa-angle-double-right"></i></button>
 				</form>
 			</div>
 		</div>

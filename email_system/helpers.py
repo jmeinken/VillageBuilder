@@ -1,15 +1,23 @@
 
 import datetime
 
+from django.template.loader import render_to_string
+from django.core.urlresolvers import reverse
+
 from villagebuilder.settings import BASE_DIR
 
 
-def email_forgot_password(member):
+def email_forgot_password(request, member):
     email = member.participant.user.username
+    context = {
+        'name' : member.participant.get_name(), 
+        'link' : request.build_absolute_uri(reverse('reset_password', args=[member.code])),
+    }
+    body = render_to_string('email/forgot_password.html', context)
     sendMail(
         'forgot password', 
-        'Your temporary code is: ' + member.code, 
-        'john.meinken@uc.edu', 
+        body,
+        'admin@villagebuilder.net', 
         [email], 
     )
 

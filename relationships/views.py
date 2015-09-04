@@ -130,11 +130,7 @@ def unjoin_group(request):
         groupMembership = GroupMembership.objects.all().filter(member=currentParticipant.member, group_id=groupId)
         if groupMembership.count() != 0:
             groupMembership = groupMembership[0]
-            if groupMembership.invited:
-                groupMembership.requested = False
-                groupMembership.save()
-            else:
-                groupMembership.delete()
+            groupMembership.delete()
         return redirect(url)
     return redirect('login')
 
@@ -168,11 +164,7 @@ def remove_from_group(request):
         groupId = request.POST.get("group-id")
         memberId = request.POST.get("member-id")
         groupMembership = GroupMembership.objects.get(member_id=memberId, group_id=groupId)
-        if groupMembership.requested:
-            groupMembership.invited = False
-            groupMembership.save()
-        else:
-            groupMembership.delete()
+        groupMembership.delete()
         return redirect(url)
     return redirect('login')
 
@@ -334,7 +326,10 @@ def relationships(request):
 def participant_search(request):
     currentParticipant = Participant.objects.get(user=request.user, type='member')
     searchString = request.GET.get("participant-search-txt")
-    matches = searchParticipants(currentParticipant, searchString)
+    if searchString:
+        matches = searchParticipants(currentParticipant, searchString)
+    else:
+        matches = None
     context = {
         'current' : getCurrentUser(request),
         'matches' : matches,

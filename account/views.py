@@ -24,7 +24,17 @@ from relationships.models import GroupMembership
 
 
     
-
+@login_required
+def delete_group(request):
+    currentParticipant = Participant.objects.get(user=request.user, type='member')
+    if request.method == "POST":
+        groupId = request.POST.get('group_id')
+        group = Group.objects.get(pk=groupId)
+        groupName = group.title
+        if group.owner == currentParticipant.member:
+            group.delete()
+        messages.success(request, 'Your group ' + groupName + ' was successfully deleted.')
+    return redirect(reverse('home'))
 
 
 
@@ -183,6 +193,9 @@ def edit_group(request, groupId):
         groupForm = GroupForm(request.POST, instance=group)
         if groupForm.is_valid():
             groupForm.save()
+            messages.success(request, '''
+                Your group info has been updated.
+            ''')
     relationshipTypes = [
         RelationshipTypes.FRIENDS,
         RelationshipTypes.REQUEST_RECEIVED,                 
@@ -324,6 +337,12 @@ def personal_info(request):
             # get data from session
             print personalInfoForm
             personalInfoForm.save()
+            # add admin as friend
+            admin = Member.objects.get(is_admin=True)
+            friendship1 = Friendship(member=member, friend=admin)
+            friendship1.save()
+            friendship2 = Friendship(member=admin, friend=member)
+            friendship2.save()
             # log the user in
             user = authenticate(
                 username=ifkeyset(request.session, 'email'),
@@ -342,6 +361,8 @@ def personal_info(request):
             'street': ifkeyset(request.session, 'street'),
             'city': ifkeyset(request.session, 'city'),
             'neighborhood': ifkeyset(request.session, 'neighborhood'),
+            'state': ifkeyset(request.session, 'state'),
+            'zip_code': ifkeyset(request.session, 'zip_code'),
         })
     # show page
     accountInfoForm = AccountInfoForm(initial={
@@ -366,3 +387,26 @@ def confirmation(request):
         'nav'  : build_nav(request, 'confirmation'),
     }
     return render(request, 'account/confirmation.html', context)
+
+def reset_password(request, code):
+    members = Member.objects.all().filter(code=code)
+    if mebers.count() != 1:
+        form = None
+    else:
+        form = PasswordResetForm()
+        context = {
+            'form' : form       
+        }
+    return render(request, 'account/reset_password.html', context)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

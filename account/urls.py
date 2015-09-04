@@ -24,11 +24,13 @@ urlpatterns = [
     
     url(r'create_group/', views.create_group, name='create_group'),
     url(r'edit_group/([0-9]*)', views.edit_group, name='edit_group'),
+    url(r'delete_group/', views.delete_group, name='delete_group'),
     
     url(r'account/', views.account, name='account'),
     
     url(r'upload_image/', views.upload_image, name='upload_image'),
     url(r'view/([0-9]*)', views.view, name='view'),
+    url(r'reset_password/([0-9]*)', views.reset_password, name='reset_password'),
     
 ]
 

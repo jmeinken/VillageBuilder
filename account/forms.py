@@ -21,6 +21,8 @@ class AccountInfoForm(forms.ModelForm):
         last_name = cleaned_data.get("last_name")
         password = cleaned_data.get("password")
         resubmit_password = cleaned_data.get("resubmit_password")
+        if password and len(password) < 8:
+            self.add_error('password', 'Password must be at least 8 characters.')
         if password != resubmit_password:
             self.add_error('resubmit_password', 'Password values didn\'t match.')
         if email == '':
@@ -52,12 +54,13 @@ class GroupForm(forms.ModelForm):
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Member
-        fields = ['full_address', 'street', 'city', 'neighborhood', 'latitude', 'longitude']
+        fields = ['full_address', 'street', 'city', 'neighborhood', 'state', 'zip_code', 'latitude', 'longitude']
         
 class PersonalInfoForm(forms.ModelForm):
     class Meta:
         model = Member
-        fields = ['full_address', 'street', 'city', 'neighborhood', 'share_email', 'share_phone',
+        fields = ['full_address', 'street', 'city', 'neighborhood', 'state', 'zip_code',
+                  'share_email', 'share_phone',
                   'share_street', 'phone_number', 'phone_type', 'image', 'thumb',]
         labels = {
             'share_street': 'Allow people to see my street name',
@@ -106,6 +109,8 @@ class UserPasswordForm(forms.Form):
         resubmit_password = cleaned_data.get("resubmit_password")
         if not self.user.check_password(old_password):
             self.add_error('old_password', 'Old password was incorrect.')
+        if new_password and len(new_password) < 8:
+            self.add_error('new_password', 'Password must be at least 8 characters.')
         if new_password != resubmit_password:
             self.add_error('resubmit_password', 'Password values didn\'t match.')
         
@@ -131,6 +136,19 @@ class MemberDisplayAddressForm(forms.ModelForm):
         help_texts = {
             'neighborhood': 'leave blank to use city',
         }
+        
+class PasswordResetForm(forms.Form):
+    new_password = forms.CharField(max_length=128, widget=forms.PasswordInput)
+    resubmit_password = forms.CharField(max_length=128, widget=forms.PasswordInput)
+    
+    def clean(self):
+        cleaned_data = super(PasswordResetForm, self).clean()
+        new_password = cleaned_data.get("new_password")
+        resubmit_password = cleaned_data.get("resubmit_password")
+        if new_password and len(new_password) < 8:
+            self.add_error('new_password', 'Password must be at least 8 characters.')
+        if new_password != resubmit_password:
+            self.add_error('resubmit_password', 'Password values didn\'t match.')
 
 
 

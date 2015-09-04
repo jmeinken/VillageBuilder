@@ -244,6 +244,8 @@
 			<div class="list-group">
 			    {% for item in recentItems %}
 					{% include 'sharing/blocks/itemblock.html' %}
+				{% empty %}
+				    Nothing has been shared with you yet.
 				{% endfor %}
 			</div>
 			<div style="text-align:right">

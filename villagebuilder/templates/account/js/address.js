@@ -82,6 +82,12 @@
 	            if ($.inArray("locality", add.address_components[i].types) != -1) {
 	                $('input[name=city]').val(add.address_components[i].long_name);
 	            }
+	            if ($.inArray("administrative_area_level_1", add.address_components[i].types) != -1) {
+	                $('input[name=state]').val(add.address_components[i].short_name);
+	            }
+	            if ($.inArray("postal_code", add.address_components[i].types) != -1) {
+	                $('input[name=zip_code]').val(add.address_components[i].short_name);
+	            }
 	    	}
 	    	$("#address-form").submit();
 	    }

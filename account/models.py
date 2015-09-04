@@ -141,7 +141,7 @@ class Member(models.Model):
     neighborhood = models.CharField(max_length=60, blank=True, null=True)
     city = models.CharField(max_length=60)
     state = models.CharField(max_length=2, blank=True, null=True)
-    # zip_code = models.CharField(max_length=10, blank=True, null=True)
+    zip_code = models.CharField(max_length=10, blank=True, null=True)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
@@ -152,6 +152,7 @@ class Member(models.Model):
     image = models.CharField(max_length=30, blank=True, null=True)
     thumb = models.CharField(max_length=30, blank=True, null=True)
     code = models.CharField(max_length=60, blank=True, null=True)
+    is_admin = models.BooleanField(default=False)
     
     def __unicode__(self):
          return self.participant.get_name()

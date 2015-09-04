@@ -68,6 +68,7 @@
 	    	$('form[name=address-form] input[name=latitude]').val(lat);
 	    	$('form[name=address-form] input[name=longitude]').val(lng);
 	    	for (var i=0; i<add.address_components.length; i++) {
+	    		console.log(add.address_components)
 		    	if ($.inArray("route", add.address_components[i].types) != -1) {
 		    		$('form[name=address-form] input[name=street]').val(add.address_components[i].short_name);
 	            } 
@@ -78,7 +79,7 @@
 	                $('form[name=address-form] input[name=city]').val(add.address_components[i].long_name);
 	            }
 	    	}
-	    	$("form[name=address-form]").submit();
+	    	//$("form[name=address-form]").submit();
 	    });
 	}); 
     

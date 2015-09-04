@@ -11,7 +11,7 @@
 
 {% include "core/modals/upload_tool.html" %}	
 
-    <div class="container-fluid">
+    <div class="container-fluid" style="max-width:1280px;">
         {% include "account/blocks/create-account-header.html" %}
 	    <form action="{{ callback }}" method="post" id="personal-info-form">
 	        <div style="display:none;">
@@ -33,9 +33,19 @@
 		            {{ form.thumb|label_with_classes:"control-label" }} 
 		            {{ form.thumb|attr:"class:form-control"|attr:"readonly" }}
 	            </div>
+	            <div class="form-group">
+			        {{ form.state.errors }}
+		            {{ form.state|label_with_classes:"control-label" }} 
+		            {{ form.state|attr:"class:form-control" }}
+	            </div>
+	            <div class="form-group">
+			        {{ form.zip_code.errors }}
+		            {{ form.zip_code|label_with_classes:"control-label" }} 
+		            {{ form.zip_code|attr:"class:form-control" }}
+	            </div>
 	        </div>
 			<div class="row">
-				<div class="col-md-3 col-md-offset-1">
+				<div class="col-md-4">
 				    <fieldset>
 				    <legend>Address</legend>
 					    {% csrf_token %}
@@ -61,7 +71,7 @@
 			            </div>
 			        </fieldset>
 				</div>
-				<div class="col-md-3" style="padding:0 30px;">
+				<div class="col-md-4" style="padding:0 30px;">
 				    <fieldset>
 				        <legend>User Pic</legend>
 						<img id="user-pic" src="{% static "img/generic-user.png" %}" 
@@ -108,7 +118,7 @@
 			            </div>
 			        </fieldset>
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-4">
 					<fieldset>
 					    <legend class="text-primary">What can people see?</legend>
 					    <div class="panel panel-primary">

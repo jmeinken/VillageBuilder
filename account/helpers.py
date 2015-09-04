@@ -11,7 +11,7 @@ from relationships.helpers import *
 def build_nav(request, current_view):
     if current_view == 'account_info':
         nav_account_info = { 'label' : 'Account Info', 'class_attr' : 'active disabled' }
-        nav_complete = { 'label' : 'Confirmation', 'class_attr' : 'disabled' }
+        nav_complete = { 'label' : 'VillageBuilder Home', 'class_attr' : 'disabled' }
         nav_address = { 'label' : 'Address', 'link' :  '#', 'id' : 'address-link'}
         if 'address'  in request.session.keys():
             nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'link' : '#', 'id' : 'personal-info-link' }
@@ -19,7 +19,7 @@ def build_nav(request, current_view):
             nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'class_attr' : 'disabled' }
     if current_view == 'address':
         nav_address = { 'label' : 'Address', 'class_attr' : 'active disabled' }
-        nav_complete = { 'label' : 'Confirmation', 'class_attr' : 'disabled' }
+        nav_complete = { 'label' : 'VillageBuilder Home', 'class_attr' : 'disabled' }
         nav_account_info = { 'label' : 'Account Info', 'link' : reverse('account:account_info') }
         if 'address'  in request.session.keys():
             nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'link' : reverse('account:personal_info') }
@@ -27,12 +27,12 @@ def build_nav(request, current_view):
             nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'class_attr' : 'disabled' }
     if current_view == 'personal_info':
         nav_account_info = { 'label' : 'Account Info', 'link' : reverse('account:account_info') }
-        nav_complete = { 'label' : 'Confirmation', 'class_attr' : 'disabled' }
+        nav_complete = { 'label' : 'VillageBuilder Home', 'class_attr' : 'disabled' }
         nav_address = { 'label' : 'Address', 'link' : reverse('account:address') }
         nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'class_attr' : 'active disabled' }
     if current_view == 'confirmation':
         nav_account_info = { 'label' : 'Account Info', 'class_attr' : 'disabled' }
-        nav_complete = { 'label' : 'Confirmation', 'class_attr' : ' active disabled' }
+        nav_complete = { 'label' : 'VillageBuilder Home', 'class_attr' : ' active disabled' }
         nav_address = { 'label' : 'Address', 'class_attr' : 'disabled' }
         nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'class_attr' : 'disabled' }
     return [nav_account_info, nav_address, nav_personal_info, nav_complete]

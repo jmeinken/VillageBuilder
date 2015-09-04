@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'requests',
     'pm',
     'sharing',
+    'email_system',
 )
 
 MIDDLEWARE_CLASSES = (

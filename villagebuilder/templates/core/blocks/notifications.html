@@ -3,19 +3,19 @@
 	    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
 	        <div class="alert alert-dismissible alert-danger">
 			    <button type="button" class="close" data-dismiss="alert">X</button>
-			    <p>{{ message }}</p>
+			    <p>{{ message|safe }}</p>
 			</div>
 	    {% endif %}
 	    {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
 	        <div class="alert alert-dismissible alert-warning">
 			    <button type="button" class="close" data-dismiss="alert">X</button>
-			    <p>{{ message }}</p>
+			    <p>{{ message|safe }}</p>
 			</div>
 	    {% endif %}
 	    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
 	        <div class="alert alert-dismissible alert-success">
 			    <button type="button" class="close" data-dismiss="alert">X</button>
-			    <p>{{ message }}</p>
+			    <p>{{ message|safe }}</p>
 			</div>
 	    {% endif %}
 	{% endfor %}
@@ -23,6 +23,12 @@
 {% if successMessage %}
     <div class="alert alert-dismissible alert-success">
 	    <button type="button" class="close" data-dismiss="alert">X</button>
-	    <p>{{ successMessage }}</p>
+	    <p>{{ successMessage|safe }}</p>
+	</div>
+{% endif %}
+{% if errorMessage %}
+    <div class="alert alert-dismissible alert-danger">
+	    <button type="button" class="close" data-dismiss="alert">X</button>
+	    <p>{{ errorMessage|safe }}</p>
 	</div>
 {% endif %}

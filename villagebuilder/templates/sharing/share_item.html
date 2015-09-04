@@ -109,6 +109,12 @@ $(document).ready(function(){
 		        <i class="fa fa-trash-o"></i> Delete Item
 		    </button>
 		{% else %}
+			<span class="text-warning">
+		    	<i class="fa fa-exclamation-triangle"></i>
+		    	By sharing an item, you agree to our 
+		    	<a href="#" data-toggle="modal" data-target="#sharing-policies-modal">sharing policies</a>.
+		    </span>
+		    &nbsp;&nbsp;
 		    <button type="button" id="fake-submit" class="btn btn-success">
 		        Share Item <i class="fa fa-share-alt"></i>
 		    </button>
@@ -269,6 +275,23 @@ $(document).ready(function(){
 	  </div>
 	</div>
 </form>
+
+<div class="modal" id="sharing-policies-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        <h4 class="modal-title">VillageBuilder Sharing Policies</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 {% endblock %}

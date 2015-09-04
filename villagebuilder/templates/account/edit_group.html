@@ -21,11 +21,20 @@
 </script>
 
     {% include "core/modals/upload_tool.html" %}
+    
+    <div id="top-section">
+        <div id="top-actions">
+        	<a class="btn btn-danger" data-toggle="modal" data-target="#delete-group-modal">
+        	    Delete Group <i class="fa fa-trash-o"></i>
+        	</a>
+        </div>
+		<h2 id="top-title">Edit Group: <em>{{ group.participant.get_name }}</em></h2>
+	</div>
    
 	<form action="{{ callback }}" method="post" id="main-form">
 		<div class="row">
 			<div class="col-md-6">
-			    <h3><em>{{ group.participant.get_name }}</em> Info</h3>
+			    <h3 style="margin-top: 0;">Group Info</h3>
 			    <div class="row">
 			        <div class="col-md-6">
 					    {% csrf_token %}
@@ -75,12 +84,18 @@
 			</div>
 			
 			<div class="col-md-6" style="border-left:#A0A0A0 1px solid;">
-			    <h3><em>{{ group.participant.get_name }}</em> Members</h3>
+			    <h3 style="margin-top: 0;">Group Members</h3>
 			    
 			    <ul class="nav nav-tabs">
-				    <li class="active"><a href="#current_members" data-toggle="tab">Current Members</a></li>
-				    <li><a href="#awaiting_approval" data-toggle="tab">Awaiting Approval</a></li>
-				    <li><a href="#invited" data-toggle="tab">Invited</a></li>
+				    <li class="active"><a href="#current_members" data-toggle="tab">
+				        Current Members [{{ currentMembers|length }}]
+				    </a></li>
+				    <li><a href="#awaiting_approval" data-toggle="tab">
+				        Awaiting Approval [{{ awaitingApproval|length }}]
+				    </a></li>
+				    <li><a href="#invited" data-toggle="tab">
+				        Invited [{{ invited|length }}]
+				    </a></li>
 				</ul>
 				<div id="myTabContent" class="tab-content">
 				    <div class="tab-pane fade active in" id="current_members">
@@ -122,6 +137,7 @@
 	</form>
 	
 	<form method="post" action="{% url 'relationships:add_group_members' %}">
+	    {% csrf_token %}
 		<div class="modal" id="modal-add-to-group">
 		  	<div class="modal-dialog">
 		    	<div class="modal-content">
@@ -130,18 +146,25 @@
 		        		<h4 class="modal-title">Invite to Join {{ group.participant.get_name }}</h4>
 		      		</div>
 		      		<div class="modal-body">
+		      			<p class="well">note: This form allows you to invite your current friends to join your group.
+		      			If you want to invite people who are not friends with you, use the 
+		      			<a href="{% url 'relationships:participant_search' %}">friend search form</a>
+		      			to find them and click the blue arrow by their name to invite them.
+		      			</p>
 		        		{% for participant in owner_friends %}
 		        		    <div class="row">
 		        		    	<div class="col-sm-9">
-		        		        	{% include 'core/blocks/participantgroup.html' %}
+		        		        	{% include 'core/blocks/participantgroup_noactions.html' %}
 		        		        </div>
-		        		        <div class="col-sm-3 vcenter">
+		        		        <div class="col-sm-3" style="padding-top:20px;">
 		        		        	<label>
 							            <input type="checkbox" name="invites[]" value="{{ participant.id }}"> 
 							            Invite
 							        </label>
 		        		        </div>
 		        		    </div>
+		        		{% empty %}
+		        		    All of your friends have been invited to join this group.
 		        		{% endfor %}
 		      		</div>
 		      		<div class="modal-footer">
@@ -156,6 +179,28 @@
 		  	</div>
 		</div>
 	</form>
+	
+<div class="modal" id="delete-group-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        <h4 class="modal-title">Delete <em>{{ group.participant.get_name }}</em></h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to permanently delete this group?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <form method="post" action="{% url 'account:delete_group' %}">
+            {% csrf_token %}
+            <input type="hidden" name="group_id" value="{{ group.id }}" />
+        	<button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 	
 	
 {% endblock %}

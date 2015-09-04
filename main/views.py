@@ -96,9 +96,10 @@ def test_view(request):
 @csrf_protect
 @transaction.atomic
 def reset_password(request, code):
-    message = 'none'
+    successMessage = ''
+    errorMessage = ''
     members = Member.objects.all().filter(code=code)
-    if members.count() == 0:
+    if members.count() != 1 or not code:
         return redirect('login')
     member = members[0]
     user = member.participant.user
@@ -109,19 +110,22 @@ def reset_password(request, code):
             user.save()
             member.code = ''
             member.save()
-            message = 'Password Changed'
+            successMessage = 'Password Changed.  You can now <a href="' + reverse('login') + '">login</a>.'
     else:
         form = ResetPasswordForm()
     context = {
         'code' : code,
-        'message' : message,
+        'successMessage' : successMessage,
+        'errorMessage' : errorMessage,
         'form' : form,
+        'member' : member,
     }
     return render(request, 'core/reset_password.html', context)
 
 @csrf_protect
 def request_reset_password(request):
-    action = 'nothing'
+    successMessage = ''
+    errorMessage = ''
     if request.method == "POST":
         form = RequestResetPasswordForm(request.POST)
         if form.is_valid():
@@ -130,16 +134,18 @@ def request_reset_password(request):
             member = Participant.objects.get(user=user, type='member').member
             member.code = createRandomString(60)
             member.save()
-            result = email_forgot_password(member)
+            result = email_forgot_password(request, member)
             if result:
-                action = 'sent email'
+                successMessage = 'An email has been sent to you.  Please check your junk mail folder if it doesn\'t arrive.'
             else:
-                action = 'failed email attempt'
+                errorMessage = ('There was an error with our email system.  If the problem ' +
+                    'persists, contact <a href="mailto:admin@villagebuilder.net">the VillageBuilder administrator</a>.')
     else:
         form = RequestResetPasswordForm()
     context = {
         'form' : form,
-        'action' : action,
+        'successMessage' : successMessage,
+        'errorMessage' : errorMessage,
     }
     return render(request, 'core/request_reset_password.html', context)
 
