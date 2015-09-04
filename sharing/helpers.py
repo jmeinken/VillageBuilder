@@ -1,4 +1,4 @@
-
+import collections, copy
 from django.db.models import Q
 
 from account.models import *
@@ -8,23 +8,23 @@ from .models import *
 
 
 def getCategoriesWithCounts(items):
-    categories = {}
-    for key, keywords in SHARE_CATEGORIES.items():
-        categories[key] = {}
-        categories[key]['count'] = 0
-        categories[key]['keywords'] = {}
-        for keyword in keywords:
-            categories[key]['keywords'][keyword[0]] = 0
+    categories = copy.deepcopy(SHARE_CATEGORIES)
+    for itemType in categories:
+        itemType.append(0)
+        for keyword in itemType[2]:
+            keyword.append(0)
     for item in items:
-        for key in categories.keys():
-            print(item.type)
-            print(type(key))
-            if item.type.lower() == key.lower():
-                categories[key]['count'] = categories[key]['count'] + 1
-            for keyword in categories[key]['keywords'].keys():
-                if keyword in item.itemkeyword_set.values_list('keyword', flat=True):
-                    categories[key]['keywords'][keyword] = categories[key]['keywords'][keyword] + 1
+        for itemType in categories:
+            if item.type == itemType[0]:
+                itemType[3] = itemType[3] +1
+            for keyword in itemType[2]:
+                if keyword[0] in item.itemkeyword_set.values_list('keyword', flat=True):
+                    keyword[2] = keyword[2] + 1
     return categories
+    
+    
+    
+    
 
 
 # get all items shared with (not by) this participant
@@ -93,9 +93,13 @@ def getItemsSharedByAndForParticipant(participant):
 
 def filterItems(items, category=None, sharerId=None, groupId=None, searchTerms=None, searchScope='title', hasImage=None):
     if category:
-        if category in map(lambda x: x.lower(), SHARE_CATEGORIES.keys()):
-            items = items.filter(type=category)
-        else:
+        isItemType = False
+        for itemType in SHARE_CATEGORIES:
+            print(itemType[0])
+            if category == itemType[0]:
+                items = items.filter(type=category)
+                isItemType = True
+        if isItemType == False:
             items = items.filter(itemkeyword__keyword=category)
     if sharerId:
         items = items.filter(sharer_id=sharerId)

@@ -52,13 +52,13 @@
 					    <label class="control-label">Category:</label>
 					    <select class="form-control" name="category">
 	    				    <option value="">(all)</option>
-				            {% for key, keywords in categories.items %}
-				                <option value="{{key|lower}}" {% if filters.category.lower == key.lower %}selected{% endif %}>
-				                    {{ key }}
+				            {% for itemType in categories %}
+				                <option value="{{ itemType.0 }}" {% if filters.category.lower == itemType.0 %}selected{% endif %}>
+				                    {{ itemType.1 }}
 				                </option>
-				                {% for keyword in keywords %}
-					                <option value="{{keyword.0}}" 
-					                    {% if filters.category.lower == keyword.0.lower %}selected{% endif %}>
+				                {% for keyword in itemType.2 %}
+					                <option value="{{ keyword.0 }}" 
+					                    {% if filters.category.lower == keyword.0 %}selected{% endif %}>
 					                    -- {{ keyword.1 }}
 					                </option>
 					            {% endfor %}

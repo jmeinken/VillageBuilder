@@ -209,28 +209,28 @@
 				            Show me everything <i class="fa fa-angle-double-right"></i>
 				        </a>
 				    </div>
-					{% for category, values in shareCategories.items %}
+					{% for itemType in shareCategories %}
 					    <div class="col-xs-4">
 							<div class="list-group">
-						        {% if values.count > 0 %}
-						            <a href="{% url 'sharing:items' %}?category={{category|lower}}" 
+						        {% if itemType.count > 0 %}
+						            <a href="{% url 'sharing:items' %}?category={{itemType.0}}" 
 						                    class="list-group-item lead-item">
-						                {{ category }}
-						                <span class="badge">{{ values.count }}</span>
+						                {{ itemType.1 }}
+						                <span class="badge">{{ itemType.3 }}</span>
 						            </a>
 						        {% else %}
-						            <div class="list-group-item lead-item">{{ category }}</div>
+						            <div class="list-group-item lead-item">{{ itemType.1 }}</div>
 						        {% endif %}
 							    <div class="list-group">
-							    {% for keyword, itemCount in values.keywords.items %}
-							             {% if itemCount > 0 %}
-								             <a href="{% url 'sharing:items' %}?category={{keyword}}"
+							    {% for keyword in itemType.2 %}
+							             {% if keyword.2 > 0 %}
+								             <a href="{% url 'sharing:items' %}?category={{keyword.0}}"
 								                     class="list-group-item">
-								                 {{keyword}}
-								             	 <span class="badge">{{ itemCount }}</span>
+								                 {{keyword.1}}
+								             	 <span class="badge">{{ keyword.2 }}</span>
 								             </a>
 								         {% else %}
-								             <div class="list-group-item text-muted">{{keyword}}</div>
+								             <div class="list-group-item text-muted">{{keyword.1}}</div>
 								         {% endif %}
 							    {% endfor %}
 							    </div>
@@ -258,8 +258,8 @@
 					<a href="{% url 'sharing:share_item' %}" class="btn btn-primary">Share Something</a>
 					<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down"></i>&nbsp;</a>
 					<ul class="dropdown-menu">
-					    {% for category in shareCategories.keys %}
-						    <li><a href="{% url 'sharing:share_item' %}?type={{ category|lower }}">{{ category }}</a></li>
+					    {% for category in shareCategories %}
+						    <li><a href="{% url 'sharing:share_item' %}?type={{ category.0 }}">{{ category.1 }}</a></li>
 						{% endfor %}
 					</ul>
 				</div>

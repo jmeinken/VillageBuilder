@@ -50,9 +50,9 @@ class KeywordForm(forms.Form):
     def __init__(self, *args, **kwargs):
         setKeywords = kwargs.pop('setKeywords', None)
         super(KeywordForm, self).__init__(*args, **kwargs)
-        for key, keywords in SHARE_CATEGORIES.iteritems():
-            fieldName = 'keywords_' + key.lower()
+        for itemType in SHARE_CATEGORIES:
+            fieldName = 'keywords_' + itemType[0]
             self.fields[fieldName] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
-                                             choices=keywords, required=False)  
+                                             choices=itemType[2], required=False)  
             self.fields[fieldName].initial = setKeywords     
 

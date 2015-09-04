@@ -68,10 +68,11 @@ def home(request):
     items = getItemsForParticipant(currentParticipant)
     recentItems = items[:5]
     shareCategories = getCategoriesWithCounts(items)
+    print(shareCategories)
     totalSharedWithYou = 0
     print(shareCategories)
     for category in shareCategories:
-        totalSharedWithYou = totalSharedWithYou + shareCategories[category]['count']
+        totalSharedWithYou = totalSharedWithYou + category[3]
     context = {
             'current' : getCurrentUser(request),
             'peopleNearYou' : getPeopleNearYou(currentParticipant),

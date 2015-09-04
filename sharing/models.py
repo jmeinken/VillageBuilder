@@ -3,9 +3,46 @@ import collections
 from django.db import models
 from account.models import Member, Participant
 
+# computer value, display value
+stuffKeywords = [
+    ['tools', 'tools'],
+    ['electronics', 'electronics'],
+    ['food', 'food'],
+    ['toys/games', 'toys/games'],
+    ['outdoor/camping', 'outdoor/camping'],
+    ['instruments', 'instruments'],
+    ['art', 'art'],
+    ['tickets', 'tickets'],
+    ['materials', 'materials'],
+    ['other', 'other'],
+]
+spaceKeywords = [
+    ['event space', 'event space'],
+    ['meeting space', 'meeting space'],
+    ['garden space', 'garden space'],
+    ['storage space', 'storage space'],
+    ['play area', 'play area'],
+    ['kitchen/dining space', 'kitchen/dining space'],
+    ['other', 'other'],            
+]
+laborKeywords = [
+    ['home repair', 'home repair'],
+    ['computer/technical', 'computer/technical'],
+    ['child care', 'child care'],
+    ['legal', 'legal'],
+    ['creative', 'creative'],
+    ['yard/gardening', 'yard/gardening'],
+    ['other', 'other'],             
+]
+# computer value, display value, associated keywords
+SHARE_CATEGORIES = [
+    ['stuff', 'Stuff', stuffKeywords],
+    ['space', 'Space', spaceKeywords],
+    ['labor', 'Labor/Skills', laborKeywords],                                 
+]
 
-SHARE_CATEGORIES = collections.OrderedDict()
-SHARE_CATEGORIES['Stuff'] = (
+OLD_SHARE_CATEGORIES = collections.OrderedDict()
+OLD_SHARE_CATEGORIES['Stuff'] = collections.OrderedDict([
     ('tools', 'tools',),
     ('electronics', 'electronics',),
     ('food', 'food',),
@@ -16,8 +53,8 @@ SHARE_CATEGORIES['Stuff'] = (
     ('tickets', 'tickets',),
     ('materials', 'materials',),
     ('other', 'other',),
-)
-SHARE_CATEGORIES['Space'] = [
+])
+OLD_SHARE_CATEGORIES['Space'] = collections.OrderedDict([
     ('event space', 'event space',),
     ('meeting space', 'meeting space',),
     ('garden space', 'garden space',),
@@ -25,16 +62,16 @@ SHARE_CATEGORIES['Space'] = [
     ('play area', 'play area',),
     ('kitchen/dining space', 'kitchen/dining space',),
     ('other', 'other',),
-]
-SHARE_CATEGORIES['Skills'] = [
+])
+OLD_SHARE_CATEGORIES['Skills/Labor'] = collections.OrderedDict([
     ('home repair', 'home repair',),
-    ('computer', 'computer',),
+    ('computer/technical', 'computer/technical',),
     ('child care', 'child care',),
     ('legal', 'legal',),
     ('creative', 'creative',),
     ('yard/gardening', 'yard/gardening',),
     ('other', 'other',),
-]                
+])                
 
 
 
@@ -45,11 +82,10 @@ class Item(models.Model):
         ('share_list', 'share_list'),
         ('custom', 'custom'),
     )
-    ITEM_TYPES = (
-        ('stuff','Stuff'),
-        ('space','Space'),
-        ('skills','Skills'),
-    )
+    ITEM_TYPES = ()
+    for category in SHARE_CATEGORIES:
+        ITEM_TYPES = ITEM_TYPES + ((category[0], category[1]),)
+    print(ITEM_TYPES)
     sharer = models.ForeignKey(Member, on_delete=models.CASCADE)
     share_type = models.CharField(max_length=30, choices=SHARE_TYPES)
     share_date = models.DateTimeField(auto_now_add=True)
