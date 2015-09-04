@@ -25,6 +25,11 @@ def email_forgot_password(request, member):
 
 # this should only be called from other methods in the email system
 def sendMail(subject, message, fromMail, toList, failSilently=False):
+    subject = '[VillageBuilder] ' + subject
+    message = message + '''
+    
+    https://villagebuilder.net
+    '''
     try:
         send_mail(subject, message, fromMail, toList, failSilently)
         action = 'SENT'
