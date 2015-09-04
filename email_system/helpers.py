@@ -15,7 +15,7 @@ def email_forgot_password(request, member):
         'link' : request.build_absolute_uri(reverse('reset_password', args=[member.code])),
     }
     body = render_to_string('email/forgot_password.html', context)
-    sendMail(
+    return sendMail(
         'forgot password', 
         body,
         'info@villagebuilder.net', 
