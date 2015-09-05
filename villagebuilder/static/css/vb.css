@@ -131,6 +131,10 @@ a {
     min-width: 300px !important;
 }
 
+.float-right {
+    float: right;
+}
+
 .alert-box {
 	overflow:hidden;
 	border-bottom:black 1px solid;

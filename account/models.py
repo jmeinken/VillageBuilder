@@ -235,6 +235,7 @@ class Group(models.Model):
     thumb = models.CharField(max_length=30, blank=True, null=True)
     owner = models.ForeignKey('Member', on_delete=models.CASCADE)
     private = models.BooleanField(default=False)
+    date_created = models.DateTimeField(auto_now_add=True)
     
     def get_display_address_long(self):
         x = []
