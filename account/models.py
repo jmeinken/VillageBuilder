@@ -35,7 +35,7 @@ class Participant(models.Model):
         ('group', 'group'),
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    type = models.CharField(max_length=6, choices=PARTICIPANT_TYPES)
+    type = models.CharField(max_length=6, choices=PARTICIPANT_TYPES, db_index=True)
     
     def __unicode__(self):
          return self.get_name()
@@ -152,7 +152,7 @@ class Member(models.Model):
     image = models.CharField(max_length=30, blank=True, null=True)
     thumb = models.CharField(max_length=30, blank=True, null=True)
     code = models.CharField(max_length=60, blank=True, null=True)
-    is_admin = models.BooleanField(default=False)
+    is_admin = models.BooleanField(default=False, db_index=True)
     
     def __unicode__(self):
          return self.participant.get_name()
@@ -222,7 +222,7 @@ class Group(models.Model):
     )
     id = models.IntegerField(primary_key=True)
     participant = models.OneToOneField('Participant', on_delete=models.CASCADE)
-    title = models.CharField(max_length=120)
+    title = models.CharField(max_length=120, db_index=True)
     description = models.TextField(blank=True, null=True)
     neighborhood = models.CharField(max_length=60, blank=True, null=True)
     city = models.CharField(max_length=60, blank=True, null=True)

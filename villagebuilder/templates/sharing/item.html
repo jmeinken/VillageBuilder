@@ -14,15 +14,25 @@
     	            style="float:left;margin-right:10px;">
 			<h1>{{ item.title }}</h1>
 			<p>Shared on {{ item.share_date|date:"M d, Y" }}</p>
+			{% if item.type == 'stuff' %}
+				{% if item.to_borrow %}
+				    <p class="label label-default">Avaliable to borrow</p>
+				{% endif %}
+				{% if item.to_keep %}
+				    <p class="label label-default">Avaliable to keep</p>
+				{% endif %}
+			{% endif %}
 			<br style="clear:both;">
 			<hr>
-			{{ item.description|urlize|linebreaksbr }}
+			<div class="text-info" style="font-size:1.1em;">
+				{{ item.description|urlize|linebreaksbr }}
+			</div>
 			<hr>
-			<p>Item type: {{ item.type }}</p>
+			<p><strong>Item type:</strong> <span class="label label-primary">{{ item.type }}</span></p>
 			<p>
-				Item categories:
+				<strong>Item categories:</strong>
 				{% for itemKeyword in item.itemkeyword_set.all %}
-				    {{ itemKeyword.keyword }}
+				    <span class="label label-info">{{ itemKeyword.keyword }}</span>
 				{% endfor %}
 			</p>
 		</div>

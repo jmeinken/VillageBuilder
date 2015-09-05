@@ -4,6 +4,7 @@ from django.db import models
 from account.models import Member, Participant
 
 # computer value, display value
+# !! these should all be unique names even across item types
 stuffKeywords = [
     ['tools', 'tools'],
     ['electronics', 'electronics'],
@@ -14,7 +15,7 @@ stuffKeywords = [
     ['art', 'art'],
     ['tickets', 'tickets'],
     ['materials', 'materials'],
-    ['other', 'other'],
+    ['other stuff', 'other stuff'],
 ]
 spaceKeywords = [
     ['event space', 'event space'],
@@ -23,7 +24,7 @@ spaceKeywords = [
     ['storage space', 'storage space'],
     ['play area', 'play area'],
     ['kitchen/dining space', 'kitchen/dining space'],
-    ['other', 'other'],            
+    ['other space', 'other space'],            
 ]
 laborKeywords = [
     ['home repair', 'home repair'],
@@ -32,7 +33,7 @@ laborKeywords = [
     ['legal', 'legal'],
     ['creative', 'creative'],
     ['yard/gardening', 'yard/gardening'],
-    ['other', 'other'],             
+    ['other labor', 'other labor'],             
 ]
 # computer value, display value, associated keywords
 SHARE_CATEGORIES = [
@@ -87,15 +88,15 @@ class Item(models.Model):
         ITEM_TYPES = ITEM_TYPES + ((category[0], category[1]),)
     print(ITEM_TYPES)
     sharer = models.ForeignKey(Member, on_delete=models.CASCADE)
-    share_type = models.CharField(max_length=30, choices=SHARE_TYPES)
-    share_date = models.DateTimeField(auto_now_add=True)
-    type = models.CharField(max_length=30, choices=ITEM_TYPES)
-    title = models.CharField(max_length=120)
+    share_type = models.CharField(max_length=30, choices=SHARE_TYPES, db_index=True)
+    share_date = models.DateTimeField(auto_now_add=True, db_index=True)
+    type = models.CharField(max_length=30, choices=ITEM_TYPES, db_index=True)
+    title = models.CharField(max_length=120, db_index=True)
     description = models.TextField(blank=True, null=True)
     image = models.CharField(max_length=30, blank=True, null=True)
     thumb = models.CharField(max_length=30, blank=True, null=True)
-    to_borrow = models.BooleanField(default=True)
-    to_keep = models.BooleanField(default=False)
+    to_borrow = models.BooleanField(default=True, db_index=True)
+    to_keep = models.BooleanField(default=False, db_index=True)
     # category = models.ForeignKey("Category", on_delete=models.CASCADE)
     sharelist = models.ForeignKey("ShareList", on_delete=models.CASCADE, null=True, blank=True)
     
@@ -112,7 +113,7 @@ class Item(models.Model):
     
 class ItemKeyword(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    keyword = models.CharField(max_length=60)
+    keyword = models.CharField(max_length=60, db_index=True)
 
 #class Category(models.Model):
 #    name = models.CharField(max_length=60)

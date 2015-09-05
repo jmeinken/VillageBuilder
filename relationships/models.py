@@ -23,8 +23,8 @@ class GuestFriendship(models.Model):
 class GroupMembership(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE)
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    requested = models.BooleanField(default=False)
-    invited = models.BooleanField(default=False)
+    requested = models.BooleanField(default=False, db_index=True)
+    invited = models.BooleanField(default=False, db_index=True)
     
     class Meta:
         unique_together = ('group', 'member',)
