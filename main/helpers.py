@@ -16,7 +16,7 @@ def createRandomString(length):
 
 
 def handle_uploaded_file(f, fileGroup='user_pics'):
-    indexPath = BASE_DIR + '/main/static/uploads/' + fileGroup + '.txt'
+    indexPath = BASE_DIR + '/villagebuilder/static/uploads/' + fileGroup + '.txt'
     indexFile = open(indexPath, 'a+')
     i = indexFile.read()
     indexFile.close()
@@ -28,7 +28,7 @@ def handle_uploaded_file(f, fileGroup='user_pics'):
     indexFile.write(str(j))
     indexFile.close()
     fileName = 'image' + str(j) + '.png'
-    path = BASE_DIR + '/main/static/uploads/' + fileGroup + '/' + fileName
+    path = BASE_DIR + '/villagebuilder/static/uploads/' + fileGroup + '/' + fileName
     with open(path, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
