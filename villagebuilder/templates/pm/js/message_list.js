@@ -7,7 +7,7 @@ $(document).ready(function(){
 		if (status == 'success') {
     		$('#message-container').html(data.html)
     		if (data.count != 0) {
-    			$('#message-count').html('[' + data.count + ']')
+    			$('#message-count').html('<span class="highlight">' + data.count + '</span>')
     		}
 		}
     });

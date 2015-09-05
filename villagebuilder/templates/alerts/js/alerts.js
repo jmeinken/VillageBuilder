@@ -24,7 +24,7 @@ $(document).ready(function(){
 		if (status == 'success') {
     		$('#alert-container').html(data.html)
     		if (data.count != 0) {
-    			$('#alert-count').html('[' + data.count + ']')
+    			$('#alert-count').html('<span class="highlight">' + data.count + '</span>')
     		}
     		$('.delete-alert').click(function() {
 		        var alertId = $(this).attr('id').replace('delete-alert-', '')
@@ -45,7 +45,7 @@ $(document).ready(function(){
 			if (status == 'success') {
 	    		$('#alert-container').html(data.html)
 	    		if (data.count != 0) {
-	    			$('#alert-count').html('[' + data.count + ']')
+	    			$('#alert-count').html('<span class="highlight">' + data.count + '</span>')
 	    		} else {
 	    			$('#alert-count').html('')
 	    		}

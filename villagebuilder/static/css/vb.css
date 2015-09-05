@@ -120,6 +120,13 @@ a {
 
 /*** MORE SPECIFIC STUFF ****************************************************************/
 
+.highlight {
+	background-color: #D00000;
+	color: #FFF;
+	font-weight: bold;
+	padding: 0 5px;
+}
+
 .widen {
     min-width: 300px !important;
 }
