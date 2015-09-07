@@ -16,6 +16,7 @@ from account.helpers import *
 from main.helpers import *
 from relationships.helpers import *
 from alerts.helpers import registerEvent
+from sharing.helpers import removeAllSharing
 
 
 
@@ -121,6 +122,7 @@ def join_group(request):
     return redirect('login')
 
 @login_required
+@transaction.atomic
 def unjoin_group(request):
     print('unjoin')
     if request.method == "POST":
@@ -131,6 +133,7 @@ def unjoin_group(request):
         if groupMembership.count() != 0:
             groupMembership = groupMembership[0]
             groupMembership.delete()
+        removeAllSharing(currentParticipant.id, groupId)
         return redirect(url)
     return redirect('login')
 
@@ -158,6 +161,7 @@ def add_to_group(request):
     return redirect('login')
 
 @login_required
+@transaction.atomic
 def remove_from_group(request):
     if request.method == "POST":
         url = request.POST.get("redirect")
@@ -165,6 +169,7 @@ def remove_from_group(request):
         memberId = request.POST.get("member-id")
         groupMembership = GroupMembership.objects.get(member_id=memberId, group_id=groupId)
         groupMembership.delete()
+        removeAllSharing(memberId, groupId)
         return redirect(url)
     return redirect('login')
 
@@ -233,6 +238,7 @@ def create_guest(request):
     return redirect('login')
 
 @login_required
+@transaction.atomic
 def remove_friend(request):
     print 'remove friend'
     if request.method == "POST":
@@ -245,12 +251,15 @@ def remove_friend(request):
         reverseFriendships = Friendship.objects.all().filter(friend=currentParticipant.member, member_id=friendId)
         if reverseFriendships.count() > 0:
             reverseFriendships[0].delete()
+        removeAllSharing(currentParticipant.id, friendId)
+        removeAllSharing(friendId, currentParticipant.id)
         friend = Participant.objects.all().get(pk=friendId)
         messages.success(request, 'You are no longer friends with ' + friend.get_name() + '.')
         return redirect(url)
     return redirect('login')
 
 @login_required
+@transaction.atomic
 def remove_guest_friend(request):
     print 'remove guest friend'
     if request.method == "POST":
@@ -259,6 +268,7 @@ def remove_guest_friend(request):
         currentParticipant = Participant.objects.get(user=request.user, type='member')
         guestFriendship = GuestFriendship.objects.get(member=currentParticipant.member, guest_id=friendId)
         guestFriendship.delete()
+        removeAllSharing(currentParticipant.id, friendId)
         return redirect(url)
     return redirect('login')
 

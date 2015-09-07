@@ -23,7 +23,20 @@ def getCategoriesWithCounts(items):
     return categories
     
     
-    
+def removeAllSharing(memberId, participantId):
+    itemSharees = ItemSharee.objects.all().filter(
+        item__sharer_id=memberId
+    ).filter(
+        sharee_id=participantId
+    )
+    itemSharees.delete()
+    shareListSharees = ShareListSharee.objects.all().filter(
+        shareList__owner_id=memberId                                                        
+    ).filter(
+        sharee_id=participantId
+    )
+    shareListSharees.delete()
+        
     
 
 
