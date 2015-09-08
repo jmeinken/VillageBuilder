@@ -1,9 +1,9 @@
-{% extends "core/bases/base.html" %}
+{% extends "core/bases/logged_out_base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}<!-- https://pypi.python.org/pypi/django-widget-tweaks -->
 {% load staticfiles %}
 
-{% block content %}
+{% block subcontent %}
 
 <script type="text/javascript">
     {% include "account/js/personal_info.js" %}
@@ -11,8 +11,7 @@
 
 {% include "core/modals/upload_tool.html" %}	
 
-    <div class="container-fluid" style="max-width:1280px;">
-        {% include "account/blocks/create-account-header.html" %}
+    {% include "account/blocks/create-account-nav.html" %}<br>
 	    <form action="{{ callback }}" method="post" id="personal-info-form">
 	        <div style="display:none;">
 	            <!-- Account Info form is hidden here -->
@@ -154,8 +153,7 @@
 				</div>
 			</div>
 		</form>
-		{% include 'core/blocks/footer.html' %}
-	</div>
+
 
 
 

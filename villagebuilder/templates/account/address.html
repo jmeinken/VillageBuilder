@@ -1,21 +1,21 @@
-{% extends "core/bases/base.html" %}
+{% extends "core/bases/logged_out_base.html" %}
 
-{% block content %}
+{% block subcontent %}
 
 <script type="text/javascript">
 	{% include "account/js/address.js" %}
 </script>
 
-    <div class="container-fluid" style="max-width:1280px;">
-        {% include "account/blocks/create-account-header.html" %}
-		<div class="row">
-			<div class="col-md-10 col-md-offset-1">
-				<br>
-				{% include "core/blocks/map.html" %}
-			</div>
+
+    {% include "account/blocks/create-account-nav.html" %}<br>
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+			<br>
+			{% include "core/blocks/map.html" %}
 		</div>
-		{% include 'core/blocks/footer.html' %}
 	</div>
+
+
 	
 <div class="modal" id="address-privacy-modal">
 	<div class="modal-dialog">

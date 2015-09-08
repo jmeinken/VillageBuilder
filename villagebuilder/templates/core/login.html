@@ -1,30 +1,16 @@
-{% extends "core/bases/base.html" %}
+{% extends "core/bases/logged_out_base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}
 
-{% block content %}
+{% block subcontent %}
 <div class="container-fluid">
-    <div class="row">
-    	<div class="col-md-10 col-md-offset-1">
-		    <div class="page-header">
-		    	<h1>
-		    	    <span style="font-size:1.3em;letter-spacing:2px;"><!-- 
-		    	    --><i class="fa fa-share-alt-square fa-rotate-270"></i><!-- 
-		    	    --></span>illag<span style="letter-spacing:-2px;">e</span><span style="color:#29A329;"><!-- 
-		    	    --><span style="font-size:1.2em;letter-spacing:-3px;">B</span><!-- 
-		    	    -->uilder</span>
-		    	</h1>
-		    	<p class="lead">a social network for sharing resources</p>
-		    </div>
-	    </div>
-    </div>
     <div class="row">
         <div class="col-md-12">
             {% include 'core/blocks/notifications.html' %}
         </div>
     </div>
     <div class="row">
-    	<div class="col-md-4 col-md-offset-1">
+    	<div class="col-md-5">
 			<h3>reduce waste</h3>
 			<p>Have power tools that spend most of their time gathering dust? Grow too many tomatoes this year? 
 			VillageBuilder makes it easy to share things you don't need or don't use often.</p>
@@ -71,6 +57,5 @@
 			</div>	
     	</div>
     </div>
-	{% include 'core/blocks/footer.html' %}
 </div>
 {% endblock %}
