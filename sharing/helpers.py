@@ -1,8 +1,9 @@
-import collections, copy
+import collections, copy, urllib, json, time
 from django.db.models import Q
 
 from account.models import *
 from relationships.helpers import getReciprocatedGroups
+from relationships.models import *
 
 from .models import *
 
@@ -21,6 +22,31 @@ def getCategoriesWithCounts(items):
                 if keyword[0] in item.itemkeyword_set.values_list('keyword', flat=True):
                     keyword[2] = keyword[2] + 1
     return categories
+
+def getDistance(member1, member2):
+    url = "https://maps.googleapis.com/maps/api/distancematrix/json"
+    key = "key=AIzaSyCJ9MW8BDW3-aYbYuoctGstHJkTxevbd9A"
+    origins = "origins=" + str(member1.latitude) + ',' + str(member1.longitude)
+    destinations = "destinations=" + str(member2.latitude) + ',' + str(member2.longitude)
+    response = urllib.urlopen(url + "?" + key + "&" + origins + "&" + destinations + "&units=imperial")
+    result = json.load(response)
+    return result['rows'][0]['elements'][0]['distance']
+
+def updateAllDistances(member):
+    rels = Friendship.objects.all().filter(member=member)
+    for rel in rels:
+        distance = getDistance(rel.member, rel.friend)
+        rel.distance = distance['value']
+        rel.distance_text = distance['text']
+        rel.save()
+        time.sleep(0.01)
+    reverseRels = Friendship.objects.all().filter(friend=member)
+    for rel in reverseRels:
+        distance = getDistance(rel.member, rel.friend)
+        rel.distance = distance['value']
+        rel.distance_text = distance['text']
+        rel.save()
+        time.sleep(0.01)
     
     
 def removeAllSharing(memberId, participantId):

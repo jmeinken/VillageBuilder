@@ -16,7 +16,7 @@ from account.helpers import *
 from main.helpers import *
 from relationships.helpers import *
 from alerts.helpers import registerEvent
-from sharing.helpers import removeAllSharing
+from sharing.helpers import removeAllSharing, getDistance
 
 
 
@@ -28,7 +28,11 @@ def add_friend(request):
         url = request.POST.get("redirect")
         friendId = request.POST.get("friend-id")
         currentParticipant = Participant.objects.get(user=request.user, type='member')
+        friend = Participant.objects.all().get(pk=friendId)
         friendship = Friendship(member=currentParticipant.member, friend_id=friendId)
+        distance = getDistance(currentParticipant.member, friend.member)
+        friendship.distance = distance['value']
+        friendship.distance_text = distance['text']
         friendship.save()
         #register event
         eventDict = {
@@ -40,7 +44,6 @@ def add_friend(request):
             data = {'friendId' : friendId}
             return HttpResponse(json.dumps(data), content_type = "application/json")
         else:
-            friend = Participant.objects.all().get(pk=friendId)
             relationship = getRelationship(currentParticipant, friend)
             if relationship == RelationshipTypes.FRIENDS:
                 messages.success(request, 'You are now friends with ' + friend.get_name() + '.')

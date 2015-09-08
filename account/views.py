@@ -75,6 +75,7 @@ def view(request, participantId):
     return render(request, 'account/account_view.html', context)
 
 @login_required
+@transaction.atomic
 def account(request):
     print 'OK'
     showEditView = ''
@@ -131,6 +132,7 @@ def account(request):
             addressForm = AddressForm(request.POST, instance=member)
             if addressForm.is_valid():
                 addressForm.save()
+                updateAllDistances(participant.member)
                 memberDisplayAddressForm = MemberDisplayAddressForm(instance=member)
             else:
                 print 'fail'

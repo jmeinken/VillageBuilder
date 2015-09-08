@@ -63,8 +63,10 @@ def resetAlertCount(currentParticipant):
 
 def deleteAlert(alertId):
     event = Event.objects.get(pk=alertId)
-    event.active = False
-    event.save()
+    # event.active = False
+    # event.save()
+    event.delete()
+
     
 def getAlerts(currentParticipant):
     events = Event.objects.all().filter(affected_participant=currentParticipant).filter(active=True).order_by('-created')
