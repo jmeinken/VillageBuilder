@@ -8,6 +8,7 @@ class Friendship(models.Model):
     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='friendship_set')
     friend = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='reverse_friendship_set')
     created = models.DateTimeField(auto_now_add=True)
+    distance = models.FloatField()
     
     class Meta:
         unique_together = ('member', 'friend',)
