@@ -125,9 +125,6 @@
 			                {% if memberPrivacyDisplay.share_address.value %}
 			                    sharing address with friends<br>
 			                {% endif %}
-			                {% if memberPrivacyDisplay.share_phone.value %}
-			                    sharing phone number with friends<br>
-			                {% endif %}
 			            </dd>
 			        </dl>     
 			    </div>
@@ -143,13 +140,6 @@
 			        	<input type="submit" class="btn btn-primary" value="Save Changes" />
 			        </form>
 			    </div>
-			    <div class="list-group-item" id="phone-view" {% if showEditView == 'memberPhoneForm' %}style="display:none;"{% endif %}>
-			        <a href="#" class="badge" id="phone-edit-btn">Edit</a>
-			        <dl class="dl dl-3">
-			            <dt>Phone</dt>
-			            <dd>{{ memberPhoneDisplay.phone_number.value }} ({{ memberPhoneDisplay.phone_type.value }})</dd>
-			        </dl>     
-			    </div>
 			    <div class="list-group-item" id="phone-edit" {% if showEditView != 'memberPhoneForm' %}style="display:none;"{% endif %}>
 			        <a href="#" class="badge" id="phone-close-btn">Close</a>
 			        <form action="{{ callback }}" method="post">
@@ -164,9 +154,9 @@
 			    <div class="list-group-item" id="full-address-view">
 			        <a href="#" class="badge" id="full-address-edit-btn" data-toggle="modal" data-target="#full-address-modal">Edit</a>
 			        <dl class="dl dl-3">
-			            <dt>Address</dt>
+			            <dt>Location</dt>
 			            <dd>
-			                {{ addressForm.full_address.value }}
+			                **********{{ addressForm.full_address.value|slice:"10:" }}
 	                    </dd>
 			        </dl> 
 			        <div style="display:none;">
@@ -196,8 +186,8 @@
 			    <div class="list-group-item" id="display-address-edit" {% if showEditView != 'memberDisplayAddressForm' %}style="display:none;"{% endif %}>
 			        <a href="#" class="badge" id="display-address-close-btn">Close</a>
 					<div class="alert alert-warning">
-					  <p>If you've moved please change your <a href="#" data-toggle="modal" data-target="#full-address-modal">full address</a>
-			           first so we will know where you are.</p>
+					  <p>If you've moved please update your <a href="#" data-toggle="modal" data-target="#full-address-modal">location</a>
+			           first so the system will know where you are.</p>
 					</div>
 			        <form action="{{ callback }}" method="post">
 			            {% csrf_token %}

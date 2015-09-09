@@ -87,7 +87,6 @@ def account(request):
     member = Member.objects.get(participant=participant)
     addressForm = AddressForm(instance=member)
     memberPrivacyForm = MemberPrivacyForm(instance=member)
-    memberPhoneForm = MemberPhoneForm(instance=member)
     memberDisplayAddressForm = MemberDisplayAddressForm(instance=member)
     if request.method == "POST":
         formName = request.POST.get("form-name")
@@ -109,12 +108,6 @@ def account(request):
                 memberPrivacyForm.save()
             else:
                 showEditView = 'memberPrivacyForm'
-        if formName == 'memberPhoneForm':
-            memberPhoneForm = MemberPhoneForm(request.POST, instance=member)
-            if memberPhoneForm.is_valid():
-                memberPhoneForm.save()
-            else:
-                showEditView = 'memberPhoneForm'
         if formName == 'memberDisplayAddressForm':
             memberDisplayAddressForm = MemberDisplayAddressForm(request.POST, instance=member)
             if memberDisplayAddressForm.is_valid():
@@ -146,14 +139,12 @@ def account(request):
         'userNameForm' : userNameForm,
         'userPasswordForm' : userPasswordForm,
         'memberPrivacyForm' : memberPrivacyForm,
-        'memberPhoneForm' : memberPhoneForm,
         'memberDisplayAddressForm' : memberDisplayAddressForm,
         'showEditView' : showEditView,
         # display values should always show what's currently in the DB
         'userEmailDisplay' : UserEmailForm(instance=user),
         'userNameDisplay' : UserNameForm(instance=user),
         'memberPrivacyDisplay' : MemberPrivacyForm(instance=member),
-        'memberPhoneDisplay' : MemberPhoneForm(instance=member),
         'memberDisplayAddressDisplay' : MemberDisplayAddressForm(instance=member),
         'current' : getCurrentUser(request),
     }

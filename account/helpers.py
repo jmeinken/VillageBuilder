@@ -14,27 +14,27 @@ def build_nav(request, current_view):
         nav_complete = { 'label' : 'VillageBuilder Home', 'class_attr' : 'disabled' }
         nav_address = { 'label' : 'Address', 'link' :  '#', 'id' : 'address-link'}
         if 'address'  in request.session.keys():
-            nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'link' : '#', 'id' : 'personal-info-link' }
+            nav_personal_info = { 'label' : 'Public Profile & Privacy', 'link' : '#', 'id' : 'personal-info-link' }
         else:
-            nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'class_attr' : 'disabled' }
+            nav_personal_info = { 'label' : 'Public Profile & Privacy', 'class_attr' : 'disabled' }
     if current_view == 'address':
         nav_address = { 'label' : 'Address', 'class_attr' : 'active disabled' }
         nav_complete = { 'label' : 'VillageBuilder Home', 'class_attr' : 'disabled' }
         nav_account_info = { 'label' : 'Account Info', 'link' : reverse('account:account_info') }
         if 'address'  in request.session.keys():
-            nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'link' : reverse('account:personal_info') }
+            nav_personal_info = { 'label' : 'Public Profile & Privacy', 'link' : reverse('account:personal_info') }
         else:
-            nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'class_attr' : 'disabled' }
+            nav_personal_info = { 'label' : 'Public Profile & Privacy', 'class_attr' : 'disabled' }
     if current_view == 'personal_info':
         nav_account_info = { 'label' : 'Account Info', 'link' : reverse('account:account_info') }
         nav_complete = { 'label' : 'VillageBuilder Home', 'class_attr' : 'disabled' }
         nav_address = { 'label' : 'Address', 'link' : reverse('account:address') }
-        nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'class_attr' : 'active disabled' }
+        nav_personal_info = { 'label' : 'Public Profile & Privacy', 'class_attr' : 'active disabled' }
     if current_view == 'confirmation':
         nav_account_info = { 'label' : 'Account Info', 'class_attr' : 'disabled' }
         nav_complete = { 'label' : 'VillageBuilder Home', 'class_attr' : ' active disabled' }
         nav_address = { 'label' : 'Address', 'class_attr' : 'disabled' }
-        nav_personal_info = { 'label' : 'Personal Info and Privacy Settings', 'class_attr' : 'disabled' }
+        nav_personal_info = { 'label' : 'Public Profile & Privacy', 'class_attr' : 'disabled' }
     return [nav_account_info, nav_address, nav_personal_info, nav_complete]
 
 def getParticipantInfo(participantId, currentParticipant, basic=True):

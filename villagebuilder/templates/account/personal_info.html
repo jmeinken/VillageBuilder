@@ -96,25 +96,6 @@
 					            {{ form.share_email.label_tag|remove_colon }}
 				            </div>
 				        </div>
-				        <div style="padding-left:20px;">
-				            <div class="checkbox">
-						        {{ form.share_phone.errors }}
-					            {{ form.share_phone }}
-					            {{ form.share_phone.label_tag|remove_colon }}
-				            </div>
-				        </div>
-			            <div id="phone-info">
-			            	<div class="form-group">
-						        {{ form.phone_number.errors }}
-					            {{ form.phone_number|label_with_classes:"control-label" }} 
-					            {{ form.phone_number|attr:"class:form-control" }}
-				            </div>
-				            <div class="form-group">
-						        {{ form.phone_type.errors }}
-					            {{ form.phone_type|label_with_classes:"control-label" }} 
-					            {{ form.phone_type|attr:"class:form-control" }}
-				            </div>
-			            </div>
 			        </fieldset>
 				</div>
 				<div class="col-md-4">
@@ -127,9 +108,6 @@
 						    <div class="panel-body">
 						        <div id="shared-email-show">
 									<strong>Email: </strong> <span id="shared-email"></span>
-								</div>
-								<div id="shared-phone-show">
-									<strong>Phone: </strong> <span id="shared-phone"></span> <span id="shared-phone-type"></span>
 								</div>
 								<div id="nothing-shared-show">
 									<em>nothing</em>

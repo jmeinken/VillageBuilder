@@ -1,33 +1,49 @@
 {% load app_filters %}
 {% load widget_tweaks %}
 
-
 <div class="row">
-	<div class="col-md-8">
-		<div class="form-group">
-			<div class="input-group">
-				<input class="form-control" type="text" id="lookup-address">
-				<span class="input-group-btn">
-				    <button class="btn btn-default" type="button" id="button-lookup-address">Lookup Address</button>
-				</span>
+    <div class="col-md-8">	
+		<div class="row">
+			<div class="col-md-12">
+				<div class="form-group">
+					<div class="input-group">
+						<input class="form-control" type="text" id="lookup-address" placeholder="Where do you live?">
+						<span class="input-group-btn">
+						    <button class="btn btn-default" type="button" id="button-lookup-address">Lookup Address</button>
+						</span>
+					</div>
+				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-md-6">
+			    <div id="map-canvas" style="height:300px"></div>
+			</div>
+			<div class="col-md-6" id="geocode-results-container">
+				<h4>Select Address to Use</h4>
+			    <div id="geocode-results"></div>
+			    <br>
+			    <button id="button-use-address" class="btn btn-primary">Save and Continue</button>
+			</div>
+		</div>	
 	</div>
-	<div class="col-md-4" style="margin-top:10px;">
-		<a href="#" data-toggle="modal" data-target="#address-privacy-modal" class="text-warning"> <i class="fa fa-question-circle"></i> Why do you need my address?</a>
+	<div class="col-md-4">
+		<div class="well">
+		    <h4><i class="fa fa-question-circle"></i> Do you need my full address?</h4>
+			<p>No, but some features of our site require we know at least
+			approximately where you live.</p>
+			<p><strong>Recommended format for best user experience:</strong></p>
+			<p><span class="label label-success">123 Fake St., Youngstown, OH 44504</span></p>
+			<p><strong>Acceptable formats:</strong></p>
+		    <p><span class="label label-primary">Fake St., Youngstown, OH 44504</span></p>
+		    <p><span class="label label-primary">44504</span></p>
+		    <p><span class="label label-primary">Youngstown, OH</span></p>
+		    <p>You will have further options for setting address privacy on 
+			the next screen.</p>
+		</div>
 	</div>
 </div>
-<div class="row">
-	<div class="col-md-6">
-	    <div id="map-canvas" style="height:300px"></div>
-	</div>
-	<div class="col-md-6" id="geocode-results-container">
-		<h4>Select Address to Use</h4>
-	    <div id="geocode-results"></div>
-	    <br>
-	    <button id="button-use-address" class="btn btn-primary">Save and Continue</button>
-	</div>
-</div>				
+	
 <form action="{{ callback }}" method="post" id="address-form" style="display:none;">
     {% csrf_token %}
     {% for field in form %}	

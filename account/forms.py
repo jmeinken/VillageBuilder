@@ -60,12 +60,12 @@ class PersonalInfoForm(forms.ModelForm):
     class Meta:
         model = Member
         fields = ['full_address', 'street', 'city', 'neighborhood', 'state', 'zip_code',
-                  'share_email', 'share_phone',
-                  'share_street', 'phone_number', 'phone_type', 'image', 'thumb',]
+                  'share_email',
+                  'share_street', 'image', 'thumb',]
         labels = {
+            'full_address' : 'Location (not public)',
             'share_street': 'Allow people to see my street name',
             'share_email': 'Allow friends to see my email address',
-            'share_phone': 'Allow friends to see my phone number',
         }
         
 class UserEmailForm(forms.ModelForm):
@@ -117,17 +117,13 @@ class UserPasswordForm(forms.Form):
 class MemberPrivacyForm(forms.ModelForm):
     class Meta:
         model = Member
-        fields = ['share_street', 'share_email', 'share_phone',]
+        fields = ['share_street', 'share_email']
         labels = {
             'share_street': 'Allow people to see my street name',
             'share_email': 'Allow friends to see my email address',
-            'share_phone': 'Allow friends to see my phone number',
         }
         
-class MemberPhoneForm(forms.ModelForm):
-    class Meta:
-        model = Member
-        fields = ['phone_number', 'phone_type',]
+
 
 class MemberDisplayAddressForm(forms.ModelForm):
     class Meta:

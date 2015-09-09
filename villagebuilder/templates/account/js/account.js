@@ -33,11 +33,6 @@
 			$('#privacy-edit').toggle();
 			return false;
 		});
-		$('#phone-edit-btn, #phone-close-btn').click(function() {
-			$('#phone-view').toggle();
-			$('#phone-edit').toggle();
-			return false;
-		});
 		$('#display-address-edit-btn, #display-address-close-btn').click(function() {
 			$('#display-address-view').toggle();
 			$('#display-address-edit').toggle();
