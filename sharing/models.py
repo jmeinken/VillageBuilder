@@ -110,6 +110,12 @@ class Item(models.Model):
             return '/static/uploads/item_pics/' + self.thumb
         return '/static/img/generic-item.png'
     
+    def has_thumb(self):
+        if self.thumb:
+            return True
+        return False
+    
+    
     
 class ItemKeyword(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)

@@ -167,7 +167,7 @@ def filterItems(items, category=None, sharerId=None, groupId=None, searchTerms=N
     
 
 def getItemsSharedByCurrentMember(member):
-    items = Item.objects.all().filter(sharer=member)
+    items = Item.objects.all().filter(sharer=member).order_by('-share_date')
     return items
 
 # filters: sharer, group, search_string (title only or title and desc), category, keyword, has image

@@ -221,6 +221,7 @@ def my_items(request):
         'current' : getCurrentUser(request),
         'items' : items,
         'shareLists' : shareLists,
+        'shareCategories' : SHARE_CATEGORIES,
     }
     return render(request, 'sharing/my_items.html', context)
 

@@ -44,7 +44,7 @@
 					    <ul class="dropdown-menu" role="menu">
 					    	<li>
 							    <a href="{% url 'sharing:my_items' %}">
-							        <span style="display:inline-block; width: 120px;">
+							        <span style="display:inline-block; width: 130px;">
 							            shared by you 
 							        </span>
 							        <i class="fa fa-arrow-right"></i>
@@ -52,10 +52,18 @@
 							</li>
 					    	<li>
 							    <a href="{% url 'sharing:items' %}">
-							        <span style="display:inline-block; width: 120px;">
+							        <span style="display:inline-block; width: 130px;">
 							            shared with you 
 							        </span>
 							        <i class="fa fa-arrow-right fa-rotate-180"></i>
+							    </a>
+							</li>
+							<li>
+							    <a href="{% url 'sharing:share_item' %}">
+							        <span style="display:inline-block; width: 130px;">
+							            share something
+							        </span>
+							        <i class="fa fa-plus"></i>
 							    </a>
 							</li>
 				        </ul>

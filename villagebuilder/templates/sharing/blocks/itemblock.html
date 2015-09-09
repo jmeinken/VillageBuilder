@@ -1,7 +1,9 @@
 
 <div style="overflow:hidden;clear:both;" class="list-group-item">
-    <img src="{{ item.get_thumb }}" alt="" width="50" height="50" 
-            style="float:left;margin-right:10px;" />
+	{% if item.has_thumb %}
+    	<img src="{{ item.get_thumb }}" alt="" width="50" height="50" 
+            	style="float:left;margin-right:10px;" />
+    {% endif %}
     <div style="padding-top:0;">
 	    
 	    <a href="{% url 'sharing:item' item.id %}">
