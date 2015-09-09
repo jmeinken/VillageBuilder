@@ -244,6 +244,18 @@ def item(request, itemId):
 
 @login_required
 @transaction.atomic
+def delete_item(request):
+    if request.method == "POST":
+        itemId = request.POST.get('item_id')
+        item = Item.objects.all().get(pk=itemId)
+        itemName = item.title
+        item.delete()
+        messages.success(request, 'Your item "' + itemName + '" has been removed.')
+    return redirect(reverse('sharing:my_items'))
+        
+
+@login_required
+@transaction.atomic
 def delete_sharelist(request):
     if request.method == "POST":
         shareListId = request.POST.get('sharelist_id')

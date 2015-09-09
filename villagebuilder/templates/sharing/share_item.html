@@ -94,20 +94,18 @@ $(document).ready(function(){
 }); 
 
 
-
-
-
-
-
 </script>
+
+
 <div id="top-section">
 	<div id="top-actions">
 		{% if item %}
 		    <button type="button" id="fake-submit" class="btn btn-success">Save Changes</button>&nbsp;
 		    <a href="{% url 'sharing:item' item.id %}" class="btn btn-default">Exit Without Changing</a>&nbsp;
-		    <button type="button" id="fake-submit" class="btn btn-danger">
+		    <a href="#" data-toggle="modal" data-target="#delete-item-modal" class="btn btn-danger">
 		        <i class="fa fa-trash-o"></i> Delete Item
-		    </button>
+		    </a>
+		    
 		{% else %}
 			<span class="text-warning">
 		    	<i class="fa fa-exclamation-triangle"></i>
@@ -288,6 +286,28 @@ $(document).ready(function(){
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="delete-item-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        <h4 class="modal-title">Delete Item</h4>
+      </div>
+      <div class="modal-body">
+        Do you really want to delete the item "{{ item.title }}"?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <form method="post" action="{% url 'sharing:delete_item' %}">
+        	{% csrf_token %}
+        	<input type="hidden" name="item_id" value="{{ item.id }}" />
+        	<button type="submit" class="btn btn-danger">Delete Item</button>
+        </form>
       </div>
     </div>
   </div>
