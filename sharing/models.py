@@ -7,14 +7,14 @@ from account.models import Member, Participant
 # !! these should all be unique names even across item types
 stuffKeywords = [
     ['tools', 'tools'],
-    ['electronics', 'electronics'],
+    ['electronics/appliances', 'electronics/appliances'],
     ['food', 'food'],
     ['toys/games', 'toys/games'],
     ['outdoor/camping', 'outdoor/camping'],
     ['instruments', 'instruments'],
-    ['art', 'art'],
+    ['art/crafts', 'art/crafts'],
+    ['materials/chemicals', 'materials/chemicals'],
     ['tickets', 'tickets'],
-    ['materials', 'materials'],
     ['other stuff', 'other stuff'],
 ]
 spaceKeywords = [
