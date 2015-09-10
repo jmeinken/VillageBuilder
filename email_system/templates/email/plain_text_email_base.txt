@@ -1,0 +1,11 @@
+Hello {{name}},
+
+This is an automated email from VillageBuilder.
+
+{% block content %}content here{% endblock %}
+
+-----------------------------------------------
+ 
+Thank you for using VillageBuilder
+https://villagebuilder.net
+

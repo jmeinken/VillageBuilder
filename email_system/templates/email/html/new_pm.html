@@ -1,0 +1,17 @@
+{% extends "email/formatted_email_base.html" %}
+
+{% block content %}
+
+<p>You have received a new personal message from {{ sender_name }}:</p>
+
+
+<p style="color:blue;font-style:italic;">{{pmMessage|linebreaks}}</p>
+
+
+<p><a href="{{ link }}">View/Reply to this message</a></p>
+
+{% endblock %}
+
+
+
+

@@ -14,6 +14,7 @@ from django import contrib
 
 from account.models import Member, Participant
 from main.helpers import getCurrentUser
+from email_system.helpers import email_new_pm
 
 from .forms import NewMessageForm
 from .models import *
@@ -53,6 +54,7 @@ def messages(request, participantId):
             message = newMessageForm.save(commit=False)
             message.sender = currentParticipant
             message.save()
+            email_new_pm(request, message)
             contrib.messages.success(request, "Message sent to " + message.recipient.get_name() + '.')
             return redirect(reverse("pm:messages", args=[message.recipient.id]))
     participants = getParticipantsWithRecentMessages(currentParticipant)

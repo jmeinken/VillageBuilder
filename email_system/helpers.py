@@ -14,24 +14,42 @@ def email_forgot_password(request, member):
         'name' : member.participant.get_name(), 
         'link' : request.build_absolute_uri(reverse('reset_password', args=[member.code])),
     }
-    body = render_to_string('email/forgot_password.html', context)
+    body = render_to_string('email/plain_text/forgot_password.txt', context)
+    htmlBody = render_to_string('email/html/forgot_password.html', context)
     return sendMail(
         'forgot password', 
         body,
+        htmlBody,
         'info@villagebuilder.net', 
         [email], 
     )
+    
+def email_new_pm(request, pm):
+    email = pm.recipient.user.username
+    context = {
+        'name' : pm.recipient.get_name(),
+        'sender_name' : pm.sender.get_name(),
+        'pmMessage' : pm.body,
+        'link' : request.build_absolute_uri(reverse('pm:messages', args=[pm.sender.id])),
+    }
+    body = render_to_string('email/plain_text/new_pm.txt', context)
+    htmlBody = render_to_string('email/html/new_pm.html', context)
+    return sendMail(
+        'New message from ' + pm.sender.get_name(), 
+        body,
+        htmlBody,
+        'info@villagebuilder.net', 
+        [email], 
+    )
+    
+    
 
 
 # this should only be called from other methods in the email system
-def sendMail(subject, message, fromMail, toList, failSilently=False):
+def sendMail(subject, message, htmlMessage, fromMail, toList, failSilently=False):
     subject = '[VillageBuilder] ' + subject
-    message = message + '''
-    
-    https://villagebuilder.net
-    '''
     try:
-        send_mail(subject, message, fromMail, toList, failSilently)
+        send_mail(subject, message, fromMail, toList, failSilently, html_message=htmlMessage)
         action = 'SENT'
     except:
         action = 'FAIL'

@@ -1,0 +1,16 @@
+{% extends "email/plain_text_email_base.txt" %}
+
+{% block content %}
+You have received a new personal message from {{ sender_name }}:
+
+---message------------------------------------------------------
+
+{{pmMessage}}
+----------------------------------------------------------------
+
+View/Reply to this message: {{ link }}
+{% endblock %}
+
+
+
+
