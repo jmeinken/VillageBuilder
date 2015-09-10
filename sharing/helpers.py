@@ -23,6 +23,7 @@ def getCategoriesWithCounts(items):
                     keyword[2] = keyword[2] + 1
     return categories
 
+# returns dict with 'value' integer meters and 'text' string 
 def getDistance(member1, member2):
     url = "https://maps.googleapis.com/maps/api/distancematrix/json"
     key = "key=AIzaSyCJ9MW8BDW3-aYbYuoctGstHJkTxevbd9A"

@@ -334,9 +334,14 @@ def personal_info(request):
             admins = Member.objects.all().filter(is_admin=True)
             if admins.count() > 0:
                 admin = admins[0]
+                distance = getDistance(member, admin)
                 friendship1 = Friendship(member=member, friend=admin)
+                friendship1.distance = distance['value']
+                friendship1.distance_text = distance['text']
                 friendship1.save()
                 friendship2 = Friendship(member=admin, friend=member)
+                friendship2.distance = distance['value']
+                friendship2.distance_text = distance['text']
                 friendship2.save()
             # log the user in
             user = authenticate(
