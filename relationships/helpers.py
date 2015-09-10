@@ -115,7 +115,9 @@ def getPeopleNearYou(currentParticipant):
 
 def getFriendsOfFriends(currentParticipant):
     friends = Member.objects.all().filter(reverse_friendship_set__member=currentParticipant.member)
-    friendsOfFriends = Member.objects.all().filter(reverse_friendship_set__member__in=friends)[:5]
+    friendsOfFriends = Member.objects.all().filter(
+        reverse_friendship_set__member__in=friends
+    ).distinct()[:5]
     results = []
     for member in friendsOfFriends:
         if member != currentParticipant.member and not member in friends:
