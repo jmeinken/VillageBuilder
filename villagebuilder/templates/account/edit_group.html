@@ -73,7 +73,7 @@
 				    <div class="col-md-4 col-md-offset-1 well">
 				        <fieldset>
 						    {% for field in form %}
-						    	{% if field.label == 'Neighborhood' or field.label == 'City' or field.label == 'Phone number' or field.label == 'Phone type' or field.label == 'Email' or field.label == 'Website' %}
+						    	{% if field.label == 'Neighborhood' or field.label == 'City' or field.label == 'Email' or field.label == 'Website' %}
 				                {% include 'core/blocks/formgroup.html' %}
 				                {% endif %}
 							{% endfor %}

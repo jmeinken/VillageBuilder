@@ -226,7 +226,6 @@ def getParticipantFull(participantId, currentParticipant):
     print(result)
     result['full_display_address'] = participant.get_display_address_long()
     result['email'] = ''
-    result['phone'] = ''
     if participant.type == 'guest' and currentParticipant.type == 'member':
         if result['relationship'] == RelationshipTypes.GUEST_FRIENDS:
             result['email'] = participant.user.email
@@ -238,8 +237,6 @@ def getParticipantFull(participantId, currentParticipant):
            ):
             if participant.member.share_email:
                 result['email'] = participant.user.email
-            if participant.member.share_phone:
-                result['phone'] = participant.member.get_phone()
     if participant.type == 'group':
         result['description'] = participant.group.description
     return result

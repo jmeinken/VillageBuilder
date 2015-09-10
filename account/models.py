@@ -86,23 +86,6 @@ class Participant(models.Model):
         if self.type == 'member':
             return self.member.get_display_address_long()
 
-    def get_phone(self):
-        if self.type == 'guest':
-            return ''
-        if self.type == 'group':
-            if self.group.phone_number:
-                if self.group.phone_type:
-                    return self.group.phone_number + ' (' + self.group.phone_type + ')'
-                else:
-                    return self.group.phone_number
-        if self.type == 'member':
-            if self.member.phone_number:
-                if self.member.phone_type:
-                    return self.member.phone_number + ' (' + self.member.phone_type + ')'
-                else:
-                    return self.member.phone_number
-        else:
-            return ''
         
     def get_public(self):
         result = {
@@ -120,18 +103,12 @@ class Participant(models.Model):
     def get_private(self, currentUser):
         result = self.get_public()
         result['email'] = ''
-        result['phone'] = ''
         return result
         
 
 
 # need non-auto pk field so that it can be set to the same value as participant
 class Member(models.Model):
-    PHONE_TYPE_CHOICES = (
-      ("mobile", "mobile"),
-      ("home", "home"),
-      ("work", "work"),
-    )
     id = models.IntegerField(primary_key=True)
     participant = models.OneToOneField('Participant', on_delete=models.CASCADE)
     full_address = models.CharField(max_length=600)
@@ -190,14 +167,6 @@ class Member(models.Model):
         return ', '.join(x)
         
         
-    def get_phone(self):
-        if self.phone_number:
-            if self.phone_type:
-                return self.phone_number + ' (' + self.phone_type + ')'
-            else:
-                return self.phone_number
-        else:
-            return ''
 
 class Guest(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -215,11 +184,6 @@ class Guest(models.Model):
     
     
 class Group(models.Model):
-    PHONE_TYPE_CHOICES = (
-      ("mobile", "mobile"),
-      ("home", "home"),
-      ("work", "work"),
-    )
     id = models.IntegerField(primary_key=True)
     participant = models.OneToOneField('Participant', on_delete=models.CASCADE)
     title = models.CharField(max_length=120, db_index=True)
@@ -227,8 +191,6 @@ class Group(models.Model):
     neighborhood = models.CharField(max_length=60, blank=True, null=True)
     city = models.CharField(max_length=60, blank=True, null=True)
     state = models.CharField(max_length=2, blank=True, null=True)
-    phone_number = models.CharField(max_length=20, blank=True, null=True)
-    phone_type = models.CharField(max_length=20, blank=True, null=True, choices=PHONE_TYPE_CHOICES)
     email = models.CharField(max_length=120, blank=True, null=True)
     website = models.CharField(max_length=240, blank=True, null=True)
     image = models.CharField(max_length=30, blank=True, null=True)

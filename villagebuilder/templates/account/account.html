@@ -140,17 +140,6 @@
 			        	<input type="submit" class="btn btn-primary" value="Save Changes" />
 			        </form>
 			    </div>
-			    <div class="list-group-item" id="phone-edit" {% if showEditView != 'memberPhoneForm' %}style="display:none;"{% endif %}>
-			        <a href="#" class="badge" id="phone-close-btn">Close</a>
-			        <form action="{{ callback }}" method="post">
-			            {% csrf_token %}
-			            <input type="hidden" name="form-name" value="memberPhoneForm" />
-				        {% for field in memberPhoneForm %}
-					        {% include 'core/blocks/formgroup.html' %}
-				        {% endfor %}
-				        <input type="submit" class="btn btn-primary" value="Save Changes" />
-				    </form>
-			    </div>
 			    <div class="list-group-item" id="full-address-view">
 			        <a href="#" class="badge" id="full-address-edit-btn" data-toggle="modal" data-target="#full-address-modal">Edit</a>
 			        <dl class="dl dl-3">

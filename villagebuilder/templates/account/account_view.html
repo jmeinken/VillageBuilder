@@ -34,10 +34,6 @@
 				   <dt>Email:</dt>
 				   <dd>{{ account.email }}</dd>
 				{% endif %}
-				{% if account.phone  %}
-				   <dt>Phone:</dt>
-				   <dd>{{ account.phone }}</dd>
-				{% endif %}
 			</dl><br>
 			{% if account.relationship == RelationshipTypes.FRIENDS %}
 				<a class="btn btn-primary" href="{% url 'pm:messages' account.id %}">

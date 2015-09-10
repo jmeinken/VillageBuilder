@@ -53,10 +53,6 @@
 					   <dt>Full Address:</dt>
 					   <dd>{{ sharer.full_address }}</dd>
 					{% endif %}
-					{% if sharer.phone  %}
-					   <dt>Phone:</dt>
-					   <dd>{{ sharer.phone }}</dd>
-					{% endif %}
 				</dl><br>
 				<a class="btn btn-primary" 
 				        href="{% url 'pm:messages' sharer.id %}?msg=%5BRe%3A%20Item%20-%20{{ item.title|urlencode:'' }}]%0A{{ request.build_absolute_uri|urlencode:'' }}%0A%0A">                          

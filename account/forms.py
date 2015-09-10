@@ -47,7 +47,7 @@ class GroupForm(forms.ModelForm):
     class Meta:
         model = Group
         fields = ['title', 'description', 'neighborhood', 'city', 
-                  'phone_number', 'phone_type', 'email', 'website', 'image', 'thumb']
+                  'email', 'website', 'image', 'thumb']
 
 
 
