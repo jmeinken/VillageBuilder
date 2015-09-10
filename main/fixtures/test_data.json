@@ -1,0 +1,96 @@
+[
+{
+    "fields": {
+        "username": "test@test.com",
+        "first_name": "Ferdinand",
+        "last_name": "Meinken",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2015-09-10T19:37:49Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$oFX7LDLfPNte$6joxDH0+HNLn4SIk7c9duWx8x+RtlNLOjEKS6n/iDH8=",
+        "email": "test@test.com",
+        "date_joined": "2015-09-10T19:37:49Z"
+    },
+    "model": "auth.user",
+    "pk": 1
+},
+{
+    "fields": {
+        "username": "test2@test.com",
+        "first_name": "John",
+        "last_name": "Meinken",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2015-09-10T19:38:34Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$fUGOxItQAjU6$bxeD1NJ3tzTUVTbKIclzF78AyPs1crVIV3mgeklyQTM=",
+        "email": "test2@test.com",
+        "date_joined": "2015-09-10T19:38:34Z"
+    },
+    "model": "auth.user",
+    "pk": 2
+},
+{
+    "fields": {
+        "type": "member",
+        "user": 1
+    },
+    "model": "account.participant",
+    "pk": 1
+},
+{
+    "fields": {
+        "type": "member",
+        "user": 2
+    },
+    "model": "account.participant",
+    "pk": 2
+},
+{
+    "fields": {
+        "city": "Youngstown",
+        "code": null,
+        "neighborhood": "Wick Park",
+        "share_street": true,
+        "share_email": true,
+        "image": "",
+        "thumb": "",
+        "full_address": "204 Madison Ave, Youngstown, OH 44504, USA",
+        "state": "OH",
+        "street": "Madison Ave",
+        "is_admin": false,
+        "longitude": "-80.6457010",
+        "latitude": "41.1113469",
+        "participant": 1,
+        "zip_code": "44504"
+    },
+    "model": "account.member",
+    "pk": 1
+},
+{
+    "fields": {
+        "city": "Cincinnati",
+        "code": null,
+        "neighborhood": "Clifton",
+        "share_street": false,
+        "share_email": false,
+        "image": "",
+        "thumb": "",
+        "full_address": "371 Terrace Ave, Cincinnati, OH 45220, USA",
+        "state": "OH",
+        "street": "Terrace Ave",
+        "is_admin": false,
+        "longitude": "-84.5227130",
+        "latitude": "39.1417250",
+        "participant": 2,
+        "zip_code": "45220"
+    },
+    "model": "account.member",
+    "pk": 2
+}
+]

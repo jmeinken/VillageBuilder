@@ -23,7 +23,7 @@ from sharing.helpers import removeAllSharing, getDistance
 @login_required
 @csrf_exempt
 def add_friend(request):
-    print 'add friend'
+    # print 'add friend'
     if request.method == "POST":
         url = request.POST.get("redirect")
         friendId = request.POST.get("friend-id")
@@ -103,7 +103,7 @@ def add_group_members(request):
 @login_required
 @csrf_exempt
 def join_group(request):
-    print 'join_group'
+    # print 'join_group'
     if request.method == "POST":
         url = request.POST.get("redirect")
         groupId = request.POST.get("group_id")
@@ -127,7 +127,7 @@ def join_group(request):
 @login_required
 @transaction.atomic
 def unjoin_group(request):
-    print('unjoin')
+    # print('unjoin')
     if request.method == "POST":
         url = request.POST.get("redirect")
         groupId = request.POST.get("group_id")
@@ -181,7 +181,7 @@ def remove_from_group(request):
 @csrf_exempt
 @transaction.atomic
 def create_guest(request):
-    print 'create guest'
+    # print 'create guest'
     if request.method == "POST":
         url = request.POST.get("redirect")
         tempId = request.POST.get("guest_temp_id")
@@ -243,7 +243,7 @@ def create_guest(request):
 @login_required
 @transaction.atomic
 def remove_friend(request):
-    print 'remove friend'
+    # print 'remove friend'
     if request.method == "POST":
         url = request.POST.get("redirect")
         friendId = request.POST.get("friend-id")
@@ -264,7 +264,7 @@ def remove_friend(request):
 @login_required
 @transaction.atomic
 def remove_guest_friend(request):
-    print 'remove guest friend'
+    # print 'remove guest friend'
     if request.method == "POST":
         url = request.POST.get("redirect")
         friendId = request.POST.get("friend-id")

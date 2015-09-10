@@ -86,8 +86,8 @@ def getItemsForParticipant(participant):
             groupIds.append(group.id)
         partGroupIds = groupIds
         partGroupIds.append(participant.id)
-        print('groups:')
-        print(partGroupIds)
+        # print('groups:')
+        # print(partGroupIds)
         items = Item.objects.all().filter(
             ( Q(share_type='custom') & Q(itemsharee__sharee_id__in=partGroupIds) )  |
             ( Q(share_type='share_list') & Q(sharelist__sharelistsharee__sharee_id__in=partGroupIds) ) |
@@ -116,8 +116,8 @@ def getItemsSharedByAndForParticipant(participant):
             groupIds.append(group.id)
         partGroupIds = groupIds
         partGroupIds.append(participant.id)
-        print('groups:')
-        print(partGroupIds)
+        # print('groups:')
+        # print(partGroupIds)
         items = Item.objects.all().filter(
             Q(sharer=participant.member) |
             ( Q(share_type='custom') & Q(itemsharee__sharee_id__in=partGroupIds) )  |
@@ -135,7 +135,7 @@ def filterItems(items, category=None, sharerId=None, groupId=None, searchTerms=N
     if category:
         isItemType = False
         for itemType in SHARE_CATEGORIES:
-            print(itemType[0])
+            # print(itemType[0])
             if category == itemType[0]:
                 items = items.filter(type=category)
                 isItemType = True
@@ -155,12 +155,12 @@ def filterItems(items, category=None, sharerId=None, groupId=None, searchTerms=N
         for term in terms:
             queries.append( Q(title__contains=term) )
             queries.append( Q(description__contains=term) )
-        print('queries')
-        print(queries)
+        # print('queries')
+        # print(queries)
         query = queries.pop()
         for i in queries:
             query |= i
-        print query
+        # print query
         items = items.filter(query)
     if hasImage:
         items = items.exclude(thumb__isnull=True).exclude(thumb__exact='')

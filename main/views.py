@@ -68,9 +68,9 @@ def home(request):
     items = getItemsForParticipant(currentParticipant)
     recentItems = items[:5]
     shareCategories = getCategoriesWithCounts(items)
-    print(shareCategories)
+    # print(shareCategories)
     totalSharedWithYou = 0
-    print(shareCategories)
+    # print(shareCategories)
     for category in shareCategories:
         totalSharedWithYou = totalSharedWithYou + category[3]
     context = {

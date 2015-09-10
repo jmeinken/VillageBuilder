@@ -77,7 +77,7 @@ def edit_item(request, itemId):
     ])   
     sharees = item.itemsharee_set.values_list('sharee_id', flat=True)
     shareLists = ShareList.objects.all().filter(owner=currentParticipant.member)
-    print(sharees)
+    # print(sharees)
     context = {
         'current' : getCurrentUser(request),
         'item' : item,  
@@ -190,7 +190,7 @@ def items(request):
         'search_scope' : ifset(request.GET.get('search_scope'), 'title'),
         'has_image' : request.GET.get('has_image'),
     }
-    print(filters['search_scope'])
+    # print(filters['search_scope'])
     category = request.GET.get('category');
     items = getItemsForParticipant(currentParticipant)
     items = filterItems(

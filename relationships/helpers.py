@@ -88,8 +88,8 @@ def emailSearch(email, firstName, lastName, currentParticipant):
             matches.append(simulateParticipant(email, firstName, lastName))
     else:    
         for participant in participants:
-            print('participant Id:')
-            print(participant.id)
+            # print('participant Id:')
+            # print(participant.id)
             matches.append(getParticipant(participant.id, currentParticipant))
     return {
         'email' : email,
@@ -223,7 +223,7 @@ def getParticipant(participantId, contextParticipant=None):
 def getParticipantFull(participantId, currentParticipant):
     participant = Participant.objects.get(id=participantId)
     result = getParticipant(participantId, currentParticipant)
-    print(result)
+    # print(result)
     result['full_display_address'] = participant.get_display_address_long()
     result['email'] = ''
     if participant.type == 'guest' and currentParticipant.type == 'member':

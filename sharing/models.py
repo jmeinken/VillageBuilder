@@ -86,7 +86,7 @@ class Item(models.Model):
     ITEM_TYPES = ()
     for category in SHARE_CATEGORIES:
         ITEM_TYPES = ITEM_TYPES + ((category[0], category[1]),)
-    print(ITEM_TYPES)
+    # print(ITEM_TYPES)
     sharer = models.ForeignKey(Member, on_delete=models.CASCADE)
     share_type = models.CharField(max_length=30, choices=SHARE_TYPES, db_index=True)
     share_date = models.DateTimeField(auto_now_add=True, db_index=True)

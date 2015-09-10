@@ -18,7 +18,7 @@ def getParticipantsWithRecentMessages(currentParticipant, count=10):
         messages = currentParticipant.message_received_set.all().filter(sender=participant)
         hasUnviewedMessages = False
         for message in messages:
-            print message.recipient
+            # print message.recipient
             if not message.viewed :
                 hasUnviewedMessages = True
         result['has_unviewed_messages'] = hasUnviewedMessages

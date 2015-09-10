@@ -44,7 +44,7 @@ def message_list(request):
 def messages(request, participantId):
     # !!don't create any variables with the name 'messages', especially for the context
     # passed to the template
-    print participantId
+    # print participantId
     participantId = int(participantId)
     currentParticipant = Participant.objects.get(user=request.user, type='member')
     # post new message

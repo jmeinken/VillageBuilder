@@ -77,7 +77,7 @@ def view(request, participantId):
 @login_required
 @transaction.atomic
 def account(request):
-    print 'OK'
+    # print 'OK'
     showEditView = ''
     user = request.user
     userEmailForm = UserEmailForm(instance=user)
@@ -128,7 +128,7 @@ def account(request):
                 updateAllDistances(participant.member)
                 memberDisplayAddressForm = MemberDisplayAddressForm(instance=member)
             else:
-                print 'fail'
+                # print 'fail'
                 showEditView = 'addressForm'
         if formName == 'deleteAccountForm':
             user.delete()
@@ -328,7 +328,7 @@ def personal_info(request):
         personalInfoForm = PersonalInfoForm(request.POST, instance=member)
         if personalInfoForm.is_valid():
             # get data from session
-            print personalInfoForm
+            # print personalInfoForm
             personalInfoForm.save()
             # add admin as friend
             admins = Member.objects.all().filter(is_admin=True)
@@ -353,8 +353,6 @@ def personal_info(request):
             login(request, user)
             messages.success(request, 'Account successfully created for ' + participant.get_name() + '. Welcome!')
             return redirect(reverse('home'))
-        else:
-            print 'invalid'
     else:
         personalInfoForm = PersonalInfoForm(initial={
             'full_address': ifkeyset(request.session, 'full_address'),
