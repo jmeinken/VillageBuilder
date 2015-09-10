@@ -75,12 +75,16 @@ def getAlerts(currentParticipant):
     for event in events:
         if event.event_type == 'add friend' and getAddFriendAlert(event):
             responses.append( getAddFriendAlert(event) )
-        if event.event_type == 'group request' and getGroupRequestAlert(event):
+            if event.viewed == False:
+                count += 1
+        elif event.event_type == 'group request' and getGroupRequestAlert(event):
             responses.append( getGroupRequestAlert(event) )
-        if event.event_type == 'group invite' and getGroupInviteAlert(event):
+            if event.viewed == False:
+                count += 1
+        elif event.event_type == 'group invite' and getGroupInviteAlert(event):
             responses.append( getGroupInviteAlert(event) )
-        if event.viewed == False:
-            count += 1
+            if event.viewed == False:
+                count += 1
     return {
         'alerts' : responses,
         'count' : count,
