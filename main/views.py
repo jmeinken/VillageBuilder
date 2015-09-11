@@ -150,6 +150,10 @@ def request_reset_password(request):
     }
     return render(request, 'core/request_reset_password.html', context)
 
+def hide_me(request):
+    '''This will put a cookie on your browser that hides you from google analytics for 2 years.'''
+    return render(request, 'core/hide_me.html', {})
+
 @sensitive_post_parameters()
 @csrf_protect
 @never_cache

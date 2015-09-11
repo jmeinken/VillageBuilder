@@ -21,6 +21,7 @@ urlpatterns = [
     #direct links to views
     url(r'login/', 'main.views.login_view', name='login'),
     url(r'logout/', 'main.views.logout_view', name='logout'),
+    url(r'hide_me/', 'main.views.hide_me', name='hide_me'),
     url(r'request_reset_password/', 'main.views.request_reset_password', name='request_reset_password'),
     url(r'reset_password/([a-zA-Z0-9]*)', 'main.views.reset_password', name='reset_password'),
     
