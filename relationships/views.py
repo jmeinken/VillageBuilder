@@ -17,6 +17,7 @@ from main.helpers import *
 from relationships.helpers import *
 from alerts.helpers import registerEvent
 from sharing.helpers import removeAllSharing, getDistance
+from email_system.helpers import email_friend_request
 
 
 
@@ -34,6 +35,8 @@ def add_friend(request):
         friendship.distance = distance['value']
         friendship.distance_text = distance['text']
         friendship.save()
+        relationship = getRelationship(currentParticipant, friend)
+        email_friend_request(request, friendship)
         #register event
         eventDict = {
             'member_id' : currentParticipant.id,
@@ -44,7 +47,6 @@ def add_friend(request):
             data = {'friendId' : friendId}
             return HttpResponse(json.dumps(data), content_type = "application/json")
         else:
-            relationship = getRelationship(currentParticipant, friend)
             if relationship == RelationshipTypes.FRIENDS:
                 messages.success(request, 'You are now friends with ' + friend.get_name() + '.')
             else:

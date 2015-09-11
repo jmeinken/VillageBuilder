@@ -25,22 +25,41 @@ def email_forgot_password(request, member):
     )
     
 def email_new_pm(request, pm):
-    email = pm.recipient.user.username
-    context = {
-        'name' : pm.recipient.get_name(),
-        'sender_name' : pm.sender.get_name(),
-        'pmMessage' : pm.body,
-        'link' : request.build_absolute_uri(reverse('pm:messages', args=[pm.sender.id])),
-    }
-    body = render_to_string('email/plain_text/new_pm.txt', context)
-    htmlBody = render_to_string('email/html/new_pm.html', context)
-    return sendMail(
-        'New message from ' + pm.sender.get_name(), 
-        body,
-        htmlBody,
-        'info@villagebuilder.net', 
-        [email], 
-    )
+    if pm.recipient.type == 'member' and pm.recipient.member.email_messages:
+        email = pm.recipient.user.username
+        context = {
+            'name' : pm.recipient.get_name(),
+            'sender_name' : pm.sender.get_name(),
+            'pmMessage' : pm.body,
+            'link' : request.build_absolute_uri(reverse('pm:messages', args=[pm.sender.id])),
+        }
+        body = render_to_string('email/plain_text/new_pm.txt', context)
+        htmlBody = render_to_string('email/html/new_pm.html', context)
+        return sendMail(
+            'New message from ' + pm.sender.get_name(), 
+            body,
+            htmlBody,
+            'info@villagebuilder.net', 
+            [email], 
+        )
+    
+def email_friend_request(request, friendship):
+    if friendship.friend.email_friend_requests:
+        email = friendship.friend.participant.user.username
+        context = {
+            'name' : friendship.friend.participant.get_name(),
+            'requester_name' : friendship.member.participant.get_name(),
+            'link' : request.build_absolute_uri(reverse('account:view', args=[friendship.member.id])),
+        }
+        body = render_to_string('email/plain_text/friend_request.txt', context)
+        htmlBody = render_to_string('email/html/friend_request.html', context)
+        return sendMail(
+            friendship.member.participant.get_name() + ' wants to be friends', 
+            body,
+            htmlBody,
+            'info@villagebuilder.net', 
+            [email], 
+        )
     
     
 

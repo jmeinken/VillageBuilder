@@ -33,6 +33,11 @@
 			$('#privacy-edit').toggle();
 			return false;
 		});
+		$('#email-preferences-edit-btn, #email-preferences-close-btn').click(function() {
+			$('#email-preferences-view').toggle();
+			$('#email-preferences-edit').toggle();
+			return false;
+		});
 		$('#display-address-edit-btn, #display-address-close-btn').click(function() {
 			$('#display-address-view').toggle();
 			$('#display-address-edit').toggle();

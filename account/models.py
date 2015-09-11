@@ -126,6 +126,8 @@ class Member(models.Model):
     share_email = models.BooleanField(default=True)
     # share_phone = models.BooleanField()
     share_street = models.BooleanField(default=True)
+    email_friend_requests = models.BooleanField(default=True)
+    email_messages = models.BooleanField(default=True)
     image = models.CharField(max_length=30, blank=True, null=True)
     thumb = models.CharField(max_length=30, blank=True, null=True)
     code = models.CharField(max_length=60, blank=True, null=True)

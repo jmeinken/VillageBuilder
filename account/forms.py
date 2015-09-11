@@ -123,6 +123,15 @@ class MemberPrivacyForm(forms.ModelForm):
             'share_email': 'Allow friends to see my email address',
         }
         
+class MemberEmailForm(forms.ModelForm):
+    class Meta:
+        model = Member
+        fields = ['email_friend_requests', 'email_messages']
+        labels = {
+            'email_friend_requests': 'Email me when I receive a friend request.',
+            'email_messages': 'Email me when I receive a personal message.',
+        }
+        
 
 
 class MemberDisplayAddressForm(forms.ModelForm):

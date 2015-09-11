@@ -9,3 +9,6 @@ This is an automated email from VillageBuilder.
 Thank you for using VillageBuilder
 https://villagebuilder.net
 
+Change email preferences for your account:
+https://villagebuilder.net/account/account/
+

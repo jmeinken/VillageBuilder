@@ -1,0 +1,17 @@
+{% extends "email/formatted_email_base.html" %}
+
+{% block content %}
+
+<p>You have received a friend request from {{ requester_name }}.</p>
+
+
+<p>
+	You can accept this request on 
+	<a href="{{ link }}">{{ requester_name }}'s page.</a>
+</p>
+
+{% endblock %}
+
+
+
+
