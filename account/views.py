@@ -95,6 +95,8 @@ def account(request):
             userEmailForm = UserEmailForm(request.POST, instance=user)
             if userEmailForm.is_valid():
                 userEmailForm.save()
+                user.username = userEmailForm.cleaned_data['email']
+                user.save()
             else:
                 showEditView = 'userEmailForm'
         if formName == 'userNameForm':

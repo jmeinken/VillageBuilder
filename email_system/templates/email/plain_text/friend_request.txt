@@ -1,9 +1,7 @@
 {% extends "email/plain_text_email_base.txt" %}
 
 {% block content %}
-You have received a friend request from {{ requester_name }}.
-
-You can accept this request on {{ requester_name }}'s page:
+You have received a friend request from {{ requester_name }}. You can accept this request on {{ requester_name }}'s page:
 {{ link }}
 {% endblock %}
 
