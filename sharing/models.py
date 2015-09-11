@@ -8,16 +8,17 @@ from account.models import Member, Participant
 stuffKeywords = [
     ['tools', 'tools'],
     ['electronics/appliances', 'electronics/appliances'],
-    ['food', 'food'],
-    ['toys/games', 'toys/games'],
+    ['sports/games', 'sports/games'],
     ['outdoor/camping', 'outdoor/camping'],
-    ['instruments', 'instruments'],
+    ['kids', 'kids'],
     ['art/crafts', 'art/crafts'],
     ['materials/chemicals', 'materials/chemicals'],
-    ['tickets', 'tickets'],
+    ['music/media', 'music/media'],
+    ['food', 'food'],
     ['other stuff', 'other stuff'],
 ]
 spaceKeywords = [
+    ['living/sleeping space', 'living/sleeping space'],
     ['event space', 'event space'],
     ['meeting space', 'meeting space'],
     ['garden space', 'garden space'],
@@ -41,38 +42,6 @@ SHARE_CATEGORIES = [
     ['space', 'Space', spaceKeywords],
     ['labor', 'Labor/Skills', laborKeywords],                                 
 ]
-
-OLD_SHARE_CATEGORIES = collections.OrderedDict()
-OLD_SHARE_CATEGORIES['Stuff'] = collections.OrderedDict([
-    ('tools', 'tools',),
-    ('electronics', 'electronics',),
-    ('food', 'food',),
-    ('toys/games', 'toys/games',),
-    ('outdoor/camping', 'outdoor/camping',),
-    ('instruments', 'instruments',),
-    ('art', 'art',),
-    ('tickets', 'tickets',),
-    ('materials', 'materials',),
-    ('other', 'other',),
-])
-OLD_SHARE_CATEGORIES['Space'] = collections.OrderedDict([
-    ('event space', 'event space',),
-    ('meeting space', 'meeting space',),
-    ('garden space', 'garden space',),
-    ('storage space', 'storage space',),
-    ('play area', 'play area',),
-    ('kitchen/dining space', 'kitchen/dining space',),
-    ('other', 'other',),
-])
-OLD_SHARE_CATEGORIES['Skills/Labor'] = collections.OrderedDict([
-    ('home repair', 'home repair',),
-    ('computer/technical', 'computer/technical',),
-    ('child care', 'child care',),
-    ('legal', 'legal',),
-    ('creative', 'creative',),
-    ('yard/gardening', 'yard/gardening',),
-    ('other', 'other',),
-])                
 
 
 
