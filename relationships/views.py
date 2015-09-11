@@ -36,7 +36,8 @@ def add_friend(request):
         friendship.distance_text = distance['text']
         friendship.save()
         relationship = getRelationship(currentParticipant, friend)
-        email_friend_request(request, friendship)
+        if relationship != RelationshipTypes.FRIENDS:
+            email_friend_request(request, friendship)
         #register event
         eventDict = {
             'member_id' : currentParticipant.id,
