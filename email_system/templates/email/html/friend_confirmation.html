@@ -1,0 +1,23 @@
+{% extends "email/formatted_email_base.html" %}
+
+{% block content %}
+
+<p>
+{{ requester_name }} has confirmed your friend request.  
+You can now share and request items with each other. 
+</p>
+
+{% if items.count > 0 %}
+	<p>
+	{{ requester_name }} is currently sharing 
+	<a href="{{ link }}">{{ items.count }} items</a>
+	with you.
+	</p>
+{% endif %}
+
+
+{% endblock %}
+
+
+
+

@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
 
 from villagebuilder.settings import BASE_DIR
+from sharing.helpers import *
 
 
 def email_forgot_password(request, member):
@@ -55,6 +56,30 @@ def email_friend_request(request, friendship):
         htmlBody = render_to_string('email/html/friend_request.html', context)
         return sendMail(
             friendship.member.participant.get_name() + ' wants to be friends', 
+            body,
+            htmlBody,
+            'info@villagebuilder.net', 
+            [email], 
+        )
+        
+def email_friend_confirmation(request, friendship):
+    if friendship.friend.email_friend_requests:
+        items = getItemsForParticipant(friendship.friend.participant)
+        items = filterItems(items, sharerId=friendship.member.id)
+        email = friendship.friend.participant.user.username
+        context = {
+            'name' : friendship.friend.participant.get_name(),
+            'requester_name' : friendship.member.participant.get_name(),
+            'link' : request.build_absolute_uri( reverse('sharing:items') 
+                + '?sharer=' 
+                +  str(friendship.member.id)
+            ),
+            'items' :items,
+        }
+        body = render_to_string('email/plain_text/friend_confirmation.txt', context)
+        htmlBody = render_to_string('email/html/friend_confirmation.html', context)
+        return sendMail(
+            'You are now friends with ' + friendship.member.participant.get_name(), 
             body,
             htmlBody,
             'info@villagebuilder.net', 

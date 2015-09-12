@@ -17,12 +17,13 @@ from main.helpers import *
 from relationships.helpers import *
 from alerts.helpers import registerEvent
 from sharing.helpers import removeAllSharing, getDistance
-from email_system.helpers import email_friend_request
+from email_system.helpers import email_friend_request, email_friend_confirmation
 
 
 
 @login_required
 @csrf_exempt
+@transaction.atomic
 def add_friend(request):
     # print 'add friend'
     if request.method == "POST":
@@ -36,7 +37,9 @@ def add_friend(request):
         friendship.distance_text = distance['text']
         friendship.save()
         relationship = getRelationship(currentParticipant, friend)
-        if relationship != RelationshipTypes.FRIENDS:
+        if relationship == RelationshipTypes.FRIENDS:
+            email_friend_confirmation(request, friendship)
+        else:
             email_friend_request(request, friendship)
         #register event
         eventDict = {
