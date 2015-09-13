@@ -38,25 +38,24 @@ def registerEvent(eventType, eventDict):
         group = Group.objects.get(id=eventDict['group_id'])
         affectedParticipant = group.owner.id
     ## check for duplicate
-    duplicate = (Event.objects.all()
+    duplicates = (Event.objects.all()
             .filter(affected_participant_id = affectedParticipant)
             .filter(event_type = eventType)
             .filter(event_data = json.dumps(eventDict))
             .filter(active = True)
-            .count()
     )
-    if duplicate == 0:
-        event = Event(
-            affected_participant_id = affectedParticipant,
-            event_type = eventType,
-            event_data = json.dumps(eventDict),
-            viewed = False,
-            active = True,
-        )
-        event.save()
+    duplicates.delete()
+    event = Event(
+        affected_participant_id = affectedParticipant,
+        event_type = eventType,
+        event_data = json.dumps(eventDict),
+        viewed = False,
+        active = True,
+    )
+    event.save()
 
 def resetAlertCount(currentParticipant):
-    events = Event.objects.all().filter(affected_participant=currentParticipant).filter(active=True).order_by('created')
+    events = Event.objects.all().filter(affected_participant=currentParticipant).filter(active=True)
     for event in events:
         event.viewed=True
         event.save()

@@ -9,5 +9,5 @@ class Event(models.Model):
     event_type = models.CharField(max_length=30, choices=EVENT_TYPE_CHOICES, db_index=True)
     viewed = models.BooleanField(db_index=True)
     active = models.BooleanField(db_index=True)
-    created = models.DateField(auto_now_add=True, db_index=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
     event_data = models.TextField(blank=True, null=True)
