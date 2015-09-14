@@ -18,6 +18,7 @@ from . import views
 
 urlpatterns = [
     url(r'^request_list/', views.request_list, name='request_list'),
+    url(r'^request/([0-9]*)', views.request, name='request'),
     url(r'^post_request/', views.post_request, name='post_request'),
     url(r'^edit_request/', views.edit_request, name='edit_request'),
     url(r'^delete_request/', views.delete_request, name='delete_request'),

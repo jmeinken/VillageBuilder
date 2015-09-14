@@ -1,0 +1,22 @@
+{% extends "core/bases/home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+
+<script>
+    {% include 'requests/js/requests.js' %}
+</script>
+
+<div id="top-section">
+	<h2 id="top-title">Request from {{ requests.0.request.member.participant.get_name }}</h2>
+</div>
+
+
+<div class="row">
+	<div class="col-md-6">
+		{% include 'requests/request_list.html' %}
+	</div>
+</div>
+
+{% endblock %}	

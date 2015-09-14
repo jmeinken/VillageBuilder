@@ -70,7 +70,8 @@
 			<a href="#" class="show-comments" id="show-comments-for-request-{{myrequest.request.id}}">
 			    Comments ({{ myrequest.comments.count }}) <i class="fa fa-caret-down"></i>
 			</a>
-			<div id="comments-for-request-{{myrequest.request.id}}" style="display:none;font-size:0.9em;">
+			<div id="comments-for-request-{{myrequest.request.id}}" 
+			        style="{% if not expand_comments %}display:none;{% endif %}font-size:0.9em;">
 				{% for comment in myrequest.comments %}
 				    {% include 'requests/blocks/commentblock.html' %}
 				{% endfor %}

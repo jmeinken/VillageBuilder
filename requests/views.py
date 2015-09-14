@@ -2,14 +2,16 @@ import json
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
+
 
 from account.models import Participant
 from main.helpers import getCurrentUser
 from .models import *
 from requests.helpers import *
+from relationships.helpers import *
 
 
 @login_required
@@ -165,4 +167,21 @@ def request_list(request):
         'maxRequest' : end,
     }
     return HttpResponse(json.dumps(data), content_type = "application/json")
+
+@login_required
+def request(request, requestId):
+    '''Be careful not to overwrite Django 'request' object with something else called request'''
+    # check permission to view this request
+    user = request.user
+    currentParticipant = Participant.objects.get(user=user, type='member')
+    singleRequest = getSingleRequest(requestId)['requests']
+    rel = getRelationship(currentParticipant, singleRequest[0]['request'].member.participant)
+    if rel != RelationshipTypes.FRIENDS and rel != RelationshipTypes.SELF:
+        raise Http404("Page does not exist")
+    context = {
+        'requests' : singleRequest,
+        'current' : getCurrentUser(request),
+        'expand_comments' : True,
+    }
+    return render(request, 'requests/request.html', context)
         
