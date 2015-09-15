@@ -36,7 +36,7 @@ def getRequestsOfFriends(currentParticipant, sinceDate):
 def getRelevantRequestComments(participant, sinceDate):
     # use event alerts to get comments to show
     events = (Event.objects.all()
-        .filter(viewed=True)
+        .filter(viewed=False)
         .filter(event_type="request comment")
         .filter(created__gte=sinceDate)
         .filter(affected_participant=participant)
