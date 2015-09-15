@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
+from django.db import transaction
 
 
 from account.models import Participant
@@ -12,6 +13,7 @@ from main.helpers import getCurrentUser
 from .models import *
 from requests.helpers import *
 from relationships.helpers import *
+from alerts.helpers import registerEvent
 
 
 @login_required
@@ -123,6 +125,7 @@ def edit_request_comment(request):
 
 @login_required
 @csrf_exempt
+@transaction.atomic
 def post_request_comment(request):
     if request.method == "POST":
         body = request.POST.get("body")
@@ -130,6 +133,12 @@ def post_request_comment(request):
         currentParticipant = Participant.objects.get(user=request.user, type='member')
         comment = RequestComment(member=currentParticipant.member, body=body, request_id=requestId)
         comment.save()
+        eventDict = {
+            'request_id' : requestId,
+            'comment_id' : comment.id,
+            'commenter_id' : comment.member.id
+        }
+        registerEvent('request comment', eventDict)
         context = {
             'current' : getCurrentUser(request),
             'comment' : comment,

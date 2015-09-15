@@ -49,6 +49,9 @@ $(document).ready(function(){
 	    		} else {
 	    			$('#alert-count').html('')
 	    		}
+	    		if (data.display) {
+	    			$('#alert-container').parent().addClass('open');
+	    		}
 	    		$('.delete-alert').click(function() {
 			        var alertId = $(this).attr('id').replace('delete-alert-', '')
 			        postAlerts({action : 'delete_alert', alert_id : alertId})

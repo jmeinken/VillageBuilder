@@ -11,3 +11,4 @@ class Event(models.Model):
     active = models.BooleanField(db_index=True)
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     event_data = models.TextField(blank=True, null=True)
+    more_data = models.TextField(blank=True, null=True)

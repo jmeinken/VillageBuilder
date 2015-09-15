@@ -18,6 +18,7 @@ from .helpers import *
 def alerts(request):
     user = request.user
     currentParticipant = Participant.objects.get(user=user, type='member')
+    display = False
     if request.method == "POST":
         action = request.POST.get("action")
         if action == 'reset_count':
@@ -25,6 +26,7 @@ def alerts(request):
             resetAlertCount(currentParticipant)
         if action == 'delete_alert':
             deleteAlert(request.POST.get("alert_id"))
+            display = True
     alerts = getAlerts(currentParticipant)
     context = {
             'alerts' : alerts['alerts'],
@@ -33,6 +35,7 @@ def alerts(request):
     html = render_to_string('alerts/alerts.html', context)
     data = {
         'html' : html,
-        'count' : alerts['count']
+        'count' : alerts['count'],
+        'display' : display,
     }
     return HttpResponse(json.dumps(data), content_type = "application/json")

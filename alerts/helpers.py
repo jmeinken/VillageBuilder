@@ -1,11 +1,18 @@
 
 import json
+from datetime import datetime
 
-from .models import *
-from relationships.models import Friendship, GroupMembership
-from account.models import Member, Group
+
 from django.template.loader import render_to_string
 from django.core.urlresolvers import reverse
+from django.db.models import Q
+
+from relationships.models import Friendship, GroupMembership
+from account.models import Member, Group
+from requests.models import RequestComment, Request
+
+from .models import *
+
 
 
 # CALLING FOR ADDING FRIEND
@@ -29,30 +36,74 @@ from django.core.urlresolvers import reverse
 #}
 #registerEvent('group request', eventDict)
 
+# CALLING FOR REQUEST COMMENT
+#eventDict = {
+#    'request_id' : '',
+#    'comment_id' : '',
+#    'commenter_id : ''
+#}
+#registerEvent('request comment', eventDict)
+
 def registerEvent(eventType, eventDict):
+    affectedParticipantIds = []
     if eventType == 'add friend':
-        affectedParticipant = eventDict['friend_id']
+        affectedParticipantIds.append(eventDict['friend_id'])
     if eventType == 'group invite':
-        affectedParticipant = eventDict['member_id']
+        affectedParticipantIds.append(eventDict['member_id'])
     if eventType == 'group request':
         group = Group.objects.get(id=eventDict['group_id'])
-        affectedParticipant = group.owner.id
+        affectedParticipantIds.append(group.owner.id)
+    if eventType == 'request comment':
+        registerRequestComment(eventType, eventDict)
+        return
     ## check for duplicate
-    duplicates = (Event.objects.all()
-            .filter(affected_participant_id = affectedParticipant)
-            .filter(event_type = eventType)
-            .filter(event_data = json.dumps(eventDict))
-            .filter(active = True)
-    )
-    duplicates.delete()
-    event = Event(
-        affected_participant_id = affectedParticipant,
-        event_type = eventType,
-        event_data = json.dumps(eventDict),
-        viewed = False,
-        active = True,
-    )
-    event.save()
+    for id in affectedParticipantIds:
+        duplicates = (Event.objects.all()
+                .filter(affected_participant_id = id)
+                .filter(event_type = eventType)
+                .filter(event_data = json.dumps(eventDict))
+                .filter(active = True)
+        )
+        duplicates.delete()
+        event = Event(
+            affected_participant_id = id,
+            event_type = eventType,
+            event_data = json.dumps(eventDict),
+            viewed = False,
+            active = True,
+        )
+        event.save()
+        
+def registerRequestComment(eventType, eventDict):
+    members = Member.objects.filter(
+        Q(request__id=eventDict['request_id']) | 
+        Q(requestcomment__request__id=eventDict['request_id'])
+    ).exclude(id=eventDict['commenter_id']).distinct()
+    affectedParticipantIds = []
+    for member in members:
+        affectedParticipantIds.append(member.id)
+    for id in affectedParticipantIds:
+        comments = []
+        duplicates = (Event.objects.all()
+                .filter(affected_participant_id = id)
+                .filter(event_type = eventType)
+                .filter( event_data = json.dumps({'request_id' : int(eventDict['request_id'])}) )
+                .filter(active = True)
+        )
+        if duplicates.count() > 0 and not duplicates[0].viewed:
+            comments = json.loads(duplicates[0].more_data)['comment_ids']
+        duplicates.delete()
+        comments.append(eventDict['comment_id'])
+        event = Event(
+            affected_participant_id = id,
+            event_type = eventType,
+            event_data = json.dumps( {'request_id' : int(eventDict['request_id'])} ),
+            more_data = json.dumps( {'comment_ids' : comments} ),
+            viewed = False,
+            active = True,
+        )
+        event.save()
+            
 
 def resetAlertCount(currentParticipant):
     events = Event.objects.all().filter(affected_participant=currentParticipant).filter(active=True)
@@ -82,6 +133,10 @@ def getAlerts(currentParticipant):
                 count += 1
         elif event.event_type == 'group invite' and getGroupInviteAlert(event):
             responses.append( getGroupInviteAlert(event) )
+            if event.viewed == False:
+                count += 1
+        elif event.event_type == 'request comment' and getRequestCommentAlert(event):
+            responses.append( getRequestCommentAlert(event) )
             if event.viewed == False:
                 count += 1
     return {
@@ -190,6 +245,62 @@ def getAddFriendAlert(event):
             'form' : form,
         } 
     return response
+
+def getRequestCommentAlert(event):
+    requestId = json.loads(event.event_data)['request_id']
+    commentIds = json.loads(event.more_data)['comment_ids']
+    request = Request.objects.get(pk=requestId)
+    comments = RequestComment.objects.all().filter(id__in=commentIds)
+    if comments.count() == 0:
+        event.delete()
+        return None
+    names = []
+    for i in range(0, comments.count()):
+        names.append(comments[i].member.participant.get_name())
+        if i == 0:
+            image = comments[i].member.participant.get_thumb()
+    names = list(set(names)) # remove duplicates
+    nameStr = ''
+    for i in range(0, len(names)):
+        if i == 0:
+            nameStr = comments[i].member.participant.get_name()
+            image = comments[i].member.participant.get_thumb()
+        elif i == comments.count() - 1:
+            nameStr = nameStr + ' and ' + comments[i].member.participant.get_name()
+        else:
+            nameStr = nameStr + ', ' + comments[i].member.participant.get_name()
+    requesterName = request.member.participant.get_name()
+    textStr = (nameStr 
+        + ' commented on <a href="' 
+        + reverse('requests:request', args=[requestId])
+        + '">'
+        + requesterName 
+        + '\'s post.</a>'
+    )
+    response = {
+        'id' : event.id,
+        'image' : image,
+        'alt' : 'my image',
+        'text' : textStr,
+        'viewed' : event.viewed,
+        'form' : '',
+    } 
+    return response
+            
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
         
         
     
