@@ -67,7 +67,8 @@
         "longitude": "-80.6457010",
         "latitude": "41.1113469",
         "participant": 1,
-        "zip_code": "44504"
+        "zip_code": "44504",
+        "last_emailed": "2015-09-10T19:38:34Z"
     },
     "model": "account.member",
     "pk": 1
@@ -88,7 +89,8 @@
         "longitude": "-84.5227130",
         "latitude": "39.1417250",
         "participant": 2,
-        "zip_code": "45220"
+        "zip_code": "45220",
+        "last_emailed": "2015-09-10T19:38:34Z"
     },
     "model": "account.member",
     "pk": 2

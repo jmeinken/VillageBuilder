@@ -10,6 +10,7 @@ from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
+from django.utils import timezone
 
 from villagebuilder.utils import console
 from .forms import *
@@ -334,7 +335,8 @@ def personal_info(request):
             id = participant.id,
             participant = participant,
             latitude = ifkeyset(request.session, 'latitude'),
-            longitude = ifkeyset(request.session, 'longitude'), 
+            longitude = ifkeyset(request.session, 'longitude'),
+            last_emailed = timezone.now()
         )
         personalInfoForm = PersonalInfoForm(request.POST, instance=member)
         if personalInfoForm.is_valid():

@@ -1,0 +1,40 @@
+{% extends "email/formatted_email_base.html" %}
+
+{% block content %}
+
+{% if requests.count > 0 %}
+	<h3>Recent Requests From Your Friends:</h3>
+	{% for request in requests %}
+		<div>
+			{{ request.member.participant.get_name }} - {{ request.date }}<br>
+			{{ request.body|linebreaks }}
+			<a href="https://villagebuilder.net{% url 'requests:request' request.id  %}">view request</a>
+		</div>
+	{% endfor %}
+{% endif %}
+
+{% if requestComments %}
+	<h3>Other Activity:</h3>
+	{% for comment in requestComments %}
+		<div>
+			{{ comment.html|safe }}
+		</div>
+	{% endfor %}
+{% endif %}
+
+{% if items.count > 0 %}
+	<h3>New Items Shared with You:</h3>
+	{% for item in items %}
+		<div>
+			{{ item.title }}<br>
+			sharef by {{ item.sharer.participant.get_name }}<br>
+			<a href="https://villagebuilder.net{% url 'sharing:item' item.id  %}">view item</a>
+		</div>
+	{% endfor %}
+{% endif %}
+
+{% endblock %}
+
+
+
+

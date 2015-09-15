@@ -1,0 +1,32 @@
+{% extends "email/plain_text_email_base.txt" %}
+
+{% block content %}
+{% if requests.count > 0 %}
+**Recent Requests From Your Friends
+{% for request in requests %}
+{{ request.member.participant.get_name }} - {{ request.date }}
+{{ request.body }}
+view request: https://villagebuilder.net{% url 'requests:request' request.id  %}
+
+{% endfor %}
+{% endif %}
+{% if requestComments %}
+**New Comments
+{% for comment in requestComments %}
+{{ comment.text|safe }}
+{% endfor %}
+{% endif %}
+
+{% if items.count > 0 %}
+**New Items Shared with You:
+{% for item in items %}
+{{ item.title }}
+shared by {{ item.sharer.participant.get_name }}
+view item: https://villagebuilder.net{% url 'sharing:item' item.id  %}
+{% endfor %}
+{% endif %}
+{% endblock %}
+
+
+
+
