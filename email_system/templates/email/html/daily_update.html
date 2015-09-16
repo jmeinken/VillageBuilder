@@ -6,7 +6,7 @@
 {% if requests.count > 0 %}
 	<h3>Recent Requests From Your Friends:</h3>
 	{% for request in requests %}
-		<div style="background-color:#C0C0C0;margin:5px;">
+		<div style="background-color:#C0C0C0;margin:5px;padding:5px;">
 			{{ request.member.participant.get_name }} - {{ request.date }}<br>
 			{{ request.body|linebreaks }}
 			<a href="https://villagebuilder.net{% url 'requests:request' request.id  %}">view this request</a>
@@ -17,7 +17,7 @@
 {% if requestComments %}
 	<h3>Other Activity:</h3>
 	{% for comment in requestComments %}
-		<div style="background-color:#C0C0C0;margin:5px;">
+		<div style="background-color:#C0C0C0;margin:5px;padding:5px;">
 			{{ comment.html|safe }}
 		</div>
 	{% endfor %}
@@ -26,8 +26,8 @@
 {% if items.count > 0 %}
 	<h3>New Items Shared with You:</h3>
 	{% for item in items %}
-		<div style="background-color:#C0C0C0;margin:5px;">
-			{{ item.title }}<br>
+		<div style="background-color:#C0C0C0;margin:5px;padding:5px;">
+			<strong>{{ item.title }}</strong><br>
 			shared by {{ item.sharer.participant.get_name }}<br>
 			<a href="https://villagebuilder.net{% url 'sharing:item' item.id  %}">view this item</a>
 		</div>
