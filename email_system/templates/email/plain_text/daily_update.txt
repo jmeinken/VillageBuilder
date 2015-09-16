@@ -1,6 +1,7 @@
 {% extends "email/plain_text_email_base.txt" %}
 
 {% block content %}
+Here is what's been happening since you last visited VillageBuilder.
 {% if requests.count > 0 %}
 **Recent Requests From Your Friends
 {% for request in requests %}

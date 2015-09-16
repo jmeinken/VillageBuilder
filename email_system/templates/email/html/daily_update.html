@@ -1,14 +1,15 @@
 {% extends "email/formatted_email_base.html" %}
 
 {% block content %}
+<p>Here is what's been happening since you last visited VillageBuilder.</p>
 
 {% if requests.count > 0 %}
 	<h3>Recent Requests From Your Friends:</h3>
 	{% for request in requests %}
-		<div>
+		<div style="background-color:#C0C0C0;margin:5px;>
 			{{ request.member.participant.get_name }} - {{ request.date }}<br>
 			{{ request.body|linebreaks }}
-			<a href="https://villagebuilder.net{% url 'requests:request' request.id  %}">view request</a>
+			<a href="https://villagebuilder.net{% url 'requests:request' request.id  %}">view this request</a>
 		</div>
 	{% endfor %}
 {% endif %}
@@ -16,7 +17,7 @@
 {% if requestComments %}
 	<h3>Other Activity:</h3>
 	{% for comment in requestComments %}
-		<div>
+		<div style="background-color:#C0C0C0;margin:5px;>
 			{{ comment.html|safe }}
 		</div>
 	{% endfor %}
@@ -25,10 +26,10 @@
 {% if items.count > 0 %}
 	<h3>New Items Shared with You:</h3>
 	{% for item in items %}
-		<div>
+		<div style="background-color:#C0C0C0;margin:5px;>
 			{{ item.title }}<br>
-			sharef by {{ item.sharer.participant.get_name }}<br>
-			<a href="https://villagebuilder.net{% url 'sharing:item' item.id  %}">view item</a>
+			shared by {{ item.sharer.participant.get_name }}<br>
+			<a href="https://villagebuilder.net{% url 'sharing:item' item.id  %}">view this item</a>
 		</div>
 	{% endfor %}
 {% endif %}
