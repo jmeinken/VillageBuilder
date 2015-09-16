@@ -93,7 +93,8 @@ def getItemsForParticipant(participant):
             ( Q(share_type='share_list') & Q(sharelist__sharelistsharee__sharee_id__in=partGroupIds) ) |
             ( 
                 ( Q(share_type='all_friends') | Q(share_type='all_friends_groups') ) &
-                Q(sharer__friendship_set__friend=participant.member)
+                Q(sharer__friendship_set__friend=participant.member) & 
+                Q(sharer__reverse_friendship_set__member=participant.member)
             ) |
             ( Q(share_type='all_friends_groups') & Q(sharer__groupmembership__group_id__in=groupIds) ) 
         ).exclude(sharer=participant.member).distinct().order_by('-share_date')
