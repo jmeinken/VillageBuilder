@@ -3,6 +3,14 @@
 {% block content %}
 <p>Here is what's been happening since you last visited VillageBuilder.</p>
 
+{% if requestComments %}
+	{% for comment in requestComments %}
+		<div style="background-color:#C0C0C0;margin:5px;padding:5px;">
+			{{ comment.html|safe }}
+		</div>
+	{% endfor %}
+{% endif %}
+
 {% if requests.count > 0 %}
 	<h3>Recent Requests From Your Friends:</h3>
 	{% for request in requests %}
@@ -10,15 +18,6 @@
 			{{ request.member.participant.get_name }} - {{ request.date }}<br>
 			{{ request.body|linebreaks }}
 			<a href="https://villagebuilder.net{% url 'requests:request' request.id  %}">view this request</a>
-		</div>
-	{% endfor %}
-{% endif %}
-
-{% if requestComments %}
-	<h3>Other Activity:</h3>
-	{% for comment in requestComments %}
-		<div style="background-color:#C0C0C0;margin:5px;padding:5px;">
-			{{ comment.html|safe }}
 		</div>
 	{% endfor %}
 {% endif %}
