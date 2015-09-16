@@ -107,50 +107,50 @@ class TestLoggedInViews(TestCase):
         
     def test_login(self):
         response = self.client.post(reverse('login'), {
-           'username' : 'test@test.com',
+           'username' : 'thebellsofohio@hotmail.com',
            'password' : 'qwerqwer',                                            
         }, follow=True)
         self.assertRedirects(response, reverse('home'))
         
     def test_failed_login(self):
         response = self.client.post(reverse('login'), {
-           'username' : 'test@test.com',
+           'username' : 'thebellsofohio@hotmail.com',
            'password' : 'qwerqwerqwer',                                            
         })
         assert response.status_code == 200      # doesn't redirect
         
     def test_account_view(self):
-        self.client.login(username='test@test.com', password='qwerqwer')
+        self.client.login(username='thebellsofohio@hotmail.com', password='qwerqwer')
         response = self.client.get( reverse('account:view', args=[1]) )
         assert response.status_code == 200
         
     def test_sharing_items_view(self):
-        self.client.login(username='test@test.com', password='qwerqwer')
+        self.client.login(username='thebellsofohio@hotmail.com', password='qwerqwer')
         response = self.client.get( reverse('sharing:items') )
         assert response.status_code == 200
         
     def test_sharing_my_items_view(self):
-        self.client.login(username='test@test.com', password='qwerqwer')
+        self.client.login(username='thebellsofohio@hotmail.com', password='qwerqwer')
         response = self.client.get( reverse('sharing:my_items') )
         assert response.status_code == 200
         
     def test_sharing_share_item_view(self):
-        self.client.login(username='test@test.com', password='qwerqwer')
+        self.client.login(username='thebellsofohio@hotmail.com', password='qwerqwer')
         response = self.client.get( reverse('sharing:share_item') )
         assert response.status_code == 200
         
     def test_relationships_relationships_view(self):
-        self.client.login(username='test@test.com', password='qwerqwer')
+        self.client.login(username='thebellsofohio@hotmail.com', password='qwerqwer')
         response = self.client.get( reverse('relationships:relationships') )
         assert response.status_code == 200
         
     def test_pm_messages_view(self):
-        self.client.login(username='test@test.com', password='qwerqwer')
+        self.client.login(username='thebellsofohio@hotmail.com', password='qwerqwer')
         response = self.client.get( reverse('pm:messages', args=[0]) )
         assert response.status_code == 200
         
     def test_account_account_view(self):
-        self.client.login(username='test@test.com', password='qwerqwer')
+        self.client.login(username='thebellsofohio@hotmail.com', password='qwerqwer')
         response = self.client.get( reverse('account:account') )
         assert response.status_code == 200
 
