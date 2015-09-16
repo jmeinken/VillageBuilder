@@ -1,0 +1,1070 @@
+[
+{
+    "fields": {
+        "model": "logentry",
+        "app_label": "admin"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 1
+},
+{
+    "fields": {
+        "model": "permission",
+        "app_label": "auth"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 2
+},
+{
+    "fields": {
+        "model": "group",
+        "app_label": "auth"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 3
+},
+{
+    "fields": {
+        "model": "user",
+        "app_label": "auth"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 4
+},
+{
+    "fields": {
+        "model": "contenttype",
+        "app_label": "contenttypes"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 5
+},
+{
+    "fields": {
+        "model": "session",
+        "app_label": "sessions"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 6
+},
+{
+    "fields": {
+        "model": "participant",
+        "app_label": "account"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 7
+},
+{
+    "fields": {
+        "model": "member",
+        "app_label": "account"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 8
+},
+{
+    "fields": {
+        "model": "guest",
+        "app_label": "account"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 9
+},
+{
+    "fields": {
+        "model": "group",
+        "app_label": "account"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 10
+},
+{
+    "fields": {
+        "model": "friendship",
+        "app_label": "relationships"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 11
+},
+{
+    "fields": {
+        "model": "guestfriendship",
+        "app_label": "relationships"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 12
+},
+{
+    "fields": {
+        "model": "groupmembership",
+        "app_label": "relationships"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 13
+},
+{
+    "fields": {
+        "model": "event",
+        "app_label": "alerts"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 14
+},
+{
+    "fields": {
+        "model": "request",
+        "app_label": "requests"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 15
+},
+{
+    "fields": {
+        "model": "requestcomment",
+        "app_label": "requests"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 16
+},
+{
+    "fields": {
+        "model": "message",
+        "app_label": "pm"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 17
+},
+{
+    "fields": {
+        "model": "item",
+        "app_label": "sharing"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 18
+},
+{
+    "fields": {
+        "model": "itemkeyword",
+        "app_label": "sharing"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 19
+},
+{
+    "fields": {
+        "model": "itemsharee",
+        "app_label": "sharing"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 20
+},
+{
+    "fields": {
+        "model": "sharelist",
+        "app_label": "sharing"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 21
+},
+{
+    "fields": {
+        "model": "sharelistsharee",
+        "app_label": "sharing"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 22
+},
+{
+    "fields": {
+        "expire_date": "2015-09-30T01:45:18Z",
+        "session_data": "ZGJjY2M2NmRkNTc1MDg1OTJiNjFlZTNlMGNhNzE4MzkxMWJiMmQzNTp7Il9hdXRoX3VzZXJfaGFzaCI6IjkyY2UxMjA5NTAxMzllY2Q0NTQ5MGYxN2RkZTM0MzcyN2FjOWJhYzciLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0="
+    },
+    "model": "sessions.session",
+    "pk": "1thavjqlk3ke7sxu1kg2g4oiks253z98"
+},
+{
+    "fields": {
+        "city": "Youngstown",
+        "code": null,
+        "neighborhood": "Wick Park",
+        "share_street": true,
+        "share_email": true,
+        "email_messages": true,
+        "image": "",
+        "email_friend_requests": true,
+        "full_address": "204 Madison Ave, Youngstown, OH 44504, USA",
+        "state": "OH",
+        "street": "Madison Ave",
+        "is_admin": false,
+        "longitude": "-80.6457010",
+        "last_emailed": "2015-08-10T19:38:34Z",
+        "latitude": "41.1113469",
+        "participant": 1,
+        "thumb": "",
+        "zip_code": "44504"
+    },
+    "model": "account.member",
+    "pk": 1
+},
+{
+    "fields": {
+        "city": "Cincinnati",
+        "code": null,
+        "neighborhood": "Clifton",
+        "share_street": false,
+        "share_email": false,
+        "email_messages": true,
+        "image": "",
+        "email_friend_requests": true,
+        "full_address": "371 Terrace Ave, Cincinnati, OH 45220, USA",
+        "state": "OH",
+        "street": "Terrace Ave",
+        "is_admin": false,
+        "longitude": "-84.5227130",
+        "last_emailed": "2015-08-10T19:38:34Z",
+        "latitude": "39.1417250",
+        "participant": 2,
+        "thumb": "",
+        "zip_code": "45220"
+    },
+    "model": "account.member",
+    "pk": 2
+},
+{
+    "fields": {
+        "member": 2,
+        "distance": 450085,
+        "distance_text": "280 mi",
+        "friend": 1,
+        "created": "2015-08-16T01:42:11Z"
+    },
+    "model": "relationships.friendship",
+    "pk": 1
+},
+{
+    "fields": {
+        "member": 1,
+        "distance": 447132,
+        "distance_text": "278 mi",
+        "friend": 2,
+        "created": "2015-08-16T01:42:46Z"
+    },
+    "model": "relationships.friendship",
+    "pk": 2
+},
+{
+    "fields": {
+        "event_type": "add friend",
+        "created": "2015-08-16T01:42:12Z",
+        "more_data": null,
+        "active": true,
+        "affected_participant": 1,
+        "event_data": "{\"friend_id\": \"1\", \"member_id\": 2}",
+        "viewed": false
+    },
+    "model": "alerts.event",
+    "pk": 1
+},
+{
+    "fields": {
+        "event_type": "add friend",
+        "created": "2015-08-16T01:42:47Z",
+        "more_data": null,
+        "active": true,
+        "affected_participant": 2,
+        "event_data": "{\"friend_id\": \"2\", \"member_id\": 1}",
+        "viewed": false
+    },
+    "model": "alerts.event",
+    "pk": 2
+},
+{
+    "fields": {
+        "event_type": "request comment",
+        "created": "2015-08-19T01:46:15Z",
+        "more_data": "{\"comment_ids\": [2]}",
+        "active": true,
+        "affected_participant": 1,
+        "event_data": "{\"request_id\": 1}",
+        "viewed": false
+    },
+    "model": "alerts.event",
+    "pk": 3
+},
+{
+    "fields": {
+        "member": 1,
+        "date": "2015-08-18T01:43:27Z",
+        "body": "Here is a request by Ferdinand",
+        "complete": false
+    },
+    "model": "requests.request",
+    "pk": 1
+},
+{
+    "fields": {
+        "member": 1,
+        "date": "2015-08-19T01:43:47Z",
+        "body": "Here is a reply by Ferdinand on Ferdinand's request.",
+        "request": 1
+    },
+    "model": "requests.requestcomment",
+    "pk": 1
+},
+{
+    "fields": {
+        "member": 2,
+        "date": "2015-08-19T01:46:15Z",
+        "body": "Here is a reply by John to Ferdinand's request.",
+        "request": 1
+    },
+    "model": "requests.requestcomment",
+    "pk": 2
+},
+{
+    "fields": {
+        "body": "Here is a message from Ferdinand to John.",
+        "recipient": 2,
+        "sender": 1,
+        "viewed": true,
+        "sent_on": "2015-08-16T01:44:42Z"
+    },
+    "model": "pm.message",
+    "pk": 1
+},
+{
+    "fields": {
+        "body": "Here is a second message from Ferdinand to John.",
+        "recipient": 2,
+        "sender": 1,
+        "viewed": true,
+        "sent_on": "2015-08-16T01:45:03Z"
+    },
+    "model": "pm.message",
+    "pk": 2
+},
+{
+    "fields": {
+        "body": "Here is a reply from John to Ferdinand's message.",
+        "recipient": 1,
+        "sender": 2,
+        "viewed": false,
+        "sent_on": "2015-08-16T01:45:44Z"
+    },
+    "model": "pm.message",
+    "pk": 3
+},
+{
+    "fields": {
+        "description": "this item is sporty tools",
+        "share_type": "all_friends",
+        "title": "John's Shared Item",
+        "to_borrow": true,
+        "image": "",
+        "sharer": 2,
+        "share_date": "2015-08-16T01:47:07Z",
+        "sharelist": null,
+        "to_keep": false,
+        "type": "stuff",
+        "thumb": ""
+    },
+    "model": "sharing.item",
+    "pk": 1
+},
+{
+    "fields": {
+        "description": "this item is garden space ",
+        "share_type": "custom",
+        "title": "John's other shared item (custom share with Ferdinand)",
+        "to_borrow": true,
+        "image": "",
+        "sharer": 2,
+        "share_date": "2015-08-16T01:47:56Z",
+        "sharelist": null,
+        "to_keep": false,
+        "type": "space",
+        "thumb": ""
+    },
+    "model": "sharing.item",
+    "pk": 2
+},
+{
+    "fields": {
+        "item": 1,
+        "keyword": "tools"
+    },
+    "model": "sharing.itemkeyword",
+    "pk": 1
+},
+{
+    "fields": {
+        "item": 1,
+        "keyword": "sports/games"
+    },
+    "model": "sharing.itemkeyword",
+    "pk": 2
+},
+{
+    "fields": {
+        "item": 2,
+        "keyword": "garden space"
+    },
+    "model": "sharing.itemkeyword",
+    "pk": 3
+},
+{
+    "fields": {
+        "sharee": 1,
+        "item": 2
+    },
+    "model": "sharing.itemsharee",
+    "pk": 1
+},
+{
+    "fields": {
+        "codename": "add_logentry",
+        "name": "Can add log entry",
+        "content_type": 1
+    },
+    "model": "auth.permission",
+    "pk": 1
+},
+{
+    "fields": {
+        "codename": "change_logentry",
+        "name": "Can change log entry",
+        "content_type": 1
+    },
+    "model": "auth.permission",
+    "pk": 2
+},
+{
+    "fields": {
+        "codename": "delete_logentry",
+        "name": "Can delete log entry",
+        "content_type": 1
+    },
+    "model": "auth.permission",
+    "pk": 3
+},
+{
+    "fields": {
+        "codename": "add_permission",
+        "name": "Can add permission",
+        "content_type": 2
+    },
+    "model": "auth.permission",
+    "pk": 4
+},
+{
+    "fields": {
+        "codename": "change_permission",
+        "name": "Can change permission",
+        "content_type": 2
+    },
+    "model": "auth.permission",
+    "pk": 5
+},
+{
+    "fields": {
+        "codename": "delete_permission",
+        "name": "Can delete permission",
+        "content_type": 2
+    },
+    "model": "auth.permission",
+    "pk": 6
+},
+{
+    "fields": {
+        "codename": "add_group",
+        "name": "Can add group",
+        "content_type": 3
+    },
+    "model": "auth.permission",
+    "pk": 7
+},
+{
+    "fields": {
+        "codename": "change_group",
+        "name": "Can change group",
+        "content_type": 3
+    },
+    "model": "auth.permission",
+    "pk": 8
+},
+{
+    "fields": {
+        "codename": "delete_group",
+        "name": "Can delete group",
+        "content_type": 3
+    },
+    "model": "auth.permission",
+    "pk": 9
+},
+{
+    "fields": {
+        "codename": "add_user",
+        "name": "Can add user",
+        "content_type": 4
+    },
+    "model": "auth.permission",
+    "pk": 10
+},
+{
+    "fields": {
+        "codename": "change_user",
+        "name": "Can change user",
+        "content_type": 4
+    },
+    "model": "auth.permission",
+    "pk": 11
+},
+{
+    "fields": {
+        "codename": "delete_user",
+        "name": "Can delete user",
+        "content_type": 4
+    },
+    "model": "auth.permission",
+    "pk": 12
+},
+{
+    "fields": {
+        "codename": "add_contenttype",
+        "name": "Can add content type",
+        "content_type": 5
+    },
+    "model": "auth.permission",
+    "pk": 13
+},
+{
+    "fields": {
+        "codename": "change_contenttype",
+        "name": "Can change content type",
+        "content_type": 5
+    },
+    "model": "auth.permission",
+    "pk": 14
+},
+{
+    "fields": {
+        "codename": "delete_contenttype",
+        "name": "Can delete content type",
+        "content_type": 5
+    },
+    "model": "auth.permission",
+    "pk": 15
+},
+{
+    "fields": {
+        "codename": "add_session",
+        "name": "Can add session",
+        "content_type": 6
+    },
+    "model": "auth.permission",
+    "pk": 16
+},
+{
+    "fields": {
+        "codename": "change_session",
+        "name": "Can change session",
+        "content_type": 6
+    },
+    "model": "auth.permission",
+    "pk": 17
+},
+{
+    "fields": {
+        "codename": "delete_session",
+        "name": "Can delete session",
+        "content_type": 6
+    },
+    "model": "auth.permission",
+    "pk": 18
+},
+{
+    "fields": {
+        "codename": "add_participant",
+        "name": "Can add participant",
+        "content_type": 7
+    },
+    "model": "auth.permission",
+    "pk": 19
+},
+{
+    "fields": {
+        "codename": "change_participant",
+        "name": "Can change participant",
+        "content_type": 7
+    },
+    "model": "auth.permission",
+    "pk": 20
+},
+{
+    "fields": {
+        "codename": "delete_participant",
+        "name": "Can delete participant",
+        "content_type": 7
+    },
+    "model": "auth.permission",
+    "pk": 21
+},
+{
+    "fields": {
+        "codename": "add_member",
+        "name": "Can add member",
+        "content_type": 8
+    },
+    "model": "auth.permission",
+    "pk": 22
+},
+{
+    "fields": {
+        "codename": "change_member",
+        "name": "Can change member",
+        "content_type": 8
+    },
+    "model": "auth.permission",
+    "pk": 23
+},
+{
+    "fields": {
+        "codename": "delete_member",
+        "name": "Can delete member",
+        "content_type": 8
+    },
+    "model": "auth.permission",
+    "pk": 24
+},
+{
+    "fields": {
+        "codename": "add_guest",
+        "name": "Can add guest",
+        "content_type": 9
+    },
+    "model": "auth.permission",
+    "pk": 25
+},
+{
+    "fields": {
+        "codename": "change_guest",
+        "name": "Can change guest",
+        "content_type": 9
+    },
+    "model": "auth.permission",
+    "pk": 26
+},
+{
+    "fields": {
+        "codename": "delete_guest",
+        "name": "Can delete guest",
+        "content_type": 9
+    },
+    "model": "auth.permission",
+    "pk": 27
+},
+{
+    "fields": {
+        "codename": "add_group",
+        "name": "Can add group",
+        "content_type": 10
+    },
+    "model": "auth.permission",
+    "pk": 28
+},
+{
+    "fields": {
+        "codename": "change_group",
+        "name": "Can change group",
+        "content_type": 10
+    },
+    "model": "auth.permission",
+    "pk": 29
+},
+{
+    "fields": {
+        "codename": "delete_group",
+        "name": "Can delete group",
+        "content_type": 10
+    },
+    "model": "auth.permission",
+    "pk": 30
+},
+{
+    "fields": {
+        "codename": "add_friendship",
+        "name": "Can add friendship",
+        "content_type": 11
+    },
+    "model": "auth.permission",
+    "pk": 31
+},
+{
+    "fields": {
+        "codename": "change_friendship",
+        "name": "Can change friendship",
+        "content_type": 11
+    },
+    "model": "auth.permission",
+    "pk": 32
+},
+{
+    "fields": {
+        "codename": "delete_friendship",
+        "name": "Can delete friendship",
+        "content_type": 11
+    },
+    "model": "auth.permission",
+    "pk": 33
+},
+{
+    "fields": {
+        "codename": "add_guestfriendship",
+        "name": "Can add guest friendship",
+        "content_type": 12
+    },
+    "model": "auth.permission",
+    "pk": 34
+},
+{
+    "fields": {
+        "codename": "change_guestfriendship",
+        "name": "Can change guest friendship",
+        "content_type": 12
+    },
+    "model": "auth.permission",
+    "pk": 35
+},
+{
+    "fields": {
+        "codename": "delete_guestfriendship",
+        "name": "Can delete guest friendship",
+        "content_type": 12
+    },
+    "model": "auth.permission",
+    "pk": 36
+},
+{
+    "fields": {
+        "codename": "add_groupmembership",
+        "name": "Can add group membership",
+        "content_type": 13
+    },
+    "model": "auth.permission",
+    "pk": 37
+},
+{
+    "fields": {
+        "codename": "change_groupmembership",
+        "name": "Can change group membership",
+        "content_type": 13
+    },
+    "model": "auth.permission",
+    "pk": 38
+},
+{
+    "fields": {
+        "codename": "delete_groupmembership",
+        "name": "Can delete group membership",
+        "content_type": 13
+    },
+    "model": "auth.permission",
+    "pk": 39
+},
+{
+    "fields": {
+        "codename": "add_event",
+        "name": "Can add event",
+        "content_type": 14
+    },
+    "model": "auth.permission",
+    "pk": 40
+},
+{
+    "fields": {
+        "codename": "change_event",
+        "name": "Can change event",
+        "content_type": 14
+    },
+    "model": "auth.permission",
+    "pk": 41
+},
+{
+    "fields": {
+        "codename": "delete_event",
+        "name": "Can delete event",
+        "content_type": 14
+    },
+    "model": "auth.permission",
+    "pk": 42
+},
+{
+    "fields": {
+        "codename": "add_request",
+        "name": "Can add request",
+        "content_type": 15
+    },
+    "model": "auth.permission",
+    "pk": 43
+},
+{
+    "fields": {
+        "codename": "change_request",
+        "name": "Can change request",
+        "content_type": 15
+    },
+    "model": "auth.permission",
+    "pk": 44
+},
+{
+    "fields": {
+        "codename": "delete_request",
+        "name": "Can delete request",
+        "content_type": 15
+    },
+    "model": "auth.permission",
+    "pk": 45
+},
+{
+    "fields": {
+        "codename": "add_requestcomment",
+        "name": "Can add request comment",
+        "content_type": 16
+    },
+    "model": "auth.permission",
+    "pk": 46
+},
+{
+    "fields": {
+        "codename": "change_requestcomment",
+        "name": "Can change request comment",
+        "content_type": 16
+    },
+    "model": "auth.permission",
+    "pk": 47
+},
+{
+    "fields": {
+        "codename": "delete_requestcomment",
+        "name": "Can delete request comment",
+        "content_type": 16
+    },
+    "model": "auth.permission",
+    "pk": 48
+},
+{
+    "fields": {
+        "codename": "add_message",
+        "name": "Can add message",
+        "content_type": 17
+    },
+    "model": "auth.permission",
+    "pk": 49
+},
+{
+    "fields": {
+        "codename": "change_message",
+        "name": "Can change message",
+        "content_type": 17
+    },
+    "model": "auth.permission",
+    "pk": 50
+},
+{
+    "fields": {
+        "codename": "delete_message",
+        "name": "Can delete message",
+        "content_type": 17
+    },
+    "model": "auth.permission",
+    "pk": 51
+},
+{
+    "fields": {
+        "codename": "add_item",
+        "name": "Can add item",
+        "content_type": 18
+    },
+    "model": "auth.permission",
+    "pk": 52
+},
+{
+    "fields": {
+        "codename": "change_item",
+        "name": "Can change item",
+        "content_type": 18
+    },
+    "model": "auth.permission",
+    "pk": 53
+},
+{
+    "fields": {
+        "codename": "delete_item",
+        "name": "Can delete item",
+        "content_type": 18
+    },
+    "model": "auth.permission",
+    "pk": 54
+},
+{
+    "fields": {
+        "codename": "add_itemkeyword",
+        "name": "Can add item keyword",
+        "content_type": 19
+    },
+    "model": "auth.permission",
+    "pk": 55
+},
+{
+    "fields": {
+        "codename": "change_itemkeyword",
+        "name": "Can change item keyword",
+        "content_type": 19
+    },
+    "model": "auth.permission",
+    "pk": 56
+},
+{
+    "fields": {
+        "codename": "delete_itemkeyword",
+        "name": "Can delete item keyword",
+        "content_type": 19
+    },
+    "model": "auth.permission",
+    "pk": 57
+},
+{
+    "fields": {
+        "codename": "add_itemsharee",
+        "name": "Can add item sharee",
+        "content_type": 20
+    },
+    "model": "auth.permission",
+    "pk": 58
+},
+{
+    "fields": {
+        "codename": "change_itemsharee",
+        "name": "Can change item sharee",
+        "content_type": 20
+    },
+    "model": "auth.permission",
+    "pk": 59
+},
+{
+    "fields": {
+        "codename": "delete_itemsharee",
+        "name": "Can delete item sharee",
+        "content_type": 20
+    },
+    "model": "auth.permission",
+    "pk": 60
+},
+{
+    "fields": {
+        "codename": "add_sharelist",
+        "name": "Can add share list",
+        "content_type": 21
+    },
+    "model": "auth.permission",
+    "pk": 61
+},
+{
+    "fields": {
+        "codename": "change_sharelist",
+        "name": "Can change share list",
+        "content_type": 21
+    },
+    "model": "auth.permission",
+    "pk": 62
+},
+{
+    "fields": {
+        "codename": "delete_sharelist",
+        "name": "Can delete share list",
+        "content_type": 21
+    },
+    "model": "auth.permission",
+    "pk": 63
+},
+{
+    "fields": {
+        "codename": "add_sharelistsharee",
+        "name": "Can add share list sharee",
+        "content_type": 22
+    },
+    "model": "auth.permission",
+    "pk": 64
+},
+{
+    "fields": {
+        "codename": "change_sharelistsharee",
+        "name": "Can change share list sharee",
+        "content_type": 22
+    },
+    "model": "auth.permission",
+    "pk": 65
+},
+{
+    "fields": {
+        "codename": "delete_sharelistsharee",
+        "name": "Can delete share list sharee",
+        "content_type": 22
+    },
+    "model": "auth.permission",
+    "pk": 66
+},
+{
+    "fields": {
+        "username": "admin@villagebuilder.net",
+        "first_name": "Ferdinand",
+        "last_name": "Meinken",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2015-08-16T01:42:40Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$oFX7LDLfPNte$6joxDH0+HNLn4SIk7c9duWx8x+RtlNLOjEKS6n/iDH8=",
+        "email": "test@test.com",
+        "date_joined": "2015-08-10T19:37:49Z"
+    },
+    "model": "auth.user",
+    "pk": 1
+},
+{
+    "fields": {
+        "username": "thebellsofohio@hotmail.com",
+        "first_name": "John",
+        "last_name": "Meinken",
+        "is_active": true,
+        "is_superuser": false,
+        "is_staff": false,
+        "last_login": "2015-08-16T01:45:18Z",
+        "groups": [],
+        "user_permissions": [],
+        "password": "pbkdf2_sha256$20000$fUGOxItQAjU6$bxeD1NJ3tzTUVTbKIclzF78AyPs1crVIV3mgeklyQTM=",
+        "email": "test2@test.com",
+        "date_joined": "2015-08-10T19:38:34Z"
+    },
+    "model": "auth.user",
+    "pk": 2
+},
+{
+    "fields": {
+        "type": "member",
+        "user": 1
+    },
+    "model": "account.participant",
+    "pk": 1
+},
+{
+    "fields": {
+        "type": "member",
+        "user": 2
+    },
+    "model": "account.participant",
+    "pk": 2
+}
+]

@@ -153,7 +153,39 @@ class TestLoggedInViews(TestCase):
         self.client.login(username='test@test.com', password='qwerqwer')
         response = self.client.get( reverse('account:account') )
         assert response.status_code == 200
-        
-from django.test import TestCase
 
-# Create your tests here.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

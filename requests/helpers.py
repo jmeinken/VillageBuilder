@@ -30,7 +30,11 @@ def getRequestList(currentParticipant, start=0, end=10):
     
 def getRequestsOfFriends(currentParticipant, sinceDate):
     friends = getReciprocatedFriends(currentParticipant)
-    requests = Request.objects.all().filter(date__gte=sinceDate).filter(member__in=friends).order_by('date')
+    print "friends"
+    print friends.count()
+    print sinceDate
+    requests = Request.objects.all().filter(date__gte=sinceDate).filter(member__in=friends)
+    print requests.count()
     return requests
 
 def getRelevantRequestComments(participant, sinceDate):
