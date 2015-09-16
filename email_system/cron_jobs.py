@@ -76,6 +76,9 @@ def sendDailyUpdates(lastLoginInterval=None, lastEmailedInterval=None):
             'info@villagebuilder.net', 
             [email], 
         )
+        member = participant.member
+        member.last_emailed = timezone.now()
+        member.save()
         
         
             
