@@ -54,6 +54,9 @@ from sharing.helpers import *
 
 from .forms import RequestResetPasswordForm, ResetPasswordForm
 
+def facebook_test(request):
+    context = {}
+    return render(request, 'core/facebook_test.html', context)
 
 @login_required
 def home(request):
