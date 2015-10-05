@@ -1,4 +1,5 @@
 import json
+import threading
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -38,9 +39,11 @@ def add_friend(request):
         friendship.save()
         relationship = getRelationship(currentParticipant, friend)
         if relationship == RelationshipTypes.FRIENDS:
-            email_friend_confirmation(request, friendship)
+            t = threading.Thread(target=email_friend_confirmation, args=(request, friendship))
+            t.start()
         else:
-            email_friend_request(request, friendship)
+            t = threading.Thread(target=email_friend_request, args=(request, friendship))
+            t.start()
         #register event
         eventDict = {
             'member_id' : currentParticipant.id,

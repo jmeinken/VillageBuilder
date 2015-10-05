@@ -1,4 +1,5 @@
 import json
+import threading
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -54,7 +55,8 @@ def messages(request, participantId):
             message = newMessageForm.save(commit=False)
             message.sender = currentParticipant
             message.save()
-            email_new_pm(request, message)
+            t = threading.Thread(target=email_new_pm, args=(request, message,))
+            t.start()
             contrib.messages.success(request, "Message sent to " + message.recipient.get_name() + '.')
             return redirect(reverse("pm:messages", args=[message.recipient.id]))
     participants = getParticipantsWithRecentMessages(currentParticipant)
