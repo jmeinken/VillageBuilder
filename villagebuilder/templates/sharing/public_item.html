@@ -1,0 +1,102 @@
+{% extends "core/bases/logged_out_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+
+<div id="top-section">
+	<h2 id="top-title">Shared Item</h2>
+</div>
+	
+	<div class="row">
+    	<div class="col-sm-7">
+    	    <img src="{{ item.get_image }}" alt="" width="250" height="250" 
+    	            style="float:left;margin-right:10px;">
+			<h1>{{ item.title }}</h1>
+			<p>Shared on {{ item.share_date|date:"M d, Y" }}</p>
+			{% if item.type == 'stuff' %}
+				{% if item.to_borrow %}
+				    <p class="label label-default">Avaliable to borrow</p>
+				{% endif %}
+				{% if item.to_keep %}
+				    <p class="label label-default">Avaliable to keep</p>
+				{% endif %}
+			{% endif %}
+			<br style="clear:both;">
+			<hr>
+			<div class="text-info" style="font-size:1.1em;">
+				{{ item.description|urlize|linebreaksbr }}
+			</div>
+			<hr>
+			<p><strong>Item type:</strong> <span class="label label-primary">{{ item.type }}</span></p>
+			<p>
+				<strong>Item categories:</strong>
+				{% for itemKeyword in item.itemkeyword_set.all %}
+				    <span class="label label-info">{{ itemKeyword.keyword }}</span>
+				{% endfor %}
+			</p>
+		</div>
+		<div class="col-sm-4 well">
+		    {% if current.member.id != sharer.id %}
+				<h4>Shared by</h4>
+				{% with participant=sharer %}
+				    {% include 'core/blocks/participantgroup.html' %}
+				{% endwith %}
+				<br>
+				<h4>Contact</h4>
+				<dl class="dl dl-3">
+					{% if sharer.email  %}
+					   <dt>Email:</dt>
+					   <dd>{{ sharer.email }}</dd>
+					{% endif %}
+					{% if sharer.full_address  %}
+					   <dt>Full Address:</dt>
+					   <dd>{{ sharer.full_address }}</dd>
+					{% endif %}
+				</dl><br>
+				<a class="btn btn-primary" 
+				        href="{% url 'pm:messages' sharer.id %}?msg=%5BRe%3A%20Item%20-%20{{ item.title|urlencode:'' }}]%0A{{ request.build_absolute_uri|urlencode:'' }}%0A%0A">                          
+				    Request this item
+				    <i class="fa fa-paper-plane-o"></i>
+				</a>
+			{% else %}
+				<div style="float:right">
+					<a href="{% url 'sharing:edit_item' item.id %}" class="btn btn-primary">
+					    Edit Item <i class="fa fa-pencil"></i>
+					</a>
+				</div>
+				<h4>Shared by you</h4>
+				<hr style="clear:both;">
+				<h4>Shared with</h4>
+				{% if item.share_type == 'all_friends' %}
+				    all friends
+				{% elif item.share_type == 'all_friends_groups' %}
+				    all friends and all groups
+				{% elif item.share_type == 'custom' %}
+				    Custom list:
+				    <div style="height:300px;overflow-y:auto;">
+					    {% for itemSharee in item.itemsharee_set.all %}
+					        {% with participant=itemSharee.sharee %}
+					            {% include 'core/blocks/participantgroup_fromobjects.html' %}
+					        {% endwith %}
+					    {% endfor %}
+					</div>
+				{% elif item.share_type == 'share_list' %}
+					{{ item.sharelist.name }}
+					<div style="height:300px;overflow-y:auto;">
+					    {% for shareListSharee in item.sharelist.sharelistsharee_set.all %}
+		                    {% with participant=shareListSharee.sharee %}
+		                        {% include "core/blocks/participantgroup_fromobjects.html" %}
+		                    {% endwith %}
+		                {% endfor %}
+		            </div>
+				{% endif %}	
+			{% endif %}
+		</div>
+	</div>
+
+{% endblock %}	
+
+
+
+

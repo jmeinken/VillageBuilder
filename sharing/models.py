@@ -66,6 +66,9 @@ class Item(models.Model):
     thumb = models.CharField(max_length=30, blank=True, null=True)
     to_borrow = models.BooleanField(default=True, db_index=True)
     to_keep = models.BooleanField(default=False, db_index=True)
+    public = models.BooleanField(default=False, db_index=True)
+    facebook_date = models.DateTimeField(db_index=True, blank=True, null=True)
+    code = models.CharField(max_length=60, null=True, blank=True, db_index=True)
     # category = models.ForeignKey("Category", on_delete=models.CASCADE)
     sharelist = models.ForeignKey("ShareList", on_delete=models.CASCADE, null=True, blank=True)
     

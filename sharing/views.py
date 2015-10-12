@@ -242,6 +242,33 @@ def item(request, itemId):
     }
     return render(request, 'sharing/item.html', context)
 
+def public_item(request, itemCode):
+    # if logged in and item is shared with current participant, should forward to 'item'
+    if len(string) != 60:
+        raise Http404("Item not available")
+    item = Item.objects.get(code=itemCode)
+    if not item or not item.public:
+        raise Http404("Item not found")
+    context = {
+         'item' : item,      
+         'sharer' : getParticipant(item.sharer.id),
+    }
+    return render(request, 'sharing/item.html', context)
+
+@login_required
+def make_item_public(request):
+    if request.method == "POST":
+        itemId = request.POST.get('item_id')
+        # don't let someone make an item public that doesn't belong to them
+        currentParticipant = Participant.objects.get(user=request.user, type='member')
+        if not item in getItemsSharedByCurrentMember(currentParticipant.member):
+            raise Http404("Item not found")
+        item = Item.objects.get(pk=itemId)
+        item.code = createRandomString(60)
+        item.public = True
+        item.save()
+    return None
+
 @login_required
 @transaction.atomic
 def delete_item(request):
