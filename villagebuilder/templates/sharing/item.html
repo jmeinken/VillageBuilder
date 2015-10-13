@@ -4,7 +4,70 @@
 
 {% block subcontent %}
 
+<script>
+
+$(document).ready(function(){
+	
+	//facebook integration
+	$.ajaxSetup({ cache: true });
+	$.getScript('//connect.facebook.net/en_US/sdk.js', function(){
+  		FB.init({
+    		appId: '1184393148243808',
+    		version: 'v2.4' // or v2.0, v2.1, v2.2, v2.3
+  		});     
+  		//$('#loginbutton,#feedbutton').removeAttr('disabled');
+  		//FB.getLoginStatus(updateStatusCallback);
+	});
+	
+	$('#btn-make-item-public').click(function() {
+		var postData = {
+			item_id : {{item.id}}
+		}
+		$.post("{% url 'sharing:make_item_public' %}", postData, function(data, status){
+			if (status == 'success') {
+	    		$('#item-public-link').html(data);
+			}
+	    });
+	});
+	
+	$('#btn-share-on-facebook').click(function() {
+		var postData = {
+			item_id : {{item.id}}
+		}
+		$.post("{% url 'sharing:make_item_public' %}", postData, function(data, status){
+			if (status == 'success') {
+				FB.ui({
+					method: 'share',
+					href: data
+		  		}, function(response){
+		  			console.log(response);
+		  		});
+			}
+	    });
+		
+	});
+	
+	
+		
+	
+}); 
+
+</script>
+
 <div id="top-section">
+    {% if current.member.id == sharer.id %}
+	    <div id="top-actions">
+			<a href="#" class="btn btn-success" data-toggle="modal" data-target="#share-by-email-modal">
+			    Share by email <i class="fa fa-envelope-o"></i>
+			</a>
+			<button type="button" class="btn btn-success" id="btn-share-on-facebook">
+			    Share on Facebook <i class="fa fa-facebook-official"></i>
+			</button>
+			<a href="{% url 'sharing:edit_item' item.id %}" class="btn btn-primary">
+			    Edit Item <i class="fa fa-pencil"></i>
+			</a>
+		</div>
+	{% endif %}
 	<h2 id="top-title">Shared Item</h2>
 </div>
 	
@@ -60,11 +123,6 @@
 				    <i class="fa fa-paper-plane-o"></i>
 				</a>
 			{% else %}
-				<div style="float:right">
-					<a href="{% url 'sharing:edit_item' item.id %}" class="btn btn-primary">
-					    Edit Item <i class="fa fa-pencil"></i>
-					</a>
-				</div>
 				<h4>Shared by you</h4>
 				<hr style="clear:both;">
 				<h4>Shared with</h4>
@@ -94,6 +152,26 @@
 			{% endif %}
 		</div>
 	</div>
+	
+	
+<div class="modal" id="share-by-email-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			    <h4 class="modal-title">Share by Email</h4>
+			</div>
+			<div class="modal-body">
+			    <p>
+			        This will create a public link for your item that you can share with anyone,
+			        whether they have a VillageBuilder account or not.
+			    </p>
+			  <button type="button" class="btn btn-default" id="btn-make-item-public">Create link</button>
+			  <div id="item-public-link"></div>
+			</div>
+		</div>
+	</div>
+</div>
 
 {% endblock %}	
 

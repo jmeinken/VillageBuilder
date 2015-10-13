@@ -48,6 +48,13 @@ class Participant(models.Model):
                 return self.user.get_full_name()
             else:
                 return self.user.get_short_name()
+    
+    def get_first_name(self):
+        if self.type == 'group':
+            return self.group.title
+        else:
+            return self.user.get_short_name()
+        
             
     def get_email(self):
         if self.type == 'group' and self.group.email:

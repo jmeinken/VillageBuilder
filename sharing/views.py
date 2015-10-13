@@ -244,8 +244,8 @@ def item(request, itemId):
 
 def public_item(request, itemCode):
     # if logged in and item is shared with current participant, should forward to 'item'
-    if len(string) != 60:
-        raise Http404("Item not available")
+    if len(itemCode) != 60:
+        raise Http404('Item not available')
     item = Item.objects.get(code=itemCode)
     if not item or not item.public:
         raise Http404("Item not found")
@@ -253,21 +253,27 @@ def public_item(request, itemCode):
          'item' : item,      
          'sharer' : getParticipant(item.sharer.id),
     }
-    return render(request, 'sharing/item.html', context)
+    return render(request, 'sharing/public_item.html', context)
 
 @login_required
+@csrf_exempt
 def make_item_public(request):
     if request.method == "POST":
         itemId = request.POST.get('item_id')
+        item = Item.objects.get(pk=itemId)
         # don't let someone make an item public that doesn't belong to them
         currentParticipant = Participant.objects.get(user=request.user, type='member')
         if not item in getItemsSharedByCurrentMember(currentParticipant.member):
             raise Http404("Item not found")
-        item = Item.objects.get(pk=itemId)
         item.code = createRandomString(60)
         item.public = True
         item.save()
-    return None
+        response = 'https://villagebuilder.net' + reverse('sharing:public_item', args=[item.code])
+        return HttpResponse(
+            json.dumps(response),
+            content_type="application/json"
+        )
+    raise Http404("Item not found")
 
 @login_required
 @transaction.atomic
