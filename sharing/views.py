@@ -270,9 +270,10 @@ def make_item_public(request):
         currentParticipant = Participant.objects.get(user=request.user, type='member')
         if not item in getItemsSharedByCurrentMember(currentParticipant.member):
             raise Http404("Item not found")
-        item.code = createRandomString(60)
-        item.public = True
-        item.save()
+        if not item.public:
+            item.code = createRandomString(60)
+            item.public = True
+            item.save()
         response = 'https://villagebuilder.net' + reverse('sharing:public_item', args=[item.code])
         return HttpResponse(
             json.dumps(response),

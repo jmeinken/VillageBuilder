@@ -1,0 +1,140 @@
+
+
+***constants***
+
+file path to current directory - /var/www/django/vb
+from villagebuilder.settings import BASE_DIR
+BASE_DIR
+
+file path to XXX directory
+from villagebuilder.settings import BASE_DIR
+BASE_DIR + '/path/to/mydir'
+
+
+current root url - https://www.villagebuildern.net
+view		"https://" + request.get_host()
+template	"https://" + request.get_host		//request object is always available to template
+
+url of current page being viewed - https://www.villagebuildern.net/mypage
+view
+template
+
+url of page with specified name and arguments
+view
+template
+
+
+
+
+//redirect
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect
+return redirect(reverse('sharing:item', args=[item.id]))
+
+//render
+from django.shortcuts import render
+return render(request, 'sharing/share_item.html', context)
+
+//render to string
+from django.template.loader import render_to_string
+mystr = render_to_string('alerts/blocks/alert_join_group.html', context)
+
+
+//information I make available to every template
+
+current
+	.user		Django User model object
+	.member		Member model object
+	.groups		all groups owned by this user
+RelationshipTypes
+
+thinks that might be useful:
+does this person have any friends besides admin?
+does this person belong to any groups?
+
+***RELATIONSHIPS***********************************************************************************************
+
+//collections of people/groups are usually based off of getParticipant, returning a special dict that includes
+//relationship to the current user
+
+Why did I do this?  It would be easy to create a model method getRelationship(currentParticipant), but
+that wouldn't be accessible from the template because you can't pass an argument.
+
+'id' : self.id,
+'type' : self.type,
+'name' : self.get_name(),
+'display_address' : self.get_display_address(),
+'image' : self.get_image(),
+'thumb' : self.get_thumb(),
+.relationship
+
+if I own group(s), also has relationships to my groups:
+group_relationships.id
+group_relationships.name
+group_relationships.relationship
+
+if group:
+owner.'id' : self.id,
+owner.'type' : self.type,
+owner.'name' : self.get_name(),
+owner.'display_address' : self.get_display_address(),
+owner.'image' : self.get_image(),
+owner.'thumb' : self.get_thumb(),
+
+//getting lists of relations
+def getRelations(contextParticipant, currentParticipant, relationshipTypes=[])
+
+***SIMPLIFYING RELATIONSHIPS*****************************************************************************************
+
+??am I oficially dumping guests?
+
+//return model objects
+getReciprocatedFriends
+getReciprocatedGroups
+getReciprocatedFriendsAndGuests
+getUnreciprocatedFriendsAndGuests
+
+// return my weird dicts
+emailSearch
+getPeopleNearYou
+getFriendsOfFriends
+getRelations(contextParticipant, currentParticipant, relationshipTypes=[])
+	//allows you to get relations of anyone but still in context of current participant
+getGroupMembers
+searchParticipants
+
+getParticipant		returns a single participant
+getParticipantFull
+simulateParticipant
+getRelationship(a, b)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

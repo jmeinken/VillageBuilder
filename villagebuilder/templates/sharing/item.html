@@ -162,16 +162,23 @@ $(document).ready(function(){
 			    <h4 class="modal-title">Share by Email</h4>
 			</div>
 			<div class="modal-body">
-			    <p>
-			        This will create a public link for your item that you can share with anyone,
-			        whether they have a VillageBuilder account or not.
-			    </p>
-			  <button type="button" class="btn btn-default" id="btn-make-item-public">Create link</button>
-			  <div id="item-public-link"></div>
+				{% if item.public %}
+					Here is a public view of your item 
+				    <div id="item-public-link">{{ item.code }}</div>
+				{% else %}
+				    <p>
+				        This will create a public link for your item that you can share with anyone,
+				        whether they have a VillageBuilder account or not.
+				    </p>
+				    <button type="button" class="btn btn-default" id="btn-make-item-public">Create link</button>
+				    <div id="item-public-link"></div>
+				{% endif %}
+			  
 			</div>
 		</div>
 	</div>
 </div>
+
 
 {% endblock %}	
 
