@@ -76,6 +76,14 @@ def home(request):
     # print(shareCategories)
     for category in shareCategories:
         totalSharedWithYou = totalSharedWithYou + category[3]
+    # does this person have any friends? (also need to exclude admin)
+    relationships = getRelations(currentParticipant, currentParticipant, relationshipTypes=[
+        RelationshipTypes.FRIENDS,
+        RelationshipTypes.REQUEST_SENT, 
+        RelationshipTypes.GROUP_MEMBER,
+        RelationshipTypes.GROUP_MEMBER_REQUESTED,                                                                              
+    ])
+    relationshipCount = len(relationships)
     context = {
             'current' : getCurrentUser(request),
             'peopleNearYou' : getPeopleNearYou(currentParticipant),
@@ -87,6 +95,7 @@ def home(request):
             'shareCategories' : shareCategories,
             'totalSharedWithYou' : totalSharedWithYou,
             'recentItems' : recentItems,
+            'relationshipCount' : relationshipCount,
         }
     return render(request, 'core/home.html', context)
 

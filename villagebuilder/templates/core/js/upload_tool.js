@@ -33,6 +33,9 @@ defaultImage
 	            },
 	            thumb: {
 	                'object': '#small'
+	            },
+	            preview: {
+	                'object': '#preview'
 	            }
 			},
 	        dragDrops: ['#dragDrop'],

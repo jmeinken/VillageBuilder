@@ -1,6 +1,7 @@
 import json
 
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
@@ -132,8 +133,12 @@ def share_item(request):
                     for participantId in custom:
                         record = ItemSharee(item=item, sharee_id=int(participantId))
                         record.save()
-            messages.success(request,'Your item "' + item.title + '" has been saved')
-            return redirect(reverse('sharing:share_item'))
+            # messages.success(request,'Your item "' + item.title + '" has been saved')
+            context = {
+                 'item' : item    
+            }
+            messages.success(request, render_to_string('sharing/blocks/share_confirm.html', context))
+            return redirect(reverse('sharing:item', args=[item.id]))
     else:
         itemForm = ItemForm(initial={'type': request.GET.get('type')}, participant=currentParticipant)
         keywordForm = KeywordForm()
