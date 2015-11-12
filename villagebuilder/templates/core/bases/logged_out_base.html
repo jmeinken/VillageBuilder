@@ -1,6 +1,7 @@
 {% extends "core/bases/base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}
+{% load staticfiles %}
 
 {% block content %}
 
@@ -13,14 +14,8 @@
     
     <div class="container-fluid" style="max-width:1280px;background-color:#FFF;">
         <div class="page-header">
-	    	<h1>
-	    	    <span style="font-size:1.3em;letter-spacing:2px;"><!-- 
-	    	    --><i class="fa fa-share-alt-square fa-rotate-270"></i><!-- 
-	    	    --></span>illag<span style="letter-spacing:-2px;">e</span><span style="color:#29A329;"><!-- 
-	    	    --><span style="font-size:1.2em;letter-spacing:-3px;">B</span><!-- 
-	    	    -->uilder</span>
-	    	</h1>
-	    	<p class="lead">a social network for sharing resources</p>
+	    	<img src="{% static 'img/vb-large.png' %}" alt="VillageBuilder" width="477" height="63" /> 
+	    	<p class="lead">share resources with friends and neighbors</p>
 	    </div>
 	    {% if messages or successMessage or errorMessage %}
     	    <div class="row">
