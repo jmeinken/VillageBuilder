@@ -20,19 +20,26 @@
 
 $(document).ready(function(){
 	$('#panel-view-window').scrollLeft(-1500);
-	$('#btn-forward').click(function() {
+	$('#btn-forward,#btn-forward-text').click(function() {
 		$('#panel-view-window').animate( { scrollLeft: '+=500' }, 500);
+		$('#btn-backward').show();
+		$('#btn-forward-text').hide();
 		return false;
 	});
 	$('#btn-backward').click(function() {
-		$('#panel-view-window').animate( { scrollLeft: '-=500' }, 500);
+		$('#panel-view-window').animate( { scrollLeft: '-=500' }, 500, 'swing', function() {
+			if ($('#panel-view-window').scrollLeft() == 0) {
+				$('#btn-backward').hide();
+				$('#btn-forward-text').show();
+			}
+		});
 		return false;
 	});
 });
 
 </script>
     
-<div class="container-fluid" style="max-width:1280px;background-color:#FFF;">
+<div class="container-fluid" style="max-width:1280px;min-width:750px;background-color:#FFF;">
     <div class="row" style="padding-top:30px;">
         <div class="col-md-7">
 		 	<img src="{% static 'img/vb-large.png' %}" alt="VillageBuilder" width="477" height="63" /> 
@@ -71,13 +78,15 @@ $(document).ready(function(){
     
     <div style="margin:30px auto 0 auto;width:500px;position:relative;">
 	    <div style="position:absolute;top:50%;left:-100px;">
-	   		<a href="" id="btn-backward"><i class="fa fa-chevron-circle-left fa-4x"></i></a>
+	   		<a href="" id="btn-backward" style="display:none;">
+	   		    <i class="fa fa-chevron-circle-left fa-4x"></i>
+	   		</a>
 	   	</div>
 	   	<div style="position:absolute;top:50%;right:-100px;">
 	   		<a href="" id="btn-forward"><i class="fa fa-chevron-circle-right fa-4x"></i></a>
 	   	</div>
-	   	<div style="position:absolute;top:68%;right:-120px;">
-	   		<a href="" id="btn-forward"><strong>learn more</strong></a>
+	   	<div style="position:absolute;top:66%;right:-120px;">
+	   		<a href="" id="btn-forward-text"><strong>learn more</strong></a>
 	   	</div>
 	    <div style="width:500px;overflow:hidden;" id="panel-view-window">
 	        <div style="width:1500px">
