@@ -126,10 +126,20 @@ class MemberPrivacyForm(forms.ModelForm):
 class MemberEmailForm(forms.ModelForm):
     class Meta:
         model = Member
-        fields = ['email_friend_requests', 'email_messages']
+        fields = ['email_friend_requests', 'email_pm', 'email_requests', 'email_request_comments', 'email_shared_items', ]
         labels = {
-            'email_friend_requests': 'Email me when I receive a friend request.',
-            'email_messages': 'Email me when I receive a personal message.',
+            'email_friend_requests': 'You receive a friend request',
+            'email_pm': 'You receive a private message',
+            'email_requests': 'Your friend posts a new request', 
+            'email_request_comments': 'New comment on a request you\'re watching', 
+            'email_shared_items': 'New item shared with you',
+        }
+        widgets = {
+            'email_friend_requests': forms.RadioSelect,
+            'email_pm': forms.RadioSelect,
+            'email_requests': forms.RadioSelect,
+            'email_request_comments': forms.RadioSelect,
+            'email_shared_items': forms.RadioSelect,
         }
         
 

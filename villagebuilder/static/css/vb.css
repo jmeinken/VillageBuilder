@@ -245,3 +245,24 @@ a {
 .request-complete .request-comments {
 	background-color:#E0E0E0;
 }
+
+#email-preferences-edit input[type="radio"] {
+	display: inline;
+	width: auto;
+	height: auto;
+	margin-left: 20px;
+}
+
+#email-preferences-edit div label {
+	font-weight: normal;
+}
+
+#email-preferences-edit ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#email-preferences-edit li {
+	display: inline;
+}

@@ -133,9 +133,19 @@ class Member(models.Model):
     share_email = models.BooleanField(default=True)
     # share_phone = models.BooleanField()
     share_street = models.BooleanField(default=True)
-    email_friend_requests = models.BooleanField(default=True)
-    email_messages = models.BooleanField(default=True)
+    
+    EMAIL_CHOICES = (
+        (0, 'no email'),
+        (1, 'daily digest'),
+        (2, 'immediate'),
+    )
+    email_friend_requests = models.PositiveSmallIntegerField(default=2, choices=EMAIL_CHOICES)
+    email_pm = models.PositiveSmallIntegerField(default=2, choices=EMAIL_CHOICES)
+    email_requests = models.PositiveSmallIntegerField(default=2, choices=EMAIL_CHOICES)
+    email_request_comments = models.PositiveSmallIntegerField(default=1, choices=EMAIL_CHOICES)
+    email_shared_items = models.PositiveSmallIntegerField(default=1, choices=EMAIL_CHOICES)
     last_emailed = models.DateTimeField()
+    
     image = models.CharField(max_length=30, blank=True, null=True)
     thumb = models.CharField(max_length=30, blank=True, null=True)
     code = models.CharField(max_length=60, blank=True, null=True)

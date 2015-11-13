@@ -145,16 +145,18 @@
 			        <dl class="dl dl-3">
 			            <dt>Email Preferences</dt>
 			            <dd>
-			                {% if memberEmailDisplay.email_friend_requests.value %}
-			                    turned on for friend requests<br>
-			                {% else %}
-			                    turned off for friend requests<br>
-			                {% endif %}
-			                {% if memberEmailDisplay.email_messages.value %}
-			                    turned on for personal messages<br>
-			                {% else %}
-			                    turned off for personal messages<br>
-			                {% endif %}
+			                {% for field in memberEmailDisplay %}
+			                    {{ field.label }} :
+			                    <span class="text-primary">
+			                    {% if field.value == 0 %}
+			                    	no email
+			                   	{% elif field.value == 1 %}
+			                   	    daily digest
+			                   	{% else %}
+			                   	    immediate
+			                   	{% endif %}
+			                    </span><br>
+			                {% endfor %}
 			            </dd>
 			        </dl>     
 			    </div>

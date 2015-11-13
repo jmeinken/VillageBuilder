@@ -12,7 +12,7 @@ from account.models import Member, Participant, Group
 
 
 def createRandomString(length):
-    return ''.join(random.choice(string.ascii_letters) for _ in range(length))
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
 
 
 def handle_uploaded_file(f, fileGroup='user_pics'):
