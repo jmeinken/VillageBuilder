@@ -1,0 +1,39 @@
+
+
+When an emailable action occurs, the code handling it calls the appropriate email method in a new thread:
+
+email_forgot_password
+email_new_pm
+email_friend_request
+email_friend_confirmation
+email_new_item_shared
+email_new_request
+email_new_request_comment
+
+import thread
+t = threading.Thread(target=email_new_pm, args=(request, message,))
+t.start()
+
+Whether an email is actually sent immediately from the email method depends on account settings for the recipient.
+
+The daily email program needs to search through the database for emailable events.  In general:
+- the event must be set to 'daily email' in the recipient's settings
+	participant.member.email_friend_requests == participant.member.EMAIL_DAILY_DIGEST
+    participant.member.email_pm
+    participant.member.email_requests
+    participant.member.email_request_comments
+    participant.member.email_shared_items
+- the event must be created after the last daily email was sent to the recipient
+	participant.member.last_emailed
+- the event must be created after the recipient last visited the site
+	participant.user.last_login
+	
+Emails are implemented as a manage.py command.  Documentation here: 
+https://docs.djangoproject.com/en/dev/howto/custom-management-commands/
+
+
+
+***bugs***
+
+Currently no way to handle transition if user changes prefs from immediate to daily, etc.  User may get two emails or miss
+an email in such situations.

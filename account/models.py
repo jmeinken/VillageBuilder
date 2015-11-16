@@ -134,10 +134,13 @@ class Member(models.Model):
     # share_phone = models.BooleanField()
     share_street = models.BooleanField(default=True)
     
+    EMAIL_OFF = 0
+    EMAIL_DAILY_DIGEST = 1
+    EMAIL_IMMEDIATELY = 2
     EMAIL_CHOICES = (
-        (0, 'no email'),
-        (1, 'daily digest'),
-        (2, 'immediate'),
+        (EMAIL_OFF, 'no email'),
+        (EMAIL_DAILY_DIGEST, 'daily digest'),
+        (EMAIL_IMMEDIATELY, 'immediate'),
     )
     email_friend_requests = models.PositiveSmallIntegerField(default=2, choices=EMAIL_CHOICES)
     email_pm = models.PositiveSmallIntegerField(default=2, choices=EMAIL_CHOICES)

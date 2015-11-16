@@ -42,6 +42,25 @@ def getReciprocatedFriends(currentParticipant):
     ).distinct()
     return friends
 
+def getFriendInvites(participant, sinceDate):
+    friends = (
+        Member.objects.all()
+        .filter(friendship_set__friend=participant.member)
+        .filter(friendship_set__created__gte=sinceDate)
+        .exclude(reverse_friendship_set__member=participant.member)
+    ).distinct()
+    return friends
+
+def getFriendConfirmations(participant, sinceDate):
+    friends = (
+        Member.objects.all()
+        .filter(friendship_set__friend=participant.member)
+        .filter(friendship_set__created__gte=sinceDate)
+        .filter(reverse_friendship_set__member=participant.member)
+    ).distinct()
+    return friends
+
+
 def getReciprocatedGroups(currentParticipant):
     groups = Group.objects.all().filter(
             Q(owner = currentParticipant.member) |
