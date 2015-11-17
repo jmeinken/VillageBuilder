@@ -146,15 +146,18 @@
 						<textarea class="form-control" rows="2" name="body"
 								placeholder="Ask for something you need, give something away, say hello, ..."></textarea>
 						<button type="submit" class="btn btn-default" style="margin-top: 5px">Post Message</button>
-						<span class="text-info">
+						<span class="text-muted">
 							(visible by all your friends and groups)
 						</span>
 					</div> 
 				</form>
 			</div>
-			{% if relationshipCount == 0 %}
-				<div class="well">
-					Here it is.
+			{% if not hasRelationshipActivity %}
+				<div class="alert alert-dismissible alert-warning">
+					Currently, your only friend is the VillageBuilder Admin. 
+					Not that our administrator isn't cool or anything, but you can do better. 
+					There are tools on the right side of this page for finding friends. 
+					Use the blue button in anyone's name box to send them a friend request.
 				</div>
 			{% endif %}
 			<h3 class="underline">Requests</h3>

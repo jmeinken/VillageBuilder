@@ -84,6 +84,7 @@ def home(request):
         RelationshipTypes.GROUP_MEMBER_REQUESTED,                                                                              
     ])
     relationshipCount = len(relationships)
+    hasRelationshipActivity = doesUserHaveRelationshipActivity(currentParticipant)
     context = {
             'current' : getCurrentUser(request),
             'peopleNearYou' : getPeopleNearYou(currentParticipant),
@@ -95,7 +96,7 @@ def home(request):
             'shareCategories' : shareCategories,
             'totalSharedWithYou' : totalSharedWithYou,
             'recentItems' : recentItems,
-            'relationshipCount' : relationshipCount,
+            'hasRelationshipActivity' : hasRelationshipActivity,
         }
     return render(request, 'core/home.html', context)
 

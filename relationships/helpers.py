@@ -90,6 +90,17 @@ def getUnreciprocatedFriendsAndGuests(currentParticipant):
     ).distinct()
     return relations
 
+def doesUserHaveRelationshipActivity(currentParticipant):
+    relations = Participant.objects.all().filter(
+        Q(member__reverse_friendship_set__member    =currentParticipant.member) | 
+        Q(guest__guestfriendship__member            =currentParticipant.member)
+    ).distinct()
+    if relations.count() == 0:
+        return False
+    if relations.count() == 1 and relations[0].member.is_admin:
+        return False
+    return True
+
 
 '''
     The rest don't return querysets but special participant dicts
