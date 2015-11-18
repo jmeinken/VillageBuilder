@@ -1,4 +1,5 @@
 import json
+import threading
 
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -13,6 +14,7 @@ from django.http import Http404
 
 from main.helpers import getCurrentUser, handle_uploaded_file, ifset
 from relationships.helpers import *
+from email_system.helpers import email_new_item
 from .forms import *
 from .helpers import *
 
@@ -137,6 +139,8 @@ def share_item(request):
             context = {
                  'item' : item    
             }
+            t = threading.Thread(target=email_new_item, args=(request,item,))
+            t.start()
             messages.success(request, render_to_string('sharing/blocks/share_confirm.html', context))
             return redirect(reverse('sharing:item', args=[item.id]))
     else:

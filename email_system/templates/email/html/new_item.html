@@ -1,0 +1,13 @@
+{% extends "email/formatted_email_base.html" %}
+
+{% block content %}
+
+<p>{{ item.sharer.participant.get_name }} shared a new item with you:</p>
+
+
+<p>{{ item.title }}</p>
+
+
+<p><a href="https://villagebuilder.net{% url 'sharing:item' item.id  %}">View this item</a></p>
+
+{% endblock %}

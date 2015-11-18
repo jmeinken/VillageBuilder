@@ -1,0 +1,9 @@
+{% extends "email/plain_text_email_base.txt" %}
+
+{% block content %}
+{{ item.sharer.participant.get_name }} shared a new item with you:
+
+{{ item.title }}
+
+View this item: https://villagebuilder.net{% url 'sharing:item' item.id  %}
+{% endblock %}

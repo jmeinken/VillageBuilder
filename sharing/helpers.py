@@ -64,6 +64,36 @@ def removeAllSharing(memberId, participantId):
     )
     shareListSharees.delete()
         
+def getParticipantsForItem(item):
+    groups = getReciprocatedGroups(item.sharer.participant)
+    groupIds = []
+    for group in groups:
+        groupIds.append(group.id)
+    
+    if item.share_type == 'all_friends':
+        participants = Participant.objects.filter(
+            Q(member__friendship_set__friend=item.sharer) & 
+            Q(member__reverse_friendship_set__member=item.sharer)
+        )
+    if item.share_type == 'all_friends_groups':
+        #ignoring things shared through groups
+        participants = Participant.objects.filter(
+            (Q(member__friendship_set__friend=item.sharer) & 
+            Q(member__reverse_friendship_set__member=item.sharer))  
+            # | Q(member__groupmembership__group_id__in=groupIds)
+        ).exclude(member=item.sharer).distinct()
+    if item.share_type == 'share_list':
+        #ignoring things shared through groups
+        participants = Participant.objects.filter(
+            Q(sharelistsharee__shareList__item=item)                               
+        )
+    if item.share_type == 'custom':
+        #ignoring things shared through groups
+        participants = Participant.objects.filter(
+            Q(itemsharee__item=item)                                      
+        )
+    return participants    
+        
     
 
 

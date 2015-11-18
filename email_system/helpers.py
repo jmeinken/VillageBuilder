@@ -26,26 +26,28 @@ def email_forgot_password(request, member):
     )
     
 def email_new_pm(request, pm):
-    if pm.recipient.type == 'member' and pm.recipient.member.email_messages:
-        email = pm.recipient.user.username
-        context = {
-            'name' : pm.recipient.get_name(),
-            'sender_name' : pm.sender.get_name(),
-            'pmMessage' : pm.body,
-            'link' : request.build_absolute_uri(reverse('pm:messages', args=[pm.sender.id])),
-        }
-        body = render_to_string('email/plain_text/new_pm.txt', context)
-        htmlBody = render_to_string('email/html/new_pm.html', context)
-        return sendMail(
-            'New message from ' + pm.sender.get_name(), 
-            body,
-            htmlBody,
-            'info@villagebuilder.net', 
-            [email], 
-        )
+    
+    if pm.recipient.type == 'member':
+        if pm.recipient.email_pm == pm.recipient.EMAIL_IMMEDIATELY:
+            email = pm.recipient.user.username
+            context = {
+                'name' : pm.recipient.get_name(),
+                'sender_name' : pm.sender.get_name(),
+                'pmMessage' : pm.body,
+                'link' : request.build_absolute_uri(reverse('pm:messages', args=[pm.sender.id])),
+            }
+            body = render_to_string('email/plain_text/new_pm.txt', context)
+            htmlBody = render_to_string('email/html/new_pm.html', context)
+            return sendMail(
+                'New message from ' + pm.sender.get_name(), 
+                body,
+                htmlBody,
+                'info@villagebuilder.net', 
+                [email], 
+            )
     
 def email_friend_request(request, friendship):
-    if friendship.friend.email_friend_requests:
+    if friendship.friend.email_friend_requests == friendship.friend.EMAIL_IMMEDIATELY:
         email = friendship.friend.participant.user.username
         context = {
             'name' : friendship.friend.participant.get_name(),
@@ -63,7 +65,7 @@ def email_friend_request(request, friendship):
         )
         
 def email_friend_confirmation(request, friendship):
-    if friendship.friend.email_friend_requests:
+    if friendship.friend.email_friend_requests == friendship.friend.EMAIL_IMMEDIATELY:
         items = getItemsForParticipant(friendship.friend.participant)
         items = filterItems(items, sharerId=friendship.member.id)
         email = friendship.friend.participant.user.username
@@ -85,6 +87,37 @@ def email_friend_confirmation(request, friendship):
             'info@villagebuilder.net', 
             [email], 
         )
+        
+def email_new_item(request, item):
+    # who is this item shared with?
+    participants = getParticipantsForItem(item)
+    print '---' + item.title + '--------------------'
+    for participant in participants:
+        print str(participant.id) + ': ' + participant.get_name()
+    print '------------------------------------------'
+    
+    for participant in participants:
+        if participant.member.email_shared_items == participant.member.EMAIL_IMMEDIATELY:
+            context = {
+                'name' : participant.get_name(),
+                'item' : item       
+            }
+            body = render_to_string('email/plain_text/new_item.txt', context)
+            htmlBody = render_to_string('email/html/new_item.html', context)
+            email = participant.user.username
+            sendMail(
+                item.sharer.participant.get_name() + ' shared something with you', 
+                body,
+                htmlBody,
+                'info@villagebuilder.net', 
+                [email], 
+            )
+
+def email_new_request(request, new_request):
+    return True
+
+def email_new_request_comment(request, request_comment):
+    return True
     
     
 

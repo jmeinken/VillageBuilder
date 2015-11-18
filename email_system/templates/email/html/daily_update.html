@@ -1,19 +1,51 @@
 {% extends "email/formatted_email_base.html" %}
 
 {% block content %}
-<p>Here is what's been happening since you last visited VillageBuilder.</p>
+<p>Here is what's been happening since you last visited.</p>
 
-{% if requestComments %}
-	{% for comment in requestComments %}
+{% if data.friend_confirmations.pref and data.friend_confirmations.count > 0 %}
+	<h3>New friends:</h3>
+	{% for friendship in data.friend_confirmations.coll %}
+		<div style="background-color:#C0C0C0;margin:5px;padding:5px;"> 
+			You are now friends with
+			<a href="https://villagebuilder.net{% url 'account:view' friendship.member.id  %}">{{ friendship.member.participant.get_name }}</a>
+		</div>
+	{% endfor %}
+{% endif %}
+
+{% if data.friend_invites.pref and data.friend_invites.count > 0 %}
+	<h3>New friend requests:</h3>
+	{% for friendship in data.friend_invites.coll %}
+		<div style="background-color:#C0C0C0;margin:5px;padding:5px;"> 
+			<a href="https://villagebuilder.net{% url 'account:view' friendship.member.id  %}">{{ friendship.member.participant.get_name }}</a>
+			wants to be friends
+		</div>
+	{% endfor %}
+{% endif %}
+
+{% if data.requests.pref and data.requests.count > 0 %}
+	<h3>New private messages:</h3>
+	{% for message in data.messages.coll %}
+		<div style="background-color:#C0C0C0;margin:5px;padding:5px;">
+			{{ message.sender.get_name }} - {{ request.sent_on }}<br>
+			{{ message.body|linebreaks }}
+			<a href="https://villagebuilder.net{% url 'pm:messages' message.sender.id  %}">view this message</a>
+		</div>
+	{% endfor %}
+{% endif %}
+
+{% if data.request_comments.pref and data.request_comments.count > 0 %}
+	<h3>New comment activity:</h3>
+	{% for comment in data.request_comments.coll %}
 		<div style="background-color:#C0C0C0;margin:5px;padding:5px;">
 			{{ comment.html|safe }}
 		</div>
 	{% endfor %}
 {% endif %}
 
-{% if requests.count > 0 %}
-	<h3>Recent Requests From Your Friends:</h3>
-	{% for request in requests %}
+{% if data.requests.pref and data.requests.count > 0 %}
+	<h3>New requests from your friends:</h3>
+	{% for request in data.requests.coll %}
 		<div style="background-color:#C0C0C0;margin:5px;padding:5px;">
 			{{ request.member.participant.get_name }} - {{ request.date }}<br>
 			{{ request.body|linebreaks }}
@@ -22,9 +54,9 @@
 	{% endfor %}
 {% endif %}
 
-{% if items.count > 0 %}
-	<h3>New Items Shared with You:</h3>
-	{% for item in items %}
+{% if data.items.pref and data.items.count > 0 %}
+	<h3>New items shared with you:</h3>
+	{% for item in data.items.coll %}
 		<div style="background-color:#C0C0C0;margin:5px;padding:5px;">
 			<strong>{{ item.title }}</strong><br>
 			shared by {{ item.sharer.participant.get_name }}<br>

@@ -1,32 +1,79 @@
 {% extends "email/plain_text_email_base.txt" %}
 
 {% block content %}
-Here is what's been happening since you last visited VillageBuilder.
-{% if requests.count > 0 %}
-**Recent Requests From Your Friends
-{% for request in requests %}
+Here is what's been happening since you last visited.
+
+{% if data.friend_confirmations.pref and data.friend_confirmations.count > 0 %}
+**New friends:
+{% for friendship in data.friend_confirmations.coll %}
+You are now friends with {{ friendship.member.participant.get_name }}
+https://villagebuilder.net{% url 'account:view' friendship.member.id  %}
+
+{% endfor %}
+{% endif %}
+
+{% if data.friend_invites.pref and data.friend_invites.count > 0 %}
+**New friend requests:
+{% for friendship in data.friend_invites.coll %}
+{{ friendship.member.participant.get_name }} wants to be friends
+https://villagebuilder.net{% url 'account:view' friendship.member.id  %}
+
+{% endfor %}
+{% endif %}
+
+{% if data.requests.pref and data.requests.count > 0 %}
+**New private messages:
+{% for message in data.messages.coll %}
+{{ message.sender.get_name }} - {{ request.sent_on }}
+{{ message.body }}
+https://villagebuilder.net{% url 'pm:messages' message.sender.id  %}
+
+{% endfor %}
+{% endif %}
+
+{% if data.request_comments.pref and data.request_comments.count > 0 %}
+**New comment activity:
+{% for comment in data.request_comments.coll %}
+{{ comment.html|safe }}
+
+{% endfor %}
+{% endif %}
+
+{% if data.requests.pref and data.requests.count > 0 %}
+**New requests from your friends:
+{% for request in data.requests.coll %}
 {{ request.member.participant.get_name }} - {{ request.date }}
 {{ request.body }}
-view request: https://villagebuilder.net{% url 'requests:request' request.id  %}
+https://villagebuilder.net{% url 'requests:request' request.id  %}
 
 {% endfor %}
 {% endif %}
-{% if requestComments %}
-**New Comments
-{% for comment in requestComments %}
-{{ comment.text|safe }}
-{% endfor %}
-{% endif %}
 
-{% if items.count > 0 %}
-**New Items Shared with You:
-{% for item in items %}
+{% if data.items.pref and data.items.count > 0 %}
+**New items shared with you:
+{% for item in data.items.coll %}
 {{ item.title }}
 shared by {{ item.sharer.participant.get_name }}
-view item: https://villagebuilder.net{% url 'sharing:item' item.id  %}
+https://villagebuilder.net{% url 'sharing:item' item.id  %}
+
 {% endfor %}
 {% endif %}
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

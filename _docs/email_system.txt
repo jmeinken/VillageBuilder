@@ -1,6 +1,6 @@
 
 
-When an emailable action occurs, the code handling it calls the appropriate email method in a new thread:
+When an emailable action occurs, the code handling it determines who is impacted and calls the appropriate email method in a new thread:
 
 email_forgot_password
 email_new_pm
@@ -10,7 +10,7 @@ email_new_item_shared
 email_new_request
 email_new_request_comment
 
-import thread
+import threading
 t = threading.Thread(target=email_new_pm, args=(request, message,))
 t.start()
 
