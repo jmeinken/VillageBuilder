@@ -1,6 +1,7 @@
 {% extends "core/bases/base.html" %}
 {% load app_filters %}
 {% load widget_tweaks %}
+{% load staticfiles %}
 
 {% block content %}
     <script type="text/javascript">
@@ -16,102 +17,104 @@
 	</style>
 
 
-    <nav class="navbar navbar-inverse">
-	    <div class="container-fluid">
-		    <div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="{% url 'home' %}">
-				    <span><span style="font-size:1.3em;letter-spacing:3px;;"><!-- 
-		    	    --><i class="fa fa-share-alt-square fa-rotate-270"></i><!-- 
-		    	    --></span>illag<span style="letter-spacing:-1px;">e</span></span><span><!-- 
-		    	    --><span style="font-size:1.2em;letter-spacing:-1px;">B</span><!-- 
-		    	    -->uilder</span>
-				</a>
-		    </div>
-	
-		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li><a href="{% url 'home' %}">Home</a></li>
-					<li><a href="{% url 'relationships:relationships' %}">Friends/Groups</a></li>
-					<li class="dropdown">
-					    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-					        Shared Items <span class="caret"></span>
-					    </a>
-					    <ul class="dropdown-menu" role="menu">
-					    	<li>
-							    <a href="{% url 'sharing:my_items' %}">
-							        <span style="display:inline-block; width: 130px;">
-							            shared by you 
-							        </span>
-							        <i class="fa fa-arrow-right"></i>
-							    </a>
-							</li>
-					    	<li>
-							    <a href="{% url 'sharing:items' %}">
-							        <span style="display:inline-block; width: 130px;">
-							            shared with you 
-							        </span>
-							        <i class="fa fa-arrow-right fa-rotate-180"></i>
-							    </a>
-							</li>
-							<li>
-							    <a href="{% url 'sharing:share_item' %}">
-							        <span style="display:inline-block; width: 130px;">
-							            share something
-							        </span>
-							        <i class="fa fa-plus"></i>
-							    </a>
-							</li>
-				        </ul>
-					</li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="open-messages">
-						    Messages <span id="message-count"></span> <span class="caret"></span>
-					    </a>
-						<ul class="dropdown-menu widen" role="menu" id="message-container">
-							&nbsp;&nbsp;<em>no new messages</em> &nbsp;&nbsp;&nbsp;&nbsp;
-						    <a href="{% url 'pm:messages' 0 %}">View Messages <i class="fa fa-arrow-right"></i></a>
-				        </ul>
-					</li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="open-alerts">
-						    Alerts <span id="alert-count"></span> <span class="caret"></span>
-					    </a>
-						<ul class="dropdown-menu widen" role="menu" id="alert-container">
-							<li>&nbsp;&nbsp;<em>no alerts to show</em></li>
-				        </ul>
-					</li>
-					<li><a href="#">Help</a></li>
-					<li class="dropdown">
-				</ul>
-		        <ul class="nav navbar-nav navbar-right">
-		            <li class="dropdown">
-			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-			              <img class="current-user-pic" src="{{ current.member.get_thumb }}" alt="my alt" width="25" height="25" />
-			              {{current.user.get_full_name}} <span class="caret"></span>
-			          </a>
-			          <ul class="dropdown-menu" role="menu">
-			            <li><a href="{% url 'account:view' current.member.id %}"><i class="fa fa-user"></i> Your Profile</a></li>
-			            <li><a href="{% url 'account:account' %}"><i class="fa fa-wrench"></i> Account Settings</a></li>
-			            <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a></li>
-			            <li class="divider"></li>
-			            <li>Groups</li>
-			            {% for group in current.groups %}
-			                <li><a href="{% url 'account:view' group.id %}"><i class="fa fa-users"></i> {{ group.title }}</a></li>
-			            {% endfor %}
-			            <li><a href="{% url 'account:create_group' %}"><i class="fa fa-plus"></i> Create New Group</a></li>
-			          </ul>
-			        </li>
-		        </ul>
-		    </div>
+   	<nav class="navbar navbar-inverse">
+	    <div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="{% url 'home' %}">
+			    <img src="{% static 'img/vb-v-large.png' %}" alt="VillageBuilder" width="47" height="47" />
+			</a>
+	    </div>
+
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li><a href="{% url 'home' %}">Home</a></li>
+				<li><a href="{% url 'relationships:relationships' %}">Friends/Groups</a></li>
+				<li class="dropdown">
+				    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				        Shared Items <span class="caret"></span>
+				    </a>
+				    <ul class="dropdown-menu" role="menu">
+				    	<li>
+						    <a href="{% url 'sharing:my_items' %}">
+						        <span style="display:inline-block; width: 130px;">
+						            shared by you 
+						        </span>
+						        <i class="fa fa-arrow-right"></i>
+						    </a>
+						</li>
+				    	<li>
+						    <a href="{% url 'sharing:items' %}">
+						        <span style="display:inline-block; width: 130px;">
+						            shared with you 
+						        </span>
+						        <i class="fa fa-arrow-right fa-rotate-180"></i>
+						    </a>
+						</li>
+						<li>
+						    <a href="{% url 'sharing:share_item' %}">
+						        <span style="display:inline-block; width: 130px;">
+						            share something
+						        </span>
+						        <i class="fa fa-plus"></i>
+						    </a>
+						</li>
+			        </ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="open-messages">
+					    Messages <span id="message-count"></span> <span class="caret"></span>
+				    </a>
+					<ul class="dropdown-menu widen" role="menu" id="message-container">
+						&nbsp;&nbsp;<em>no new messages</em> &nbsp;&nbsp;&nbsp;&nbsp;
+					    <a href="{% url 'pm:messages' 0 %}">View Messages <i class="fa fa-arrow-right"></i></a>
+			        </ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="open-alerts">
+					    Alerts <span id="alert-count"></span> <span class="caret"></span>
+				    </a>
+					<ul class="dropdown-menu widen" role="menu" id="alert-container">
+						<li>&nbsp;&nbsp;<em>no alerts to show</em></li>
+			        </ul>
+				</li>
+				<li><a href="#">Help</a></li>
+				<li class="dropdown">
+			</ul>
+	        <ul class="nav navbar-nav navbar-right">
+	            <li class="dropdown user-tools">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+		              <img class="current-user-pic" src="{{ current.member.get_thumb }}" alt="my alt" width="25" height="25" />
+		              {{current.user.get_full_name}} <span class="caret"></span>
+		          </a>
+		          <ul class="dropdown-menu" role="menu">
+		            <li><a href="{% url 'account:view' current.member.id %}"><i class="fa fa-user"></i> Your Profile</a></li>
+		            <li><a href="{% url 'account:account' %}"><i class="fa fa-wrench"></i> Account Settings</a></li>
+		            <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a></li>
+		            <li class="divider"></li>
+		            <li>Groups</li>
+		            {% for group in current.groups %}
+		                <li><a href="{% url 'account:view' group.id %}"><i class="fa fa-users"></i> {{ group.title }}</a></li>
+		            {% endfor %}
+		            <li><a href="{% url 'account:create_group' %}"><i class="fa fa-plus"></i> Create New Group</a></li>
+		          </ul>
+		        </li>
+	        </ul>
 	    </div>
 	</nav>
+    	
+    	
+    	
+    	
+    	
     <div class="container-fluid" style="max-width:1280px;background-color:#FFF;">
+    	
+    
+    
     	{% if messages or successMessage %}
     	    <div class="row">
     	        <div class="col-md-10 col-md-offset-1">

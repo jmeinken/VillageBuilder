@@ -1,4 +1,4 @@
-$(document).ready(function(){
+
 	
 	function attachEvents() {
 		$('.btn-complete-request').off();
@@ -140,7 +140,7 @@ $(document).ready(function(){
 	
 	attachEvents();
 	
-});
+
 
 
 
