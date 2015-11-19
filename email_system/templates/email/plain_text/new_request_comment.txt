@@ -1,0 +1,9 @@
+{% extends "email/plain_text_email_base.txt" %}
+
+{% block content %}
+{{ request_comment.member.participant.get_name }} posted a new comment on {{ request_comment.request.member.participant.get_name }}'s request:
+
+{{ request_comment.body }}
+
+View this conversation: https://villagebuilder.net{% url 'requests:request' request_comment.request.id  %}
+{% endblock %}

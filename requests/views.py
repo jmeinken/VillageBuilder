@@ -1,4 +1,5 @@
 import json
+import threading
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -13,6 +14,7 @@ from main.helpers import getCurrentUser
 from .models import *
 from requests.helpers import *
 from relationships.helpers import *
+from email_system.helpers import email_new_request, email_new_request_comment
 from alerts.helpers import registerEvent
 
 
@@ -24,6 +26,8 @@ def post_request(request):
         currentParticipant = Participant.objects.get(user=request.user, type='member')
         myrequest = Request(member=currentParticipant.member, body=body)
         myrequest.save()
+        t = threading.Thread(target=email_new_request, args=(request, myrequest,))
+        t.start()
         return redirect(url)
     return redirect('login')
 
@@ -133,6 +137,8 @@ def post_request_comment(request):
         currentParticipant = Participant.objects.get(user=request.user, type='member')
         comment = RequestComment(member=currentParticipant.member, body=body, request_id=requestId)
         comment.save()
+        t = threading.Thread(target=email_new_request_comment, args=(request, comment,))
+        t.start()
         eventDict = {
             'request_id' : requestId,
             'comment_id' : comment.id,

@@ -7,6 +7,8 @@
 
 <p>{{ item.title }}</p>
 
+<p>{{ item.description|linebreaks }}</p>
+
 
 <p><a href="https://villagebuilder.net{% url 'sharing:item' item.id  %}">View this item</a></p>
 

@@ -1,0 +1,13 @@
+{% extends "email/formatted_email_base.html" %}
+
+{% block content %}
+
+<p>{{ request.member.participant.get_name }} posted a new request:</p>
+
+
+<p>{{ request.body|linebreaks }}</p>
+
+
+<p><a href="https://villagebuilder.net{% url 'requests:request' request.id  %}">View this request</a></p>
+
+{% endblock %}

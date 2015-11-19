@@ -1,0 +1,14 @@
+{% extends "email/formatted_email_base.html" %}
+
+{% block content %}
+
+<p>{{ request_comment.member.participant.get_name }} posted a new comment on 
+{{ request_comment.request.member.participant.get_name }}'s request:</p>
+
+
+<p>{{ request_comment.body|linebreaks }}</p>
+
+
+<p><a href="https://villagebuilder.net{% url 'requests:request' request_comment.request.id  %}">View this conversation</a></p>
+
+{% endblock %}

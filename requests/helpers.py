@@ -1,13 +1,30 @@
 import json
 
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 
 from relationships.helpers import getReciprocatedFriends
 from .models import *
+from account.models import Participant
 from alerts.models import Event
 
 
+def getViewersForRequest(request):
+    # all reciprocated friends (missing group connections)
+    participants = Participant.objects.filter(
+        Q(member__friendship_set__friend=request.member) & 
+        Q(member__reverse_friendship_set__member=request.member)
+    )
+    return participants
 
+def getViewersForRequestComment(requestComment):
+    # requester and everyone who has commented on this request
+    request = requestComment.request
+    participants = Participant.objects.filter(
+        Q(member__requestcomment__request=request) | 
+        Q(member__request=request)
+    ).exclude(member=requestComment.member).distinct()
+    return participants
 
 def getRequestList(currentParticipant, start=0, end=10):
     #get list of friends

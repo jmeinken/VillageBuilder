@@ -5,5 +5,7 @@
 
 {{ item.title }}
 
+{{ item.description }}
+
 View this item: https://villagebuilder.net{% url 'sharing:item' item.id  %}
 {% endblock %}

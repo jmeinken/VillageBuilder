@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 
 from villagebuilder.settings import BASE_DIR
 from sharing.helpers import *
+from requests.helpers import *
 
 
 def email_forgot_password(request, member):
@@ -114,12 +115,51 @@ def email_new_item(request, item):
             )
 
 def email_new_request(request, new_request):
-    return True
+    participants = getViewersForRequest(new_request)
+    print '---Request ' + str(new_request.id) + '--------------------'
+    for participant in participants:
+        print str(participant.id) + ': ' + participant.get_name()
+    print '------------------------------------------'
+    for participant in participants:
+        if participant.member.email_requests == participant.member.EMAIL_IMMEDIATELY:
+            context = {
+                'name' : participant.get_name(),
+                'request' : new_request       
+            }
+            body = render_to_string('email/plain_text/new_request.txt', context)
+            htmlBody = render_to_string('email/html/new_request.html', context)
+            email = participant.user.username
+            sendMail(
+                'new request from ' + new_request.member.participant.get_name(), 
+                body,
+                htmlBody,
+                'info@villagebuilder.net', 
+                [email], 
+            )
+
 
 def email_new_request_comment(request, request_comment):
-    return True
-    
-    
+    participants = getViewersForRequestComment(request_comment)
+    print '---Request Comment ' + str(request_comment.id) + '--------------------'
+    for participant in participants:
+        print str(participant.id) + ': ' + participant.get_name()
+    print '------------------------------------------'
+    for participant in participants:
+        if participant.member.email_request_comments == participant.member.EMAIL_IMMEDIATELY:
+            context = {
+                'name' : participant.get_name(),
+                'request_comment' : request_comment       
+            }
+            body = render_to_string('email/plain_text/new_request_comment.txt', context)
+            htmlBody = render_to_string('email/html/new_request_comment.html', context)
+            email = participant.user.username
+            sendMail(
+                'new comment from ' + request_comment.member.participant.get_name(), 
+                body,
+                htmlBody,
+                'info@villagebuilder.net', 
+                [email], 
+            )
 
 
 # this should only be called from other methods in the email system
