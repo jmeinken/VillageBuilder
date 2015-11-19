@@ -17,7 +17,7 @@ form {
 }
 
 #vb a.navbar-brand {
-	padding: 5px 15px;
+	padding: 6px 15px;
 }
 
 #vb .navbar-nav .user-tools a {
@@ -29,18 +29,16 @@ form {
 #vb .navbar-nav > li > a {
 	color: black;
 	background-color: #34b51e;
-	margin: 12px 2px 0 0;
+	margin: 13px 2px 0 0;
 	padding: 7px 13px 6px 13px;
 }
 
 
 
-#vb a.navbar-brand:hover {
-	color: #FFF;
-}
+
 
 #vb .navbar-nav > li > a:hover {
-	color: #FFF;
+	background-color: #39c521;
 }
 
 #vb .btn {
@@ -55,11 +53,35 @@ form {
 
 
 #vb .btn-primary {
-	border-color: #007acc;
-	background-color: #0099FF;
+	border-color: #004c80;
+	background-color: #005c99;
+}
+#vb .btn-primary:hover {
+	background-color: #004c80;
+}
+#vb .btn-success {
+	background-color: #34B51E;
+	border-color: #2c9919;
+}
+#vb .btn-success:hover {
+	background-color: #2c9919;
+}
+#vb .btn-danger {
+	border-color: #e62e00;
+	background-color: #FF3300;
+}
+#vb .btn-danger:hover {
+	background-color: #e62e00;
 }
 #vb .btn-warning {
-	border-color: #A34200;
+	border-color: #d36312;
+	background-color: #EC7621;
+}
+#vb .btn-warning:hover {
+	background-color: #d36312;
+}
+#vb .alert-warning {
+	color: #FFF;
 	background-color: #EC7621;
 }
 
@@ -93,7 +115,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-	color: #2200CC;
+	color: #0099ff;
 }
 
 
@@ -134,6 +156,14 @@ a {
 }
 
 /*** MORE SPECIFIC STUFF ****************************************************************/
+
+a.participant-name-link {
+	color: #006500;
+}
+
+.show-comments {
+	color: #005C99;
+}
 
 .highlight {
 	background-color: #D00000;

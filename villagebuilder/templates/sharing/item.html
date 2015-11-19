@@ -57,13 +57,13 @@ $(document).ready(function(){
 <div id="top-section">
     {% if current.member.id == sharer.id %}
 	    <div id="top-actions">
-			<a href="#" class="btn btn-success" data-toggle="modal" data-target="#share-by-email-modal">
+			<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#share-by-email-modal">
 			    Share by email <i class="fa fa-envelope-o"></i>
 			</a>
-			<button type="button" class="btn btn-success" id="btn-share-on-facebook">
+			<button type="button" class="btn btn-primary" id="btn-share-on-facebook">
 			    Share on Facebook <i class="fa fa-facebook-official"></i>
 			</button>
-			<a href="{% url 'sharing:edit_item' item.id %}" class="btn btn-primary">
+			<a href="{% url 'sharing:edit_item' item.id %}" class="btn btn-warning">
 			    Edit Item <i class="fa fa-pencil"></i>
 			</a>
 		</div>

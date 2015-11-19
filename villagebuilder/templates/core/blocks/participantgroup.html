@@ -8,7 +8,7 @@
     <div style="float: left;padding-right:10px;">
     	<img src="{{ participant.thumb }}" alt="my alt" width="40" height="40" />
    	</div>
-    <a href="{% url 'account:view' participant.id %}">{{ participant.name }}</a><br>
+    <a href="{% url 'account:view' participant.id %}" class="participant-name-link">{{ participant.name }}</a><br>
     {{ participant.display_address }}
 </div>
 
