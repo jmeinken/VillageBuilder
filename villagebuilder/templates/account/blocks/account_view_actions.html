@@ -1,3 +1,8 @@
+{% if account.relationship == RelationshipTypes.SELF %}
+    <a href="{% url 'account:account' %}" class="btn btn-warning">
+        <i class="fa fa-pencil"></i> Edit My Profile
+    </a>
+{% endif %}
 {% if account.relationship == RelationshipTypes.FRIENDS %}
 	<p class="text-muted"><i class="fa fa-check"></i> You are Friends</p>
 	<form method="POST" action="{% url 'relationships:remove-friend' %}">
