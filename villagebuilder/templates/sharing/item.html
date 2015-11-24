@@ -25,7 +25,8 @@ $(document).ready(function(){
 		}
 		$.post("{% url 'sharing:make_item_public' %}", postData, function(data, status){
 			if (status == 'success') {
-	    		$('#item-public-link').html(data);
+	    		$('#item-public-link').val(data);
+	    		$('#item-public-link-div').slideDown();
 			}
 	    });
 	});
@@ -163,15 +164,26 @@ $(document).ready(function(){
 			</div>
 			<div class="modal-body">
 				{% if item.public %}
-					Here is a public view of your item 
-				    <div id="item-public-link">{{ item.code }}</div>
+					Use the following public link to share your item
+					with friends who don't have VillageBuilder accounts:
+					<br><br>
+					
+					<div class="form-group">
+					    <input type="text" class="form-control" readonly
+					    onclick="select()" value="{{ item.get_public_link }}" />
+					    <span class="help-block">Click and CTRL-C to copy</span>
+					</div>
 				{% else %}
 				    <p>
 				        This will create a public link for your item that you can share with anyone,
 				        whether they have a VillageBuilder account or not.
 				    </p>
 				    <button type="button" class="btn btn-default" id="btn-make-item-public">Create link</button>
-				    <div id="item-public-link"></div>
+				    <br><br>
+				    <div class="form-group" id="item-public-link-div" style="display:none;">
+					    <input type="text" class="form-control" id="item-public-link" readonly onclick="select()" />
+					    <span class="help-block">Click and CTRL-C to copy</span>
+					</div>
 				{% endif %}
 			  
 			</div>

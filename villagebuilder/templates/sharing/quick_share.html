@@ -1,0 +1,82 @@
+{% extends "core/bases/home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+{% load staticfiles %}
+
+{% block subcontent %}
+
+<div id="top-section">
+	<h2 id="top-title">Quick Share Common Items</h2>
+</div>
+
+<div class="well">
+	This tool gives you a quick way to share common items.  To share
+a specific item not on this list, use the 
+<a href="{% url 'sharing:share_item' %}?type=stuff">Share Something</a> page.
+</div>
+
+<form method="POST" action="{% url 'sharing:quick_share' %}">
+	<p class="lead text-success">Select items to share:</p>
+	{% csrf_token %}
+	<div class="row">
+		{% for item_list in item_lists %}
+			<div class="col-sm-4">
+				<table class="table table-condensed">
+					{% for key,value in item_list.items %}
+						<tr>
+							<th><h4>{{ key }}</h4></th>
+							<th style="text-align:center;"><h5>share?</h5></th>
+							<th></th>
+						</tr>
+						{% for label,item in value.items %}
+							<tr>
+								<td>{{ item }}</td>
+								<td align="center">
+									<input type="checkbox" name="{{ label }}"
+										{% if item in active_item_titles %}
+										    checked
+										{% endif %}
+									>
+								</td>
+								<td>
+									<a href="#" style="font-size:0.8em;"data-toggle="modal" data-target="#{{ label }}_modal">
+										+ add description
+									</a>
+								</td>
+							<tr>
+						{% endfor %}	
+					{% endfor %}
+				</table>
+			</div>
+		{% endfor %}
+	</div>
+	
+	{% for item_list in item_lists %}
+	    {% for key,value in item_list.items %}
+	        {% for label,item in value.items %}
+				<div class="modal" id="{{ label }}_modal">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+							    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+							    <h4 class="modal-title">Description for {{ item }}</h4>
+							</div>
+							<div class="modal-body">
+							    <textarea class="form-control" rows="3" name="{{ label }}_description"
+							        placeholder="Enter description..."></textarea>
+							</div>
+							<div class="modal-footer">
+							    <button type="button" class="btn btn-primary" data-dismiss="modal">Finished</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		{% endfor %}
+	{% endfor %}
+	<div style="text-align:right;">
+		<button type="submit" class="btn btn-success"><i class="fa fa-share-alt"></i> Share selected items</button>
+	</div>
+</form>
+
+{% endblock %}

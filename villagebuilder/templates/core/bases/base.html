@@ -4,11 +4,31 @@
 <head>
 	<title>VillageBuilder</title>
 	<meta name="description" content="a social network for sharing resources" />
-	<meta property="og:url" content="https://www.villagebuilder.net/login/?next=/" />
-	<meta property="og:title" content="VillageBuilder" />
+	
+	{% if not og.no_url %}
+		<meta property="og:url" content="https://www.villagebuilder.net/login/?next=/" />
+	{% endif %}
+	
+	{% if og.title %}
+		<meta property="og:title" content="{{ og.title }}" />
+	{% else %}
+		<meta property="og:title" content="VillageBuilder" />
+	{% endif %}
+	
 	<meta property="og:type" content="website" />
-	<meta property="og:description" content="a social network for sharing resources" />
-	<meta property="og:image" content="https://www.villagebuilder.net{% static 'img/logo.png' %}" />
+	
+	{% if og.description %}
+		<meta property="og:description" content="{{ og.description }}" />
+	{% else %}
+		<meta property="og:description" content="share resources with friends and neighbors" />
+	{% endif %}
+	
+	{% if og.image %}
+		<meta property="og:image" content="{{ og.image }}" />
+	{% else %}
+		<meta property="og:image" content="https://www.villagebuilder.net{% static 'img/logo.png' %}" />
+	{% endif %}
+	
 	<link rel="icon" 
       type="image/png" 
       href="{% static 'img/favicon3.png' %}">

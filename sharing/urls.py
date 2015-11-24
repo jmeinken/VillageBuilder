@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^edit_sharelist/([0-9]*)', views.edit_sharelist, name='edit_sharelist'),
     url(r'^delete_sharelist', views.delete_sharelist, name='delete_sharelist'),
     url(r'^delete_item', views.delete_item, name='delete_item'),
+    url(r'^quick_share', views.quick_share, name='quick_share'),
 ]
 
 

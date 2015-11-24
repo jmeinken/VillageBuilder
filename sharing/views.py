@@ -248,19 +248,31 @@ def item(request, itemId):
          'item' : item,      
          'sharer' : getParticipantFull(item.sharer.id, currentParticipant),
          'RelationshipTypes' : RelationshipTypes,
+         
     }
     return render(request, 'sharing/item.html', context)
 
 def public_item(request, itemCode):
     # if logged in and item is shared with current participant, should forward to 'item'
-    if len(itemCode) != 60:
+    if len(itemCode) != 30:
         raise Http404('Item not available')
     item = Item.objects.get(code=itemCode)
     if not item or not item.public:
         raise Http404("Item not found")
+    og = {}
+    og['no_url'] = True
+    og['title'] = item.title
+    og['description'] = (item.sharer.participant.get_name('short') +
+        ' is sharing this item with you on VillageBuilder, a website that' +
+        ' lets you share resources with friends.  Click the link to borrow this'
+        ' item from ' + item.sharer.participant.get_name('short') + '.'
+    )
+    if item.image:
+        og['image'] = 'https://villagebuilder.net' + item.get_image()
     context = {
          'item' : item,      
          'sharer' : getParticipant(item.sharer.id),
+         'og' : og,
     }
     return render(request, 'sharing/public_item.html', context)
 
@@ -275,7 +287,7 @@ def make_item_public(request):
         if not item in getItemsSharedByCurrentMember(currentParticipant.member):
             raise Http404("Item not found")
         if not item.public:
-            item.code = createRandomString(60)
+            item.code = createRandomString(30)
             item.public = True
             item.save()
         response = 'https://villagebuilder.net' + reverse('sharing:public_item', args=[item.code])
@@ -355,6 +367,58 @@ def edit_sharelist(request, shareListId):
         'groups' : groups,
     }
     return render(request, 'sharing/edit_sharelist.html', context)
+
+@login_required
+@transaction.atomic
+def quick_share(request):
+    currentParticipant = Participant.objects.get(user=request.user, type='member')
+    item_lists = getQuickShareItems()
+    active_items = Item.objects.filter(sharer=currentParticipant.member)
+    active_item_titles = []
+    for active_item in active_items:
+        active_item_titles.append(active_item.title)
+    if request.method == "POST":
+        shared_items = []
+        removed_items = []
+        for item_list in item_lists:
+            for category in item_list:
+                for item in item_list[category]:
+                    title = item_list[category][item]
+                    if request.POST.get(item):
+                        if not title in active_item_titles:
+                            new_item = Item(
+                                sharer = currentParticipant.member,
+                                share_type = 'all_friends',
+                                type = 'stuff',
+                                title = title,
+                                description = request.POST.get(item + '_description')                
+                            )
+                            new_item.save()
+                            for keyword in getQuickShareKeywords(category, item):
+                                itemKeyword = ItemKeyword(item=new_item, keyword=keyword)
+                                itemKeyword.save()
+                            shared_items.append(title)
+                    else:
+                        if title in active_item_titles:
+                            existing_items = Item.objects.filter(title=title)
+                            for existing_item in existing_items:
+                                existing_item.delete()
+                            removed_items.append(title)
+        message = '<strong>The following new items have been shared:</strong> ' + ', '.join(shared_items)
+        if removed_items:
+            message = message + '<br><br>  <strong>The following existing items have been removed:</strong> ' + ', '.join(removed_items)
+        messages.success( request, message)
+    
+    active_items = Item.objects.filter(sharer=currentParticipant.member)
+    active_item_titles = []
+    for active_item in active_items:
+        active_item_titles.append(active_item.title)
+    context = {
+        'current' : getCurrentUser(request),
+        'item_lists' : item_lists,
+        'active_item_titles' : active_item_titles
+    }
+    return render(request, 'sharing/quick_share.html', context)
 
 
 

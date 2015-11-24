@@ -1,6 +1,8 @@
 import collections
 
+from django.core.urlresolvers import reverse
 from django.db import models
+
 from account.models import Member, Participant
 
 # computer value, display value
@@ -68,9 +70,13 @@ class Item(models.Model):
     to_keep = models.BooleanField(default=False, db_index=True)
     public = models.BooleanField(default=False, db_index=True)
     facebook_date = models.DateTimeField(db_index=True, blank=True, null=True)
-    code = models.CharField(max_length=60, null=True, blank=True, db_index=True)
+    code = models.CharField(max_length=30, null=True, blank=True, db_index=True)
     # category = models.ForeignKey("Category", on_delete=models.CASCADE)
     sharelist = models.ForeignKey("ShareList", on_delete=models.CASCADE, null=True, blank=True)
+    
+   
+    def get_public_link(self):
+        return 'https://villagebuilder.net' + reverse('sharing:public_item', args=[self.code])
     
     def get_image(self):
         if self.image:

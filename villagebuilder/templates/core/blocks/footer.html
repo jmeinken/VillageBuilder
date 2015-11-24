@@ -1,14 +1,32 @@
 {% load staticfiles %}
 
-	<div id="footer" class="text-center" style="margin:50px 50px 25px 50px;">
-    	<hr>
+<style>
+hr.hr-footer { 
+	height: 22px; 
+	border: 0; 
+	box-shadow: inset 0 20px 20px -20px rgba(0, 0, 0, 0.8); 
+	margin-top: 0;
+	margin-bottom: 15px;
+}
+</style>
+	<div id="footer" class="text-center" style="padding:0 0 25px 0;background-color:#FFF;">
+    	<hr class="hr-footer">
     	<div class="text-muted">
-    	    Questions and feedback: <a href="mailto:admin@villagebuilder.net">admin@villagebuilder.net</a>
-	    	&nbsp;&nbsp;|&nbsp;&nbsp;  
-	    	Source Code:    
+    		<a href="#">About</a>
+	    	&nbsp;&nbsp;|&nbsp;&nbsp; 
+	    	<a href="#">Terms of Use</a>
+	    	&nbsp;&nbsp;|&nbsp;&nbsp; 
+	    	<a href="#">Privacy</a>
+	    	&nbsp;&nbsp;|&nbsp;&nbsp; 
+    	    <a href="mailto:admin@villagebuilder.net"><i class="fa fa-envelope"></i>
+    	    Contact</a>
+	    	&nbsp;&nbsp;|&nbsp;&nbsp;     
 	    	<a href="https://github.com/jmeinken/VillageBuilder" target="_blank">
-	    	    GitHub
+	    	    <i class="fa fa-github"></i>
+	    	    Source Code
 	    	</a>
+	    	
+	    	
 	    </div>
     	<div class="text-muted" style="margin-top:10px;">
     	    Made in Ohio

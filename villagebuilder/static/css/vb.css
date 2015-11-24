@@ -28,8 +28,9 @@ form {
 
 
 #vb .navbar-nav > li > a {
-	color: black;
-	background-color: #34b51e;
+	color: white;
+	/*background-color: #34b51e;*/
+	background-color: #006500;
 	margin: 13px 2px 0 0;
 	padding: 7px 13px 6px 13px;
 }
@@ -39,12 +40,16 @@ form {
 
 
 #vb .navbar-nav > li > a:hover {
-	background-color: #39c521;
+	background-color: #34b51e;
 }
 
 #vb .btn {
 	border-radius: 2px;
 	padding: 8px 12px;
+}
+
+#vb .btn-sm {
+	padding: 5px 10px;
 }
 
 #vb .input-group-btn .btn {

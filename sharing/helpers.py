@@ -202,6 +202,98 @@ def getItemsSharedByCurrentMember(member):
     items = Item.objects.all().filter(sharer=member).order_by('-share_date')
     return items
 
+def getQuickShareKeywords(item_category, item_label):
+    if item_category == 'tools':
+        return ['tools']
+    if item_category == 'kids':
+        return ['kids']
+    if item_category == 'camping':
+        return ['outdoor/camping']
+    if item_category == 'sports':
+        return ['sports/games']
+    if item_label in ['food_processor', 'blender', 'stand_mixer', 'kitchen_scale']:
+        return ['electronics/appliances']
+    return ['other stuff']
+
+def getQuickShareItems():
+    item_list1 = {}
+    item_list2 = {}
+    item_list3 = {}
+    
+    item_list1['kitchen'] = {
+        'serving_bowl' : 'serving bowl',
+        'serving_tray' : 'serving tray',
+        'food_processor' : 'food processor',
+        'blender' : 'blender',
+        'stand_mixer' : 'stand mixer',
+        'can_opener' : 'can opener',
+        'large_pot' : 'large pot',
+        'serving_spoon' : 'serving spoon',
+        'ladle' : 'ladle',
+        'potato_peeler' : 'potato peeler',
+        'kitchen_scale' : 'kitchen scale',
+        'rolling_pin' : 'rolling pin',
+        'pizza_pan' : 'pizza pan',
+        'knife_sharpener' : 'knife sharpener',                   
+    }
+    item_list2['tools'] = {
+        'power_drill' : 'power drill',
+        'hammer' : 'hammer',
+        'screwdriver' : 'screwdriver',
+        'staple_gun' : 'staple gun',
+        'pliers' : 'pliers',
+        'wrench' : 'wrench',
+        'socket_wrench' : 'socket wrench',
+        'stud_finder' : 'stud finder',
+        'level' : 'level',
+        'plunger' : 'plunger',
+        'snake' : 'plumbing snake/auger',                  
+    }
+    item_list1['kids'] = {
+        'play_pen' : 'play yard (play pen)',
+        'child_carrier' : 'child carrier',
+        'stroller' : 'stroller',
+        'car_seat' : 'car seat',
+        'bike' : 'bike',
+        'scooter' : 'scooter',
+        'baby_gate' : 'baby gate',
+        'night_light' : 'night light',
+        'bath' : 'bath tub',
+        'baby_monitor' : 'baby monitor',   
+    }
+    item_list2['camping'] = {
+        'tent' : 'tent',
+        'sleeping_bag' : 'sleeping bag',
+        'sleeping_pad' : 'sleeping pad',
+        'cooler' : 'cooler',
+        'ice_packs' : 'ice packs',
+        'camp_chairs' : 'camp chairs',
+        'golf_umbrella' : 'golf umbrella',
+        'lighter' : 'lighter',
+        'tarp' : 'tarp',
+        'flashlight' : 'flashlight',
+        'lantern' : 'lantern',
+        'pocket_knife' : 'pocket knife',
+        'first_aid' : 'first aid kit',
+    }
+    item_list3['sports'] = {
+        'basketball' : 'basketball',
+        'soccer_ball' : 'soccer ball',
+        'football' : 'football',
+        'volleyball' : 'volleyball',
+        'frisbee' : 'frisbee',
+        'golf_clubs' : 'golf clubs',
+        'tennis_racket' : 'tennis racket',
+        'tennis_ball' : 'tennis ball',
+        'racquetball_racket' : 'racquetball racket',
+        'racquetball_ball' : 'racquetball ball',
+        'yoga_mat' : 'yoga mat',
+    }
+    
+    
+    return [item_list1, item_list2, item_list3]
+    
+
 # filters: sharer, group, search_string (title only or title and desc), category, keyword, has image
 # order_by: share_date (asc), share date(desc)
 # show in table: share date, category, keyword(s), title, image. shared by

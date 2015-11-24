@@ -14,20 +14,23 @@
 		display: inline;
 		width: 40%;
 	}
+	#vb img #panel-view-window {
+		vertical-align: baseline;
+	}
 </style>
 
 <script>
 
 $(document).ready(function(){
-	$('#panel-view-window').scrollLeft(-1500);
+	$('#panel-view-window').scrollLeft(-1800);
 	$('#btn-forward,#btn-forward-text').click(function() {
-		$('#panel-view-window').animate( { scrollLeft: '+=500' }, 500);
+		$('#panel-view-window').animate( { scrollLeft: '+=600' }, 600);
 		$('#btn-backward').show();
 		$('#btn-forward-text').hide();
 		return false;
 	});
 	$('#btn-backward').click(function() {
-		$('#panel-view-window').animate( { scrollLeft: '-=500' }, 500, 'swing', function() {
+		$('#panel-view-window').animate( { scrollLeft: '-=600' }, 600, 'swing', function() {
 			if ($('#panel-view-window').scrollLeft() == 0) {
 				$('#btn-backward').hide();
 				$('#btn-forward-text').show();
@@ -39,13 +42,15 @@ $(document).ready(function(){
 
 </script>
     
-<div class="container-fluid" style="max-width:1280px;min-width:750px;background-color:#FFF;">
-    <div class="row" style="padding-top:30px;">
+<div class="container-fluid" style="max-width:1280px;min-width:750px;background-color:#FFF;padding:0;">
+    <div class="row" style="padding:15px 15px 7px 15px;">
         <div class="col-md-7">
-		 	<img src="{% static 'img/vb-large.png' %}" alt="VillageBuilder" width="477" height="63" /> 
-		 	<p class="lead">share resources with friends and neighbors</p>
+		 	<img src="{% static 'img/vb-large.png' %}" alt="VillageBuilder" width="358" height="47" /> 
+		 	<div style="font-size:18px;color:#585858;">
+		 	    share resources with friends and neighbors
+		 	</div>
 		</div>
-		<div class="col-md-5" style="margin-top:10px;">
+		<div class="col-md-5" style="margin-top:5px;">
 	    	{% if form.errors %}
 		    	<div class="alert alert-danger">
 				    Unable to log in. Check your email and password.
@@ -53,17 +58,20 @@ $(document).ready(function(){
 		    {% endif %}
 		    <form method="post" action="{% url 'login' %}" id="login-form">
 		        {% csrf_token %}
-				{{ form.username|attr:"class:form-control"|attr:"placeholder:email" }}
-				{{ form.password|attr:"class:form-control"|attr:"placeholder:password" }}
+				{{ form.username|attr:"class:form-control input-sm"|attr:"placeholder:email" }}
+				{{ form.password|attr:"class:form-control input-sm"|attr:"placeholder:password" }}
 	        	<button type="submit" class="btn btn-sm btn-primary" value="Login">
 	        		Login
 	        	</button>
 		        <input type="hidden" name="next" value="{{ next }}" />
 		   </form>
-		   <br><br>
-		   <a href="{% url 'account:account_info' %}">Create Account</a> | <a href="{% url 'request_reset_password' %}">
-		       Forgot Password?
-		   </a>
+		   <div style="padding:10px 0;font-size:0.9em;font-weight:bold;">
+			   <a href="{% url 'account:account_info' %}">Create Account</a> 
+			   &nbsp;&nbsp;|&nbsp;&nbsp;
+			   <a href="{% url 'request_reset_password' %}">
+			       Forgot Password?
+			   </a>
+		   </div>
 	   	</div>
  	</div>
  	{% if messages or successMessage or errorMessage %}
@@ -75,49 +83,44 @@ $(document).ready(function(){
     {% endif %}
     
     
-    
-    <div style="margin:30px auto 0 auto;width:500px;position:relative;">
-	    <div style="position:absolute;top:50%;left:-100px;">
-	   		<a href="" id="btn-backward" style="display:none;">
-	   		    <i class="fa fa-chevron-circle-left fa-4x"></i>
-	   		</a>
-	   	</div>
-	   	<div style="position:absolute;top:50%;right:-100px;">
-	   		<a href="" id="btn-forward"><i class="fa fa-chevron-circle-right fa-4x"></i></a>
-	   	</div>
-	   	<div style="position:absolute;top:66%;right:-120px;">
-	   		<a href="" id="btn-forward-text"><strong>learn more</strong></a>
-	   	</div>
-	    <div style="width:500px;overflow:hidden;" id="panel-view-window">
-	        <div style="width:1500px">
-			    <div style="width:500px;display:inline-block;" id="panel-1">
-					<h3>reduce waste</h3>
-					<p>Have power tools that spend most of their time gathering dust? Grow too many tomatoes this year? 
-					VillageBuilder makes it easy to share things you don't need or don't use often.</p>
-					<h3>save money</h3>
-					<p>Friends you share with can share back with you. Request a specific item or browse the entire inventory
-					 of items your friends are sharing.</p>
-					<h3>no fine print</h3>
-					<p>VillageBuilder is free, private and gives you 100% control over what you share and who you share with. 
-					Get started by 
-					<a href="{% url 'account:account_info' %}">creating an account</a>
-					today.</p>
+    <div style="width:100%;background-color:#006500;padding:30px;border-top:3px #34B51E solid;border-bottom:3px #34B51E solid;">
+	    <div style="margin:0 auto;width:620px;position:relative;background-color:#fff;padding:10px;">
+		    <div style="position:absolute;top:40%;left:-100px;">
+		   		<a href="" id="btn-backward" style="display:none;color:#fff;">
+		   		    <i class="fa fa-chevron-circle-left fa-4x"></i>
+		   		</a>
+		   	</div>
+		   	<div style="position:absolute;top:40%;right:-100px;">
+		   		<a href="" id="btn-forward"  style="color:#fff;"><i class="fa fa-chevron-circle-right fa-4x"></i></a>
+		   	</div>
+		   	<div style="position:absolute;top:55%;right:-120px;">
+		   		<a href="" id="btn-forward-text" style="color:#fff;"><strong>how it works</strong></a>
+		   	</div>
+		    <div style="width:600px;overflow:hidden;" id="panel-view-window">
+		        <div style="width:1800px">
+				    <div style="width:600px;display:inline-block;text-align:center;" id="panel-1">
+						<img src="{% static 'img/vb-v-large.png' %}" alt="VillageBuilder" width="300" height="300" /> 
+						<div class="text-muted" style="font-weight:bold;font-size:35px;letter-spacing:-2px;">
+							welcome to the real sharing economy
+						</div>
+					</div>
+					<div style="width:600px;display:inline-block;">
+						<h3>reduces waste</h3>
+						<p>Have power tools that spend most of their time gathering dust? Grow too many tomatoes this year? 
+						VillageBuilder makes it easy to share things you don't need or don't use often.</p>
+						<h3>save money</h3>
+						<p>Friends you share with can share back with you. Request a specific item or browse the entire inventory
+						 of items your friends are sharing.</p>
+						<h3>no fine print</h3>
+						<p>VillageBuilder is free, private and gives you 100% control over what you share and who you share with. 
+						Get started by 
+						<a href="{% url 'account:account_info' %}">creating an account</a>
+						today.</p>
+						<p>even more stuff</p>
+					</div>
 				</div>
-				<div style="width:500px;display:inline-block;">
-					<h3>reduces waste</h3>
-					<p>Have power tools that spend most of their time gathering dust? Grow too many tomatoes this year? 
-					VillageBuilder makes it easy to share things you don't need or don't use often.</p>
-					<h3>save money</h3>
-					<p>Friends you share with can share back with you. Request a specific item or browse the entire inventory
-					 of items your friends are sharing.</p>
-					<h3>no fine print</h3>
-					<p>VillageBuilder is free, private and gives you 100% control over what you share and who you share with. 
-					Get started by 
-					<a href="{% url 'account:account_info' %}">creating an account</a>
-					today.</p>
-				</div>
-			</div>
-	    </div>
+		    </div>
+		</div>
 	</div>
 	{% include 'core/blocks/footer.html' %}
 </div>
