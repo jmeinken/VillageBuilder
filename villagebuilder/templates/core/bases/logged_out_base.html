@@ -13,10 +13,17 @@
 	</style>
     
     <div class="container-fluid" style="max-width:1280px;background-color:#FFF;">
-        <div class="page-header">
-	    	<img src="{% static 'img/vb-large.png' %}" alt="VillageBuilder" width="477" height="63" /> 
-	    	<p class="lead">share resources with friends and neighbors</p>
-	    </div>
+        <div class="row" style="padding:15px 15px 7px 15px;">
+	        <div class="col-md-7">
+	        	<a href="{% url 'home' %}">
+			 		<img src="{% static 'img/vb-large.png' %}" alt="VillageBuilder" width="358" height="47" /> 
+			 	</a>
+			 	<div style="font-size:18px;color:#585858;">
+			 	    share resources with friends and neighbors
+			 	</div>
+			</div>
+	 	</div>
+	 	<hr>
 	    {% if messages or successMessage or errorMessage %}
     	    <div class="row">
     	        <div class="col-md-10 col-md-offset-1">
@@ -25,8 +32,12 @@
                 </div>
             </div>
         {% endif %}
-        {% block subcontent %}{% endblock %}
-        {% include 'core/blocks/footer.html' %}
+        <div style="min-height:60vh;padding-bottom:50px;">
+        	{% block subcontent %}{% endblock %}
+        </div>
+    </div>
+    <div style="max-width:1280px;margin:0 auto;">
+    {% include 'core/blocks/footer.html' %}
     </div>
     
     

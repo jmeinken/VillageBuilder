@@ -126,7 +126,8 @@ def getItemsForParticipant(participant):
                 Q(sharer__friendship_set__friend=participant.member) & 
                 Q(sharer__reverse_friendship_set__member=participant.member)
             ) |
-            ( Q(share_type='all_friends_groups') & Q(sharer__groupmembership__group_id__in=groupIds) ) 
+            ( Q(share_type='all_friends_groups') & Q(sharer__groupmembership__group_id__in=groupIds) &
+               Q(sharer__groupmembership__requested=True) & Q(sharer__groupmembership__invited=True)) 
         ).exclude(sharer=participant.member).distinct().order_by('-share_date')
     return items
 
@@ -203,17 +204,18 @@ def getItemsSharedByCurrentMember(member):
     return items
 
 def getQuickShareKeywords(item_category, item_label):
+    result = []
     if item_category == 'tools':
-        return ['tools']
+        result.append('tools')
     if item_category == 'kids':
-        return ['kids']
+        result.append('kids')
     if item_category == 'camping':
-        return ['outdoor/camping']
+        result.append('outdoor/camping')
     if item_category == 'sports':
-        return ['sports/games']
+        result.append('sports/games')
     if item_label in ['food_processor', 'blender', 'stand_mixer', 'kitchen_scale']:
-        return ['electronics/appliances']
-    return ['other stuff']
+        result.append('electronics/appliances')
+    return result
 
 def getQuickShareItems():
     item_list1 = {}
@@ -261,7 +263,7 @@ def getQuickShareItems():
         'bath' : 'bath tub',
         'baby_monitor' : 'baby monitor',   
     }
-    item_list2['camping'] = {
+    item_list2['camping/outdoor'] = {
         'tent' : 'tent',
         'sleeping_bag' : 'sleeping bag',
         'sleeping_pad' : 'sleeping pad',
@@ -275,6 +277,9 @@ def getQuickShareItems():
         'lantern' : 'lantern',
         'pocket_knife' : 'pocket knife',
         'first_aid' : 'first aid kit',
+        'insect_repellant' : 'insect repellant',
+        'sunblock' : 'sunblock',
+        'portable_radio' : 'portable radio'
     }
     item_list3['sports'] = {
         'basketball' : 'basketball',
@@ -288,6 +293,41 @@ def getQuickShareItems():
         'racquetball_racket' : 'racquetball racket',
         'racquetball_ball' : 'racquetball ball',
         'yoga_mat' : 'yoga mat',
+        'bike_pump' : 'bike pump',
+        'ball_pump' : 'ball pump',
+    }
+    item_list3['yard'] = {
+        'ext_ladder' : 'extension ladder',
+        'wheelbarrow' : 'wheelbarrow',
+        'grill' : 'grill',
+        'bucket' : 'bucket',
+        'chainsaw' : 'chainsaw',
+        'lawnmower' : 'lawnmower',
+        'hedge_trimmers' : 'hedge trimmers',
+        'weed_wacker' : 'weed wacker',
+        'pruner' : 'pruner',
+        'lopper' : 'lopper',
+        'saw' : 'saw',
+        'shovel' : 'shovel',
+        'hoe' : 'hoe',
+        'snow_shovel' : 'snow shovel',
+    }
+    item_list3['auto'] = {
+        'jack' : 'car jack',
+        'jumper_cables' : 'jumper cables',
+        'fix_a_flat' : 'fix-a-flat',
+        'hand_vac' : 'cordless hand vacuum',
+    }
+    item_list1['assorted'] = {
+        'air_mattress' : 'air mattress',
+        'space_heater' : 'space heater',
+        'glue' : 'glue',
+        'duct_tape' : 'duct tape',
+        'masking_tape' : 'masking tape',
+        'packing_tape' : 'packing tape',
+        'headphones' : 'headphones',
+        'step_ladder' : 'step ladder',
+        'x_cord' : 'extension cord',
     }
     
     

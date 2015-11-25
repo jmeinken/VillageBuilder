@@ -5,17 +5,29 @@
 
 {% block subcontent %}
 
-<div id="top-section">
-	<h2 id="top-title">Quick Share Common Items</h2>
-</div>
-
-<div class="well">
-	This tool gives you a quick way to share common items.  To share
-a specific item not on this list, use the 
-<a href="{% url 'sharing:share_item' %}?type=stuff">Share Something</a> page.
-</div>
-
 <form method="POST" action="{% url 'sharing:quick_share' %}">
+	<div id="top-section">
+	    <div id="top-actions">
+	    	<span class="text-warning">
+		    	<i class="fa fa-exclamation-triangle"></i>
+		    	By sharing an item, you agree to our 
+		    	<a href="#" data-toggle="modal" data-target="#sharing-policies-modal">sharing policies</a>.
+		    </span>
+		    &nbsp;&nbsp;
+			<button type="submit" class="btn btn-success"><i class="fa fa-share-alt"></i> Share selected items</button>
+		</div>
+		<h2 id="top-title">Quick Share Common Items</h2>
+	</div>
+	
+	<div class="well">
+		<p>Selected items will be shared with all your friends
+		on Villagebuilder.</p>
+		
+		For more custom options or to share a specific item not on this list, use the 
+	<a href="{% url 'sharing:share_item' %}?type=stuff">Share Something</a> page.
+	</div>
+
+
 	<p class="lead text-success">Select items to share:</p>
 	{% csrf_token %}
 	<div class="row">
@@ -24,7 +36,7 @@ a specific item not on this list, use the
 				<table class="table table-condensed">
 					{% for key,value in item_list.items %}
 						<tr>
-							<th><h4>{{ key }}</h4></th>
+							<th style="text-transform: uppercase;"><h4>{{ key }}</h4></th>
 							<th style="text-align:center;"><h5>share?</h5></th>
 							<th></th>
 						</tr>
@@ -75,8 +87,37 @@ a specific item not on this list, use the
 		{% endfor %}
 	{% endfor %}
 	<div style="text-align:right;">
-		<button type="submit" class="btn btn-success"><i class="fa fa-share-alt"></i> Share selected items</button>
+		<span class="text-warning">
+		    	<i class="fa fa-exclamation-triangle"></i>
+		    	By sharing an item, you agree to our 
+		    	<a href="#" data-toggle="modal" data-target="#sharing-policies-modal">sharing policies</a>.
+		    </span>
+		    &nbsp;&nbsp;
+			<button type="submit" class="btn btn-success"><i class="fa fa-share-alt"></i> Share selected items</button>
 	</div>
 </form>
+
+<div class="modal" id="sharing-policies-modal">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        <h4 class="modal-title">VillageBuilder Sharing Policies</h4>
+      </div>
+      <div class="modal-body">
+        {% include 'boilerplate/minimizing_risk.html' %}
+        <br>
+        {% include 'boilerplate/solicitation.html' %}
+        <br>
+        {% include 'boilerplate/liability.html' %}
+        <br>
+        {% include 'boilerplate/termination.html' %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

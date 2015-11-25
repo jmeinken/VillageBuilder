@@ -85,6 +85,10 @@ def home(request):
     ])
     relationshipCount = len(relationships)
     hasRelationshipActivity = doesUserHaveRelationshipActivity(currentParticipant)
+    if Item.objects.filter(sharer=currentParticipant.member).count() == 0:
+        hasSharedSomething = False
+    else:
+        hasSharedSomething = True
     context = {
             'current' : getCurrentUser(request),
             'peopleNearYou' : getPeopleNearYou(currentParticipant),
@@ -97,12 +101,17 @@ def home(request):
             'totalSharedWithYou' : totalSharedWithYou,
             'recentItems' : recentItems,
             'hasRelationshipActivity' : hasRelationshipActivity,
+            'hasSharedSomething' : hasSharedSomething,
         }
     return render(request, 'core/home.html', context)
 
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def info(request):
+    context = {}
+    return render(request, 'core/boilerplate.html', context)
 
 def test_view(request):
     return HttpResponse("It worked!")

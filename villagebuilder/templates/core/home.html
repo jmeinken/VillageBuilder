@@ -42,6 +42,8 @@
 		
 		var maxRequest = {{ maxRequest }};
 		
+		$(".add-tooltip").tooltip();
+		
 	});
 		
 		
@@ -121,12 +123,23 @@
     	<div class="col-md-6">
     	    <div class="float-right" style="margin-top: 5px">
 		    	<div class="btn-group">
-					<a href="{% url 'sharing:share_item' %}" class="btn btn-primary">Share Something</a>
+					<a href="{% url 'sharing:share_item' %}?type=stuff" class="btn btn-primary">Share Something</a>
 					<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-caret-down"></i>&nbsp;</a>
 					<ul class="dropdown-menu">
 					    {% for category in shareCategories %}
-						    <li><a href="{% url 'sharing:share_item' %}?type={{ category.0 }}">{{ category.1 }}</a></li>
+						    <li>
+						    	<a href="{% url 'sharing:share_item' %}?type={{ category.0 }}">
+						    		<span style="display:inline-block; width: 200px;">Share {{ category.1 }}</span>
+						    		<i class="fa fa-plus"></i>
+						    	</a>
+						    </li>
 						{% endfor %}
+						<li>
+							<a href="{% url 'sharing:quick_share' %}">
+								<span style="display:inline-block; width: 200px;">Quick Share Common Items</span>
+								<i class="fa fa-list-ul"></i>
+							</a>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -142,23 +155,34 @@
 				<form method="post" action="{% url 'requests:post_request' %}">
 				    {% csrf_token %}
 				    <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
-					<div class="form-group">
-						<textarea class="form-control" rows="2" name="body"
-								placeholder="Ask for something you need, give something away, say hello, ..."></textarea>
-						<button type="submit" class="btn btn-default" style="margin-top: 5px">Post Message</button>
-						<span class="text-muted">
-							(visible by all your friends and groups)
-						</span>
-					</div> 
+
+					<textarea class="form-control" rows="2" name="body"
+								placeholder="Ask for something you need, give something away, say hi..."></textarea>
+					<button type="submit" class="btn btn-default" style="margin:5px 0">Post Message</button>
+					<div style="display:inline-block;" >
+						<a href="#" data-toggle="tooltip" data-placement="right" 
+							data-original-title="Request messages are visible by all your friends and all your groups." class="add-tooltip">
+							<i class="fa fa-question-circle"></i>
+						</a>
+					</div>
 				</form>
 			</div>
 			{% if not hasRelationshipActivity %}
-				<div class="alert alert-dismissible alert-warning">
+				<div class="alert alert-dismissible alert-warning" style="margin-bottom:0">
 				    <button type="button" class="close" data-dismiss="alert">X</button>
 					Welcome!  Currently, your only friend is the VillageBuilder Admin.
-					Our administrator is cool and all, but honestly you can do better. <br><br>
+					Our administrator is cool and all, but you can do better.
 					There are tools on the right side of this page for finding friends. 
 					Use the blue button in anyone's name box to send them a friend request.
+				</div>
+			{% endif %}
+			{% if not hasSharedSomething %}
+				<div class="alert alert-dismissible alert-info">
+				    <button type="button" class="close" data-dismiss="alert">X</button>
+					You are sharing 0 items.  The easiest way to get started is with the
+					<a href="{% url 'sharing:quick_share' %}">quick share common items</a> tool.
+					You can also share individual items on the 
+					<a href="{% url 'sharing:share_item' %}?type=stuff">share something</a> page.
 				</div>
 			{% endif %}
 			<h3 class="underline">Requests</h3>

@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'hide_me/', 'main.views.hide_me', name='hide_me'),
     url(r'request_reset_password/', 'main.views.request_reset_password', name='request_reset_password'),
     url(r'reset_password/([a-zA-Z0-9]*)', 'main.views.reset_password', name='reset_password'),
+    url(r'^info$', 'main.views.info', name='info'),
     
     #note: pages in main do not have a namespace 
     url(r'^$', include('main.urls')),

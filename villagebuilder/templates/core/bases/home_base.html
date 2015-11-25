@@ -56,7 +56,7 @@
 						    </a>
 						</li>
 						<li>
-						    <a href="{% url 'sharing:share_item' %}">
+						    <a href="{% url 'sharing:share_item' %}?type=stuff">
 						        <span style="display:inline-block; width: 200px;">
 						            share something
 						        </span>
@@ -90,7 +90,6 @@
 						<li>&nbsp;&nbsp;<em>no alerts to show</em></li>
 			        </ul>
 				</li>
-				<li><a href="#">Help</a></li>
 				<li class="dropdown">
 			</ul>
 	        <ul class="nav navbar-nav navbar-right">
@@ -131,9 +130,14 @@
                 </div>
             </div>
         {% endif %}
+        <div style="min-height:70vh;padding-bottom:50px;">
 		{% block subcontent %}{% endblock %}
+		</div>
 		<br><br>
-		{% include 'core/blocks/footer.html' %}
+		
+    </div>
+    <div style="max-width:1280px;min-width:750px;margin:0 auto;">
+    	{% include 'core/blocks/footer.html' %}
     </div>
 
 {% endblock %}

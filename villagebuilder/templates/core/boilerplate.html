@@ -1,0 +1,26 @@
+{% extends "core/bases/logged_out_base.html" %}
+
+{% block subcontent %}
+
+<div class="row">
+	<div class="col-sm-7 col-sm-offset-1">
+	<h2>General Site Info</h2>
+		<br>
+		{% include 'boilerplate/about.html' %}
+		<br>
+		{% include 'boilerplate/privacy.html' %}
+		<br>
+		{% include 'boilerplate/minimizing_risk.html' %}
+		<hr>
+	<h2 id="terms">Terms of Use</h2>
+		<br>
+		{% include 'boilerplate/liability.html' %}
+		<br>
+		{% include 'boilerplate/termination.html' %}
+		<br>
+		{% include 'boilerplate/solicitation.html' %}
+		<br>
+	</div>
+</div>
+
+{% endblock %}

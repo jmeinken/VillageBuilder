@@ -65,6 +65,13 @@ form {
 #vb .btn-primary:hover {
 	background-color: #004c80;
 }
+#vb .btn-info {
+	border-color: #008ae6;
+	background-color: #0099FF;
+}
+#vb .btn-info:hover {
+	background-color: #008ae6;
+}
 #vb .btn-success {
 	background-color: #34B51E;
 	border-color: #2c9919;
@@ -87,8 +94,8 @@ form {
 	background-color: #d36312;
 }
 #vb .alert-warning {
-	color: #FFF;
-	background-color: #EC7621;
+	color: #EC7621;
+	background-color: #fdf1e8;
 }
 
 #vb .text-primary {
