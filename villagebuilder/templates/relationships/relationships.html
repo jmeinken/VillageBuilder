@@ -58,21 +58,25 @@
 				        Friends [{{ friends|length }}]
 				    </a>
 				</li>
+				{% if noGroupRelationships %}
+				    <li class="disabled"><a href="#">Groups</a></li>
+				{% else %}
+				    <li>
+				    	<a aria-expanded="false" data-target="#groups" data-toggle="tab">
+				    		Groups [{{ groupCount }}]
+				    	</a>
+				    </li>
+				{% endif %}
 				<li class="">
 				    <a aria-expanded="false" data-target="#request_received" data-toggle="tab">
-				        Request Received [{{ friendRequestReceived|length }}]
+				        Requests Received [{{ requestReceivedCount }}]
 				    </a>
 				</li>
 				<li class="">
 				    <a aria-expanded="false" data-target="#request_sent" data-toggle="tab">
-				        Request Sent [{{ friendRequestSent|length }}]
+				        Requests Sent [{{ requestSentCount }}]
 				    </a>
 				</li>
-				{% if noGroupRelationships %}
-				    <li class="disabled"><a href="#">Groups</a></li>
-				{% else %}
-				    <li><a aria-expanded="false" data-target="#groups" data-toggle="tab">Groups</a></li>
-				{% endif %}
 			</ul>
 			<div id="myTabContent" class="tab-content">
 				<div class="tab-pane fade active in" id="friends">
@@ -92,6 +96,12 @@
 						    no friend requests received
 						{% endfor %}
 					</div>
+					{% if groupMemberInvited %}
+						<h5>Groups you have been invited to join:</h5>
+						{% for participant in groupMemberInvited %}
+							{% include 'core/blocks/participantgroup.html' %}
+						{% endfor %}
+					{% endif %}
 				</div>
 				<div class="tab-pane fade" id="request_sent">
 					<div class="list-group">
@@ -101,6 +111,12 @@
 						    no friend requests sent
 						{% endfor %}
 					</div>
+					{% if groupMemberRequested %}
+						<h5>Group membership requested - awaiting approval from group owner:</h5>
+						{% for participant in groupMemberRequested %}
+							{% include 'core/blocks/participantgroup.html' %}
+						{% endfor %}
+					{% endif %}
 				</div>
 				<div class="tab-pane fade" id="groups">
 				    {% if groupOwner %}
@@ -117,19 +133,9 @@
 						{% endfor %}
 					{% endif %}
 					
-					{% if groupMemberInvited %}
-						<h5>Groups you have been invited to join:</h5>
-						{% for participant in groupMemberInvited %}
-							{% include 'core/blocks/participantgroup.html' %}
-						{% endfor %}
-					{% endif %}
 					
-					{% if groupMemberRequested %}
-						<h5>Awaiting Approval from group owner:</h5>
-						{% for participant in groupMemberRequested %}
-							{% include 'core/blocks/participantgroup.html' %}
-						{% endfor %}
-					{% endif %}
+					
+					
 				</div>
 			</div>  
 		</div>

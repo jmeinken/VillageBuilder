@@ -6,7 +6,7 @@
 
 
 <div id="top-section">
-	<h2 id="top-title">People</h2>
+	<h2 id="top-title">Profile</h2>
 </div>
 
 	
@@ -27,7 +27,7 @@
 				</div>
 			{% endif %}
 			{% if account.type == 'group' %}
-			    Owner: {{ account.owner.id }} {{ account.owner.name }}
+			    Owner: <a href="{% url 'account:view' account.owner.id %}">{{ account.owner.name }}</a>
 			{% endif %}
 			<dl class="dl dl-3">
 				{% if account.email  %}

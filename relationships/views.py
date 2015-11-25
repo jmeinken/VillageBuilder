@@ -326,10 +326,7 @@ def relationships(request):
     groupMemberInvited = getRelations(currentParticipant, currentParticipant, [
         RelationshipTypes.GROUP_MEMBER_INVITED, 
     ])
-    if not groupOwner and not groupMember and not groupMemberRequested and not groupMemberInvited:
-        noGroupRelationships = True
-    else:
-        noGroupRelationships = False
+
     context = {
         'current' : getCurrentUser(request),
         'friends' : friends,
@@ -340,7 +337,9 @@ def relationships(request):
         'groupMemberRequested' : groupMemberRequested,
         'groupMemberInvited' : groupMemberInvited,        
         'RelationshipTypes' : RelationshipTypes,
-        'noGroupRelationships' : noGroupRelationships,
+        'groupCount' : len(groupOwner) + len(groupMember),
+        'requestReceivedCount' : len(friendRequestReceived) + len(groupMemberInvited),
+        'requestSentCount' : len(friendRequestSent) + len(groupMemberRequested)
     }
     return render(request, 'relationships/relationships.html', context)
 

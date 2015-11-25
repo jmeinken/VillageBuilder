@@ -57,7 +57,7 @@
        </form>
 {% endif %}	
 {% if account.relationship == RelationshipTypes.GROUP_OWNER %}
-    <a href="{% url 'account:edit_group' account.id %}" class="btn btn-primary">Manage Group</a>
+    <a href="{% url 'account:edit_group' account.id %}" class="btn btn-warning">Manage Group</a>
 {% endif %}
 {% if account.relationship == RelationshipTypes.NOT_GROUP_MEMBER %}
 	<form method="post" action="{% url 'relationships:join_group' %}">

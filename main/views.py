@@ -51,6 +51,7 @@ from requests.helpers import *
 from email_system.helpers import *
 from sharing.models import SHARE_CATEGORIES
 from sharing.helpers import *
+from account.forms import AccountInfoForm
 
 from .forms import RequestResetPasswordForm, ResetPasswordForm
 
@@ -206,9 +207,16 @@ def login_view(request, template_name='core/login.html',
         form = authentication_form(request)
 
     current_site = get_current_site(request)
+    
+    createAccountForm = AccountInfoForm(initial={
+            'email': ifkeyset(request.session, 'email'),
+            'first_name': ifkeyset(request.session, 'first_name'),
+            'last_name': ifkeyset(request.session, 'last_name'),
+        })
 
     context = {
         'form': form,
+        'createAccountForm' : createAccountForm,
         redirect_field_name: redirect_to,
         'site': current_site,
         'site_name': current_site.name,
