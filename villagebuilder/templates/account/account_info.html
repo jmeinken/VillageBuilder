@@ -9,31 +9,55 @@
 </script>
 
     {% include "account/blocks/create-account-nav.html" %}<br>
-	<div class="row">
-		<div class="col-md-4">
-			<form action="{{ callback }}" method="post" id="main-form">
-			    {% csrf_token %}
-			    {{ form.non_field_errors }}
-			    {% for field in form %}
-			        <div class="form-group">
-			            {{ field|label_with_classes:"control-label" }} 
-			            {{ field|attr:"class:form-control" }}
-			            {% if field.id_for_label == "id_last_name" %}
-				            <a href="#" data-toggle="modal" data-target="#name-privacy-modal" class="text-warning"> 
-				                <i class="fa fa-question-circle"></i> Why do you need my name?
-			                </a>
-			            {% endif %}
-			            {% if field.id_for_label == "id_password" %}
-				            <span class="text-muted">minimum 8 characters</span>
-			            {% endif %}
-		            </div>
-		            <div id="form-errors" class="text-danger">{{ field.errors }}</div>
-			    {% endfor %}
-			    <input type="hidden" name="redirect-url" value="" />
-			    <button type="submit" class="btn btn-primary">Save and Continue <i class="fa fa-angle-double-right"></i></button>
-			</form>
+<form action="{% url 'account:account_info' %}" method="post" id="main-form">
+    {% csrf_token %}
+    <div style="width:420px;margin:0 auto;overflow:hidden;padding:10px 2px 10px 0;">
+        <div class="form-group">
+            {{ form.email|label_with_classes:"control-label" }} 
+            {{ form.email|attr:"class:form-control" }}
+        </div>
+        <div class="text-danger form-errors">{{ form.email.errors }}</div>
+	    <div style="width:200px;margin-right:18px;float:left;">
+	        <div class="form-group">
+		            {{ form.first_name|label_with_classes:"control-label" }} 
+		            {{ form.first_name|attr:"class:form-control" }}
+		            <a href="#" data-toggle="modal" data-target="#name-privacy-modal"> 
+		                <i class="fa fa-question-circle"></i> Do you need my real name?
+	                </a>
+	        </div>
+	        <div class="text-danger form-errors">{{ form.first_name.errors }}</div>
+	    </div>
+	    <div style="width:200px;float:left;">
+			<div class="form-group">
+			 	{{ form.last_name|label_with_classes:"control-label" }} 
+			 	{{ form.last_name|attr:"class:form-control" }}
+			</div>
+			<div class="text-danger form-errors">{{ form.last_name.errors }}</div>
+	    </div>
+	    <div style="width:200px;margin-right:18px;float:left;">
+	        <div class="form-group">
+		            {{ form.password|label_with_classes:"control-label" }} 
+		            {{ form.password|attr:"class:form-control" }}
+		            <span class="text-muted">minimum 8 characters</span>
+	        </div>
+	        <div class="text-danger form-errors">{{ form.password.errors }}</div>
+	    </div>
+	    <div style=width:200px;float:left;">
+	        <div class="form-group">
+		            {{ form.resubmit_password|label_with_classes:"control-label" }} 
+		            {{ form.resubmit_password|attr:"class:form-control" }}
+	        </div>
+	        <div class="text-danger form-errors">{{ form.resubmit_password.errors }}</div>
+	    </div>
+		<input type="hidden" name="redirect-url" value="" />
+		<div style="text-align: right;clear:both;">
+		    <button type="submit" class="btn btn-success">
+		    	Next Step <i class="fa fa-angle-double-right"></i>
+		    </button>
 		</div>
 	</div>
+	
+</form>
 
 
 	
@@ -47,9 +71,11 @@
 			</div>
 			<div class="modal-body">
 			    <p>
-			    	Your name is public and enables friends to find you.
-			    	We recommend entering your full real name.
-			    	You should only enter a nickname if it's something that friends will recognize.
+			    	Your name enables friends to find you.
+			    	We recommend entering your full real name or at least something that friends will recognize.
+			    </p>
+			    <p>
+			    	You will have the chance to review and set privacy options in a minute.
 			    </p>
 			</div>
 			<div class="modal-footer">

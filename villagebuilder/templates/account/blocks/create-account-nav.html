@@ -1,19 +1,31 @@
+<style>
 
-<div class="row well well-sm" style="background-color:#FFF;">
-	<div class="col-sm-2">
-		<h4 class="text-info">Create New Account</h4>
-	</div>
-	<div class="col-sm-10">
-		<ul class="nav nav-pills nav-wizard">
-			{% for entry in nav %}	
-		        <li class="{{ entry.class_attr }}">
-		        	{% if not forloop.first %}<div class="nav-wedge"></div>{% endif %}
-		                <a href="{{ entry.link }}" id="{{ entry.id }}">{{ entry.label }}</a>
-		            {% if not forloop.last %}<div class="nav-arrow"></div>{% endif %}
-		        </li>
-		    {% endfor %}
-		</ul>
-	</div>
+#vb .nav-pills > li {
+	float:none;
+}
+
+#vb .nav > li {
+	display:inline-block;
+}
+</style>
+
+
+
+<div id="top-section">
+	<h2 id="top-title">Create New Account</h2>
 </div>
+
+<div style="text-align:center;">
+	<ul class="nav nav-pills nav-wizard">
+		{% for entry in nav %}	
+	        <li class="{{ entry.class_attr }}">
+	        	{% if not forloop.first %}<div class="nav-wedge"></div>{% endif %}
+	                <a href="{{ entry.link }}" id="{{ entry.id }}">{{ entry.label }}</a>
+	            {% if not forloop.last %}<div class="nav-arrow"></div>{% endif %}
+	        </li>
+	    {% endfor %}
+	</ul>
+</div>
+
 
 		

@@ -1,50 +1,112 @@
-{% load app_filters %}
-{% load widget_tweaks %}
+{% load staticfiles %}
 
-<form action="{% url 'account:account_info' %}" method="post" id="main-form">
-    {% csrf_token %}
-    <div style="text-align:center;">
-   		<h3>Create Your Free Account</h3>
-   	</div>
-    <div style="width:420px;margin:0 auto;border-top:1px solid #EC7621; padding-top:10px;overflow:hidden;padding-right:2px;">
-        <div class="form-group">
-            {{ createAccountForm.email|label_with_classes:"control-label" }} 
-            {{ createAccountForm.email|attr:"class:form-control" }}
-        </div>
-	    <div style="width:200px;margin-right:18px;float:left;">
-	        <div class="form-group">
-		            {{ createAccountForm.first_name|label_with_classes:"control-label" }} 
-		            {{ createAccountForm.first_name|attr:"class:form-control" }}
-		            <a href="#" data-toggle="modal" data-target="#name-privacy-modal"> 
-		                <i class="fa fa-question-circle"></i> Do you need my name?
-	                </a>
-	        </div>
-	    </div>
-	    <div style="width:200px;float:left;">
-			<div class="form-group">
-			 	{{ createAccountForm.last_name|label_with_classes:"control-label" }} 
-			 	{{ createAccountForm.last_name|attr:"class:form-control" }}
-			</div>
-	    </div>
-	    <div style="width:200px;margin-right:18px;float:left;">
-	        <div class="form-group">
-		            {{ createAccountForm.password|label_with_classes:"control-label" }} 
-		            {{ createAccountForm.password|attr:"class:form-control" }}
-		            <span class="text-muted">minimum 8 characters</span>
-	        </div>
-	    </div>
-	    <div style=width:200px;float:left;">
-	        <div class="form-group">
-		            {{ createAccountForm.resubmit_password|label_with_classes:"control-label" }} 
-		            {{ createAccountForm.resubmit_password|attr:"class:form-control" }}
-	        </div>
-	    </div>
-		<input type="hidden" name="redirect-url" value="" />
-	</div>
-	<div style="text-align: right;width:420px;margin:0 auto;">
-	    <button type="submit" class="btn btn-success">
-	    	Next Step <i class="fa fa-angle-double-right"></i>
-	    </button>
-	</div>
-	
-</form>
+<style>
+#person1b {
+	position:absolute;
+	left: 10px;
+	top: 170px;
+}
+#person2b {
+	position:absolute;
+	left: 280px;
+	top: 25px;
+}
+#person3b {
+	position:absolute;
+	left: 410px;
+	top: 25px;
+}
+#person4b {
+	position:absolute;
+	left: 480px;
+	top: 200px;
+}
+#person5b {
+	position:absolute;
+	left: 280px;
+	top: 200px;
+}
+#person4-faded {
+	position:absolute;
+	left: 480px;
+	top: 200px;
+	opacity: 0;
+}
+#person5-faded {
+	position:absolute;
+	left: 280px;
+	top: 200px;
+	opacity: 0;
+}
+
+
+#item1b {
+	position:absolute;
+	left: 0;
+	top: 25px;
+}
+#item2b {
+	position:absolute;
+	left: 75px;
+	top: 25px;
+}
+#item3b {
+	position:absolute;
+	left: 150px;
+	top: 25px;
+}
+#item4b {
+	position:absolute;
+	left: 37px;
+	top: 100px;
+}
+#item3-faded {
+	position:absolute;
+	left: 150px;
+	top: 25px;
+	opacity: 0;
+}
+#item4-faded {
+	position:absolute;
+	left: 37px;
+	top: 100px;
+	opacity: 0;
+}
+#item5b {
+	position:absolute;
+	left: 112px;
+	top: 100px;
+}
+
+
+
+</style>
+
+<img id="person1b" src="{% static 'img/slideshow/person1.png' %}" alt="VillageBuilder" width="170" height="170" /> 
+<img id="person2b" src="{% static 'img/slideshow/person2.png' %}" alt="VillageBuilder" width="100" height="100" /> 
+<img id="person3b" src="{% static 'img/slideshow/person3.png' %}" alt="VillageBuilder" width="170" height="100" /> 
+<img id="person4b" src="{% static 'img/slideshow/person4.png' %}" alt="VillageBuilder" width="100" height="100" /> 
+<img id="person5b" src="{% static 'img/slideshow/person5.png' %}" alt="VillageBuilder" width="170" height="100" /> 
+
+<img id="person4-faded" src="{% static 'img/slideshow/person4-faded.png' %}" alt="VillageBuilder" width="100" height="100" /> 
+<img id="person5-faded" src="{% static 'img/slideshow/person5-faded.png' %}" alt="VillageBuilder" width="170" height="100" /> 
+
+<img id="item1b" src="{% static 'img/slideshow/item1.png' %}" alt="VillageBuilder" width="70" height="70" /> 
+<img id="item2b" src="{% static 'img/slideshow/item2.png' %}" alt="VillageBuilder" width="70" height="70" /> 
+<img id="item3b" src="{% static 'img/slideshow/item3.png' %}" alt="VillageBuilder" width="70" height="70" /> 
+<img id="item4b" src="{% static 'img/slideshow/item4.png' %}" alt="VillageBuilder" width="70" height="70" /> 
+<img id="item5b" src="{% static 'img/slideshow/item5.png' %}" alt="VillageBuilder" width="70" height="70" />
+
+<img id="item3-faded" src="{% static 'img/slideshow/item3-faded.png' %}" alt="VillageBuilder" width="70" height="70" /> 
+<img id="item4-faded" src="{% static 'img/slideshow/item4-faded.png' %}" alt="VillageBuilder" width="70" height="70" /> 
+
+
+
+
+
+
+<div id="panel5-text" style="opacity:0;">
+	You have complete control over what you share and who you share with. Like we said, no awkwardness.
+</div>
+
+

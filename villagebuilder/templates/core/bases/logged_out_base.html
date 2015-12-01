@@ -6,13 +6,27 @@
 {% block content %}
 
     <style>
-	body {
-		background-color: #808080;
-		margin-bottom: 30px;
-	}
+		body {
+			background-color: #808080;
+			margin-bottom: 30px;
+		}
+		#window-container-container {
+    		width:100%;
+    		background-color:#006500;
+    		padding:20px;
+    		border-top:3px #34B51E solid;
+    		border-bottom:3px #34B51E solid;
+    		min-height:70vh;
+    	}
+    	#window-container {
+    		width:80%;
+    		background-color:#fff;
+    		padding:10px;
+    		margin: 0 auto;
+    	}
 	</style>
     
-    <div class="container-fluid" style="max-width:1280px;background-color:#FFF;">
+    <div style="max-width:1280px;background-color:#FFF;margin: 0 auto;">
         <div class="row" style="padding:15px 15px 7px 15px;">
 	        <div class="col-md-7">
 	        	<a href="{% url 'home' %}">
@@ -23,7 +37,6 @@
 			 	</div>
 			</div>
 	 	</div>
-	 	<hr>
 	    {% if messages or successMessage or errorMessage %}
     	    <div class="row">
     	        <div class="col-md-10 col-md-offset-1">
@@ -32,9 +45,11 @@
                 </div>
             </div>
         {% endif %}
-        <div style="min-height:60vh;padding-bottom:50px;">
-        	{% block subcontent %}{% endblock %}
-        </div>
+        <div id="window-container-container">
+	    <div id="window-container">
+			{% block subcontent %}{% endblock %}
+		</div>
+	</div>
     </div>
     <div style="max-width:1280px;margin:0 auto;">
     {% include 'core/blocks/footer.html' %}

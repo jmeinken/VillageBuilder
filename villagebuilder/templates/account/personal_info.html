@@ -46,9 +46,9 @@
 			<div class="row">
 				<div class="col-md-4">
 				    <fieldset>
-				    <legend>Address</legend>
+				    <legend class="text-success">Display Address</legend>
 					    {% csrf_token %}
-				        <div class="form-group">
+				        <div class="form-group" style="display:none;">
 					        {{ form.full_address.errors }}
 				            {{ form.full_address|label_with_classes:"control-label" }} 
 				            {{ form.full_address|attr:"class:form-control"|attr:"readonly" }}
@@ -72,7 +72,7 @@
 				</div>
 				<div class="col-md-4" style="padding:0 30px;">
 				    <fieldset>
-				        <legend>User Pic</legend>
+				        <legend class="text-success">User Pic</legend>
 						<img id="user-pic" src="{% static "img/generic-user.png" %}" 
 						        alt="User Pic" width="150" height="150"
 						        style="margin-right:10px;" />
@@ -81,7 +81,7 @@
 						</button>
 					</fieldset>
 					<fieldset style="margin-top:20px;">
-						<legend style="margin-bottom:5px;">Privacy Settings</legend>
+						<legend style="margin-bottom:5px;" class="text-success">Privacy Settings</legend>
 						<div style="padding-left:20px;">
 					        <div class="checkbox">
 						        {{ form.share_street.errors }}
@@ -100,8 +100,20 @@
 				</div>
 				<div class="col-md-4">
 					<fieldset>
-					    <legend class="text-primary">What can people see?</legend>
-					    <div class="panel panel-primary">
+					    <legend class="text-warning">What can people see?</legend>
+					    <div class="panel panel-warning">
+						    <div class="panel-heading">
+						        <h3 class="panel-title">Shared with Everyone</h3>
+						    </div>
+						    <div class="panel-body">
+						        <img id="shared-user-pic" src="{% static 'img/generic-user.png' %}" 
+						                alt="User Pic" width="55" height="55"
+						                style="float:left;margin-right:10px;" />
+							    <span id="shared-first-name"></span> <span id="shared-last-name"></span><br />
+							    <span id="shared-street"></span> (<span id="shared-neighborhood"></span>)
+						    </div>
+						</div>
+					    <div class="panel panel-warning">
 						    <div class="panel-heading">
 						        <h3 class="panel-title">Shared Only with Friends</h3>
 						    </div>
@@ -114,19 +126,9 @@
 								</div>
 						    </div>
 						</div>
-					    <div class="panel panel-primary">
-						    <div class="panel-heading">
-						        <h3 class="panel-title">Shared with Everyone</h3>
-						    </div>
-						    <div class="panel-body">
-						        <img id="shared-user-pic" src="{% static 'img/generic-user.png' %}" 
-						                alt="User Pic" width="55" height="55"
-						                style="float:left;margin-right:10px;" />
-							    <span id="shared-first-name"></span> <span id="shared-last-name"></span><br />
-							    <span id="shared-street"></span> (<span id="shared-neighborhood"></span>)
-						    </div>
+					    <div style="text-align:right;">
+							<button type="submit" class="btn btn-success btn-lg">Create Account <i class="fa fa-angle-double-right"></i></button>
 						</div>
-						<button type="submit" class="btn btn-success btn-lg">Create Account <i class="fa fa-angle-double-right"></i></button>
 					</fieldset>
 				</div>
 			</div>

@@ -173,22 +173,22 @@ $(document).ready(function(){
 				}, 0);
 				setTimeout(function() {
 					$('#item2').animate( { width: '100', height: '100', left: 125, top: 0 }, 600, 'swing');
-				}, 300);
+				}, 200);
 				setTimeout(function() {
 					$('#item3').animate( { width: '100', height: '100', left: 250, top: 0 }, 600, 'swing');
-				}, 600);
+				}, 400);
 				setTimeout(function() {
 					$('#item4').animate( { width: '100', height: '100', left: 375, top: 0 }, 600, 'swing');
-				}, 900);
+				}, 600);
 				setTimeout(function() {
 					$('#item5').animate( { width: '100', height: '100', left: 500, top: 0 }, 600, 'swing');
-				}, 1200);
+				}, 800);
 				setTimeout(function() {
-					$('#panel2-text').animate( { opacity: '1' }, 1000);
-				}, 500);
+					$('#panel2-text').animate( { opacity: '1' }, 1300);
+				}, 1300);
 				setTimeout(function() {
 					animationRunning = false;
-				}, 2000);
+				}, 1800);
 			});
 		}
 		if (panel == 2) {
@@ -199,12 +199,52 @@ $(document).ready(function(){
 			$('#item5').animate( { width: '70', height: '70', left: 300 }, 1000);
 			$('#panel2-text').animate( { opacity: '0' }, 500, 'swing', function() {
 				$('#panel2-text').html('And they can share back, creating a growing inventory of items available to you.');
-				$('#panel2-text').animate( { opacity: '1' }, 1000);
+				setTimeout(function() {
+					$('#panel2-text').animate( { opacity: '1' }, 1000);
+				}, 4000);
 			});
-			$('#person1').animate( { width: '110', height: '110', left: '40%', top: '220px' }, 1000);
+			$('#person1').animate( { width: '110', height: '110', left: '220px', top: '220px' }, 1000);
+			setTimeout(function() {
+				$('#person2').animate( { opacity: 1 }, 2000 );
+				$('#arrow1').animate( { opacity: 1 }, 2000);
+				setTimeout(function() {
+					$('#item6').animate( { width: '70', height: '70', left: 375, top: 0 }, 1000, 'easeOutBounce');
+				}, 500);
+				setTimeout(function() {
+					$('#item7').animate( { width: '70', height: '70', left: 450, top: 0 }, 1500, 'easeOutBounce');
+				}, 700);
+				setTimeout(function() {
+					$('#item8').animate( { width: '70', height: '70', left: 525, top: 0 }, 2200, 'easeOutBounce');
+				}, 900);
+				setTimeout(function() {
+					$('#item9').animate( { width: '70', height: '70', left: 0, top: 75 }, 1200, 'easeOutBounce');
+				}, 1100);
+				setTimeout(function() {
+					$('#item10').animate( { width: '70', height: '70', left: 75, top: 75  }, 1900, 'easeOutBounce');
+				}, 1300);
+				setTimeout(function() {
+					$('#person3').animate( { opacity: 1 }, 2000 );
+					$('#arrow2').animate( { opacity: 1 }, 2000);
+					setTimeout(function() {
+						$('#item11').animate( { width: '70', height: '70', left: 150, top: 75  }, 1600, 'easeOutBounce');
+					}, 500);
+					setTimeout(function() {
+						$('#item12').animate( { width: '70', height: '70', left: 225, top: 75  }, 1800, 'easeOutBounce');
+					}, 700);
+					setTimeout(function() {
+						$('#item13').animate( { width: '70', height: '70', left: 300, top: 75  }, 1300, 'easeOutBounce');
+					}, 900);
+					setTimeout(function() {
+						$('#item14').animate( { width: '70', height: '70', left: 375, top: 75  }, 2100, 'easeOutBounce');
+					}, 1100);
+					setTimeout(function() {
+						$('#item15').animate( { width: '70', height: '70', left: 450, top: 75  }, 900, 'easeOutBounce');
+					}, 1300);
+				}, 1500);
+			}, 1200);
 			setTimeout(function() {
 				animationRunning = false;
-			}, 2000);
+			}, 5000);
 		}
 		if (panel == 3) {
 			$('#panel-view-window').animate( { scrollLeft: '+=600' }, 500, 'swing', function() {
@@ -212,6 +252,32 @@ $(document).ready(function(){
 				setTimeout(function() {
 					animationRunning = false;
 				}, 1000);
+			});
+		}
+		if (panel == 4) {
+			$('#panel-view-window').animate( { scrollLeft: '+=600' }, 500, 'swing', function() {
+				setTimeout(function() {
+					$('#panel5-text').animate( { opacity: '1' }, 1000);
+				}, 1500);
+				setTimeout(function() {
+					$('#item3-faded').animate( { opacity: '1' }, 1000, 'linear');
+					$('#item4-faded').animate( { opacity: '1' }, 1000, 'linear');
+					$('#item3b').animate( { opacity: '0' }, 1000, 'linear');
+					$('#item4b').animate( { opacity: '0' }, 1000, 'linear');
+					$('#person4-faded').animate( { opacity: '1' }, 1000, 'linear');
+					$('#person5-faded').animate( { opacity: '1' }, 1000, 'linear');
+					$('#person4b').animate( { opacity: '0' }, 1000, 'linear');
+					$('#person5b').animate( { opacity: '0' }, 1000, 'linear');
+				}, 500);
+				animationRunning = false;
+			});
+		}
+		if (panel == 5) {
+			$('#panel-view-window').animate( { scrollLeft: '+=600' }, 500, 'swing', function() {
+				$('#btn-forward').hide();
+				$('#btn-forward-text').hide();
+				$('#panel6-text').animate( { opacity: '1' }, 1000);
+				animationRunning = false;
 			});
 		}
 	}
@@ -230,16 +296,34 @@ $(document).ready(function(){
 			});
 		}
 		if (panel == 3) {
-			$('#item1').animate( { width: '100', height: '100', left: 0 }, 500);
-			$('#item2').animate( { width: '100', height: '100', left: 125}, 500);
-			$('#item3').animate( { width: '100', height: '100', left: 250 }, 500);
-			$('#item4').animate( { width: '100', height: '100', left: 375 }, 500);
-			$('#item5').animate( { width: '100', height: '100', left: 500 }, 500);
-			$('#panel2-text').animate( { opacity: '0' }, 500, 'swing', function() {
-				$('#panel2-text').html('Have power tools gathering dust? Hanging on to that old stroller just in case? VillageBuilder lets you share those extra items with friends and neighbors.');
-				$('#panel2-text').animate( { opacity: '1' }, 500);
-			});
-			$('#person1').animate( { width: '200', height: '200', left: '33%', top: '140px' }, 500);
+			
+			$('#item6').animate( { width: 0, height: 0, left: 412, top: 37 }, 500);
+			$('#item7').animate( { width: 0, height: 0, left: 487, top: 37 }, 500);
+			$('#item8').animate( { width: 0, height: 0, left: 562, top: 37 }, 500);
+			$('#item9').animate( { width: 0, height: 0, left: 37, top: 112 }, 500);
+			$('#item10').animate( { width: 0, height: 0, left: 112, top: 112 }, 500);
+			$('#item11').animate( { width: 0, height: 0, left: 187, top: 112 }, 500);
+			$('#item12').animate( { width: 0, height: 0, left: 262, top: 112 }, 500);
+			$('#item13').animate( { width: 0, height: 0, left: 337, top: 112 }, 500);
+			$('#item14').animate( { width: 0, height: 0, left: 412, top: 112 }, 500);
+			$('#item15').animate( { width: 0, height: 0, left: 487, top: 112 }, 500);
+			$('#person2').animate( { opacity: 0 }, 500 );
+			$('#arrow1').animate( { opacity: 0 }, 500);
+			$('#person3').animate( { opacity: 0 }, 500 );
+			$('#arrow2').animate( { opacity: 0 }, 500);
+			setTimeout(function() {
+				$('#item1').animate( { width: '100', height: '100', left: 0 }, 500);
+				$('#item2').animate( { width: '100', height: '100', left: 125}, 500);
+				$('#item3').animate( { width: '100', height: '100', left: 250 }, 500);
+				$('#item4').animate( { width: '100', height: '100', left: 375 }, 500);
+				$('#item5').animate( { width: '100', height: '100', left: 500 }, 500);
+				$('#panel2-text').animate( { opacity: '0' }, 500, 'swing', function() {
+					$('#panel2-text').html('Have power tools gathering dust? Hanging on to that old stroller just in case? VillageBuilder lets you share those extra items with friends and neighbors.');
+					$('#panel2-text').animate( { opacity: '1' }, 500);
+				});
+				$('#person1').animate( { width: '200', height: '200', left: '33%', top: '140px' }, 500);
+			}, 500);
+			
 			setTimeout(function() {
 				animationRunning = false;
 			}, 1000);
@@ -247,6 +331,28 @@ $(document).ready(function(){
 		if (panel == 4) {
 			$('#panel-view-window').animate( { scrollLeft: '-=600' }, 500, 'swing', function() {
 				$('#panel4-text').animate( { opacity: '0' }, 0);
+				animationRunning = false;
+			});
+		}
+		if (panel == 5) {
+			$('#panel-view-window').animate( { scrollLeft: '-=600' }, 500, 'swing', function() {
+				$('#panel5-text').animate( { opacity: '0' }, 0);
+				$('#item3-faded').animate( { opacity: '0' }, 1000, 'linear');
+				$('#item4-faded').animate( { opacity: '0' }, 1000, 'linear');
+				$('#item3b').animate( { opacity: '1' }, 1000, 'linear');
+				$('#item4b').animate( { opacity: '1' }, 1000, 'linear');
+				$('#person4-faded').animate( { opacity: '0' }, 1000, 'linear');
+				$('#person5-faded').animate( { opacity: '0' }, 1000, 'linear');
+				$('#person4b').animate( { opacity: '1' }, 1000, 'linear');
+				$('#person5b').animate( { opacity: '1' }, 1000, 'linear');
+				animationRunning = false;
+			});
+		}
+		if (panel == 6) {
+			$('#panel-view-window').animate( { scrollLeft: '-=600' }, 500, 'swing', function() {
+				$('#btn-forward').show();
+				$('#btn-forward-text').show();
+				$('#panel6-text').animate( { opacity: '0' }, 0);
 				animationRunning = false;
 			});
 		}
@@ -321,7 +427,7 @@ $(document).ready(function(){
     		border-top:3px #34B51E solid;
     		border-bottom:3px #34B51E solid;
     		height:70vh;
-    		min-height: 400px;
+    		min-height: 450px;
     		position: relative;
     	}
     	#window-container {
@@ -340,7 +446,7 @@ $(document).ready(function(){
     		height:400px;
     	}
     	.slideshow-panel {
-    		width:25%;
+    		width:16.7%;
     		display:table-cell;
     		text-align:center;
     		position:relative;
@@ -363,7 +469,7 @@ $(document).ready(function(){
 		   		<a href="" id="btn-forward-text" style="color:#fff;"><strong>how it works</strong></a>
 		   	</div>
 		    <div id="panel-view-window">
-		        <div style="width:2400px;height:400px;display:table;">
+		        <div style="width:3000px;height:400px;display:table;">
 				    <div class="slideshow-panel" style="vertical-align: middle;">
 						{% include 'core/blocks/login_window_1.html' %}
 					</div>
@@ -373,8 +479,11 @@ $(document).ready(function(){
 					<div class="slideshow-panel" style="vertical-align: bottom;">
 						{% include 'core/blocks/login_window_4.html' %}
 					</div>
-					<div class="slideshow-panel" style="vertical-align: top;">
+					<div class="slideshow-panel" style="vertical-align: bottom;">
 						{% include 'core/blocks/login_window_5.html' %}
+					</div>
+					<div class="slideshow-panel" style="vertical-align: bottom;">
+						{% include 'core/blocks/login_window_6.html' %}
 					</div>
 				</div>
 		    </div>
@@ -392,7 +501,7 @@ $(document).ready(function(){
 			</div>
 			<div class="modal-body">
 			    <p>
-			    	Your name enables friends to find you and is required.
+			    	Your name enables friends to find you.
 			    	We recommend entering your full real name or at least something that friends will recognize.
 			    </p>
 			    <p>
