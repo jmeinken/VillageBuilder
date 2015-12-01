@@ -169,26 +169,26 @@ $(document).ready(function(){
 				$('#btn-backward').show();
 				$('#btn-forward-text').html('<strong>next&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong>');
 				setTimeout(function() {
-					$('#item1').animate( { width: '100', height: '100' }, 2000, 'easeOutBounce');
-				}, 200);
+					$('#item1').animate( { width: '100', height: '100', left: 0, top: 0 }, 600, 'swing');
+				}, 0);
 				setTimeout(function() {
-					$('#item2').animate( { width: '100', height: '100' }, 1200, 'easeOutBounce');
-				}, 400);
+					$('#item2').animate( { width: '100', height: '100', left: 125, top: 0 }, 600, 'swing');
+				}, 300);
 				setTimeout(function() {
-					$('#item3').animate( { width: '100', height: '100' }, 1800, 'easeOutBounce');
+					$('#item3').animate( { width: '100', height: '100', left: 250, top: 0 }, 600, 'swing');
 				}, 600);
 				setTimeout(function() {
-					$('#item4').animate( { width: '100', height: '100' }, 1400, 'easeOutBounce');
-				}, 800);
+					$('#item4').animate( { width: '100', height: '100', left: 375, top: 0 }, 600, 'swing');
+				}, 900);
 				setTimeout(function() {
-					$('#item5').animate( { width: '100', height: '100' }, 1700, 'easeOutBounce');
-				}, 1000);
+					$('#item5').animate( { width: '100', height: '100', left: 500, top: 0 }, 600, 'swing');
+				}, 1200);
 				setTimeout(function() {
 					$('#panel2-text').animate( { opacity: '1' }, 1000);
 				}, 500);
 				setTimeout(function() {
 					animationRunning = false;
-				}, 3000);
+				}, 2000);
 			});
 		}
 		if (panel == 2) {
@@ -220,11 +220,11 @@ $(document).ready(function(){
 			$('#panel-view-window').animate( { scrollLeft: '-=600' }, 500, 'swing', function() {
 				$('#btn-backward').hide();
 				$('#btn-forward-text').html('<strong>how it works</strong>');
-				$('#item1').animate( { width: '0', height: '0' }, 0);
-				$('#item2').animate( { width: '0', height: '0' }, 0);
-				$('#item3').animate( { width: '0', height: '0' }, 0);
-				$('#item4').animate( { width: '0', height: '0' }, 0);
-				$('#item5').animate( { width: '0', height: '0' }, 0);
+				$('#item1').animate( { width: '0', height: '0', left: 300, top: 150 }, 0);
+				$('#item2').animate( { width: '0', height: '0', left: 300, top: 150 }, 0);
+				$('#item3').animate( { width: '0', height: '0', left: 300, top: 150 }, 0);
+				$('#item4').animate( { width: '0', height: '0', left: 300, top: 150 }, 0);
+				$('#item5').animate( { width: '0', height: '0', left: 300, top: 150 }, 0);
 				$('#panel2-text').animate( { opacity: '0' }, 0);
 				animationRunning = false;
 			});
@@ -374,7 +374,7 @@ $(document).ready(function(){
 						{% include 'core/blocks/login_window_4.html' %}
 					</div>
 					<div class="slideshow-panel" style="vertical-align: top;">
-						{% include 'core/blocks/login_window_2.html' %}
+						{% include 'core/blocks/login_window_5.html' %}
 					</div>
 				</div>
 		    </div>
