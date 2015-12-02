@@ -251,7 +251,11 @@ def address(request):
     if 'account_info' not in request.session.keys():
         return redirect(reverse('account:account_info'))
     if request.method == "POST":
+        if not request.POST['city']:
+            request.POST._mutable = True
+            request.POST['city'] = '<not found>'
         myform = AddressForm(request.POST)
+        print(str(request.POST))
         if myform.is_valid():
             # save form data to session
             for field in myform.cleaned_data:
