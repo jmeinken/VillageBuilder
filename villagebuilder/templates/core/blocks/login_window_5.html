@@ -6,76 +6,132 @@
 	left: 10px;
 	top: 170px;
 }
-#person2b {
+
+#person2-faded {
 	position:absolute;
-	left: 280px;
-	top: 25px;
+	left: 300px;
+	top: 0;
 }
-#person3b {
+#person3-faded {
 	position:absolute;
-	left: 410px;
-	top: 25px;
-}
-#person4b {
-	position:absolute;
-	left: 480px;
-	top: 200px;
-}
-#person5b {
-	position:absolute;
-	left: 280px;
-	top: 200px;
+	left: 430px;
+	top: 0;
 }
 #person4-faded {
 	position:absolute;
-	left: 480px;
-	top: 200px;
-	opacity: 0;
+	left: 300px;
+	top: 120px;
 }
 #person5-faded {
 	position:absolute;
-	left: 280px;
-	top: 200px;
+	left: 455px;
+	top: 120px;
+}
+#person6-faded {
+	position:absolute;
+	left: 300px;
+	top: 240px;
+}
+#person7-faded {
+	position:absolute;
+	left: 435px;
+	top: 240px;
+}
+
+#person2b {
+	position:absolute;
+	left: 300px;
+	top: 0;
+	opacity: 0;
+}
+#person3b {
+	position:absolute;
+	left: 430px;
+	top: 0;
+	opacity: 0;
+}
+#person6b {
+	position:absolute;
+	left: 300px;
+	top: 240px;
+	opacity: 0;
+}
+#person4-ex {
+	position:absolute;
+	left: 315px;
+	top: 135px;
+	opacity: 0;
+}
+#person5-ex {
+	position:absolute;
+	left: 470px;
+	top: 135px;
+	opacity: 0;
+}
+#person7-ex {
+	position:absolute;
+	left: 470px;
+	top: 255px;
 	opacity: 0;
 }
 
 
-#item1b {
+
+#item1-faded {
 	position:absolute;
 	left: 0;
 	top: 25px;
 }
-#item2b {
+#item2-faded {
 	position:absolute;
 	left: 75px;
 	top: 25px;
-}
-#item3b {
-	position:absolute;
-	left: 150px;
-	top: 25px;
-}
-#item4b {
-	position:absolute;
-	left: 37px;
-	top: 100px;
 }
 #item3-faded {
 	position:absolute;
 	left: 150px;
 	top: 25px;
-	opacity: 0;
 }
 #item4-faded {
 	position:absolute;
 	left: 37px;
 	top: 100px;
+}
+#item5-faded {
+	position:absolute;
+	left: 112px;
+	top: 100px;
+}
+
+#item1b {
+	position:absolute;
+	left: 0;
+	top: 25px;
+	opacity: 0;
+}
+#item3b {
+	position:absolute;
+	left: 150px;
+	top: 25px;
 	opacity: 0;
 }
 #item5b {
 	position:absolute;
 	left: 112px;
 	top: 100px;
+	opacity: 0;
+}
+#item2-ex {
+	position:absolute;
+	left: 85px;
+	top: 35px;
+	opacity: 0;
+}
+#item4-ex {
+	position:absolute;
+	left: 47px;
+	top: 110px;
+	opacity: 0;
 }
 
 
@@ -83,29 +139,49 @@
 </style>
 
 <img id="person1b" src="{% static 'img/slideshow/person1.png' %}" alt="VillageBuilder" width="170" height="170" /> 
-<img id="person2b" src="{% static 'img/slideshow/person2.png' %}" alt="VillageBuilder" width="100" height="100" /> 
-<img id="person3b" src="{% static 'img/slideshow/person3.png' %}" alt="VillageBuilder" width="170" height="100" /> 
-<img id="person4b" src="{% static 'img/slideshow/person4.png' %}" alt="VillageBuilder" width="100" height="100" /> 
-<img id="person5b" src="{% static 'img/slideshow/person5.png' %}" alt="VillageBuilder" width="170" height="100" /> 
 
+
+<img id="person2-faded" src="{% static 'img/slideshow/person2-faded.png' %}" alt="VillageBuilder" width="100" height="100" /> 
+<img id="person3-faded" src="{% static 'img/slideshow/person3-faded.png' %}" alt="VillageBuilder" width="150" height="100" /> 
 <img id="person4-faded" src="{% static 'img/slideshow/person4-faded.png' %}" alt="VillageBuilder" width="100" height="100" /> 
-<img id="person5-faded" src="{% static 'img/slideshow/person5-faded.png' %}" alt="VillageBuilder" width="170" height="100" /> 
+<img id="person5-faded" src="{% static 'img/slideshow/person5-faded.png' %}" alt="VillageBuilder" width="100" height="100" />
+<img id="person6-faded" src="{% static 'img/slideshow/person6-faded.png' %}" alt="VillageBuilder" width="100" height="100" /> 
+<img id="person7-faded" src="{% static 'img/slideshow/person7-faded.png' %}" alt="VillageBuilder" width="140" height="100" />
 
+<img id="person2b" src="{% static 'img/slideshow/person2b.png' %}" alt="VillageBuilder" width="100" height="100" /> 
+<img id="person3b" src="{% static 'img/slideshow/person3b.png' %}" alt="VillageBuilder" width="150" height="100" /> 
+<img id="person6b" src="{% static 'img/slideshow/person6b.png' %}" alt="VillageBuilder" width="100" height="100" />
+
+<img id="person4-ex" src="{% static 'img/slideshow/ex.gif' %}" alt="VillageBuilder" width="70" height="70" /> 
+<img id="person5-ex" src="{% static 'img/slideshow/ex.gif' %}" alt="VillageBuilder" width="70" height="70" /> 
+<img id="person7-ex" src="{% static 'img/slideshow/ex.gif' %}" alt="VillageBuilder" width="70" height="70" />
+
+<!-- 
 <img id="item1b" src="{% static 'img/slideshow/item1.png' %}" alt="VillageBuilder" width="70" height="70" /> 
 <img id="item2b" src="{% static 'img/slideshow/item2.png' %}" alt="VillageBuilder" width="70" height="70" /> 
 <img id="item3b" src="{% static 'img/slideshow/item3.png' %}" alt="VillageBuilder" width="70" height="70" /> 
 <img id="item4b" src="{% static 'img/slideshow/item4.png' %}" alt="VillageBuilder" width="70" height="70" /> 
 <img id="item5b" src="{% static 'img/slideshow/item5.png' %}" alt="VillageBuilder" width="70" height="70" />
+ -->
 
+<img id="item1-faded" src="{% static 'img/slideshow/item1-faded.png' %}" alt="VillageBuilder" width="70" height="70" /> 
+<img id="item2-faded" src="{% static 'img/slideshow/item2-faded.png' %}" alt="VillageBuilder" width="70" height="70" /> 
 <img id="item3-faded" src="{% static 'img/slideshow/item3-faded.png' %}" alt="VillageBuilder" width="70" height="70" /> 
 <img id="item4-faded" src="{% static 'img/slideshow/item4-faded.png' %}" alt="VillageBuilder" width="70" height="70" /> 
+<img id="item5-faded" src="{% static 'img/slideshow/item5-faded.png' %}" alt="VillageBuilder" width="70" height="70" /> 
+
+<img id="item1b" src="{% static 'img/slideshow/item1.png' %}" alt="VillageBuilder" width="70" height="70" /> 
+<img id="item3b" src="{% static 'img/slideshow/item3.png' %}" alt="VillageBuilder" width="70" height="70" /> 
+<img id="item5b" src="{% static 'img/slideshow/item5.png' %}" alt="VillageBuilder" width="70" height="70" />
+
+<img id="item2-ex" src="{% static 'img/slideshow/ex.gif' %}" alt="VillageBuilder" width="50" height="50" /> 
+<img id="item4-ex" src="{% static 'img/slideshow/ex.gif' %}" alt="VillageBuilder" width="50" height="50" /> 
 
 
 
 
 
-
-<div id="panel5-text" style="opacity:0;">
+<div id="panel5-text" style="opacity:0;" class="slideshow-text">
 	You have complete control over what you share and who you share with. Like we said, no awkwardness.
 </div>
 
