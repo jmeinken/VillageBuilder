@@ -76,7 +76,7 @@ class Command(BaseCommand):
                 data['messages']['count'] = data['messages']['coll'].count()
                 
             self.stdout.write('----------------------------------------------') 
-            self.stdout.write(str(participant.id) + ": " + participant.get_name())
+            self.stdout.write(str(participant.id) + ": " + participant.get_name() + " <" + participant.user.username + ">")
             self.stdout.write('login: ' + str(lastLogin) + "; last emailed: " + str(lastEmailed))
             for key in data:
                 if data[key]['pref']:
