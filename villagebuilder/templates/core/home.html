@@ -44,6 +44,27 @@
 		
 		$(".add-tooltip").tooltip();
 		
+		
+		//facebook integration
+		$.ajaxSetup({ cache: true });
+		$.getScript('//connect.facebook.net/en_US/sdk.js', function(){
+	  		FB.init({
+	    		appId: '1184393148243808',
+	    		version: 'v2.4' // or v2.0, v2.1, v2.2, v2.3
+	  		});     
+	  		//$('#loginbutton,#feedbutton').removeAttr('disabled');
+	  		//FB.getLoginStatus(updateStatusCallback);
+		});
+		
+		$('#btn-invite-fb-friends').click(function() {
+			FB.ui({
+				method: 'share',
+				href: 'http://villagebuilder.net'
+	  		}, function(response){
+	  			console.log(response);
+	  		});
+		});
+		
 	});
 		
 		
@@ -207,8 +228,16 @@
 					  </div>
 				</div>
 			</form>
-			<hr>
-			
+
+			<div class="text-warning"><strong>Invite Your Friends to Join</strong></div>
+			<div style="padding:7px 0 15px 0;text-align:center;">
+				<button type="button" class="btn btn-primary btn-sm" id="btn-invite-fb-friends">
+					<i class="fa fa-facebook-official"></i> Invite Facebook friends
+				</button>
+				<button type="button" class="btn btn-default btn-sm" style="visibility:hidden;">
+					<i class="fa fa-envelope"></i> Invite by email
+				</button>
+			</div>
 			<div class="text-warning"><strong>People Near You</strong></div>
 			<div class="list-group">
 				{% for participant in peopleNearYou %}
