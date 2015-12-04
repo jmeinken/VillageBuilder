@@ -20,7 +20,7 @@ $(document).ready(function(){
 	});
 	
 	//load alerts when page opens
-    $.get("/alerts/alerts", function(data, status){
+    $.get("/alerts/alerts/", function(data, status){
 		if (status == 'success') {
     		$('#alert-container').html(data.html)
     		if (data.count != 0) {
