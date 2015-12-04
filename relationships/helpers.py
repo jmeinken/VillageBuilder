@@ -158,7 +158,7 @@ def getFriendsOfFriends(currentParticipant):
                     resultIds.append(friendFriend.id)    
             if len(resultIds) >= 5:
                 for resultId in resultIds:
-                    results.append(getParticipant(resultIds[i], currentParticipant))
+                    results.append(getParticipant(resultId, currentParticipant))
                 return results[:5]
     for resultId in resultIds:
         results.append(getParticipant(resultId, currentParticipant))
