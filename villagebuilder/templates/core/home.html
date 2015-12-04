@@ -40,6 +40,13 @@
 		    });
 		});
 		
+		$('#request-form').submit(function() {
+			if ( $('#request-body').val().trim() == '' ) {
+				return false;
+			}
+			return true;
+		});
+		
 		var maxRequest = {{ maxRequest }};
 		
 		$(".add-tooltip").tooltip();
@@ -173,11 +180,11 @@
 			</ul>
 			<div class="tab-content" style="background-color:#F5F5F5; padding:0 7px 0 7px; border:solid 1px #DDDDDD; border-top: none">
 				<br>
-				<form method="post" action="{% url 'requests:post_request' %}">
+				<form method="post" id="request-form" action="{% url 'requests:post_request' %}">
 				    {% csrf_token %}
 				    <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
 
-					<textarea class="form-control" rows="2" name="body"
+					<textarea class="form-control" rows="2" name="body" id="request-body"
 								placeholder="Ask for something you need, give something away, say hi..."></textarea>
 					<button type="submit" class="btn btn-default" style="margin:5px 0">Post Message</button>
 					<div style="display:inline-block;" >

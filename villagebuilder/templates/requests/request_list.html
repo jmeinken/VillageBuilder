@@ -55,7 +55,7 @@
 				</div>
 				<div style="display:none" id="edit-request-{{ myrequest.request.id }}">
 					<br><br>
-					<form method="post" action="{% url 'requests:edit_request' %}">
+					<form method="post" class="edit-request-form" action="{% url 'requests:edit_request' %}">
 					    {% csrf_token %}
 					    <input type="hidden" name="redirect" value="{{request.build_absolute_uri}}" />
 					    <input type="hidden" name="request_id" value="{{myrequest.request.id}}" />
@@ -95,4 +95,6 @@
 			</div>
 		</div>
 	</div>
+{% empty %}
+<em>none</em>
 {% endfor %}

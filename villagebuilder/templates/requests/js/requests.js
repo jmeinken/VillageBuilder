@@ -110,6 +110,9 @@
 				'comment_id' : commentId,
 				'body' : $('#edit-request-comment-body-' + commentId).val()
 			}
+			if ( data.body.trim() == '' ) {
+				return;
+			}
 			$.post("{% url 'requests:edit_request_comment' %}", data, function(data, status) {
                 if (status == 'success') {
                 	$('#comment-' + data.comment_id).replaceWith(data.html);
@@ -125,6 +128,9 @@
 				'request_id' : requestId,
 				'body' : $('#add-request-comment-body-' + requestId).val()
 			}
+			if ( data.body.trim() == '' ) {
+				return;
+			}
 			$.post("{% url 'requests:post_request_comment' %}", data, function(data, status) {
                 if (status == 'success') {
                 	$('#new-comments-' + data.request_id).append(data.html);
@@ -134,6 +140,13 @@
 			});
 			event.preventDefault();
 		});
+		$('.edit-request-form').off();
+		$('.edit-request-form').submit(function() {
+			if ( $(this).find("textarea[name=body]").val().trim() == '' ) {
+				return false;
+			} 
+			return true;
+		})
 
 	}
 	
