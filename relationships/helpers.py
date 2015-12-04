@@ -154,7 +154,10 @@ def getFriendsOfFriends(currentParticipant):
         if not friend.is_admin:
             friendFriends = getReciprocatedFriends(friend.participant).order_by('?')
             for friendFriend in friendFriends:
-                if not friendFriend.is_admin and friendFriend != currentParticipant.member and not friendFriend.id in resultIds:
+                if (not friendFriend.is_admin 
+                    and not friendFriend in friends
+                    and friendFriend != currentParticipant.member 
+                    and not friendFriend.id in resultIds):
                     resultIds.append(friendFriend.id)    
             if len(resultIds) >= 5:
                 for resultId in resultIds:
