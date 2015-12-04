@@ -147,15 +147,17 @@ def getPeopleNearYou(currentParticipant):
     return results
 
 def getFriendsOfFriends(currentParticipant):
-    friends = Member.objects.all().filter(reverse_friendship_set__member=currentParticipant.member)
-    friendsOfFriends = Member.objects.all().filter(
-        reverse_friendship_set__member__in=friends
-    ).distinct()[:5]
+    friends = Member.objects.all().filter(reverse_friendship_set__member=currentParticipant.member).order_by('?')
     results = []
-    for member in friendsOfFriends:
-        if member != currentParticipant.member and not member in friends:
-            results.append(getParticipant(member.id, currentParticipant))
-    return results  
+    for friend in friends:
+        if not friend.is_admin:
+            friendFriends = getReciprocatedFriends(friend.participant).order_by('?')
+            for friendFriend in friendFriends:
+                if not friendFriend.is_admin:
+                    results.append(getParticipant(friendFriend.id, currentParticipant))
+            if len(results) >= 5:
+                return results[:5]  
+    return results[:5]  
 
 # requires a member be provided for current participant
 # returns participants related to contextParticipant with currentParticipant context
