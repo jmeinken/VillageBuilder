@@ -16,6 +16,9 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+handler404 = 'main.views.custom_404'
+handler500 = 'main.views.custom_500'
+handler403 = 'main.views.custom_403'
 
 urlpatterns = [
     #direct links to views
@@ -36,6 +39,8 @@ urlpatterns = [
     url(r'^requests/', include('requests.urls', namespace="requests")),
     url(r'^pm/', include('pm.urls', namespace="pm")),
     url(r'^sharing/', include('sharing.urls', namespace="sharing")),
+    
+    
 ]
 
 

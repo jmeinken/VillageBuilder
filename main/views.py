@@ -55,6 +55,18 @@ from account.forms import AccountInfoForm
 
 from .forms import RequestResetPasswordForm, ResetPasswordForm
 
+def custom_404(request):
+    context = {}
+    return render(request, 'core/404.html', context)
+
+def custom_500(request):
+    context = {}
+    return render(request, 'core/500.html', context)
+
+def custom_403(request):
+    context = {}
+    return render(request, 'core/403.html', context)
+
 def facebook_test(request):
     context = {}
     return render(request, 'core/facebook_test.html', context)
