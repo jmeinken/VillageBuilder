@@ -136,15 +136,16 @@ def getPeopleNearYou(currentParticipant):
     friends = Member.objects.all().filter(reverse_friendship_set__member=currentParticipant.member)
     lat = currentParticipant.member.latitude
     lng = currentParticipant.member.longitude
+    # bug: if person is already friends with the 50 closest people, will return nothing
     members = Member.objects.raw('''SELECT *, POW(latitude - %s, 2) + POW(longitude - %s, 2) as distance
         FROM account_member
         ORDER BY distance
-        LIMIT 6''', [lat, lng])
+        LIMIT 50''', [lat, lng])
     results = []
     for member in members:
         if member != currentParticipant.member and not member in friends:
             results.append(getParticipant(member.id, currentParticipant))
-    return results
+    return results[:5]
 
 def getFriendsOfFriends(currentParticipant):
     friends = Member.objects.all().filter(reverse_friendship_set__member=currentParticipant.member).order_by('?')
