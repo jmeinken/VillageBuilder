@@ -3,7 +3,7 @@ import collections
 from django.core.urlresolvers import reverse
 from django.db import models
 
-from account.models import Member, Participant
+from account.models import Member, Participant, Group
 
 # computer value, display value
 # !! these should all be unique names even across item types
@@ -50,7 +50,6 @@ SHARE_CATEGORIES = [
 class Item(models.Model):
     SHARE_TYPES = (
         ('all_friends', 'all_friends'),
-        ('all_friends_groups', 'all_friends_groups'),
         ('share_list', 'share_list'),
         ('custom', 'custom'),
     )
@@ -98,6 +97,11 @@ class Item(models.Model):
 class ItemKeyword(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     keyword = models.CharField(max_length=60, db_index=True)
+    
+class ItemGroup(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    shared = models.BooleanField(default=True, db_index=True)
 
 #class Category(models.Model):
 #    name = models.CharField(max_length=60)
@@ -105,7 +109,7 @@ class ItemKeyword(models.Model):
     
 class ItemSharee(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    sharee = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    sharee = models.ForeignKey(Member, on_delete=models.CASCADE)
     
 class ShareList(models.Model):
     name = models.CharField(max_length=60)
@@ -113,7 +117,7 @@ class ShareList(models.Model):
     
 class ShareListSharee(models.Model):
     shareList = models.ForeignKey("ShareList", on_delete=models.CASCADE)
-    sharee = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    sharee = models.ForeignKey(Member, on_delete=models.CASCADE)
     
 
     

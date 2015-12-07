@@ -200,6 +200,25 @@ $(document).ready(function(){
             <div id="form-errors" class="text-danger">{{ itemForm.description.errors }}</div>
         </div>
         <div class="col-md-4">
+        	<div style="height:300px;overflow-y:auto;border:#C0C0C0 solid 1px;padding-top:5px;">
+		    	<strong class="text-primary">Your Groups:</strong>
+			    {% for participant in groups %}
+			        <div>
+	        			<div class="col-sm-9">
+			        		{% include "core/blocks/participantgroup_noactions.html" %}
+			        	</div>
+			        	<div class="col-sm-3" style="padding-top:20px;">
+			        		{% if participant.id in shareeGroups %}
+			        			<input type="checkbox" name="groups[]" value="{{participant.id}}" checked="checked" />
+			        			include
+			        		{% else %}
+			        		    <input type="checkbox" name="groups[]" value="{{participant.id}}" />
+			        		    include
+			        		{% endif %}
+			        	</div>
+			        </div>		
+			    {% endfor %}
+		    </div>
 	        <div class="form-group">
 	            {{ itemForm.sharingWith|label_with_classes:"control-label" }} 
 	            {{ itemForm.sharingWith|attr:"class:form-control" }}
@@ -236,25 +255,7 @@ $(document).ready(function(){
 					    {% endfor %}
 					</div>
 			    </div>
-			    <div style="height:300px;overflow-y:auto;border:#C0C0C0 solid 1px;padding-top:5px;">
-			    	<strong class="text-primary">Your Groups:</strong>
-				    {% for participant in groups %}
-				        <div>
-		        			<div class="col-sm-9">
-				        		{% include "core/blocks/participantgroup_noactions.html" %}
-				        	</div>
-				        	<div class="col-sm-3" style="padding-top:20px;">
-				        		{% if item.share_type == 'custom' and participant.id in sharees %}
-				        			<input type="checkbox" name="custom_list[]" value="{{participant.id}}" checked="checked" />
-				        			include
-				        		{% else %}
-				        		    <input type="checkbox" name="custom_list[]" value="{{participant.id}}" />
-				        		    include
-				        		{% endif %}
-				        	</div>
-				        </div>		
-				    {% endfor %}
-			    </div>
+			    
 		    </div>
 		</div>
 	</div>

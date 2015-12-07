@@ -79,8 +79,10 @@ def edit_item(request, itemId):
         RelationshipTypes.GROUP_MEMBER,                         
     ])   
     sharees = item.itemsharee_set.values_list('sharee_id', flat=True)
+    shareeGroups = item.itemgroup_set.values_list('group_id', flat=True)
     shareLists = ShareList.objects.all().filter(owner=currentParticipant.member)
-    # print(sharees)
+    print(sharees)
+    print(shareeGroups)
     context = {
         'current' : getCurrentUser(request),
         'item' : item,  
@@ -90,6 +92,7 @@ def edit_item(request, itemId):
         'keywordForm' : keywordForm, 
         'itemImage' : item.get_image(),
         'sharees' : sharees,
+        'shareeGroups' : shareeGroups,
         'shareLists' : shareLists,
     }
     return render(request, 'sharing/share_item.html', context)
@@ -105,7 +108,7 @@ def share_item(request):
             item = itemForm.save(commit=False)
             item.sharer = currentParticipant.member
             sharingWith = itemForm.cleaned_data['sharingWith']
-            if sharingWith=='all_friends' or sharingWith=='all_friends_groups' or sharingWith=='custom':
+            if sharingWith=='all_friends' or sharingWith=='custom':
                 item.share_type = sharingWith
             else:
                 item.share_type = 'share_list'
@@ -117,6 +120,11 @@ def share_item(request):
             for keyword in keywords:
                 itemKeyword = ItemKeyword(item=item, keyword=keyword)
                 itemKeyword.save()
+            # save group sharing selections
+            groupIds = request.POST.getlist("groups[]")
+            for groupId in groupIds:
+                record = ItemGroup(item=item, group_id=groupId)
+                record.save()
             # save new custom list as share list
             shareListName = itemForm.cleaned_data['shareListName']
             if sharingWith=='custom':

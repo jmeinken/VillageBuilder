@@ -19,7 +19,6 @@ class ItemForm(forms.ModelForm):
                 shareListOptions.append([shareList.id, shareList.name])
         shareOptions = [
             ['all_friends', 'All Friends'],
-            ['all_friends_groups', 'All Friends and All Groups'],
             ['custom', 'Custom'],
         ]
         if len(shareListOptions) != 0:
