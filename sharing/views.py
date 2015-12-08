@@ -430,7 +430,41 @@ def quick_share(request):
 
 
 
-
+@login_required
+@transaction.atomic
+def new_group_action(request, actionId):
+    currentParticipant = Participant.objects.get(user=request.user, type='member')
+    action = SharingActionNeeded.objects.get(pk=actionId)
+    group = action.subject.group
+    items = getItemsSharedByCurrentMember(currentParticipant.member)
+    # this must be the person who the action is for
+    if currentParticipant.member != action.alertee:
+        raise Http404("Page does not exist or you do not have permission to view it.")
+    
+    if request.method == "POST":
+        # erase existing share values
+        for item in items:
+            itemGroups = ItemGroup.objects.filter(group=group, item=item)
+            for itemGroup in itemGroups:
+                itemGroup.delete()
+        # set ItemGroup for selected items and group 
+        itemIds = request.POST.getlist('items[]')
+        for itemId in itemIds:
+            itemGroup = ItemGroup(item_id=itemId, group=group)
+            itemGroup.save()
+        action.delete()
+        message="Your items have been updated with the selected share settings."
+        messages.success(request, message)
+        return redirect(reverse('home'))
+    # get items shared with group just in case any of these are already shared
+    sharedItemIds = ItemGroup.objects.filter(group=group).values_list('item_id', flat=True)
+    context = {
+        'action' : action,
+        'current' : getCurrentUser(request),
+        'items' : items,
+        'sharedItemIds' : sharedItemIds,
+    }
+    return render(request, 'sharing/new_group_action.html', context)
 
 
 

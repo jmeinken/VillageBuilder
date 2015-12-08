@@ -50,7 +50,7 @@ def view(request, participantId):
             RelationshipTypes.GUEST_FRIENDS,
         ]
         relations = getRelations(participant, currentParticipant, relTypes)
-        allItems = getItemsSharedByAndForParticipant(currentParticipant)
+        allItems = getItemsForParticipant(currentParticipant)
         items = filterItems(allItems, sharerId=participant.id) 
     if participant.type == 'group':
         relTypes = [
@@ -58,7 +58,7 @@ def view(request, participantId):
             RelationshipTypes.GROUP_MEMBER,
         ]
         relations = getRelations(participant, currentParticipant, relTypes)
-        allItems = getItemsSharedByAndForParticipant(currentParticipant)
+        allItems = getItemsForParticipant(currentParticipant)
         items = filterItems(allItems, groupId=participant.id) 
     if participant.type == 'guest':
         relTypes = [

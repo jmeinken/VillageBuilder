@@ -16,6 +16,11 @@ def getSharingActions(member):
             action.delete()
     return SharingActionNeeded.objects.filter(alertee=member)
 
+def setSharingAction(memberId, groupId, type):
+    if Item.objects.filter(sharer_id=memberId).count() > 0:
+        action = SharingActionNeeded(alertee_id=memberId, type=type, subject_id=groupId)
+        action.save()
+
 def getCategoriesWithCounts(items):
     categories = copy.deepcopy(SHARE_CATEGORIES)
     for itemType in categories:
@@ -71,6 +76,12 @@ def removeAllSharing(memberId, participantId):
         sharee_id=participantId
     )
     shareListSharees.delete()
+    itemGroups = ItemGroup.objects.all().filter(
+        item__sharer_id=memberId                                           
+    ).filter(
+        group_id=participantId
+    )
+    itemGroups.delete()
         
 def getParticipantsForItem(item):
     groups = getReciprocatedGroups(item.sharer.participant)
@@ -108,67 +119,28 @@ def getParticipantsForItem(item):
 # get all items shared with (not by) this participant
 # participant must be current participant
 def getItemsForParticipant(participant):
-    if participant.type == 'guest':
-        items = Item.objects.all().filter(
-            ( Q(share_type='custom') & Q(itemsharee__sharee=participant) ) |
-            ( Q(share_type='share list') & Q(sharelist__sharelistsharee__sharee=participant) ) |
-            ( 
-                ( Q(share_type='all friends') | Q(share_type='all friends and all groups') ) &
-                Q(sharer__guest_friendship__guest=participant.guest)
-            )
-        )
     if participant.type == 'member':
         groups = getReciprocatedGroups(participant)
         groupIds = []
         for group in groups:
             groupIds.append(group.id)
-        partGroupIds = groupIds
-        partGroupIds.append(participant.id)
         # print('groups:')
         # print(partGroupIds)
         items = Item.objects.all().filter(
-            ( Q(share_type='custom') & Q(itemsharee__sharee_id__in=partGroupIds) )  |
-            ( Q(share_type='share_list') & Q(sharelist__sharelistsharee__sharee_id__in=partGroupIds) ) |
+            ( Q(share_type='custom') & Q(itemsharee__sharee_id=participant.id) )  |
+            ( Q(share_type='share_list') & Q(sharelist__sharelistsharee__sharee_id=participant.id) ) |
             ( 
-                ( Q(share_type='all_friends') | Q(share_type='all_friends_groups') ) &
+                Q(share_type='all_friends') &
                 Q(sharer__friendship_set__friend=participant.member) & 
                 Q(sharer__reverse_friendship_set__member=participant.member)
             ) |
-            ( Q(share_type='all_friends_groups') & Q(sharer__groupmembership__group_id__in=groupIds) &
-               Q(sharer__groupmembership__requested=True) & Q(sharer__groupmembership__invited=True)) 
+            ( 
+                Q(itemgroup__group_id__in=groupIds)
+            ) 
         ).exclude(sharer=participant.member).distinct().order_by('-share_date')
     return items
 
-def getItemsSharedByAndForParticipant(participant):
-    if participant.type == 'guest':
-        items = Item.objects.all().filter(
-            ( Q(share_type='custom') & Q(itemsharee__sharee=participant) ) |
-            ( Q(share_type='share list') & Q(sharelist__sharelistsharee__sharee=participant) ) |
-            ( 
-                ( Q(share_type='all friends') | Q(share_type='all friends and all groups') ) &
-                Q(sharer__guest_friendship__guest=participant.guest)
-            )
-        )
-    if participant.type == 'member':
-        groups = getReciprocatedGroups(participant)
-        groupIds = []
-        for group in groups:
-            groupIds.append(group.id)
-        partGroupIds = groupIds
-        partGroupIds.append(participant.id)
-        # print('groups:')
-        # print(partGroupIds)
-        items = Item.objects.all().filter(
-            Q(sharer=participant.member) |
-            ( Q(share_type='custom') & Q(itemsharee__sharee_id__in=partGroupIds) )  |
-            ( Q(share_type='share_list') & Q(sharelist__sharelistsharee__sharee_id__in=partGroupIds) ) |
-            ( 
-                ( Q(share_type='all_friends') | Q(share_type='all_friends_groups') ) &
-                Q(sharer__friendship_set__friend=participant.member)
-            ) |
-            ( Q(share_type='all_friends_groups') & Q(sharer__groupmembership__group_id__in=groupIds) ) 
-        ).distinct().order_by('-share_date')
-    return items
+
     
 
 def filterItems(items, category=None, sharerId=None, groupId=None, searchTerms=None, searchScope='title', hasImage=None):
@@ -184,7 +156,7 @@ def filterItems(items, category=None, sharerId=None, groupId=None, searchTerms=N
     if sharerId:
         items = items.filter(sharer_id=sharerId)
     if groupId:
-        items = items.filter( Q(itemsharee__sharee_id=groupId) | Q(sharelist__sharelistsharee__sharee_id=groupId) )
+        items = items.filter( Q(itemgroup__group_id=groupId) )
     if searchTerms and searchScope == 'title':
         terms = searchTerms.split(' ')
         for term in terms:

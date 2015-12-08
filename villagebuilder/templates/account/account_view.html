@@ -6,7 +6,7 @@
 
 
 <div id="top-section">
-	<h2 id="top-title">Profile</h2>
+	<h2 id="top-title">{% if account.type == 'group' %}Group {% endif %}Profile</h2>
 </div>
 
 	
@@ -56,12 +56,12 @@
     <ul class="nav nav-tabs">
 		{% if account.type == 'member' %}
 		    <li class="active"><a href="#relations" data-toggle="tab">Friends</a></li>
-		    <li><a href="#items" data-toggle="tab">Shared Items</a></li>
+		    <li><a href="#items" data-toggle="tab">Shared With You</a></li>
 		{% endif %}
 		{% if account.type == 'group' %}
 		    <li class="active"><a href="#relations" data-toggle="tab">Members</a></li>
 		    <li><a href="#about" data-toggle="tab">About</a></li>
-		    <li><a href="#items" data-toggle="tab">Shared Items</a></li>
+		    <li><a href="#items" data-toggle="tab">Shared With You</a></li>
 		{% endif %}
 	</ul>
 	<div id="myTabContent" class="tab-content well">
@@ -89,7 +89,7 @@
 			      {% for item in items %}
 			          {% include 'sharing/blocks/itemblock.html' %}
 			      {% empty %}
-			          nothing shared with you
+			          nothing to see here
 			      {% endfor %}
 			  </div>
 	      </div>

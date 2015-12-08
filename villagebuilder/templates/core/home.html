@@ -217,8 +217,8 @@
 				<div class="alert alert-dismissible alert-info">
 					<i class="fa fa-exclamation-triangle"></i>
 					Action Needed: 
-					<a href="#">
-						select items to share with {{ action.subject.get_name }}
+					<a href="{% url 'sharing:new_group_action' action.id %}">
+						select existing items to share with {{ action.subject.get_name }}
 					</a>
 				</div>
 			{% endfor %}
@@ -272,6 +272,10 @@
 			</div>
     	</div>
     </div>
+    
+    
+    
+
 {% endblock %}	
 
 

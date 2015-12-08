@@ -1,0 +1,42 @@
+{% extends "core/bases/home_base.html" %}
+{% load staticfiles %}
+
+{% block subcontent %}
+
+<div id="top-section">
+	<h2 id="top-title">Select Items to Share With {{ action.subject.get_name }}</h2>
+</div>
+
+<div class="well">
+	<strong>How Group Sharing Works</strong><br><br>
+	{{ action.subject.get_name }} is managed by {{ action.subject.group.owner.participant.get_name }}.
+	When you share an item with this group, all group members approved by 
+	{{ action.subject.group.owner.participant.get_first_name }} will see it regardless of whether
+	they are friends with you.
+</div>
+
+<form method="post" action="{% url 'sharing:new_group_action' action.id %}">
+	{% csrf_token %}
+	<div class="row">
+		<div class="col-sm-12">
+		    <h5>Select Items</h5>
+			{% for item in items %}
+			    <div class="row">
+					<div class="col-md-5">
+			    		{% include 'sharing/blocks/itemblock.html' %}
+			    	</div>
+			    	<div class="col-md-5" style="padding-top:20px;">
+			    	    {% if item.id in sharedItemIds %}
+			    		    <input type="checkbox" name="items[]" value="{{ item.id }}" checked /> share
+			    		{% else %}
+			    			<input type="checkbox" name="items[]" value="{{ item.id }}" /> share
+			    		{% endif %}
+			    	</div>
+			    </div>
+			{% endfor %}
+			<button type="submit" class="btn btn-success">Share Selected Items</button>
+		</div>
+	</div>
+</form>
+
+{% endblock %}

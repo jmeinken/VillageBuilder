@@ -12,13 +12,12 @@ from django.contrib import messages
 
 from .models import *
 from account.models import Participant, Guest
-from sharing.models import SharingActionNeeded
 
 from account.helpers import *
 from main.helpers import *
 from relationships.helpers import *
 from alerts.helpers import registerEvent
-from sharing.helpers import removeAllSharing, getDistance
+from sharing.helpers import removeAllSharing, getDistance, setSharingAction
 from email_system.helpers import email_friend_request, email_friend_confirmation
 
 
@@ -98,8 +97,7 @@ def add_group_members(request):
                 groupMembership = GroupMembership(member_id=memberId, group_id=groupId)
             else:
                 groupMembership = groupMembership[0]
-                action = SharingActionNeeded(alertee_id=memberId, type="new group", subject_id=groupId)
-                action.save()
+                setSharingAction(currentParticipant.member.id, groupId, "new group")
             groupMembership.invited = True
             groupMembership.save()
             # register event
@@ -126,8 +124,7 @@ def join_group(request):
             groupMembership = GroupMembership(member=currentParticipant.member, group_id=groupId)
         else:
             groupMembership = groupMembership[0]
-            action = SharingActionNeeded(alertee=currentParticipant.member, type="new group", subject_id=groupId)
-            action.save()
+            setSharingAction(currentParticipant.member.id, groupId, "new group")
         groupMembership.requested = True
         groupMembership.save()
         # register event
@@ -167,6 +164,7 @@ def add_to_group(request):
             groupMembership = GroupMembership(member_id=memberId, group_id=groupId)
         else:
             groupMembership = groupMembership[0]
+            setSharingAction(memberId, groupId, "new group")
         groupMembership.invited = True
         groupMembership.save()
         # register event
@@ -363,3 +361,5 @@ def participant_search(request):
         'RelationshipTypes' : RelationshipTypes
     }
     return render(request, 'relationships/participant_search.html', context)
+
+
