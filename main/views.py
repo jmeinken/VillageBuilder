@@ -115,6 +115,7 @@ def home(request):
             'recentItems' : recentItems,
             'hasRelationshipActivity' : hasRelationshipActivity,
             'hasSharedSomething' : hasSharedSomething,
+            'actions' : getSharingActions(currentParticipant.member)
         }
     return render(request, 'core/home.html', context)
 

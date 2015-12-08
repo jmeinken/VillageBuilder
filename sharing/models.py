@@ -119,6 +119,11 @@ class ShareListSharee(models.Model):
     shareList = models.ForeignKey("ShareList", on_delete=models.CASCADE)
     sharee = models.ForeignKey(Member, on_delete=models.CASCADE)
     
+class SharingActionNeeded(models.Model):
+    alertee = models.ForeignKey(Member, on_delete=models.CASCADE)
+    type = models.CharField(max_length=20, db_index=True) # new friend, new group
+    subject = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    
 
     
     

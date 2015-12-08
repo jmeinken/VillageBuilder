@@ -12,6 +12,7 @@ from django.contrib import messages
 
 from .models import *
 from account.models import Participant, Guest
+from sharing.models import SharingActionNeeded
 
 from account.helpers import *
 from main.helpers import *
@@ -97,6 +98,8 @@ def add_group_members(request):
                 groupMembership = GroupMembership(member_id=memberId, group_id=groupId)
             else:
                 groupMembership = groupMembership[0]
+                action = SharingActionNeeded(alertee_id=memberId, type="new group", subject_id=groupId)
+                action.save()
             groupMembership.invited = True
             groupMembership.save()
             # register event
@@ -111,6 +114,7 @@ def add_group_members(request):
 
 @login_required
 @csrf_exempt
+@transaction.atomic
 def join_group(request):
     # print 'join_group'
     if request.method == "POST":
@@ -122,6 +126,8 @@ def join_group(request):
             groupMembership = GroupMembership(member=currentParticipant.member, group_id=groupId)
         else:
             groupMembership = groupMembership[0]
+            action = SharingActionNeeded(alertee=currentParticipant.member, type="new group", subject_id=groupId)
+            action.save()
         groupMembership.requested = True
         groupMembership.save()
         # register event

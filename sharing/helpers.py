@@ -8,6 +8,14 @@ from relationships.models import *
 from .models import *
 
 
+def getSharingActions(member):
+    actions = SharingActionNeeded.objects.filter(alertee=member)
+    for action in actions:
+        relationships = GroupMembership.objects.filter(group=action.subject.group, member=action.alertee)
+        if relationships.count() == 0 or not relationships[0].requested or not relationships[0].invited:
+            action.delete()
+    return SharingActionNeeded.objects.filter(alertee=member)
+
 def getCategoriesWithCounts(items):
     categories = copy.deepcopy(SHARE_CATEGORIES)
     for itemType in categories:
