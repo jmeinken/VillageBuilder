@@ -30,47 +30,24 @@
 	</div>
 </div>
 <div class="row">
-    <div class="col-sm-5" >
+    <div class="col-sm-7" >
         <h5>Select Friends to Include</h5>
-        <div style="height:400px;overflow-y:auto">
-	        {% for participant in friends %}
-	            <div class="row">
-	    			<div class="col-sm-8">
-						{% include 'core/blocks/participantgroup_noactions.html' %}
-					</div>
-					<div class="col-sm-4">
-						<div class="checkbox">
-				          <label>
-				            <input type="checkbox" {% if participant.id in shareeIds %}checked="checked"{% endif %}
-				                    name="participants[]" value="{{ participant.id }}"> 
-				            include
-				          </label>
-				        </div>
-					</div>
+        {% for participant in friends %}
+            <div class="row">
+    			<div class="col-sm-8">
+					{% include 'core/blocks/participantgroup_noactions.html' %}
 				</div>
-			{% endfor %}
-		</div>
-	</div>
-	<div class="col-sm-5">
-	    <h5>Select Groups to Include</h5>
-	    <div style="height:400px;overflow-y:auto">
-	        {% for participant in groups %}
-	            <div class="row">
-	    			<div class="col-sm-8">
-						{% include 'core/blocks/participantgroup_noactions.html' %}
-					</div>
-					<div class="col-sm-4">
-						<div class="checkbox">
-				          <label>
-				            <input type="checkbox" {% if participant.id in shareeIds %}checked="checked"{% endif %}
-                                 name="participants[]" value="{{ participant.id }}">  
-				            include
-				          </label>
-				        </div>
-					</div>
+				<div class="col-sm-4">
+					<div class="checkbox">
+			          <label>
+			            <input type="checkbox" {% if participant.id in shareeIds %}checked="checked"{% endif %}
+			                    name="participants[]" value="{{ participant.id }}"> 
+			            include
+			          </label>
+			        </div>
 				</div>
-			{% endfor %}
-		</div>
+			</div>
+		{% endfor %}
 	</div>
 </div>
 	

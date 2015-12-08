@@ -40,12 +40,18 @@ def edit_item(request, itemId):
             item.save()
             ItemKeyword.objects.all().filter(item=item).delete()
             ItemSharee.objects.all().filter(item=item).delete()
+            ItemGroup.objects.all().filter(item=item).delete()
             # save keywords
             keywordFieldName = 'keywords_' + item.type
             keywords = keywordForm.cleaned_data[keywordFieldName]
             for keyword in keywords:
                 itemKeyword = ItemKeyword(item=item, keyword=keyword)
                 itemKeyword.save()
+            # save group sharing selections
+            groupIds = request.POST.getlist("groups[]")
+            for groupId in groupIds:
+                record = ItemGroup(item=item, group_id=groupId)
+                record.save()
             # save new custom list as share list
             shareListName = itemForm.cleaned_data['shareListName']
             if sharingWith=='custom':
@@ -359,20 +365,14 @@ def edit_sharelist(request, shareListId):
             shareListSharee.save()
         messages.success(request, 'Changes to "' + shareList.name + '" have been saved.')
     friends = getRelations(currentParticipant, currentParticipant, [
-        RelationshipTypes.FRIENDS,
-        RelationshipTypes.GUEST_FRIENDS,                                              
-    ])   
-    groups = getRelations(currentParticipant, currentParticipant, [
-        RelationshipTypes.GROUP_OWNER,
-        RelationshipTypes.GROUP_MEMBER,                         
-    ])    
+        RelationshipTypes.FRIENDS,                                         
+    ])      
     shareeIds = shareList.sharelistsharee_set.values_list('sharee_id', flat=True)
     context = {
         'current' : getCurrentUser(request),
         'shareList' : shareList,
         'shareeIds' : shareeIds,
         'friends' :  friends,
-        'groups' : groups,
     }
     return render(request, 'sharing/edit_sharelist.html', context)
 
