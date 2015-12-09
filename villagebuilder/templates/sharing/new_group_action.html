@@ -3,40 +3,73 @@
 
 {% block subcontent %}
 
-<div id="top-section">
-	<h2 id="top-title">Select Items to Share With {{ action.subject.get_name }}</h2>
-</div>
+<script type="text/javascript">
 
-<div class="well">
-	<strong>How Group Sharing Works</strong><br><br>
-	{{ action.subject.get_name }} is managed by {{ action.subject.group.owner.participant.get_name }}.
-	When you share an item with this group, all group members approved by 
-	{{ action.subject.group.owner.participant.get_first_name }} will see it regardless of whether
-	they are friends with you.
-</div>
+$(document).ready(function(){
+
+	$('#chk-select-all').change(function () {
+	    $(".chk").prop('checked', $(this).prop("checked"));
+	});
+	
+}); 
+
+
+</script>
 
 <form method="post" action="{% url 'sharing:new_group_action' action.id %}">
 	{% csrf_token %}
-	<div class="row">
-		<div class="col-sm-12">
-		    <h5>Select Items</h5>
-			{% for item in items %}
-			    <div class="row">
-					<div class="col-md-5">
-			    		{% include 'sharing/blocks/itemblock.html' %}
-			    	</div>
-			    	<div class="col-md-5" style="padding-top:20px;">
-			    	    {% if item.id in sharedItemIds %}
-			    		    <input type="checkbox" name="items[]" value="{{ item.id }}" checked /> share
-			    		{% else %}
-			    			<input type="checkbox" name="items[]" value="{{ item.id }}" /> share
-			    		{% endif %}
-			    	</div>
-			    </div>
-			{% endfor %}
+	<div id="top-section">
+		<div id="top-actions">
 			<button type="submit" class="btn btn-success">Share Selected Items</button>
 		</div>
+		<h2 id="top-title">Select Items to Share With {{ action.subject.get_name }}</h2>
 	</div>
+	
+	<div class="well">
+		<strong>How Group Sharing Works</strong><br><br>
+		{{ action.subject.get_name }} is managed by {{ action.subject.group.owner.participant.get_name }}.
+		When you share an item with this group, all group members approved by 
+		{{ action.subject.group.owner.participant.get_first_name }} will see it regardless of whether
+		they are friends with you.
+	</div>
+
+
+	
+	<div class="row">
+		<div class="col-sm-5 col-sm-offset-1">
+		    <h5>Your Items</h5>
+		</div>
+		<div class="col-sm-2">
+			<div style="text-align:center;">
+				<h5>Select Items to Share</h5>
+			    <input type="checkbox" id="chk-select-all" /> SELECT ALL
+			</div>
+		</div>
+	</div>
+	{% for item in items %}
+	    <div class="row">
+			<div class="col-sm-5 col-sm-offset-1">
+	    		{% include 'sharing/blocks/itemblock.html' %}
+	    	</div>
+	    	<div class="col-sm-2" style="padding-top:20px;">
+	    		<div style="text-align:center;">
+		    	    {% if item.id in sharedItemIds %}
+		    		    <input type="checkbox" name="items[]" value="{{ item.id }}" class="chk" checked />
+		    		{% else %}
+		    			<input type="checkbox" name="items[]" value="{{ item.id }}" class="chk "/>
+		    		{% endif %}
+		    	</div>
+	    	</div>
+	    </div>
+	{% endfor %}
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-1">
+			<div style="text-align:right;padding-top:15px;">
+				<button type="submit" class="btn btn-success">Share Selected Items</button>
+			</div>
+		</div>
+	</div>
+
 </form>
 
 {% endblock %}
