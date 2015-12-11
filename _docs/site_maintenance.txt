@@ -1,0 +1,5 @@
+
+Back up production database:
+mysqldump -u root -p --opt villagebuilder > /home/ubuntu/villagebuilder12112015.sql
+
+Check email logs:
