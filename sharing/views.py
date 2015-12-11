@@ -249,6 +249,19 @@ def my_items(request):
     return render(request, 'sharing/my_items.html', context)
 
 @login_required
+def my_share_lists(request):
+    currentParticipant = Participant.objects.get(user=request.user, type='member')
+    items = getItemsSharedByCurrentMember(currentParticipant.member)
+    shareLists = ShareList.objects.all().filter(owner=currentParticipant.member)
+    context = {
+        'current' : getCurrentUser(request),
+        'items' : items,
+        'shareLists' : shareLists,
+        'shareCategories' : SHARE_CATEGORIES,
+    }
+    return render(request, 'sharing/my_share_lists.html', context)
+
+@login_required
 def item(request, itemId):
     # verify approval to view item
     currentParticipant = Participant.objects.get(user=request.user, type='member')
@@ -306,7 +319,10 @@ def make_item_public(request):
             item.save()
         response = 'https://villagebuilder.net' + reverse('sharing:public_item', args=[item.code])
         return HttpResponse(
-            json.dumps(response),
+            json.dumps({
+                'link' : response,
+                'id' : itemId,
+            }),
             content_type="application/json"
         )
     raise Http404("Item not found")

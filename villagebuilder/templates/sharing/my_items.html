@@ -6,24 +6,54 @@
 {% block subcontent %}
 
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		
-		$('#share-list-select').change(function() {
-			$('.share-list').hide();
-			var displayDiv = '#share-list-' + $(this).val()
-			$(displayDiv).slideDown();
-		}).trigger('change');
-		
+<script>
+
+$(document).ready(function(){
 	
+	//facebook integration
+	$.ajaxSetup({ cache: true });
+	$.getScript('//connect.facebook.net/en_US/sdk.js', function(){
+  		FB.init({
+    		appId: '1184393148243808',
+    		version: 'v2.4' // or v2.0, v2.1, v2.2, v2.3
+  		});     
+  		//$('#loginbutton,#feedbutton').removeAttr('disabled');
+  		//FB.getLoginStatus(updateStatusCallback);
+	});
+
+	$('.btn-make-item-public').click(function() {
+		id = $(this).attr('id').substring(21)
+		var postData = {
+			item_id : id
+		}
+		$.post("{% url 'sharing:make_item_public' %}", postData, function(data, status){
+			if (status == 'success') {
+	    		$('#item-public-link-' + data.id).val(data.link);
+	    		$('#item-public-link-div-' + data.id).slideDown();
+			}
+	    });
+	});
 	
-	
-	}); 
+	$('.btn-share-on-facebook').click(function() {
+		id = $(this).attr('id').substring(22)
+		var postData = {
+			item_id : id
+		}
+		$.post("{% url 'sharing:make_item_public' %}", postData, function(data, status){
+			if (status == 'success') {
+				FB.ui({
+					method: 'share',
+					href: data.link
+		  		}, function(response){
+		  			console.log(response);
+		  		});
+			}
+	    });
+	});
+
+}); 
+
 </script>
-
-
-
-
 
 
 
@@ -56,97 +86,103 @@
 
 
 <div class="row">
-	<div class="col-md-2">
-		<h5>Sort Order</h5>
-		Newest first
-	</div>
-	<div class="col-md-5">
-	    <h5>Your Shared Items</h5>
-		{% for item in items %}
-		    {% include 'sharing/blocks/itemblock_withactions.html' %}
-		{% empty %}
+	<div class="col-md-12">
+	   	{% if items.count > 0 %}
+	   	<table class="table">
+	   		<tr>
+		   		<th class="text-warning">Your Shared Items</th>
+		   		<th class="text-warning">Sharing With</th>
+		   		<th class="text-warning">Actions</th>
+	   		</tr>
+		   	{% for item in items %}
+		   		<tr>
+		   			<td style="vertical-align:middle">
+		   				{% include 'sharing/blocks/itemblock.html' %}
+		   			</td>
+		   			<td style="vertical-align:middle;font-size:0.9em;" class="text-warning">
+		   				{% if item.share_type == 'share_list' %}
+		   					share list: &nbsp;&nbsp;
+		   					<a href="{% url 'sharing:my_share_lists' %}">{{item.sharelist.name}}</a>
+						{% elif item.share_type == 'all_friends' %}
+							all friends
+						{% elif item.share_type == 'custom' %}
+							custom list of friends
+		   				{% endif %}
+		   				{% if item.itemgroup_set.all.count > 0 %}
+		   					<div style="padding-top:10px;">
+			   					groups: &nbsp;&nbsp;
+				   				{% for itemgroup in item.itemgroup_set.all %}
+				   					<a href="{% url 'account:view' itemgroup.group.id %}">	
+				   						{{itemgroup.group.participant.get_name}}
+				   					</a>&nbsp;&nbsp;
+				   				{% endfor %}
+			   				</div>
+			   			{% endif %}
+		   			</td>
+		   			<td style="vertical-align:middle">
+			   			<a class="btn btn-sm btn-default" href="{% url 'sharing:item' item.id %}">View</a>
+			    		<a class="btn btn-sm btn-warning" href="{% url 'sharing:edit_item' item.id %}"><i class="fa fa-pencil"></i> Edit</a>
+			    		<button class="btn btn-sm btn-primary btn-share-on-facebook" id="btn-share-on-facebook-{{item.id}}">
+			    			<i class="fa fa-facebook-official"></i> Share on Facebook
+			    		</button>
+			    		<button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#share-by-email-modal-{{item.id}}">
+			    			<i class="fa fa-envelope"></i> Share by email
+			    		</button>
+		   			</td>
+		   		</tr>
+		   	{% endfor %}
+	   	</table>
+		{% else %}
 		    <p>You are not sharing any items yet.</p>
 		    <p>Use the 
 		    <a href="{% url 'sharing:quick_share' %}">quick share common items tool</a>
 			or share individual items on the 
 			<a href="{% url 'sharing:share_item' %}?type=stuff">share something</a> page.</p>
-		{% endfor %}
-	</div>
-	<div class="col-md-5">
-	    <h5>Your Share Lists</h5>
-	    <div class="form-group">
-			<select class="form-control" id="share-list-select">
-			    <option> </option>
-				{% for list in shareLists %}
-				    <option value="{{ list.id }}">{{ list.name }}</option>
-				{% endfor %}
-			</select>
-		</div>
-		{% for list in shareLists %}
-		    <div id="share-list-{{ list.id }}" class="share-list">
-		        {% for shareListSharee in list.sharelistsharee_set.all %}
-		        	{% with participant=shareListSharee.sharee %}
-		                {% include 'core/blocks/participantgroup_fromobjects.html' %}
-		        	{% endwith %}
-		        {% endfor %}
-		        <div style="text-align:right;padding:3px;">
-		        	<a href="{% url 'sharing:edit_sharelist' list.id %}">
-		        	    Edit this list <i class="fa fa-angle-double-right"></i>
-		        	</a>
-		        </div>
-		    </div>
-		{% endfor %}
-		<div style="padding-top:20px">
-			<a href="#" data-toggle="modal" data-target="#creating-sharelist-modal">
-			    <i class="fa fa-question-circle"></i> How do I create a new share list?
-			</a>
-		</div>
+		{% endif %}
 	</div>
 </div>
 
-<div class="modal" id="creating-sharelist-modal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-        <h4 class="modal-title">Creating Share Lists</h4>
-      </div>
-      <div class="modal-body">
-        <p>
-            To create a new share list, 
-            <a href="{% url 'sharing:share_item' %}">share a new item</a>
-            and select a custom list of people to share with.
-            When you submit the item, you will be asked if you want
-            to save your custom list as a share list.
-        </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal" id="share-by-email-modal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-			    <h4 class="modal-title">Share by Email</h4>
-			</div>
-			<div class="modal-body">
-			    <p>
-			        This will create a public link for your item that you can share with anyone,
-			        whether they have a VillageBuilder account or not.
-			    </p>
-			  <form method="post" action="">
-			  	  <button type="button" class="btn btn-default">Create link</button>
-			 	  </form>
-			  <div id="item-public-link"></div>
+{% for item in items %}
+	<div class="modal" id="share-by-email-modal-{{item.id}}">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+				    <h4 class="modal-title">Share by Email</h4>
+				</div>
+				<div class="modal-body">
+					{% if item.public %}
+						Use the following public link to share your item
+						with friends who don't have VillageBuilder accounts:
+						<br><br>
+						
+						<div class="form-group">
+						    <input type="text" class="form-control" readonly
+						    onclick="select()" value="{{ item.get_public_link }}" />
+						    <span class="help-block">Click and CTRL-C to copy</span>
+						</div>
+					{% else %}
+					    <p>
+					        This will create a public link for your item that you can share with anyone,
+					        whether they have a VillageBuilder account or not.
+					    </p>
+					    <button type="button" class="btn btn-default btn-make-item-public" 
+					    	id="btn-make-item-public-{{item.id}}">Create link</button>
+					    <br><br>
+					    <div class="form-group" id="item-public-link-div-{{item.id}}" style="display:none;">
+						    <input type="text" class="form-control" 
+						    	id="item-public-link-{{item.id}}" readonly onclick="select()" />
+						    <span class="help-block">Click and CTRL-C to copy</span>
+						</div>
+					{% endif %}
+				  
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+{% endfor %}
+
+
 
 
 {% endblock %}

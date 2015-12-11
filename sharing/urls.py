@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^upload_image/', views.upload_image, name='upload_image'),
     url(r'^items/', views.items, name='items'),
     url(r'^my_items/', views.my_items, name='my_items'),
+    url(r'^my_share_lists/', views.my_share_lists, name='my_share_lists'),
     url(r'^item/([0-9]*)', views.item, name='item'),
     url(r'^public_item/([a-zA-Z0-9]*)', views.public_item, name='public_item'),
     url(r'^make_item_public/', views.make_item_public, name='make_item_public'),

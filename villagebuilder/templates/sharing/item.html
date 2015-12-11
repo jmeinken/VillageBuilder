@@ -25,7 +25,7 @@ $(document).ready(function(){
 		}
 		$.post("{% url 'sharing:make_item_public' %}", postData, function(data, status){
 			if (status == 'success') {
-	    		$('#item-public-link').val(data);
+	    		$('#item-public-link').val(data.link);
 	    		$('#item-public-link-div').slideDown();
 			}
 	    });
@@ -39,13 +39,12 @@ $(document).ready(function(){
 			if (status == 'success') {
 				FB.ui({
 					method: 'share',
-					href: data
+					href: data.link
 		  		}, function(response){
 		  			console.log(response);
 		  		});
 			}
 	    });
-		
 	});
 	
 	
