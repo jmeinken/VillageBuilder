@@ -126,29 +126,7 @@ $(document).ready(function(){
 				<h4>Shared by you</h4>
 				<hr style="clear:both;">
 				<h4>Shared with</h4>
-				{% if item.share_type == 'all_friends' %}
-				    all friends
-				{% elif item.share_type == 'all_friends_groups' %}
-				    all friends and all groups
-				{% elif item.share_type == 'custom' %}
-				    Custom list:
-				    <div style="height:300px;overflow-y:auto;">
-					    {% for itemSharee in item.itemsharee_set.all %}
-					        {% with participant=itemSharee.sharee %}
-					            {% include 'core/blocks/participantgroup_fromobjects.html' %}
-					        {% endwith %}
-					    {% endfor %}
-					</div>
-				{% elif item.share_type == 'share_list' %}
-					{{ item.sharelist.name }}
-					<div style="height:300px;overflow-y:auto;">
-					    {% for shareListSharee in item.sharelist.sharelistsharee_set.all %}
-		                    {% with participant=shareListSharee.sharee %}
-		                        {% include "core/blocks/participantgroup_fromobjects.html" %}
-		                    {% endwith %}
-		                {% endfor %}
-		            </div>
-				{% endif %}	
+				{% include 'sharing/blocks/sharing_scope.html' %}
 			{% endif %}
 		</div>
 	</div>

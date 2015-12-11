@@ -175,6 +175,7 @@ def share_item(request):
         'groups' : groups,
         'keywordForm' : keywordForm,
         'itemImage' : '/static/img/generic-item.png',
+        'shareLists' : ShareList.objects.all().filter(owner=currentParticipant.member)
     }
     return render(request, 'sharing/share_item.html', context)
 
@@ -239,11 +240,9 @@ def items(request):
 def my_items(request):
     currentParticipant = Participant.objects.get(user=request.user, type='member')
     items = getItemsSharedByCurrentMember(currentParticipant.member)
-    shareLists = ShareList.objects.all().filter(owner=currentParticipant.member)
     context = {
         'current' : getCurrentUser(request),
         'items' : items,
-        'shareLists' : shareLists,
         'shareCategories' : SHARE_CATEGORIES,
     }
     return render(request, 'sharing/my_items.html', context)
@@ -251,13 +250,10 @@ def my_items(request):
 @login_required
 def my_share_lists(request):
     currentParticipant = Participant.objects.get(user=request.user, type='member')
-    items = getItemsSharedByCurrentMember(currentParticipant.member)
     shareLists = ShareList.objects.all().filter(owner=currentParticipant.member)
     context = {
         'current' : getCurrentUser(request),
-        'items' : items,
         'shareLists' : shareLists,
-        'shareCategories' : SHARE_CATEGORIES,
     }
     return render(request, 'sharing/my_share_lists.html', context)
 

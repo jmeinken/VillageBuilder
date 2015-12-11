@@ -13,7 +13,8 @@ def getSharingActions(member):
     for action in actions:
         relationships = GroupMembership.objects.filter(group=action.subject.group, member=action.alertee)
         if relationships.count() == 0 or not relationships[0].requested or not relationships[0].invited:
-            action.delete()
+            if action.subject.group.owner != member:
+                action.delete()
     return SharingActionNeeded.objects.filter(alertee=member)
 
 def setSharingAction(memberId, groupId, type):

@@ -200,33 +200,27 @@ $(document).ready(function(){
             <div id="form-errors" class="text-danger">{{ itemForm.description.errors }}</div>
         </div>
         <div class="col-md-4">
-        	<div style="height:300px;overflow-y:auto;border:#C0C0C0 solid 1px;padding-top:5px;">
-		    	<strong class="text-primary">Your Groups:</strong>
-			    {% for participant in groups %}
-			        <div>
-	        			<div class="col-sm-9">
-			        		{% include "core/blocks/participantgroup_noactions.html" %}
-			        	</div>
-			        	<div class="col-sm-3" style="padding-top:20px;">
-			        		{% if participant.id in shareeGroups %}
-			        			<input type="checkbox" name="groups[]" value="{{participant.id}}" checked="checked" />
-			        			include
-			        		{% else %}
-			        		    <input type="checkbox" name="groups[]" value="{{participant.id}}" />
-			        		    include
-			        		{% endif %}
-			        	</div>
-			        </div>		
-			    {% endfor %}
-		    </div>
+        	<h4>Share With Groups</h4>
+		    {% for participant in groups %}
+		        <div>
+		        	<div style="padding:0 0 10px 30px;">
+		        		{% if participant.id in shareeGroups or not item %}
+		        			<input type="checkbox" name="groups[]" value="{{participant.id}}" checked="checked" />
+		        			{{ participant.name }}
+		        		{% else %}
+		        		    <input type="checkbox" name="groups[]" value="{{participant.id}}" />
+		        		    {{ participant.name }}
+		        		{% endif %}
+		        	</div>
+		        </div>		
+		    {% endfor %}
 	        <div class="form-group">
-	            {{ itemForm.sharingWith|label_with_classes:"control-label" }} 
+	            <h4>Share With Friends</h4>
 	            {{ itemForm.sharingWith|attr:"class:form-control" }}
             </div>
             <div id="form-errors" class="text-danger">{{ itemForm.sharingWith.errors }}</div>
             {% for shareList in shareLists %}
 	            <div class="well share-list" id="share-list-{{ shareList.id }}" style="display:none;">
-	                <strong class="text-primary">{{ shareList.name }}:</strong>
 	                {% for shareListSharee in shareList.sharelistsharee_set.all %}
 	                    {% with participant=shareListSharee.sharee %}
 	                        {% include "core/blocks/participantgroup_fromobjects.html" %}
@@ -235,9 +229,7 @@ $(document).ready(function(){
 	            </div>
             {% endfor %}
 		    <div class="well" id="custom-friends-form" style="display:none;margin:0 10px;">
-		    	<h4>Custom list - Select who to share with:</h4>
 		        <div style="height:300px;overflow-y:auto;border:#C0C0C0 solid 1px;padding-top:5px;">
-		        	<strong class="text-primary">Your Friends:</strong>
 		        	<div>
 					    {% for participant in friends %}
 			        			<div class="col-sm-9">
@@ -255,7 +247,6 @@ $(document).ready(function(){
 					    {% endfor %}
 					</div>
 			    </div>
-			    
 		    </div>
 		</div>
 	</div>

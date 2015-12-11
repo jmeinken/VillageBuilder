@@ -176,6 +176,7 @@ def create_group(request):
             group.owner = Participant.objects.get(type='member', user=user).member
             group.id = participant.id
             group.save()
+            setSharingAction(group.owner.id, group.id, "new group")
             messages.success(request, '''
                 Your group has been successfully created.
                 From this page you can add group info and invite more members.

@@ -1,0 +1,42 @@
+<style>
+
+div .sharee-well {
+	display:inline-block; 
+	padding:4px 8px;
+	background-color:#F5F5F5;
+	border-radius:3px;
+	border:1px solid #E3E3E3;
+	color: #EC7621;
+}
+
+</style>						
+						
+						
+						{% if item.share_type == 'share_list' %}
+		   					friends: &nbsp;
+		   					<div class="sharee-well">
+		   						<a href="{% url 'sharing:my_share_lists' %}">{{item.sharelist.name}}</a>
+		   					</div>
+						{% elif item.share_type == 'all_friends' %}
+							friends: &nbsp;
+				            <div class="sharee-well">
+				            	all friends
+				            </div>	
+						{% elif item.share_type == 'custom' %}
+							friends: &nbsp;
+							<div class="sharee-well">
+								custom list
+							</div>
+		   				{% endif %}
+		   				{% if item.itemgroup_set.all.count > 0 %}
+		   					<div style="padding-top:10px;">
+			   					groups: &nbsp;
+				   				{% for itemgroup in item.itemgroup_set.all %}
+				   					<div class="sharee-well">
+					   					<a href="{% url 'account:view' itemgroup.group.id %}">	
+					   						{{itemgroup.group.participant.get_name}}
+					   					</a>
+				   					</div>
+				   				{% endfor %}
+			   				</div>
+			   			{% endif %}

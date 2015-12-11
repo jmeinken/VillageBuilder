@@ -58,6 +58,8 @@ $(document).ready(function(){
 
 
 
+
+
 <div id="top-section">
 	<div id="top-actions">
 		<div class="btn-group">
@@ -99,25 +101,8 @@ $(document).ready(function(){
 		   			<td style="vertical-align:middle">
 		   				{% include 'sharing/blocks/itemblock.html' %}
 		   			</td>
-		   			<td style="vertical-align:middle;font-size:0.9em;" class="text-warning">
-		   				{% if item.share_type == 'share_list' %}
-		   					share list: &nbsp;&nbsp;
-		   					<a href="{% url 'sharing:my_share_lists' %}">{{item.sharelist.name}}</a>
-						{% elif item.share_type == 'all_friends' %}
-							all friends
-						{% elif item.share_type == 'custom' %}
-							custom list of friends
-		   				{% endif %}
-		   				{% if item.itemgroup_set.all.count > 0 %}
-		   					<div style="padding-top:10px;">
-			   					groups: &nbsp;&nbsp;
-				   				{% for itemgroup in item.itemgroup_set.all %}
-				   					<a href="{% url 'account:view' itemgroup.group.id %}">	
-				   						{{itemgroup.group.participant.get_name}}
-				   					</a>&nbsp;&nbsp;
-				   				{% endfor %}
-			   				</div>
-			   			{% endif %}
+		   			<td style="vertical-align:middle;font-size:0.9em;" class="text-muted">
+		   				{% include 'sharing/blocks/sharing_scope.html' %}
 		   			</td>
 		   			<td style="vertical-align:middle">
 			   			<a class="btn btn-sm btn-default" href="{% url 'sharing:item' item.id %}">View</a>
