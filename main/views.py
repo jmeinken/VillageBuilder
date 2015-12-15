@@ -51,7 +51,7 @@ from requests.helpers import *
 from email_system.helpers import *
 from sharing.models import SHARE_CATEGORIES
 from sharing.helpers import *
-from account.forms import AccountInfoForm
+from account.forms import AccountInfoForm, FacebookAccountInfoForm
 
 from .forms import RequestResetPasswordForm, ResetPasswordForm
 
@@ -72,7 +72,9 @@ def facebook_test(request):
     return render(request, 'core/facebook_test.html', context)
 
 def facebook_login_test(request):
-    context = {}
+    context = {
+        'myform' : FacebookAccountInfoForm()
+    }
     return render(request, 'core/facebook_login_test.html', context)
 
 @login_required

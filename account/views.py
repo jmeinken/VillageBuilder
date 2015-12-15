@@ -247,6 +247,20 @@ def account_info(request):
     }
     return render(request, 'account/account_info.html', context)
 
+def new_facebook_account(request):
+    if request.method == "POST":
+        myform = FacebookAccountInfoForm(request.POST)
+        if myform.is_valid():
+            # save form data to session
+            for field in myform.cleaned_data:
+                request.session[field] = myform.cleaned_data[field]
+            request.session['account_info'] = 'complete'
+            destination = ifset(request.POST['redirect-url'], 'account:address')
+            return redirect(reverse(destination))
+        else:
+            return redirect(reverse('account:account_info'))
+    return redirect(reverse('account:account_info'))
+
 
 def address(request):
     if 'account_info' not in request.session.keys():
