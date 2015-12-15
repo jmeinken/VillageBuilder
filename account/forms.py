@@ -22,10 +22,12 @@ class AccountInfoForm(forms.ModelForm):
         last_name = cleaned_data.get("last_name")
         password = cleaned_data.get("password")
         resubmit_password = cleaned_data.get("resubmit_password")
-        if password and len(password) < 8:
-            self.add_error('password', 'Password must be at least 8 characters.')
-        if password != resubmit_password:
-            self.add_error('resubmit_password', 'Password values didn\'t match.')
+        facebook_id = cleaned_data.get("facebook_id")
+        if not facebook_id:
+            if password and len(password) < 8:
+                self.add_error('password', 'Password must be at least 8 characters.')
+            if password != resubmit_password:
+                self.add_error('resubmit_password', 'Password values didn\'t match.')
         if email == '':
             self.add_error('email', 'This field is required.')
         if first_name == '':
