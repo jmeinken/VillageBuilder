@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from .models import Member, Group
 
 class AccountInfoForm(forms.ModelForm):
-    resubmit_password = forms.CharField(max_length=128, widget=forms.PasswordInput)
+    resubmit_password = forms.CharField(max_length=128, widget=forms.PasswordInput, required=False)
     facebook_id = forms.CharField(max_length=128, widget=forms.TextInput)
     class Meta:
         model = User
@@ -13,6 +13,10 @@ class AccountInfoForm(forms.ModelForm):
         widgets = {
             'password': forms.PasswordInput,
         }
+        
+    def __init__(self, *args, **kwargs):
+        super(AccountInfoForm, self).__init__(*args, **kwargs)
+        self.fields['password'].required = False
     
     # using default User model, so extra validation must be performed in the form 
     def clean(self):
@@ -24,7 +28,9 @@ class AccountInfoForm(forms.ModelForm):
         resubmit_password = cleaned_data.get("resubmit_password")
         facebook_id = cleaned_data.get("facebook_id")
         if not facebook_id:
-            if password and len(password) < 8:
+            if not password:
+                self.add_error('password', 'This field is required.')
+            if len(password) < 8:
                 self.add_error('password', 'Password must be at least 8 characters.')
             if password != resubmit_password:
                 self.add_error('resubmit_password', 'Password values didn\'t match.')
