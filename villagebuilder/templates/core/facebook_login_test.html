@@ -107,7 +107,7 @@ Continue with Facebook
 <div id="status">
 </div>
 
-<form action="{% url 'account:new_facebook_account' %}" method="post" id="facebook-create-account">
+<form action="{% url 'account:account_info' %}" method="post" id="facebook-create-account">
     {% csrf_token %}
 	{{ myform }}									
 </form>
