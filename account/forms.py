@@ -41,11 +41,7 @@ class FacebookAccountInfoForm(forms.ModelForm):
         model = User
         fields = ['email', 'first_name', 'last_name']
         
-    def clean(self):
-        cleaned_data = super(AccountInfoForm, self).clean()
-        email = cleaned_data.get("email")
-        first_name = cleaned_data.get("first_name")
-        last_name = cleaned_data.get("last_name")
+
 
 
 class GroupCreateForm(forms.ModelForm):
