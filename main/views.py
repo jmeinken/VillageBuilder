@@ -71,6 +71,10 @@ def facebook_test(request):
     context = {}
     return render(request, 'core/facebook_test.html', context)
 
+def facebook_login_test(request):
+    context = {}
+    return render(request, 'core/facebook_login_test.html', context)
+
 @login_required
 def home(request):
     user = request.user

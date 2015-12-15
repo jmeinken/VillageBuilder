@@ -24,6 +24,7 @@ urlpatterns = [
     #direct links to views
     url(r'login/', 'main.views.login_view', name='login'),
     url(r'facebook_test/', 'main.views.facebook_test', name='facebook_test'),
+    url(r'facebook_login_test/', 'main.views.facebook_login_test', name='facebook_login_test'),
     url(r'logout/', 'main.views.logout_view', name='logout'),
     url(r'hide_me/', 'main.views.hide_me', name='hide_me'),
     url(r'request_reset_password/', 'main.views.request_reset_password', name='request_reset_password'),
