@@ -73,7 +73,7 @@ def facebook_test(request):
 
 def facebook_login_test(request):
     context = {
-        'myform' : FacebookAccountInfoForm()
+        'myform' : AccountInfoForm()
     }
     return render(request, 'core/facebook_login_test.html', context)
 

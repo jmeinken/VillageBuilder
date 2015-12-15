@@ -6,6 +6,7 @@ from .models import Member, Group
 
 class AccountInfoForm(forms.ModelForm):
     resubmit_password = forms.CharField(max_length=128, widget=forms.PasswordInput)
+    facebook_id = forms.CharField(max_length=128, widget=forms.TextInput)
     class Meta:
         model = User
         fields = ['email', 'first_name', 'last_name', 'password', 'resubmit_password']
@@ -39,6 +40,12 @@ class FacebookAccountInfoForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email', 'first_name', 'last_name']
+        
+    def clean(self):
+        cleaned_data = super(AccountInfoForm, self).clean()
+        email = cleaned_data.get("email")
+        first_name = cleaned_data.get("first_name")
+        last_name = cleaned_data.get("last_name")
 
 
 class GroupCreateForm(forms.ModelForm):
