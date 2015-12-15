@@ -255,8 +255,7 @@ def new_facebook_account(request):
             for field in myform.cleaned_data:
                 request.session[field] = myform.cleaned_data[field]
             request.session['account_info'] = 'complete'
-            destination = ifset(request.POST['redirect-url'], 'account:address')
-            return redirect(reverse(destination))
+            return redirect(reverse('account:address'))
         else:
             return redirect(reverse('account:account_info'))
     return redirect(reverse('account:account_info'))
