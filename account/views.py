@@ -241,7 +241,7 @@ def account_info(request):
             for field in myform.cleaned_data:
                 request.session[field] = myform.cleaned_data[field]
             request.session['account_info'] = 'complete'
-            destination = ifset(request.POST['redirect-url'], 'account:address')
+            destination = ifset(request.POST.get('redirect-url',''), 'account:address')
             return redirect(reverse(destination))
     else:
         myform = AccountInfoForm(initial={
