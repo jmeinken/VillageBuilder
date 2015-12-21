@@ -347,24 +347,19 @@ def personal_info(request):
     if request.method == "POST":
         #save user
         facebook_id =  ifkeyset(request.session, 'facebook_id')
-        if not facebook_id:
-            user = User.objects.create_user(
-                ifkeyset(request.session, 'email'), 
-                ifkeyset(request.session, 'email'), 
-                ifkeyset(request.session, 'password')
-            )
-            user.first_name = ifkeyset(request.session, 'first_name')
-            user.last_name = ifkeyset(request.session, 'last_name')
-            user.save()
+        if facebook_id:
+            password = createRandomString(20)
         else:
-            user = User.objects.create_user(
-                ifkeyset(request.session, 'email'), 
-                ifkeyset(request.session, 'email'), 
-                createRandomString(20),
-            )
-            user.first_name = ifkeyset(request.session, 'first_name')
-            user.last_name = ifkeyset(request.session, 'last_name')
-            user.save()
+            password = ifkeyset(request.session, 'password')
+        user = User.objects.create_user(
+            ifkeyset(request.session, 'email'), 
+            ifkeyset(request.session, 'email'), 
+            password
+        )
+        user.first_name = ifkeyset(request.session, 'first_name')
+        user.last_name = ifkeyset(request.session, 'last_name')
+        user.save()
+        if facebook_id:
             profile = Profile(
                 user=user,
                 facebook_id=facebook_id,
@@ -405,7 +400,7 @@ def personal_info(request):
             # log the user in
             user = authenticate(
                 username=ifkeyset(request.session, 'email'),
-                password=ifkeyset(request.session, 'password')
+                password=password
             )
             request.session.flush()  #don't flush after login
             # user.backend = 'django.contrib.auth.backends.ModelBackend'
