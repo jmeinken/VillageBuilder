@@ -51,7 +51,7 @@ from requests.helpers import *
 from email_system.helpers import *
 from sharing.models import SHARE_CATEGORIES
 from sharing.helpers import *
-from account.forms import AccountInfoForm, FacebookAccountInfoForm
+from account.forms import AccountInfoForm
 
 from .forms import RequestResetPasswordForm, ResetPasswordForm
 
