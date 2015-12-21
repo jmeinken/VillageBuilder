@@ -43,11 +43,11 @@ class AccountInfoForm(forms.ModelForm):
         if User.objects.all().filter(email=email).count() != 0:
             self.add_error('email', 'An account already exists with this email.')
 
-class FacebookAccountInfoForm(forms.ModelForm):
-    facebook_id = forms.CharField(max_length=128, widget=forms.TextInput)
-    class Meta:
-        model = User
-        fields = ['email', 'first_name', 'last_name']
+#class FacebookAccountInfoForm(forms.ModelForm):
+#    facebook_id = forms.CharField(max_length=128, widget=forms.TextInput)
+#    class Meta:
+#        model = User
+#        fields = ['email', 'first_name', 'last_name']
         
 
 

@@ -227,6 +227,7 @@ def account_info(request):
         myform = AccountInfoForm(request.POST)
         if myform.is_valid():
             # save form data to session
+            request.session.flush()
             for field in myform.cleaned_data:
                 request.session[field] = myform.cleaned_data[field]
             request.session['account_info'] = 'complete'
@@ -237,7 +238,6 @@ def account_info(request):
             'email': ifkeyset(request.session, 'email'),
             'first_name': ifkeyset(request.session, 'first_name'),
             'last_name': ifkeyset(request.session, 'last_name'),
-            'facebook_id': '',
         })
     # show page
     context = {
@@ -248,19 +248,19 @@ def account_info(request):
     }
     return render(request, 'account/account_info.html', context)
 
-def new_facebook_account(request):
-    if request.method == "POST":
-        myform = FacebookAccountInfoForm(request.POST)
-        if myform.is_valid():
-            # save form data to session
-            for field in myform.cleaned_data:
-                request.session[field] = myform.cleaned_data[field]
-            request.session['account_info'] = 'complete'
-            return redirect(reverse('account:address'))
-        else:
-            request.session['facebook_id'] = ''
-            return redirect(reverse('account:account_info'))
-    return redirect(reverse('account:account_info'))
+#def new_facebook_account(request):
+#    if request.method == "POST":
+#        myform = FacebookAccountInfoForm(request.POST)
+#        if myform.is_valid():
+#            # save form data to session
+#            for field in myform.cleaned_data:
+#                request.session[field] = myform.cleaned_data[field]
+#            request.session['account_info'] = 'complete'
+#            return redirect(reverse('account:address'))
+#        else:
+#            request.session['facebook_id'] = ''
+#            return redirect(reverse('account:account_info'))
+#    return redirect(reverse('account:account_info'))
 
 
 def address(request):
