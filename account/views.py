@@ -237,6 +237,7 @@ def account_info(request):
             'email': ifkeyset(request.session, 'email'),
             'first_name': ifkeyset(request.session, 'first_name'),
             'last_name': ifkeyset(request.session, 'last_name'),
+            'facebook_id': '',
         })
     # show page
     context = {
