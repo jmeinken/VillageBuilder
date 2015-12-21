@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.utils import timezone
-
+from django.contrib.auth import login as auth_login
 from villagebuilder.utils import console
 from .forms import *
 from .models import Member, Participant
