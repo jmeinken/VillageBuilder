@@ -224,6 +224,16 @@ def edit_group(request, groupId):
 
 def account_info(request):
     if request.method == "POST":
+        # if FB account already exists, log user in
+        existingUsers = User.objects.filter(
+            email=request.POST['email']
+        ).filter(
+            profile__facebook_id=request.POST['facebook_id']
+        )
+        if existingUsers.count() == 1:
+            auth_login(request, existingUsers[0])
+            return redirect(reverse('home'))
+        #####################################
         myform = AccountInfoForm(request.POST)
         if myform.is_valid():
             # save form data to session
@@ -336,14 +346,30 @@ def personal_info(request):
         return redirect(reverse('account:address'))
     if request.method == "POST":
         #save user
-        user = User.objects.create_user(
-            ifkeyset(request.session, 'email'), 
-            ifkeyset(request.session, 'email'), 
-            ifkeyset(request.session, 'password')
-        )
-        user.first_name = ifkeyset(request.session, 'first_name')
-        user.last_name = ifkeyset(request.session, 'last_name')
-        user.save()
+        facebook_id =  ifkeyset(request.session, 'facebook_id')
+        if not facebook_id:
+            user = User.objects.create_user(
+                ifkeyset(request.session, 'email'), 
+                ifkeyset(request.session, 'email'), 
+                ifkeyset(request.session, 'password')
+            )
+            user.first_name = ifkeyset(request.session, 'first_name')
+            user.last_name = ifkeyset(request.session, 'last_name')
+            user.save()
+        else:
+            user = User.objects.create_user(
+                ifkeyset(request.session, 'email'), 
+                ifkeyset(request.session, 'email'), 
+                createRandomString(20),
+            )
+            user.first_name = ifkeyset(request.session, 'first_name')
+            user.last_name = ifkeyset(request.session, 'last_name')
+            user.save()
+            profile = Profile(
+                user=user,
+                facebook_id=facebook_id,
+            )
+            profile.save()
         #save participant
         participant = Participant(
             user = user, 

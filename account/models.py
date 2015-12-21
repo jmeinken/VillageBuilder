@@ -27,6 +27,13 @@ from django.conf import settings
 # email_user(subject, message, from_email)
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    facebook_id = models.CharField(max_length=120, blank=True, null=True)
+
 
 class Participant(models.Model):
     PARTICIPANT_TYPES = (
