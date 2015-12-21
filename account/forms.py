@@ -6,7 +6,7 @@ from .models import Member, Group
 
 class AccountInfoForm(forms.ModelForm):
     resubmit_password = forms.CharField(max_length=128, widget=forms.PasswordInput, required=False)
-    facebook_id = forms.CharField(max_length=128, widget=forms.TextInput)
+    facebook_id = forms.CharField(max_length=128, widget=forms.TextInput, required=False)
     class Meta:
         model = User
         fields = ['email', 'first_name', 'last_name', 'password', 'resubmit_password']
