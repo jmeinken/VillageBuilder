@@ -232,6 +232,7 @@ def account_info(request):
         )
         if existingUsers.count() == 1:
             user = existingUsers[0]
+            # adding backend is a hack for the fact that we aren't authenticating w/ password
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             auth_login(request, user)
             return redirect(reverse('home'))
