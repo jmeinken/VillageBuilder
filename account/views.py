@@ -231,8 +231,9 @@ def account_info(request):
             profile__facebook_id=request.POST['facebook_id']
         )
         if existingUsers.count() == 1:
-            existingUsers[0].backend = 'django.contrib.auth.backends.ModelBackend'
-            auth_login(request, existingUsers[0])
+            user = existingUsers[0]
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            auth_login(request, user)
             return redirect(reverse('home'))
         #####################################
         myform = AccountInfoForm(request.POST)
