@@ -257,6 +257,7 @@ def new_facebook_account(request):
             request.session['account_info'] = 'complete'
             return redirect(reverse('account:address'))
         else:
+            request.session['facebook_id'] = ''
             return redirect(reverse('account:account_info'))
     return redirect(reverse('account:account_info'))
 
