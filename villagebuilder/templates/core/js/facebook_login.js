@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Facebook Login JavaScript Example</title>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<meta charset="UTF-8">
-</head>
-<body>
-<script>
-
-
+	
+	// Both FB login and new account creation can be called 
+	// by including this JavaScript and calling with #facebook-login-btn
+	
+	
+	
 	// This is called with the results from from FB.getLoginStatus().
 	function statusChangeCallback(response) {
 		console.log('statusChangeCallback');
@@ -106,28 +101,3 @@
 		});
 		
 	});
-
-</script>
-
-<!--
-  Below we include the Login Button social plugin. This button uses
-  the JavaScript SDK to present a graphical Login button that triggers
-  the FB.login() function when clicked.
--->
-
-<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-Continue with Facebook
-</fb:login-button>
-
-<button id="facebook-login-btn">Custom facebook login</button>
-
-<div id="status">
-</div>
-
-<form action="{% url 'account:account_info' %}" method="post" id="facebook-create-account">
-    {% csrf_token %}
-	{{ myform }}									
-</form>
-
-</body>
-</html>

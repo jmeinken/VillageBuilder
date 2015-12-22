@@ -55,18 +55,18 @@
 			            </div>
 			            <div class="form-group">
 					        {{ form.street.errors }}
-				            {{ form.street|label_with_classes:"control-label" }} 
+				            <label class="control-label" for="id_street">Street (optional)</label>
 				            {{ form.street|attr:"class:form-control" }}
 			            </div>
 			            <div class="form-group">
-					        {{ form.city.errors }}
-				            {{ form.city|label_with_classes:"control-label" }} 
-				            {{ form.city|attr:"class:form-control" }}
+					        {{ form.neighborhood.errors }}
+				            <label class="control-label" for="id_street">Neighborhood (optional)</label>
+				            {{ form.neighborhood|attr:"class:form-control" }}
 			            </div>
 			            <div class="form-group">
-					        {{ form.neighborhood.errors }}
-				            {{ form.neighborhood|label_with_classes:"control-label" }} 
-				            {{ form.neighborhood|attr:"class:form-control" }}
+					        {{ form.city.errors }}
+				            <label class="control-label" for="id_street">City</label>
+				            {{ form.city|attr:"class:form-control" }}
 			            </div>
 			        </fieldset>
 				</div>
