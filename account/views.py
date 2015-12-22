@@ -226,14 +226,13 @@ def edit_group(request, groupId):
 def setup_facebook_login(request):
     if request.method == "POST":
         facebook_id = request.POST['facebook_id']
-        user_id = request.POST['facebook_id']
+        user_id = request.POST['user_id']
         user = User.objects.get(pk=user_id)
         profile = Profile(
             user=user,
             facebook_id=facebook_id,
         )
         profile.save()
-        user = User.objects.get(pk=user_id)
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         auth_login(request, user)
         messages.success(request, 'Login with Facebook has been enabled.')
