@@ -3,7 +3,12 @@
 
 {% block subcontent %}
 
-Hello.
+<p>The email address associated with your Facebook account is already registered with an existing VillageBuilder account.</p>
+
+email: {{ user.username }}
+user: {{ user.first_name }} {{ user.last_name }}
+
+<p>Would you like to enable Facebook login for this account?</p>
 
 
 

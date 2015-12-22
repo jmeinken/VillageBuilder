@@ -244,7 +244,10 @@ def account_info(request):
                 profile__facebook_id=request.POST['facebook_id']      
             )
             if nonFacebookUsers.count() == 1:
-                return render(request, 'account/setup_facebook_login.html', {})
+                context = {
+                    'user': nonFacebookUsers,       
+                }
+                return render(request, 'account/setup_facebook_login.html', context)
         #####################################
         myform = AccountInfoForm(request.POST)
         if myform.is_valid():
