@@ -1,6 +1,6 @@
 	
 	// Both FB login and new account creation can be called 
-	// by including this JavaScript and calling with #facebook-login-btn
+	// by including this JavaScript and calling with class facebook-login-btn
 	// Also requires AccountInfoForm with id facebook-login-form
 
 	
@@ -90,7 +90,7 @@
 	}
   
 	$(document).ready(function(){
-		$('#facebook-login-btn').click(function() {
+		$('.facebook-login-btn').click(function() {
 			FB.getLoginStatus(function(response) {
 				if (response.status === 'unknown') {
 					FB.login(function(response) {
