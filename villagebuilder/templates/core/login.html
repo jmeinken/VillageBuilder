@@ -10,10 +10,6 @@
 		background-color: #808080;
 		margin-bottom: 30px;
 	}
-	#login-form .form-control {
-		display: inline;
-		width: 40%;
-	}
 	#vb img #panel-view-window {
 		vertical-align: baseline;
 	}
@@ -413,38 +409,72 @@ $(document).ready(function(){
 });
 
 </script>
+
+<div style="display:none;">
+	<form action="{% url 'account:account_info' %}" method="post" id="facebook-login-form">
+        {% csrf_token %}
+  	    {{ facebook_login_form }}									
+    </form>
+</div>	
     
 <div class="container-fluid" style="max-width:1280px;min-width:750px;background-color:#FFF;padding:0;">
     <div class="row" style="padding:15px 15px 7px 15px;">
-        <div class="col-md-7">
+        <div class="col-sm-6">
 		 	<img src="{% static 'img/vb-large.png' %}" alt="VillageBuilder" width="358" height="47" /> 
 		 	<div style="font-size:18px;color:#585858;">
 		 	    share resources with friends and neighbors
 		 	</div>
 		</div>
-		<div class="col-md-5" style="margin-top:5px;">
-	    	{% if form.errors %}
-		    	<div class="alert alert-danger">
-				    Unable to log in. Check your email and password.
+		<div class="col-sm-6">
+			<div class="row">
+				<div class="col-sm-12" style="margin-top:1px;padding:2px 1px;">
+					{% if form.errors %}
+				    	<div class="label label-danger">
+						    Unable to log in. Check your email and password.
+						</div>
+				    {% endif %}
 				</div>
-		    {% endif %}
-		    <form method="post" action="{% url 'login' %}" id="login-form">
-		        {% csrf_token %}
-				{{ form.username|attr:"class:form-control input-sm"|attr:"placeholder:email" }}
-				{{ form.password|attr:"class:form-control input-sm"|attr:"placeholder:password" }}
-	        	<button type="submit" class="btn btn-sm btn-primary" value="Login">
-	        		Login
-	        	</button>
-		        <input type="hidden" name="next" value="{{ next }}" />
-		   </form>
-		   <div style="padding:10px 0;font-size:0.9em;font-weight:bold;">
-			   <a href="{% url 'account:account_info' %}">Create Account</a> 
-			   &nbsp;&nbsp;|&nbsp;&nbsp;
-			   <a href="{% url 'request_reset_password' %}">
-			       Forgot Password?
-			   </a>
+			</div>
+			<div class="row">
+			    <form method="post" action="{% url 'login' %}" id="login-form">
+			        {% csrf_token %}
+			        <input type="hidden" name="next" value="{{ next }}" />
+					<div class="col-sm-3" style="padding:0 1px;">
+					    	{{ form.username|attr:"class:form-control input-sm"|attr:"placeholder:email" }}
+					</div>
+					<div class="col-sm-3" style="padding:0 1px;">
+							{{ form.password|attr:"class:form-control input-sm"|attr:"placeholder:password" }}
+					</div>
+					<div class="col-sm-1" style="padding:0 1px;">
+						<button type="submit" class="btn btn-sm btn-success btn-block" value="Login">
+			        	log in
+			        	</button>
+					</div>
+				</form>
+				<div class="col-sm-1">
+					<div class="text-muted" style="padding-top:5px;">
+						OR
+					</div>
+				</div>
+				<div class="col-sm-4" style="padding:0 7px;">
+					<button type="button" class="btn btn-primary btn-sm btn-block">
+				   		<i class="fa fa-facebook-official"></i>
+			        		log in with Facebook
+				    </button>
+				</div>
+			</div>
+			<div class="row">
+			    <div class="col-sm-12" style="padding:0 1px;">
+			        <div style="padding:10px 0;font-size:0.9em;font-weight:bold;">
+					    <a href="{% url 'account:account_info' %}">Create Account</a> 
+					    &nbsp;&nbsp;|&nbsp;&nbsp;
+					    <a href="{% url 'request_reset_password' %}">
+					       Forgot Password?
+					    </a>
+					</div>
+				</div>
 		   </div>
-	   	</div>
+		</div>
  	</div>
  	{% if messages or successMessage or errorMessage %}
 	    <div class="row">
