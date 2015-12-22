@@ -2,10 +2,7 @@
 	// Both FB login and new account creation can be called 
 	// by including this JavaScript and calling with #facebook-login-btn
 	// Also requires AccountInfoForm with id facebook-login-form
-	//  <form action="{% url 'account:account_info' %}" method="post" id="facebook-login-form">
-	//      {% csrf_token %}
-	//  	{{ facebook_login_form }}									
-	//  </form>
+
 	
 	
 	
