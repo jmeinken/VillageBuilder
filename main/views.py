@@ -236,6 +236,7 @@ def login_view(request, template_name='core/login.html',
     context = {
         'form': form,
         'createAccountForm' : createAccountForm,
+        'facebook_login_form' : AccountInfoForm(),
         redirect_field_name: redirect_to,
         'site': current_site,
         'site_name': current_site.name,
