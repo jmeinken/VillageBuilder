@@ -22,6 +22,8 @@ urlpatterns = [
     url(r'personal_info/', views.personal_info, name='personal_info'),
     url(r'confirmation/', views.confirmation, name='confirmation'),
     
+    url(r'setup_facebook_login/', views.setup_facebook_login, name='setup_facebook_login'),
+    
     #url(r'new_facebook_account/', views.new_facebook_account, name='new_facebook_account'),
     
     url(r'create_group/', views.create_group, name='create_group'),

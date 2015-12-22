@@ -223,6 +223,22 @@ def edit_group(request, groupId):
     }
     return render(request, 'account/edit_group.html', context)
 
+def setup_facebook_login(request):
+    if request.method == "POST":
+        facebook_id = request.POST['facebook_id']
+        user_id = request.POST['facebook_id']
+        user = User.objects.get(pk=user_id)
+        profile = Profile(
+            user=user,
+            facebook_id=facebook_id,
+        )
+        profile.save()
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        auth_login(request, user)
+        messages.success(request, 'Login with Facebook has been enabled.')
+    return redirect(reverse('home'))
+        
+
 def account_info(request):
     if request.method == "POST":
         # if FB account already exists, log user in
@@ -245,7 +261,8 @@ def account_info(request):
             )
             if nonFacebookUsers.count() == 1:
                 context = {
-                    'user': nonFacebookUsers[0],       
+                    'user': nonFacebookUsers[0], 
+                    'facebook_id' : request.POST['facebook_id'],      
                 }
                 return render(request, 'account/setup_facebook_login.html', context)
         #####################################

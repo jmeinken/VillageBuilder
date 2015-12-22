@@ -5,10 +5,17 @@
 
 <p>The email address associated with your Facebook account is already registered with an existing VillageBuilder account.</p>
 
-email: {{ user.username }}
-user: {{ user.first_name }} {{ user.last_name }}
+<p>email: {{ user.username }}</p>
+<p>user: {{ user.first_name }} {{ user.last_name }}</p>
 
 <p>Would you like to enable Facebook login for this account?</p>
+
+<form method="POST" action="{% url 'account:setup_facebook_login' %}">
+	<input type="hidden" name="facebook_id" value="{{ facebook_id }}" />
+	<input type="hidden" name="user_id" value="{{ user.id }}" />
+	<button type="submit" class="btn btn-success">Yes, enable Facebook login</button>
+	<a href="{% url 'login' %}" class="btn btn-warning">No</a>
+</form>
 
 
 
