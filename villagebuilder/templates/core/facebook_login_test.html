@@ -91,6 +91,13 @@
 	    	$('#facebook-create-account').submit();
 		});
 	}
+  
+	$(document).ready(function(){
+		$('#facebook-login').click(function() {
+			FB.login();
+		});
+		
+	});
 
 </script>
 
@@ -104,7 +111,7 @@
 Continue with Facebook
 </fb:login-button>
 
-<button id="facebook-login" onclick="FB.login();">Custom facebook login</button>
+<button id="facebook-login">Custom facebook login</button>
 
 <div id="status">
 </div>
