@@ -235,7 +235,7 @@ def setup_facebook_login(request):
         profile.save()
         #user.backend = 'django.contrib.auth.backends.ModelBackend'
         #auth_login(request, user)
-        messages.success(request, 'Login with Facebook has been enabled.')
+        # messages.success(request, 'Login with Facebook has been enabled.')
     return redirect(reverse('login'))
         
 
