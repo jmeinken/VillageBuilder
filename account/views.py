@@ -247,7 +247,7 @@ def account_info(request):
                 profile__facebook_id=request.POST['facebook_id']
             )
             if existingFacebookUsers.count() == 1:
-                user = existingUsers[0]
+                user = existingFacebookUsers[0]
                 # adding backend is a hack for the fact that we aren't authenticating w/ password
                 user.backend = 'django.contrib.auth.backends.ModelBackend'
                 auth_login(request, user)
