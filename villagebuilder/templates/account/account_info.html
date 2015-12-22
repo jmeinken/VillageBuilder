@@ -9,6 +9,13 @@
     {% include 'core/js/facebook_login.js' %}
 </script>
 
+<div style="display:none;">
+	<form action="{% url 'account:account_info' %}" method="post" id="facebook-login-form">
+        {% csrf_token %}
+  	    {{ facebook_login_form }}									
+    </form>
+</div>	
+
     {% include "account/blocks/create-account-nav.html" %}<br>
 <form action="{% url 'account:account_info' %}" method="post" id="main-form">
     {% csrf_token %}
@@ -63,15 +70,12 @@
 			<i class="fa fa-facebook-official"></i> Continue with Facebook
 		</button>
 		
-		<div style="display:none;">
-			<form action="{% url 'account:account_info' %}" method="post" id="facebook-login-form">
-		        {% csrf_token %}
-		  	    {{ facebook_login_form }}									
-		    </form>
-		</div>	
+		
 	</div>
 	
 </form>
+
+
 
 
 	
