@@ -63,6 +63,12 @@
 			<i class="fa fa-facebook-official"></i> Continue with Facebook
 		</button>
 		
+		<div style="display:none;">
+			<form action="{% url 'account:account_info' %}" method="post" id="facebook-login-form">
+		        {% csrf_token %}
+		  	    {{ facebook_login_form }}									
+		    </form>
+		</div>	
 	</div>
 	
 </form>

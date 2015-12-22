@@ -286,6 +286,7 @@ def account_info(request):
         'user' : request.user,
         'nav'  : build_nav(request, 'account_info'),
         'form' : myform,
+        'facebook_login_form' : AccountInfoForm(),
         'callback' : reverse('account:account_info')
     }
     return render(request, 'account/account_info.html', context)

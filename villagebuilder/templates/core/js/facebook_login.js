@@ -1,6 +1,11 @@
 	
 	// Both FB login and new account creation can be called 
 	// by including this JavaScript and calling with #facebook-login-btn
+	// Also requires AccountInfoForm with id facebook-login-form
+	//  <form action="{% url 'account:account_info' %}" method="post" id="facebook-login-form">
+	//      {% csrf_token %}
+	//  	{{ facebook_login_form }}									
+	//  </form>
 	
 	
 	
@@ -79,11 +84,11 @@
 		console.log('Welcome!  Fetching your information.... ');
 		FB.api('/me', {fields: ['last_name', 'first_name', 'email']}, function(response) {
 	    	console.log(JSON.stringify(response));
-	    	$('#facebook-create-account input[name=email]').val(response.email);
-	    	$('#facebook-create-account input[name=first_name]').val(response.first_name);
-	    	$('#facebook-create-account input[name=last_name]').val(response.last_name);
-	    	$('#facebook-create-account input[name=facebook_id]').val(response.id);
-	    	$('#facebook-create-account').submit();
+	    	$('#facebook-login-form input[name=email]').val(response.email);
+	    	$('#facebook-login-form input[name=first_name]').val(response.first_name);
+	    	$('#facebook-login-form input[name=last_name]').val(response.last_name);
+	    	$('#facebook-login-form input[name=facebook_id]').val(response.id);
+	    	$('#facebook-login-form').submit();
 		});
 	}
   
