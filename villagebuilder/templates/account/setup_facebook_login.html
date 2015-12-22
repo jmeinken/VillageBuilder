@@ -11,6 +11,7 @@
 <p>Would you like to enable Facebook login for this account?</p>
 
 <form method="POST" action="{% url 'account:setup_facebook_login' %}">
+	{% csrf_token %}
 	<input type="hidden" name="facebook_id" value="{{ facebook_id }}" />
 	<input type="hidden" name="user_id" value="{{ user.id }}" />
 	<button type="submit" class="btn btn-success">Yes, enable Facebook login</button>
