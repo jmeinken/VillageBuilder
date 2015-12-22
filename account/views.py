@@ -245,7 +245,7 @@ def account_info(request):
             )
             if nonFacebookUsers.count() == 1:
                 context = {
-                    'user': nonFacebookUsers,       
+                    'user': nonFacebookUsers[0],       
                 }
                 return render(request, 'account/setup_facebook_login.html', context)
         #####################################
