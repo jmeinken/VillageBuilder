@@ -94,7 +94,13 @@
   
 	$(document).ready(function(){
 		$('#facebook-login').click(function() {
-			FB.login();
+			FB.getLoginStatus(function(response) {
+				if (response.status === 'unknown') {
+					FB.login();
+				} else {
+					testAPI();
+				}
+			});
 		});
 		
 	});
