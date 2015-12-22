@@ -303,6 +303,15 @@ def email_search(request):
         'RelationshipTypes' : RelationshipTypes,
         'results' : results,
     })
+    
+@login_required
+def friend_suggestions(request):
+    currentParticipant = Participant.objects.get(user=request.user, type='member')
+    return render(request, 'relationships/friend_suggestions.html', {
+        'current' : getCurrentUser(request), 
+        'RelationshipTypes' : RelationshipTypes,
+        'suggestions' : getPeopleNearYou(currentParticipant, 100)
+    })
 
 
 @login_required

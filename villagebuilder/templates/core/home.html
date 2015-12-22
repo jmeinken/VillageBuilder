@@ -261,6 +261,13 @@
 				{% empty %}
 				    &nbsp;&nbsp;&nbsp;&nbsp;<em>none</em>
 				{% endfor %}
+				{% if peopleNearYou|length > 5 %}
+					<div style="padding-top:5px;">
+						<a href="{% url 'relationships:friend_suggestions' %}">
+						    More People <i class="fa fa-angle-double-right"></i>
+						</a>
+					</div>
+				{% endif %}
 			</div>
 			<div class="text-warning"><strong>Friends of Friends</strong></div>
 			<div class="list-group">
@@ -269,6 +276,13 @@
 				{% empty %}
 				    &nbsp;&nbsp;&nbsp;&nbsp;<em>none</em>
 				{% endfor %}
+				{% if friendsOfFriends|length > 5 %}
+					<div style="padding-top:5px;">
+						<a href="{% url 'relationships:friend_suggestions' %}">
+						    More People <i class="fa fa-angle-double-right"></i>
+						</a>
+					</div>
+				{% endif %}
 			</div>
     	</div>
     </div>

@@ -1,0 +1,47 @@
+{% extends "core/bases/home_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+
+
+	
+	<div id="top-section">
+		<h2 id="top-title">Friend Suggestions</h2>
+	</div>
+	
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-1">
+			<div class="list-group">
+				{% for participant in suggestions %}
+				    {% include 'core/blocks/participantgroup.html' %}
+				{% empty %}
+				    &nbsp;&nbsp;&nbsp;&nbsp;<em>none</em>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock %}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

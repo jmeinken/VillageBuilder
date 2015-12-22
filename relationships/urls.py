@@ -26,6 +26,8 @@ urlpatterns = [
     url(r'participant_search/', views.participant_search, name='participant_search'),
     url(r'email_search/', views.email_search, name='email_search'),
     
+    url(r'friend_suggestions/', views.friend_suggestions, name='friend_suggestions'),
+    
     url(r'^join_group/', views.join_group, name='join_group'),
     url(r'^unjoin_group/', views.unjoin_group, name='unjoin_group'),
     url(r'^add_to_group/', views.add_to_group, name='add_to_group'),
