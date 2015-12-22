@@ -97,6 +97,7 @@ def account(request):
             if userEmailForm.is_valid():
                 userEmailForm.save()
                 user.username = userEmailForm.cleaned_data['email']
+                user.email = userEmailForm.cleaned_data['email']
                 user.save()
             else:
                 showEditView = 'userEmailForm'
@@ -225,17 +226,25 @@ def edit_group(request, groupId):
 def account_info(request):
     if request.method == "POST":
         # if FB account already exists, log user in
-        existingUsers = User.objects.filter(
-            email=request.POST['email']
-        ).filter(
-            profile__facebook_id=request.POST['facebook_id']
-        )
-        if existingUsers.count() == 1:
-            user = existingUsers[0]
-            # adding backend is a hack for the fact that we aren't authenticating w/ password
-            user.backend = 'django.contrib.auth.backends.ModelBackend'
-            auth_login(request, user)
-            return redirect(reverse('home'))
+        if request.POST['facebook_id']:
+            existingFacebookUsers = User.objects.filter(
+                profile__facebook_id=request.POST['facebook_id']
+            )
+            if existingFacebookUsers.count() == 1:
+                user = existingUsers[0]
+                # adding backend is a hack for the fact that we aren't authenticating w/ password
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
+                auth_login(request, user)
+                return redirect(reverse('home'))
+        # if FB doesn't exist but email does, check if they want to activate FB
+        if request.POST['facebook_id']:
+            nonFacebookUsers = User.objects.filter(
+                username=request.POST['email']
+            ).exclude(
+                profile__facebook_id=request.POST['facebook_id']      
+            )
+            if nonFacebookUsers.count() == 1:
+                return render(request, 'account/setup_facebook_login.html', context)
         #####################################
         myform = AccountInfoForm(request.POST)
         if myform.is_valid():
