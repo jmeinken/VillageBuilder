@@ -29,7 +29,7 @@ def email_forgot_password(request, member):
 def email_new_pm(request, pm):
     
     if pm.recipient.type == 'member':
-        if pm.recipient.email_pm == pm.recipient.EMAIL_IMMEDIATELY:
+        if pm.recipient.member.email_pm == pm.recipient.member.EMAIL_IMMEDIATELY:
             email = pm.recipient.user.username
             context = {
                 'name' : pm.recipient.get_name(),
