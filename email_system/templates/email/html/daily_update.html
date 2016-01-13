@@ -36,7 +36,7 @@ Here is what's been happening since you last visited.</p>
 	{% for message in data.messages.coll %}
 		<p class="well" style="font-size: 14px;margin: 0 0 5px 0 ;padding: 19px;font-weight: normal;min-height: 20px;background-color: #F5F5F5;border: 1px solid #E3E3E3;border-radius: 4px;box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;">
 			{{ message.sender.get_name }} - {{ request.sent_on }}<br>
-			{{ message.body|linebreaks }}
+			{{ message.body|linebreaksbr }}
 			<a "href="https://villagebuilder.net{% url 'pm:messages' message.sender.id  %}" style="color: #0099FF;">
 			view this message
 			</a>
@@ -60,7 +60,7 @@ Here is what's been happening since you last visited.</p>
 	{% for request in data.requests.coll %}
 		<p class="well" style="font-size: 14px;margin: 0 0 5px 0 ;padding: 19px;font-weight: normal;min-height: 20px;background-color: #F5F5F5;border: 1px solid #E3E3E3;border-radius: 4px;box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;">
 			{{ request.member.participant.get_name }} - {{ request.date }}<br>
-			{{ request.body|linebreaks }}
+			{{ request.body|linebreaksbr }}
 			<a href="https://villagebuilder.net{% url 'requests:request' request.id  %}" style="color: #0099FF;">
 			view this request
 			</a>

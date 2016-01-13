@@ -92,7 +92,7 @@ def getRelevantRequestComments(participant, sinceDate):
         htmlStr = (nameStr 
             + ' commented on <a href="https://villagebuilder.net' 
             + reverse('requests:request', args=[requestId])
-            + '">'
+            + '" style="color: #0099FF;">'
             + requesterName 
             + '\'s post.</a>'
         )
