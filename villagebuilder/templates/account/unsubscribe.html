@@ -1,0 +1,25 @@
+{% extends "core/bases/logged_out_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+
+<div id="top-section">
+	<h2 id="top-title">Unsubscribe</h2>
+</div>
+
+	VillageBuilder sends out emails alerts for activity on your account based on your email preferences.<br><br>
+
+	The best way to manage email preferences is on the account settings page:<br><br>
+	
+	<a href="{% url 'account:account' %}" class="btn btn-success">manage email settings</a> (requires login)<br><br>
+	
+	For the brute force method, you may unsubscribe from all emails using the button below:<br><br>
+	
+	<form method="POST" action={% url 'account:unsubscribe_confirm' %}>
+		{% csrf_token %}
+		<input type="hidden" name="code" value="{{code}}" />
+		<button type="input" class="btn btn-danger">unsubscribe from everything</button>
+	</form>
+
+{% endblock %}

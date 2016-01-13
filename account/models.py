@@ -3,6 +3,12 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.conf import settings
 
+import string
+import random
+
+def createRandomString(length):
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
+
 
 # User Model:
 # username *
@@ -159,10 +165,19 @@ class Member(models.Model):
     image = models.CharField(max_length=30, blank=True, null=True)
     thumb = models.CharField(max_length=30, blank=True, null=True)
     code = models.CharField(max_length=60, blank=True, null=True)
+    unsubscribe_code = models.CharField(max_length=60, blank=True, null=True)  #use get_unsubscribe_code()
     is_admin = models.BooleanField(default=False, db_index=True)
     
     def __unicode__(self):
-         return self.participant.get_name()
+        return self.participant.get_name()
+     
+    def get_unsubscribe_code(self):
+        if self.unsubscribe_code:
+            return self.unsubscribe_code
+        else:
+            self.unsubscribe_code = createRandomString(60)
+            self.save()
+            return self.unsubscribe_code
     
     def get_image(self):
         return self.participant.get_image()

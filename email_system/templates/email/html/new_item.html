@@ -2,14 +2,21 @@
 
 {% block content %}
 
-<p>{{ item.sharer.participant.get_name }} shared a new item with you:</p>
+<p style="margin: 0;padding: 0;font-size: 14px;font-weight: normal;margin-bottom: 10px;">
+{{ item.sharer.participant.get_name }} shared a new item with you:
+</p>
 
 
-<p>{{ item.title }}</p>
+<p style="margin: 0;padding: 0;font-size: 14px;font-weight: normal;margin-bottom: 10px;">
+{{ item.title }}</p>
 
-<p>{{ item.description|linebreaks }}</p>
+<p style="margin: 0;padding: 0;font-size: 14px;font-weight: normal;margin-bottom: 10px;">
+{{ item.description|linebreaks }}</p>
 
+<a class="btn btn-primary" href="https://villagebuilder.net{% url 'sharing:item' item.id  %}" style="margin: 0;padding: 8px 12px;color: #FFF;border-radius: 2px;margin-bottom: 10px;font-size: 14px;font-weight: 400;line-height: 1.42857;text-align: center;white-space: nowrap;vertical-align: middle;cursor: pointer;border: 1px solid transparent;text-decoration: none;border-color: #006500;background-color: #006500;">
+View this item
+</a>
+<br><br>
 
-<p><a href="https://villagebuilder.net{% url 'sharing:item' item.id  %}">View this item</a></p>
 
 {% endblock %}

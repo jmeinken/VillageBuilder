@@ -12,3 +12,6 @@ https://villagebuilder.net
 Change email preferences for your account:
 https://villagebuilder.net/account/account/
 
+Unsubscribe:
+https://villagebuilder.net/account/unsubscribe/?code={{ unsubscribe }}
+

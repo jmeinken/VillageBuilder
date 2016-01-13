@@ -13,8 +13,10 @@ from requests.helpers import *
 def email_forgot_password(request, member):
     email = member.participant.user.username
     context = {
+        'email_title' : 'VillageBuilder Password Reset',
         'name' : member.participant.get_name(), 
         'link' : request.build_absolute_uri(reverse('reset_password', args=[member.code])),
+        'unsubscribe' : member.get_unsubscribe_code(),
     }
     body = render_to_string('email/plain_text/forgot_password.txt', context)
     htmlBody = render_to_string('email/html/forgot_password.html', context)
@@ -32,10 +34,12 @@ def email_new_pm(request, pm):
         if pm.recipient.member.email_pm == pm.recipient.member.EMAIL_IMMEDIATELY:
             email = pm.recipient.user.username
             context = {
+                'email_title' : 'New Message on VillageBuilder',
                 'name' : pm.recipient.get_name(),
                 'sender_name' : pm.sender.get_name(),
                 'pmMessage' : pm.body,
                 'link' : request.build_absolute_uri(reverse('pm:messages', args=[pm.sender.id])),
+                'unsubscribe' : pm.recipient.member.get_unsubscribe_code(),
             }
             body = render_to_string('email/plain_text/new_pm.txt', context)
             htmlBody = render_to_string('email/html/new_pm.html', context)
@@ -51,9 +55,11 @@ def email_friend_request(request, friendship):
     if friendship.friend.email_friend_requests == friendship.friend.EMAIL_IMMEDIATELY:
         email = friendship.friend.participant.user.username
         context = {
+            'email_title' : 'New Friend Request on VillageBuilder',
             'name' : friendship.friend.participant.get_name(),
             'requester_name' : friendship.member.participant.get_name(),
             'link' : request.build_absolute_uri(reverse('account:view', args=[friendship.member.id])),
+            'unsubscribe' : friendship.friend.get_unsubscribe_code(),
         }
         body = render_to_string('email/plain_text/friend_request.txt', context)
         htmlBody = render_to_string('email/html/friend_request.html', context)
@@ -71,6 +77,7 @@ def email_friend_confirmation(request, friendship):
         items = filterItems(items, sharerId=friendship.member.id)
         email = friendship.friend.participant.user.username
         context = {
+            'email_title' : 'Friendship Confirmation on VillageBuilder',
             'name' : friendship.friend.participant.get_name(),
             'requester_name' : friendship.member.participant.get_name(),
             'link' : request.build_absolute_uri( reverse('sharing:items') 
@@ -78,6 +85,7 @@ def email_friend_confirmation(request, friendship):
                 +  str(friendship.member.id)
             ),
             'items' :items,
+            'unsubscribe' : friendship.friend.get_unsubscribe_code(),
         }
         body = render_to_string('email/plain_text/friend_confirmation.txt', context)
         htmlBody = render_to_string('email/html/friend_confirmation.html', context)
@@ -100,8 +108,10 @@ def email_new_item(request, item):
     for participant in participants:
         if participant.member.email_shared_items == participant.member.EMAIL_IMMEDIATELY:
             context = {
+                'email_title' : 'New Item on VillageBuilder',
                 'name' : participant.get_name(),
-                'item' : item       
+                'item' : item,
+                'unsubscribe' : participant.member.get_unsubscribe_code(),       
             }
             body = render_to_string('email/plain_text/new_item.txt', context)
             htmlBody = render_to_string('email/html/new_item.html', context)
@@ -123,8 +133,10 @@ def email_new_request(request, new_request):
     for participant in participants:
         if participant.member.email_requests == participant.member.EMAIL_IMMEDIATELY:
             context = {
+                'email_title' : 'New Post on VillageBuilder',
                 'name' : participant.get_name(),
-                'request' : new_request       
+                'request' : new_request,
+                'unsubscribe' : participant.member.get_unsubscribe_code(),       
             }
             body = render_to_string('email/plain_text/new_request.txt', context)
             htmlBody = render_to_string('email/html/new_request.html', context)
@@ -147,8 +159,10 @@ def email_new_request_comment(request, request_comment):
     for participant in participants:
         if participant.member.email_request_comments == participant.member.EMAIL_IMMEDIATELY:
             context = {
+                'email_title' : 'New Comment on VillageBuilder',
                 'name' : participant.get_name(),
-                'request_comment' : request_comment       
+                'request_comment' : request_comment,
+                'unsubscribe' : participant.member.get_unsubscribe_code(),       
             }
             body = render_to_string('email/plain_text/new_request_comment.txt', context)
             htmlBody = render_to_string('email/html/new_request_comment.html', context)

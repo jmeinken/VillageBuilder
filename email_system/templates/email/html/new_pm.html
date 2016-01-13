@@ -2,13 +2,19 @@
 
 {% block content %}
 
-<p>You have received a new personal message from {{ sender_name }}:</p>
+<p style="margin: 0;padding: 0;font-size: 14px;font-weight: normal;margin-bottom: 10px;">
+You have received a new personal message from {{ sender_name }}:
+</p>
 
 
-<div style="color:blue;font-style:italic;">{{pmMessage|linebreaks}}</div>
+<blockquote style="margin: 1.5em 10px;padding: 0.5em 10px;background: #f9f9f9;border-left: 10px solid #ccc;quotes: &quot;\201C&quot;&quot;\201D&quot;&quot;\2018&quot;&quot;\2019&quot;;">
+{{pmMessage|linebreaks}}
+</blockquote>
 
 
-<p><a href="{{ link }}">View/Reply to this message</a></p>
+<a class="btn btn-primary" href="{{ link }}" style="margin: 0;padding: 8px 12px;color: #FFF;border-radius: 2px;margin-bottom: 10px;font-size: 14px;font-weight: 400;line-height: 1.42857;text-align: center;white-space: nowrap;vertical-align: middle;cursor: pointer;border: 1px solid transparent;text-decoration: none;border-color: #006500;background-color: #006500;">
+View/Reply to this message
+</a><br><br>
 
 {% endblock %}
 

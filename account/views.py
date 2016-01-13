@@ -15,6 +15,7 @@ from django.contrib.auth import login as auth_login
 from villagebuilder.utils import console
 from .forms import *
 from .models import Member, Participant
+from django.http import Http404  
 
 from account.helpers import *
 from main.helpers import *
@@ -473,6 +474,40 @@ def confirmation(request):
     }
     return render(request, 'account/confirmation.html', context)
 
+def unsubscribe(request):
+    code = request.GET.get('code')
+    member = Member.objects.filter(unsubscribe_code=code)
+    if member.count() == 1:
+        result = 'found'
+    else:
+        raise Http404
+    context = {
+        'code' : code,
+        'result' : result,
+    }
+    return render(request, 'account/unsubscribe.html', context)
+
+def unsubscribe_confirm(request):
+    if request.method == "POST":
+        code = request.POST.get('code')
+        members = Member.objects.filter(unsubscribe_code=code)
+        if members.count() == 1:
+            member = members[0]
+            result = 'found'
+            # change all email settings
+            member.email_friend_requests = member.EMAIL_OFF
+            member.email_pm = member.EMAIL_OFF
+            member.email_requests = member.EMAIL_OFF
+            member.email_request_comments = member.EMAIL_OFF
+            member.email_shared_items = member.EMAIL_OFF
+            member.save()
+        else:
+            raise Http404
+        context = {
+            'code' : code,
+        }
+        return render(request, 'account/unsubscribe_confirm.html', context)
+    raise Http404
 
     
     

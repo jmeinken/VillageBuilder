@@ -1,24 +1,82 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html style="margin: 0;padding: 0;">
 <head>
-	<title>VillageBuilder</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>a message from VillageBuilder</title>
 </head>
-<body>
 
-<p>Hello {{ name }},</p>
+<body bgcolor="#f6f6f6" style="margin: 0;padding: 0;-webkit-font-smoothing: antialiased;height: 100%;-webkit-text-size-adjust: none;font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;width: 100% !important;">
 
-<p>This is an automated email from VillageBuilder.</p>
+<!-- body -->
+<table class="body-wrap" bgcolor="#f6f6f6" style="margin: 0;padding: 20px;width: 100%;">
+  <tr style="margin: 0;padding: 0;">
+    <td style="margin: 0;padding: 0;"></td>
+    <td class="container" bgcolor="#FFFFFF" style="margin: 0 auto !important;padding: 15px 20px;border: 1px solid #34B51E;clear: both !important;display: block !important;max-width: 600px !important;">
 
-{% block content %}content here{% endblock %}
-<hr>
-<p>
-    Thank you for using <a href="https://villagebuilder.net">VillageBuilder</a><br>
-    <a href="https://villagebuilder.net/account/account/">
-        (change email preferences for your account)
-    </a>
-</p>
+      <!-- content -->
+      <div class="content" style="margin: 0 auto;padding: 0;display: block;max-width: 600px;">
+      <table style="margin: 0;padding: 0;width: 100%;">
+        <tr style="margin: 0;padding: 0;">
+          <td class="header" style="margin: 0;padding: 0;border-bottom: 3px solid #EC7621;">
+		    <h2 class="header-text" style="margin: 40px 0 10px;padding: 0;color: #34B51E;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, sans-serif;font-weight: bold;line-height: 1.2em;font-size: 28px;margin-top: 0;">
+		    {{ email_title }}
+		    </h2>
+		  </td>
+		</tr>
+		<tr style="margin: 0;padding: 0;">
+		  <td class="top-padding" style="margin: 0;padding: 0;padding-top: 15px;">
+		    <p>Hello {{ name }},</p>
+            {% block content %}content here{% endblock %}
+          </td>
+        </tr>
+      </table>
+      </div>
+      <!-- /content -->
+      
+    </td>
+    <td style="margin: 0;padding: 0;"></td>
+  </tr>
+</table>
+<!-- /body -->
 
+<!-- footer -->
+<table class="footer-wrap" style="margin: 0;padding: 0;width: 100%;clear: both !important;">
+  <tr style="margin: 0;padding: 0;">
+    <td style="margin: 0;padding: 0;"></td>
+    <td class="container" style="margin: 0 auto !important;padding: 0;clear: both !important;display: block !important;max-width: 600px !important;">
+      
+      <!-- content -->
+      <div class="content" style="margin: 0 auto;padding: 0;display: block;max-width: 600px;">
+        <table style="margin: 0;padding: 0;width: 100%;">
+          <tr style="margin: 0;padding: 0;">
+            <td align="center" style="margin: 0;padding: 0;">
+			  <p style="margin: 0;padding: 0;font-size: 12px;font-weight: normal;margin-bottom: 10px;color: #666666;">
+			  Thank you for using 
+			  <a href="https://villagebuilder.net" class="special-link" style="margin: 0;padding: 0;color: color:#0099FF;;text-decoration: none;">
+			  	VillageBuilder
+			  </a>!
+              </p>
+              <p style="margin: 0;padding: 0;font-size: 12px;font-weight: normal;margin-bottom: 10px;color: #666666;">
+                  <a href="https://villagebuilder.net/account/account/" style="margin: 0;padding: 0;color: #999999;">
+                      manage email settings
+                  </a>
+                  &nbsp;&nbsp;|&nbsp;&nbsp;
+                  <a href="https://villagebuilder.net/account/unsubscribe/?code={{ unsubscribe }}" style="margin: 0;padding: 0;color: #999999;">
+                      <unsubscribe style="margin: 0;padding: 0;">unsubscribe</unsubscribe>
+                  </a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- /content -->
+      
+    </td>
+    <td style="margin: 0;padding: 0;"></td>
+  </tr>
+</table>
+<!-- /footer -->
 
 </body>
 </html>

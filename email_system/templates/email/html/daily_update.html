@@ -1,67 +1,84 @@
 {% extends "email/formatted_email_base.html" %}
 
 {% block content %}
-<p>Here is what's been happening since you last visited.</p>
+<p style="margin: 0;padding: 0;font-size: 14px;font-weight: normal;margin-bottom: 10px;">
+Here is what's been happening since you last visited.</p>
 
 {% if data.friend_confirmations.pref and data.friend_confirmations.count > 0 %}
-	<h3>New friends:</h3>
+	<h3 style="font-weight: bold;color: #EC7621;line-height: 1.2em;margin: 20px 0 10px 0;padding: 0;">
+	New friends:</h3>
 	{% for friendship in data.friend_confirmations.coll %}
-		<div style="background-color:#C0C0C0;margin:5px;padding:5px;"> 
+		<p class="well" style="font-size: 14px;margin: 0 0 5px 0 ;padding: 19px;font-weight: normal;min-height: 20px;background-color: #F5F5F5;border: 1px solid #E3E3E3;border-radius: 4px;box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;">
 			You are now friends with
-			<a href="https://villagebuilder.net{% url 'account:view' friendship.member.id  %}">{{ friendship.member.participant.get_name }}</a>
-		</div>
+			<a href="https://villagebuilder.net{% url 'account:view' friendship.member.id  %}" style="color: #0099FF;">
+			{{ friendship.member.participant.get_name }}
+			</a>
+		</p>
 	{% endfor %}
 {% endif %}
 
 {% if data.friend_invites.pref and data.friend_invites.count > 0 %}
-	<h3>New friend requests:</h3>
+	<h3 style="font-weight: bold;color: #EC7621;line-height: 1.2em;margin: 20px 0 10px 0;padding: 0;">
+	New friend requests:</h3>
 	{% for friendship in data.friend_invites.coll %}
-		<div style="background-color:#C0C0C0;margin:5px;padding:5px;"> 
-			<a href="https://villagebuilder.net{% url 'account:view' friendship.member.id  %}">{{ friendship.member.participant.get_name }}</a>
+		<p class="well" style="font-size: 14px;margin: 0 0 5px 0 ;padding: 19px;font-weight: normal;min-height: 20px;background-color: #F5F5F5;border: 1px solid #E3E3E3;border-radius: 4px;box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;">
+			<a href="https://villagebuilder.net{% url 'account:view' friendship.member.id  %}" style="color: #0099FF;">
+			{{ friendship.member.participant.get_name }}
+			</a>
 			wants to be friends
-		</div>
+		</p>
 	{% endfor %}
 {% endif %}
 
 {% if data.requests.pref and data.requests.count > 0 %}
-	<h3>New private messages:</h3>
+	<h3 style="font-weight: bold;color: #EC7621;line-height: 1.2em;margin: 20px 0 10px 0;padding: 0;">
+	New private messages:</h3>
 	{% for message in data.messages.coll %}
-		<div style="background-color:#C0C0C0;margin:5px;padding:5px;">
+		<p class="well" style="font-size: 14px;margin: 0 0 5px 0 ;padding: 19px;font-weight: normal;min-height: 20px;background-color: #F5F5F5;border: 1px solid #E3E3E3;border-radius: 4px;box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;">
 			{{ message.sender.get_name }} - {{ request.sent_on }}<br>
 			{{ message.body|linebreaks }}
-			<a href="https://villagebuilder.net{% url 'pm:messages' message.sender.id  %}">view this message</a>
-		</div>
+			<a "href="https://villagebuilder.net{% url 'pm:messages' message.sender.id  %}" style="color: #0099FF;">
+			view this message
+			</a>
+		</p>
 	{% endfor %}
 {% endif %}
 
 {% if data.request_comments.pref and data.request_comments.count > 0 %}
-	<h3>New comment activity:</h3>
+	<h3 style="font-weight: bold;color: #EC7621;line-height: 1.2em;margin: 20px 0 10px 0;padding: 0;">
+	New comment activity:</h3>
 	{% for comment in data.request_comments.coll %}
-		<div style="background-color:#C0C0C0;margin:5px;padding:5px;">
+		<p class="well" style="font-size: 14px;margin: 0 0 5px 0 ;padding: 19px;font-weight: normal;min-height: 20px;background-color: #F5F5F5;border: 1px solid #E3E3E3;border-radius: 4px;box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;">
 			{{ comment.html|safe }}
-		</div>
+		</p>
 	{% endfor %}
 {% endif %}
 
 {% if data.requests.pref and data.requests.count > 0 %}
-	<h3>New requests from your friends:</h3>
+	<h3 style="font-weight: bold;color: #EC7621;line-height: 1.2em;margin: 20px 0 10px 0;padding: 0;">
+	New requests from your friends:</h3>
 	{% for request in data.requests.coll %}
-		<div style="background-color:#C0C0C0;margin:5px;padding:5px;">
+		<p class="well" style="font-size: 14px;margin: 0 0 5px 0 ;padding: 19px;font-weight: normal;min-height: 20px;background-color: #F5F5F5;border: 1px solid #E3E3E3;border-radius: 4px;box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;">
 			{{ request.member.participant.get_name }} - {{ request.date }}<br>
 			{{ request.body|linebreaks }}
-			<a href="https://villagebuilder.net{% url 'requests:request' request.id  %}">view this request</a>
-		</div>
+			<a href="https://villagebuilder.net{% url 'requests:request' request.id  %}" style="color: #0099FF;">
+			view this request
+			</a>
+		</p>
 	{% endfor %}
 {% endif %}
 
 {% if data.items.pref and data.items.count > 0 %}
-	<h3>New items shared with you:</h3>
+	<h3 style="font-weight: bold;color: #EC7621;line-height: 1.2em;margin: 20px 0 10px 0;padding: 0;">
+	New items shared with you:</h3>
 	{% for item in data.items.coll %}
-		<div style="background-color:#C0C0C0;margin:5px;padding:5px;">
+		<p class="well" style="font-size: 14px;margin: 0 0 5px 0 ;padding: 19px;font-weight: normal;min-height: 20px;background-color: #F5F5F5;border: 1px solid #E3E3E3;border-radius: 4px;box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05) inset;">
 			<strong>{{ item.title }}</strong><br>
 			shared by {{ item.sharer.participant.get_name }}<br>
-			<a href="https://villagebuilder.net{% url 'sharing:item' item.id  %}">view this item</a>
-		</div>
+			<a href="https://villagebuilder.net{% url 'sharing:item' item.id  %}" style="color: #0099FF;">
+			view this item
+			</a>
+		</p>
 	{% endfor %}
 {% endif %}
 

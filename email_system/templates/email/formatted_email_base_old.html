@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VillageBuilder</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<p>Hello {{ name }},</p>
+
+<p>This is an automated email from VillageBuilder.</p>
+
+{% block content %}content here{% endblock %}
+<hr>
+<p>
+    Thank you for using <a href="https://villagebuilder.net">VillageBuilder</a><br>
+    <a href="https://villagebuilder.net/account/account/">
+        (change email preferences for your account)
+    </a><br><br>
+    <a href="https://villagebuilder.net/account/unsubscribe/?code={{ unsubscribe }}">
+        (unsubscribe)
+    </a>
+</p>
+
+
+</body>
+</html>

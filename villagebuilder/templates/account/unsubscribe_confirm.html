@@ -1,0 +1,21 @@
+{% extends "core/bases/logged_out_base.html" %}
+{% load app_filters %}
+{% load widget_tweaks %}
+
+{% block subcontent %}
+
+<div id="top-section">
+	<h2 id="top-title">Unsubscribe Confirmation</h2>
+</div>
+
+	You have successfully unsubscribed from all VillageBuilder emails.<br><br>
+
+You can turn emails back on at any time on the <a href="{% url 'account:account' %}">Account Settings</a> page.<br><br>
+
+Unsubscribing from emails will not close your VillageBuilder account.  To close your account:<br><br>
+
+1. go to <a href="{% url 'account:account' %}">Account Settings</a> (requires login)<br>
+2. select Edit for Account Status<br>
+3. select Permanently Delete Account<br>
+
+{% endblock %}

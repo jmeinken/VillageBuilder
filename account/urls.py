@@ -34,6 +34,8 @@ urlpatterns = [
     
     url(r'upload_image/', views.upload_image, name='upload_image'),
     url(r'view/([0-9]*)', views.view, name='view'),
+    url(r'unsubscribe/', views.unsubscribe, name='unsubscribe'),
+    url(r'unsubscribe_confirm/', views.unsubscribe_confirm, name='unsubscribe_confirm'),
     
 ]
 

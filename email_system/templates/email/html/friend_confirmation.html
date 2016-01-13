@@ -2,18 +2,25 @@
 
 {% block content %}
 
-<p>
+<p style="margin: 0;padding: 0;font-size: 14px;font-weight: normal;margin-bottom: 10px;">
 {{ requester_name }} has confirmed your friend request.  
 You can now share and request items with each other. 
 </p>
 
 {% if items.count > 0 %}
-	<p>
+	<p style="margin: 0;padding: 0;font-size: 14px;font-weight: normal;margin-bottom: 10px;">
 	{{ requester_name }} is currently sharing 
-	<a href="{{ link }}">{{ items.count }} items</a>
+	<a href="{{ link }}" style="font-family: &quot;Helvetica Neue&quot;, &quot;Helvetica&quot;, Helvetica, Arial, sans-serif;font-size: 100%;line-height: 1.6em;margin: 0;padding: 0;color: #0099FF;">
+	{{ items.count }} 
+	items</a>
 	with you.
 	</p>
 {% endif %}
+
+<a class="btn btn-primary" href="{{ link }}" style="margin: 0;padding: 8px 12px;color: #FFF;border-radius: 2px;margin-bottom: 10px;font-size: 14px;font-weight: 400;line-height: 1.42857;text-align: center;white-space: nowrap;vertical-align: middle;cursor: pointer;border: 1px solid transparent;text-decoration: none;border-color: #006500;background-color: #006500;">
+View {{ requester_name }}'s page
+</a>
+<br><br>
 
 
 {% endblock %}

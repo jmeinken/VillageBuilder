@@ -90,6 +90,7 @@ class Command(BaseCommand):
                             
             if max(counts) > 0:
                 context = {
+                    'email_title' : 'Recent Activity on VillageBuilder',
                     'name' : participant.get_name(),
                     'data' : data,
                 }
