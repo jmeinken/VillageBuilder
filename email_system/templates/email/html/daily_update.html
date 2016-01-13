@@ -30,7 +30,7 @@ Here is what's been happening since you last visited.</p>
 	{% endfor %}
 {% endif %}
 
-{% if data.requests.pref and data.requests.count > 0 %}
+{% if data.messages.pref and data.messages.count > 0 %}
 	<h3 style="font-weight: bold;color: #EC7621;line-height: 1.2em;margin: 20px 0 10px 0;padding: 0;">
 	New private messages:</h3>
 	{% for message in data.messages.coll %}
