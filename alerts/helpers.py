@@ -249,7 +249,11 @@ def getAddFriendAlert(event):
 def getRequestCommentAlert(event):
     requestId = json.loads(event.event_data)['request_id']
     commentIds = json.loads(event.more_data)['comment_ids']
-    request = Request.objects.get(pk=requestId)
+    requests = Request.objects.filter(pk=requestId)
+    if requests.count == 0:
+        event.delete()
+        return None
+    request = requests[0]
     comments = RequestComment.objects.all().filter(id__in=commentIds)
     if comments.count() == 0:
         event.delete()
