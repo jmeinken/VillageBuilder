@@ -250,7 +250,7 @@ def getRequestCommentAlert(event):
     requestId = json.loads(event.event_data)['request_id']
     commentIds = json.loads(event.more_data)['comment_ids']
     requests = Request.objects.filter(pk=requestId)
-    if requests.count == 0:
+    if requests.count() == 0:
         event.delete()
         return None
     request = requests[0]
