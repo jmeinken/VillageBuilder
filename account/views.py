@@ -1,4 +1,5 @@
 import json
+import threading
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -22,6 +23,7 @@ from main.helpers import *
 from relationships.helpers import *
 from sharing.helpers import *
 from relationships.models import GroupMembership
+from email_system.helpers import email_new_account
 
 
 
@@ -439,8 +441,11 @@ def personal_info(request):
             request.session.flush()  #don't flush after login
             # user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
-            messages.success(request, 'Account successfully created for ' + participant.get_name() + '. Welcome!')
-            return redirect(reverse('home'))
+            # messages.success(request, 'Account successfully created for ' + participant.get_name() + '. Welcome!')
+            # send email 
+            t = threading.Thread(target=email_new_account, args=(request,))
+            t.start()
+            return redirect(reverse('account:confirmation'))
     else:
         personalInfoForm = PersonalInfoForm(initial={
             'full_address': ifkeyset(request.session, 'full_address'),
@@ -468,8 +473,9 @@ def personal_info(request):
 
 def confirmation(request):
     # show page
+    currentParticipant = Participant.objects.get(user=request.user, type='member')
     context = {
-        'user' : request.user,
+        'participant' : currentParticipant,
         'nav'  : build_nav(request, 'confirmation'),
     }
     return render(request, 'account/confirmation.html', context)

@@ -1,0 +1,14 @@
+{% extends "email/plain_text_email_base.txt" %}
+
+{% block content %}
+Welcome to VillageBuilder!
+
+If this email showed up in your spam folder, please move it so that you can continue to get emails from us.  We only email you about activity relevant
+to your account.
+
+You can manage your email preferences on the account settings page.
+
+Manage email preferences: https://villagebuilder.net/account/account
+
+Go to my home page: https://villagebuilder.net
+{% endblock %}

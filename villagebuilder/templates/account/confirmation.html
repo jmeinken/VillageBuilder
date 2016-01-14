@@ -1,29 +1,32 @@
-{% extends "core/bases/base.html" %}
+{% extends "core/bases/logged_out_base.html" %}
 {% load app_filters %}
-{% load widget_tweaks %}<!-- https://pypi.python.org/pypi/django-widget-tweaks -->
-{% load staticfiles %}
+{% load widget_tweaks %}
 
-{% block content %}
+{% block subcontent %}
 
-    <div class="container-fluid">
-        {% include "account/blocks/create-account-header.html" %}
-	    
-	    <div class="row">
-	    	<div class="col-md-6 col-md-offset-1">
-	    	    {% include 'core/blocks/alerts.html' %}
-	    	    
-	    	    <a href="{% url 'home' %}">
-	    	    	<h2>Continue to the home page <i class="fa fa-hand-o-right"></i></h2>
-	    	    </a>
-	    	    <br><br><br><br><br><br><br><br><br><br><br>
-	    	</div>
-	    </div>
-	    
-	    
-		{% include 'core/blocks/footer.html' %}
+
+    {% include "account/blocks/create-account-nav.html" %}<br>
+
+	<div class="row">
+		<div class="col-sm-10 col-sm-offset-1">
+			<p style="font-size:1.5em;color:#34B51E">
+			<i class="fa fa-check"></i>
+			Account successfully created for {{ participant.get_name }}. Welcome!</p>
+			<br>
+			<p>We just sent you an email from info@villagebuilder.net.  Please mark it as not spam so that you can receive 
+			activity updates.  You can set email preferences
+			anytime on the <a href="{% url 'account:account' %}">account settings page</a>.</p>
+			<br><br>
+			
+			<a href="{% url 'home' %}" class="btn btn-success btn-lg">
+				Continue to your home page <i class="fa fa-angle-double-right"></i>
+			</a>
+			<br><br>
+		</div>
 	</div>
 
 
-
+	
+	
 
 {% endblock %}

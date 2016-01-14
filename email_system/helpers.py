@@ -28,6 +28,27 @@ def email_forgot_password(request, member):
         [email], 
     )
     
+def email_new_account(request):
+    user = request.user
+    currentParticipant = Participant.objects.get(user=user, type='member')
+    email = user.username
+    context = {
+        'email_title' : 'VillageBuilder Account Created',
+        'name' : currentParticipant.get_name(),
+        'unsubscribe' : currentParticipant.member.get_unsubscribe_code(),
+    }
+    body = render_to_string('email/plain_text/new_account.txt', context)
+    htmlBody = render_to_string('email/html/new_account.html', context)
+    return sendMail(
+        'Welcome!', 
+        body,
+        htmlBody,
+        'info@villagebuilder.net', 
+        [email], 
+    )
+    
+    
+    
 def email_new_pm(request, pm):
     
     if pm.recipient.type == 'member':
